@@ -1,5 +1,7 @@
 ---
 title: Github的SSH配置
+categories:
+    -Git
 ---
 # 1.创建公私密钥
 ```bash
@@ -8,6 +10,7 @@ $ cat ～/.ssh/id_rsa.pub
 # ps.在windows系统中.ssh文件在C:\Users\你的用户名\.ssh目录下
 ```
 
+<!-- more -->
 # 2.配置公钥
 1.github -> 个人头像 -> setting -> SSH and GPG keys -> New SSH key
 2.复制id_rsa.pub的内容到Key中

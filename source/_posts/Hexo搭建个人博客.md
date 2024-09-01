@@ -1,11 +1,13 @@
 ---
 title: Hexo搭建个人博客
+categories:
+    - 个人博客
 ---
 # 1.前置条件
 * [Node.js](https://nodejs.org/en/download/package-manager/current)
 * [git](https://git-scm.com/)
 * Github Pages
-
+<!-- more -->
 # 2.安装Node.js
 ```bash
 # installs nvm (Node Version Manager)
