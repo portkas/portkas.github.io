@@ -55,6 +55,7 @@ $ git checkout master
 4.安装Hexo及相关依赖
 ```bash
 $ npm install hexo	# 安装hexo
+$ npm install hexo-cli -g # 重新安装(如果上述安装不起作用）
 $ npm install	# 安装依赖
 ```
 

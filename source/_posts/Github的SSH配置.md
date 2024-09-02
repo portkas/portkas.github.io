@@ -1,7 +1,7 @@
 ---
 title: Github的SSH配置
 categories:
-    -Git
+    - Git
 ---
 # 1.创建公私密钥
 ```bash
