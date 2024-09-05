@@ -438,30 +438,6 @@
       </categories>
   </entry>
   <entry>
-    <title>apt换源</title>
-    <url>/2024/09/05/apt%E6%8D%A2%E6%BA%90/</url>
-    <content><![CDATA[<p>Ubuntu24.04换源</p>
-<blockquote>
-<p>Ubuntu24.04源文件地址已经更换为<code>etc/apt/source.list.d/ubuntu.sources</code></p>
-</blockquote>
-<span id="more"></span>
-<p>1.备份当前源列表</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">sudo</span> <span class="built_in">cp</span> /etc/apt/sources.list.d/ubuntu.sources  /etc/apt/sources.list.d/ubuntu.sources.bak</span><br></pre></td></tr></table></figure>
-
-<p>2.添加阿里云源</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> vim /etc/apt/sources.list.d/ubuntu.source</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在文本编辑器中粘贴以下内容</span></span><br><span class="line"><span class="comment"># 阿里云</span></span><br><span class="line">Types: deb</span><br><span class="line">URIs: http://mirrors.aliyun.com/ubuntu/</span><br><span class="line">Suites: noble noble-updates noble-security</span><br><span class="line">Components: main restricted universe multiverse</span><br><span class="line">Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg</span><br></pre></td></tr></table></figure>
-
-<h1 id="更新源列表和系统软件包"><a href="#更新源列表和系统软件包" class="headerlink" title="更新源列表和系统软件包"></a>更新源列表和系统软件包</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> apt-get update</span><br><span class="line">$ <span class="built_in">sudo</span> apt-get upgrade</span><br></pre></td></tr></table></figure>
-
-<h1 id="清华源"><a href="#清华源" class="headerlink" title="清华源"></a>清华源</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Types: deb</span><br><span class="line">URIs: http://mirrors.tuna.tsinghua.edu.cn/ubuntu/</span><br><span class="line">Suites: noble noble-updates noble-security</span><br><span class="line">Components: main restricted universe multiverse</span><br><span class="line">Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg</span><br></pre></td></tr></table></figure>
-
-<h1 id="中科大源"><a href="#中科大源" class="headerlink" title="中科大源"></a>中科大源</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Types: deb</span><br><span class="line">URIs: http://mirrors.ustc.edu.cn/ubuntu/</span><br><span class="line">Suites: noble noble-updates noble-security</span><br><span class="line">Components: main restricted universe multiverse</span><br><span class="line">Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>PC</category>
-      </categories>
-  </entry>
-  <entry>
     <title>Linux基础</title>
     <url>/2024/09/05/Linux%E5%9F%BA%E7%A1%80/</url>
     <content><![CDATA[<h1 id="Linux内核"><a href="#Linux内核" class="headerlink" title="Linux内核"></a>Linux内核</h1><p>1.进程调度 SCHED<br>2.内存管理 MMU<br>3.虚拟文件系统 VFS<br>4.网络接口<br>5.进程间通信</p>
@@ -565,6 +541,47 @@
 ]]></content>
       <categories>
         <category>Linux</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>apt换源</title>
+    <url>/2024/09/05/apt%E6%8D%A2%E6%BA%90/</url>
+    <content><![CDATA[<p>Ubuntu24.04换源</p>
+<blockquote>
+<p>Ubuntu24.04源文件地址已经更换为<code>etc/apt/source.list.d/ubuntu.sources</code></p>
+</blockquote>
+<span id="more"></span>
+<p>1.备份当前源列表</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">sudo</span> <span class="built_in">cp</span> /etc/apt/sources.list.d/ubuntu.sources  /etc/apt/sources.list.d/ubuntu.sources.bak</span><br></pre></td></tr></table></figure>
+
+<p>2.添加阿里云源</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> vim /etc/apt/sources.list.d/ubuntu.source</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在文本编辑器中粘贴以下内容</span></span><br><span class="line"><span class="comment"># 阿里云</span></span><br><span class="line">Types: deb</span><br><span class="line">URIs: http://mirrors.aliyun.com/ubuntu/</span><br><span class="line">Suites: noble noble-updates noble-security</span><br><span class="line">Components: main restricted universe multiverse</span><br><span class="line">Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg</span><br></pre></td></tr></table></figure>
+
+<h1 id="更新源列表和系统软件包"><a href="#更新源列表和系统软件包" class="headerlink" title="更新源列表和系统软件包"></a>更新源列表和系统软件包</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> apt-get update</span><br><span class="line">$ <span class="built_in">sudo</span> apt-get upgrade</span><br></pre></td></tr></table></figure>
+
+<h1 id="清华源"><a href="#清华源" class="headerlink" title="清华源"></a>清华源</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Types: deb</span><br><span class="line">URIs: http://mirrors.tuna.tsinghua.edu.cn/ubuntu/</span><br><span class="line">Suites: noble noble-updates noble-security</span><br><span class="line">Components: main restricted universe multiverse</span><br><span class="line">Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg</span><br></pre></td></tr></table></figure>
+
+<h1 id="中科大源"><a href="#中科大源" class="headerlink" title="中科大源"></a>中科大源</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Types: deb</span><br><span class="line">URIs: http://mirrors.ustc.edu.cn/ubuntu/</span><br><span class="line">Suites: noble noble-updates noble-security</span><br><span class="line">Components: main restricted universe multiverse</span><br><span class="line">Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>PC</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>argv[]参数转int型</title>
+    <url>/2024/09/05/argv%5B%5D%E5%8F%82%E6%95%B0%E8%BD%ACint%E5%9E%8B/</url>
+    <content><![CDATA[<p>在C&#x2F;C++中，argv[]是一个字符数组（char*），保存了从命令行传递该程序的阐述。</p>
+<span id="more"></span>
+<h1 id="使用atoi-函数"><a href="#使用atoi-函数" class="headerlink" title="使用atoi()函数"></a>使用<code>atoi()</code>函数</h1><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span>  <span class="comment">// 包含 strtol 函数</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> *argv[])</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (argc &gt; <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="type">char</span> *end;</span><br><span class="line">        <span class="type">long</span> num = strtol(argv[<span class="number">1</span>], &amp;end, <span class="number">10</span>);  <span class="comment">// 将 argv[1] 转换为 long 类型，基数为10</span></span><br><span class="line">        <span class="keyword">if</span> (*end == <span class="string">&#x27;\0&#x27;</span>) &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;输入的数字是: %ld\n&quot;</span>, num);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;输入的参数不是有效的数字！\n&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;请提供一个数字参数！\n&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="使用strtol-函数"><a href="#使用strtol-函数" class="headerlink" title="使用strtol()函数"></a>使用strtol()函数</h1><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span>  <span class="comment">// 包含 strtol 函数</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> *argv[])</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (argc &gt; <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="type">long</span> num = strtol(argv[<span class="number">1</span>], <span class="literal">NULL</span>, <span class="number">10</span>);  <span class="comment">// 将 argv[1] 转换为 long 类型，基数为10</span></span><br><span class="line">        <span class="keyword">if</span> (*end == <span class="string">&#x27;\0&#x27;</span>) &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;输入的数字是: %ld\n&quot;</span>, num);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;输入的参数不是有效的数字！\n&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;请提供一个数字参数！\n&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="使用sscanf-函数"><a href="#使用sscanf-函数" class="headerlink" title="使用sscanf()函数"></a>使用sscanf()函数</h1><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> *argv[])</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (argc &gt; <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="type">int</span> num;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">sscanf</span>(argv[<span class="number">1</span>], <span class="string">&quot;%d&quot;</span>, &amp;num) == <span class="number">1</span>) &#123;  <span class="comment">// 将 argv[1] 转换为 int 类型</span></span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;输入的数字是: %d\n&quot;</span>, num);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;输入的参数不是有效的数字！\n&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;请提供一个数字参数！\n&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="三种方法对比"><a href="#三种方法对比" class="headerlink" title="三种方法对比"></a>三种方法对比</h1><p>atoi()：简单快捷，但无法检测错误输入，使用时需要确保输入是有效的数字，否则返回 0。<br>strtol()：推荐用于更加健壮的转换，它允许处理错误输入并支持不同进制数。<br>sscanf()：灵活性较高，可以处理多种格式，适用于需要从字符串中解析多个值的场景。</p>
+]]></content>
+      <categories>
+        <category>C</category>
       </categories>
   </entry>
   <entry>
@@ -781,6 +798,39 @@
 ]]></content>
   </entry>
   <entry>
+    <title>格式化字符串</title>
+    <url>/2024/09/05/%E6%A0%BC%E5%BC%8F%E5%AD%97%E7%AC%A6%E4%B8%B2/</url>
+    <content><![CDATA[<h1 id="格式字符串"><a href="#格式字符串" class="headerlink" title="格式字符串"></a>格式字符串</h1><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">printf</span><span class="params">()</span>;</span><br><span class="line"><span class="type">int</span> <span class="title function_">scanf</span><span class="params">()</span>;</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+<p>格式说明符：</p>
+<ul>
+<li>%d:十进制整数</li>
+<li>%u:无符号十进制整数</li>
+<li>%x:十六进制整数</li>
+<li>%o:八进制整数</li>
+<li>%f:浮点数（小数点形式）</li>
+<li>%e:浮点数（科学计数法形式）</li>
+<li>%g:通用浮点数（自动选择%f&#x2F;%e）</li>
+<li>%s:字符串</li>
+<li>%c:字符</li>
+<li>%%:%字符</li>
+</ul>
+<p>标志，宽度，精度，长度修饰符：</p>
+<ul>
+<li>%+d:带正负号的整数</li>
+<li>%10d:宽度为10的整数，如果数字较短则用空格填充</li>
+<li>%.2f:小数点后保留2位的浮点数</li>
+<li>%5.2f:宽度为5，小数点后保留2位的浮点数</li>
+<li>%ld:长整型（long int）的整数</li>
+<li>%lf:双精度浮点数（double）</li>
+<li>%08x:宽度为8，如果输出数字少于指定宽度，使用0填充左边空位，十六进制输出。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>C</category>
+      </categories>
+  </entry>
+  <entry>
     <title>双系统</title>
     <url>/2024/09/05/%E9%87%8D%E8%A3%85%E7%B3%BB%E7%BB%9F/</url>
     <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>1.重装了Windows10专业版系统<br>2.增加了Ubuntu24.04双系统</p>
@@ -818,39 +868,6 @@
 ]]></content>
       <categories>
         <category>PC</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>格式化字符串</title>
-    <url>/2024/09/05/%E6%A0%BC%E5%BC%8F%E5%AD%97%E7%AC%A6%E4%B8%B2/</url>
-    <content><![CDATA[<h1 id="格式字符串"><a href="#格式字符串" class="headerlink" title="格式字符串"></a>格式字符串</h1><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">printf</span><span class="params">()</span>;</span><br><span class="line"><span class="type">int</span> <span class="title function_">scanf</span><span class="params">()</span>;</span><br></pre></td></tr></table></figure>
-<span id="more"></span>
-<p>格式说明符：</p>
-<ul>
-<li>%d:十进制整数</li>
-<li>%u:无符号十进制整数</li>
-<li>%x:十六进制整数</li>
-<li>%o:八进制整数</li>
-<li>%f:浮点数（小数点形式）</li>
-<li>%e:浮点数（科学计数法形式）</li>
-<li>%g:通用浮点数（自动选择%f&#x2F;%e）</li>
-<li>%s:字符串</li>
-<li>%c:字符</li>
-<li>%%:%字符</li>
-</ul>
-<p>标志，宽度，精度，长度修饰符：</p>
-<ul>
-<li>%+d:带正负号的整数</li>
-<li>%10d:宽度为10的整数，如果数字较短则用空格填充</li>
-<li>%.2f:小数点后保留2位的浮点数</li>
-<li>%5.2f:宽度为5，小数点后保留2位的浮点数</li>
-<li>%ld:长整型（long int）的整数</li>
-<li>%lf:双精度浮点数（double）</li>
-<li>%08x:宽度为8，如果输出数字少于指定宽度，使用0填充左边空位，十六进制输出。</li>
-</ul>
-]]></content>
-      <categories>
-        <category>C</category>
       </categories>
   </entry>
 </search>
