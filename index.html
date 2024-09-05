@@ -225,90 +225,6 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/09/05/hosts/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="ZhangHangming">
-      <meta itemprop="description" content="张航铭（ZhangHangming）的笔记本">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="勿以浮沙筑高台">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/09/05/hosts/" class="post-title-link" itemprop="url">hosts</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-09-05 17:21:27" itemprop="dateCreated datePublished" datetime="2024-09-05T17:21:27+08:00">2024-09-05</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/PC/" itemprop="url" rel="index"><span itemprop="name">PC</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>在Ubuntu上安装nvm遇到：curl: (28) Failed to connect to raw.githubusercontent.com port 443: Connection timed out [closed]<br>1.打开<code>/etc/hosts</code></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> vim /etc/hosts</span><br></pre></td></tr></table></figure>
-
-<p>2.查询可用IP<br>使用<a target="_blank" rel="noopener" href="https://www.ipaddress.com/website/">ipaddress</a>网站查询<code>github.com</code>,<code>ssh.github.com</code>,<code>raw.githubusercontent.com</code>网站的可用IP</p>
-<p>3.在末尾添加以下IP地址</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">140.82.114.3  github.com</span><br><span class="line">140.82.113.36  ssh.github.com</span><br><span class="line">199.232.68.133 raw.githubusercontent.com</span><br></pre></td></tr></table></figure>
-
-<p>4.保存文件并退出</p>
-<p>5.可以使用ping查看域名是否有received</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ ping 199.232.68.133</span><br><span class="line">PING 199.232.68.133 (199.232.68.133) 56(84) bytes of data.</span><br><span class="line">64 bytes from 199.232.68.133: icmp_seq=1 ttl=43 time=234 ms</span><br><span class="line">64 bytes from 199.232.68.133: icmp_seq=2 ttl=43 time=234 ms</span><br><span class="line">64 bytes from 199.232.68.133: icmp_seq=3 ttl=43 time=234 ms</span><br><span class="line">64 bytes from 199.232.68.133: icmp_seq=4 ttl=43 time=233 ms</span><br><span class="line">^C</span><br><span class="line">--- 199.232.68.133 ping statistics ---</span><br><span class="line">4 packets transmitted, 4 received, 0% packet loss, time 3004ms</span><br><span class="line">rtt min/avg/max/mdev = 233.337/233.849/234.302/0.421 ms</span><br></pre></td></tr></table></figure>
-
-<p><strong>ps.为什么要这样做呢??? hosts是什么配置文件呢???</strong><br><strong>hosts文件是什么？</strong><br>在Linux系统中，<code>/etc/hosts</code>文件是一个本地的DNS解析文件，用于将IP地址和主机名映射起来。当你访问某个域名时，系统会首先检查这个文件，如果在这里找到了对应的IP地址，就会直接使用，而不再通过外部DNS服务器查询。<br><strong>为什么要这么做？</strong><br>这是将GitHub相关的域名（如 github.com、ssh.github.com 和 raw.githubusercontent.com）手动映射到指定的IP地址。这么做的目的通常有以下几种可能：</p>
-<ul>
-<li>解决访问问题：有时候由于DNS解析缓慢或者网络封锁，GitHub相关服务的域名可能会无法访问，通过手动在&#x2F;etc&#x2F;hosts中添加这些映射，可以直接访问指定的IP，绕过DNS解析。</li>
-<li>加快访问速度：如果你已经知道某个域名的IP地址，手动添加可以减少系统查询外部DNS的时间，从而提升访问速度。</li>
-<li>绕过DNS劫持：在某些情况下，网络服务提供商或某些恶意软件可能会劫持DNS请求，将你引导到错误的网站，通过手动配置IP可以避免这种情况。</li>
-</ul>
-<p>IP地址可能会随着时间变化，所以如果GitHub更新了服务器的IP地址，而你还在使用旧的配置，可能会导致访问失败。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2024/09/05/apt%E6%8D%A2%E6%BA%90/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -333,7 +249,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2024-09-05 16:27:03" itemprop="dateCreated datePublished" datetime="2024-09-05T16:27:03+08:00">2024-09-05</time>
+              <time title="创建时间：2024-09-05 17:37:26" itemprop="dateCreated datePublished" datetime="2024-09-05T17:37:26+08:00">2024-09-05</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -360,17 +276,163 @@
 <blockquote>
 <p>Ubuntu24.04源文件地址已经更换为<code>etc/apt/source.list.d/ubuntu.sources</code></p>
 </blockquote>
-<p>1.备份当前源列表</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> <span class="built_in">cp</span> /etc/apt/sources.list.d/ubuntu.sources  /etc/apt/sources.list.d/ubuntu.sources.bak</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/09/05/apt%E6%8D%A2%E6%BA%90/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
 
-<p>2.添加阿里云源</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> vim /etc/apt/sources.list.d/ubuntu.source</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在文本编辑器中粘贴以下内容</span></span><br><span class="line"><span class="comment"># 阿里云</span></span><br><span class="line">Types: deb</span><br><span class="line">URIs: http://mirrors.aliyun.com/ubuntu/</span><br><span class="line">Suites: noble noble-updates noble-security</span><br><span class="line">Components: main restricted universe multiverse</span><br><span class="line">Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg</span><br></pre></td></tr></table></figure>
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
 
-<h1 id="更新源列表和系统软件包"><a href="#更新源列表和系统软件包" class="headerlink" title="更新源列表和系统软件包"></a>更新源列表和系统软件包</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> apt-get update</span><br><span class="line">$ <span class="built_in">sudo</span> apt-get upgrade</span><br></pre></td></tr></table></figure>
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/09/05/Linux%E5%9F%BA%E7%A1%80/">
 
-<h1 id="清华源"><a href="#清华源" class="headerlink" title="清华源"></a>清华源</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Types: deb</span><br><span class="line">URIs: http://mirrors.tuna.tsinghua.edu.cn/ubuntu/</span><br><span class="line">Suites: noble noble-updates noble-security</span><br><span class="line">Components: main restricted universe multiverse</span><br><span class="line">Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg</span><br></pre></td></tr></table></figure>
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="ZhangHangming">
+      <meta itemprop="description" content="张航铭（ZhangHangming）的笔记本">
+    </span>
 
-<h1 id="中科大源"><a href="#中科大源" class="headerlink" title="中科大源"></a>中科大源</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Types: deb</span><br><span class="line">URIs: http://mirrors.ustc.edu.cn/ubuntu/</span><br><span class="line">Suites: noble noble-updates noble-security</span><br><span class="line">Components: main restricted universe multiverse</span><br><span class="line">Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg</span><br></pre></td></tr></table></figure>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="勿以浮沙筑高台">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/09/05/Linux%E5%9F%BA%E7%A1%80/" class="post-title-link" itemprop="url">Linux基础</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-09-05 17:36:07" itemprop="dateCreated datePublished" datetime="2024-09-05T17:36:07+08:00">2024-09-05</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Linux内核"><a href="#Linux内核" class="headerlink" title="Linux内核"></a>Linux内核</h1><p>1.进程调度 SCHED<br>2.内存管理 MMU<br>3.虚拟文件系统 VFS<br>4.网络接口<br>5.进程间通信</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/09/05/Linux%E5%9F%BA%E7%A1%80/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/09/05/hosts/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="ZhangHangming">
+      <meta itemprop="description" content="张航铭（ZhangHangming）的笔记本">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="勿以浮沙筑高台">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/09/05/hosts/" class="post-title-link" itemprop="url">hosts</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-09-05 17:35:44" itemprop="dateCreated datePublished" datetime="2024-09-05T17:35:44+08:00">2024-09-05</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PC/" itemprop="url" rel="index"><span itemprop="name">PC</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>在Ubuntu上安装nvm遇到：curl: (28) Failed to connect to raw.githubusercontent.com port 443: Connection timed out [closed]<br>1.打开<code>/etc/hosts</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> vim /etc/hosts</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/09/05/hosts/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -814,80 +876,6 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2024/09/05/unit4-%E8%BF%9B%E7%A8%8B%E6%8A%BD%E8%B1%A1/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/09/05/%E6%A0%BC%E5%BC%8F%E5%AD%97%E7%AC%A6%E4%B8%B2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="ZhangHangming">
-      <meta itemprop="description" content="张航铭（ZhangHangming）的笔记本">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="勿以浮沙筑高台">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/09/05/%E6%A0%BC%E5%BC%8F%E5%AD%97%E7%AC%A6%E4%B8%B2/" class="post-title-link" itemprop="url">格式化字符串</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-09-05 15:44:08" itemprop="dateCreated datePublished" datetime="2024-09-05T15:44:08+08:00">2024-09-05</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="格式字符串"><a href="#格式字符串" class="headerlink" title="格式字符串"></a>格式字符串</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">printf</span><span class="params">()</span>;</span><br><span class="line"><span class="type">int</span> <span class="title function_">scanf</span><span class="params">()</span>;</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2024/09/05/%E6%A0%BC%E5%BC%8F%E5%AD%97%E7%AC%A6%E4%B8%B2/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>

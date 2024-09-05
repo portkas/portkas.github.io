@@ -438,8 +438,32 @@
       </categories>
   </entry>
   <entry>
+    <title>apt换源</title>
+    <url>/2024/09/05/apt%E6%8D%A2%E6%BA%90/</url>
+    <content><![CDATA[<p>Ubuntu24.04换源</p>
+<blockquote>
+<p>Ubuntu24.04源文件地址已经更换为<code>etc/apt/source.list.d/ubuntu.sources</code></p>
+</blockquote>
+<span id="more"></span>
+<p>1.备份当前源列表</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">sudo</span> <span class="built_in">cp</span> /etc/apt/sources.list.d/ubuntu.sources  /etc/apt/sources.list.d/ubuntu.sources.bak</span><br></pre></td></tr></table></figure>
+
+<p>2.添加阿里云源</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> vim /etc/apt/sources.list.d/ubuntu.source</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在文本编辑器中粘贴以下内容</span></span><br><span class="line"><span class="comment"># 阿里云</span></span><br><span class="line">Types: deb</span><br><span class="line">URIs: http://mirrors.aliyun.com/ubuntu/</span><br><span class="line">Suites: noble noble-updates noble-security</span><br><span class="line">Components: main restricted universe multiverse</span><br><span class="line">Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg</span><br></pre></td></tr></table></figure>
+
+<h1 id="更新源列表和系统软件包"><a href="#更新源列表和系统软件包" class="headerlink" title="更新源列表和系统软件包"></a>更新源列表和系统软件包</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> apt-get update</span><br><span class="line">$ <span class="built_in">sudo</span> apt-get upgrade</span><br></pre></td></tr></table></figure>
+
+<h1 id="清华源"><a href="#清华源" class="headerlink" title="清华源"></a>清华源</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Types: deb</span><br><span class="line">URIs: http://mirrors.tuna.tsinghua.edu.cn/ubuntu/</span><br><span class="line">Suites: noble noble-updates noble-security</span><br><span class="line">Components: main restricted universe multiverse</span><br><span class="line">Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg</span><br></pre></td></tr></table></figure>
+
+<h1 id="中科大源"><a href="#中科大源" class="headerlink" title="中科大源"></a>中科大源</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Types: deb</span><br><span class="line">URIs: http://mirrors.ustc.edu.cn/ubuntu/</span><br><span class="line">Suites: noble noble-updates noble-security</span><br><span class="line">Components: main restricted universe multiverse</span><br><span class="line">Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>PC</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Linux基础</title>
-    <url>/2024/09/05/Linux/</url>
+    <url>/2024/09/05/Linux%E5%9F%BA%E7%A1%80/</url>
     <content><![CDATA[<h1 id="Linux内核"><a href="#Linux内核" class="headerlink" title="Linux内核"></a>Linux内核</h1><p>1.进程调度 SCHED<br>2.内存管理 MMU<br>3.虚拟文件系统 VFS<br>4.网络接口<br>5.进程间通信</p>
 <span id="more"></span>
 <h1 id="Linux目录"><a href="#Linux目录" class="headerlink" title="Linux目录"></a>Linux目录</h1><ul>
@@ -537,31 +561,10 @@
 
 <h2 id="3-删除用户-userdel"><a href="#3-删除用户-userdel" class="headerlink" title="3.删除用户 userdel"></a>3.删除用户 userdel</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># sudo userdel &lt;username&gt; -r</span></span><br><span class="line">$ <span class="built_in">sudo</span> userdel wwl -r</span><br></pre></td></tr></table></figure>
 
-<h2 id="4-添加和删除用户组-groupadd-groupdel"><a href="#4-添加和删除用户组-groupadd-groupdel" class="headerlink" title="4.添加和删除用户组 groupadd&#x2F;groupdel"></a>4.添加和删除用户组 groupadd&#x2F;groupdel</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 基于普通用户创建新的用户组</span></span><br><span class="line">$ <span class="built_in">sudo</span> groupadd &lt;new-group-name&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 基于普通用户删除已经存在的用户组</span></span><br><span class="line">$ <span class="built_in">sudo</span> groupdel &lt;group-name&gt;</span><br></pre></td></tr></table></figure>]]></content>
+<h2 id="4-添加和删除用户组-groupadd-groupdel"><a href="#4-添加和删除用户组-groupadd-groupdel" class="headerlink" title="4.添加和删除用户组 groupadd&#x2F;groupdel"></a>4.添加和删除用户组 groupadd&#x2F;groupdel</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 基于普通用户创建新的用户组</span></span><br><span class="line">$ <span class="built_in">sudo</span> groupadd &lt;new-group-name&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 基于普通用户删除已经存在的用户组</span></span><br><span class="line">$ <span class="built_in">sudo</span> groupdel &lt;group-name&gt;</span><br></pre></td></tr></table></figure>
+]]></content>
       <categories>
         <category>Linux</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>apt换源</title>
-    <url>/2024/09/05/apt%E6%8D%A2%E6%BA%90/</url>
-    <content><![CDATA[<p>Ubuntu24.04换源</p>
-<blockquote>
-<p>Ubuntu24.04源文件地址已经更换为<code>etc/apt/source.list.d/ubuntu.sources</code></p>
-</blockquote>
-<p>1.备份当前源列表</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">sudo</span> <span class="built_in">cp</span> /etc/apt/sources.list.d/ubuntu.sources  /etc/apt/sources.list.d/ubuntu.sources.bak</span><br></pre></td></tr></table></figure>
-
-<p>2.添加阿里云源</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> vim /etc/apt/sources.list.d/ubuntu.source</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在文本编辑器中粘贴以下内容</span></span><br><span class="line"><span class="comment"># 阿里云</span></span><br><span class="line">Types: deb</span><br><span class="line">URIs: http://mirrors.aliyun.com/ubuntu/</span><br><span class="line">Suites: noble noble-updates noble-security</span><br><span class="line">Components: main restricted universe multiverse</span><br><span class="line">Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg</span><br></pre></td></tr></table></figure>
-
-<h1 id="更新源列表和系统软件包"><a href="#更新源列表和系统软件包" class="headerlink" title="更新源列表和系统软件包"></a>更新源列表和系统软件包</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> apt-get update</span><br><span class="line">$ <span class="built_in">sudo</span> apt-get upgrade</span><br></pre></td></tr></table></figure>
-
-<h1 id="清华源"><a href="#清华源" class="headerlink" title="清华源"></a>清华源</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Types: deb</span><br><span class="line">URIs: http://mirrors.tuna.tsinghua.edu.cn/ubuntu/</span><br><span class="line">Suites: noble noble-updates noble-security</span><br><span class="line">Components: main restricted universe multiverse</span><br><span class="line">Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg</span><br></pre></td></tr></table></figure>
-
-<h1 id="中科大源"><a href="#中科大源" class="headerlink" title="中科大源"></a>中科大源</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Types: deb</span><br><span class="line">URIs: http://mirrors.ustc.edu.cn/ubuntu/</span><br><span class="line">Suites: noble noble-updates noble-security</span><br><span class="line">Components: main restricted universe multiverse</span><br><span class="line">Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>PC</category>
       </categories>
   </entry>
   <entry>
@@ -723,7 +726,7 @@
     <url>/2024/09/05/hosts/</url>
     <content><![CDATA[<p>在Ubuntu上安装nvm遇到：curl: (28) Failed to connect to raw.githubusercontent.com port 443: Connection timed out [closed]<br>1.打开<code>/etc/hosts</code></p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> vim /etc/hosts</span><br></pre></td></tr></table></figure>
-
+<span id="more"></span>
 <p>2.查询可用IP<br>使用<a href="https://www.ipaddress.com/website/">ipaddress</a>网站查询<code>github.com</code>,<code>ssh.github.com</code>,<code>raw.githubusercontent.com</code>网站的可用IP</p>
 <p>3.在末尾添加以下IP地址</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">140.82.114.3  github.com</span><br><span class="line">140.82.113.36  ssh.github.com</span><br><span class="line">199.232.68.133 raw.githubusercontent.com</span><br></pre></td></tr></table></figure>
@@ -778,39 +781,6 @@
 ]]></content>
   </entry>
   <entry>
-    <title>格式化字符串</title>
-    <url>/2024/09/05/%E6%A0%BC%E5%BC%8F%E5%AD%97%E7%AC%A6%E4%B8%B2/</url>
-    <content><![CDATA[<h1 id="格式字符串"><a href="#格式字符串" class="headerlink" title="格式字符串"></a>格式字符串</h1><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">printf</span><span class="params">()</span>;</span><br><span class="line"><span class="type">int</span> <span class="title function_">scanf</span><span class="params">()</span>;</span><br></pre></td></tr></table></figure>
-<span id="more"></span>
-<p>格式说明符：</p>
-<ul>
-<li>%d:十进制整数</li>
-<li>%u:无符号十进制整数</li>
-<li>%x:十六进制整数</li>
-<li>%o:八进制整数</li>
-<li>%f:浮点数（小数点形式）</li>
-<li>%e:浮点数（科学计数法形式）</li>
-<li>%g:通用浮点数（自动选择%f&#x2F;%e）</li>
-<li>%s:字符串</li>
-<li>%c:字符</li>
-<li>%%:%字符</li>
-</ul>
-<p>标志，宽度，精度，长度修饰符：</p>
-<ul>
-<li>%+d:带正负号的整数</li>
-<li>%10d:宽度为10的整数，如果数字较短则用空格填充</li>
-<li>%.2f:小数点后保留2位的浮点数</li>
-<li>%5.2f:宽度为5，小数点后保留2位的浮点数</li>
-<li>%ld:长整型（long int）的整数</li>
-<li>%lf:双精度浮点数（double）</li>
-<li>%08x:宽度为8，如果输出数字少于指定宽度，使用0填充左边空位，十六进制输出。</li>
-</ul>
-]]></content>
-      <categories>
-        <category>C</category>
-      </categories>
-  </entry>
-  <entry>
     <title>双系统</title>
     <url>/2024/09/05/%E9%87%8D%E8%A3%85%E7%B3%BB%E7%BB%9F/</url>
     <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>1.重装了Windows10专业版系统<br>2.增加了Ubuntu24.04双系统</p>
@@ -848,6 +818,39 @@
 ]]></content>
       <categories>
         <category>PC</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>格式化字符串</title>
+    <url>/2024/09/05/%E6%A0%BC%E5%BC%8F%E5%AD%97%E7%AC%A6%E4%B8%B2/</url>
+    <content><![CDATA[<h1 id="格式字符串"><a href="#格式字符串" class="headerlink" title="格式字符串"></a>格式字符串</h1><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">printf</span><span class="params">()</span>;</span><br><span class="line"><span class="type">int</span> <span class="title function_">scanf</span><span class="params">()</span>;</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+<p>格式说明符：</p>
+<ul>
+<li>%d:十进制整数</li>
+<li>%u:无符号十进制整数</li>
+<li>%x:十六进制整数</li>
+<li>%o:八进制整数</li>
+<li>%f:浮点数（小数点形式）</li>
+<li>%e:浮点数（科学计数法形式）</li>
+<li>%g:通用浮点数（自动选择%f&#x2F;%e）</li>
+<li>%s:字符串</li>
+<li>%c:字符</li>
+<li>%%:%字符</li>
+</ul>
+<p>标志，宽度，精度，长度修饰符：</p>
+<ul>
+<li>%+d:带正负号的整数</li>
+<li>%10d:宽度为10的整数，如果数字较短则用空格填充</li>
+<li>%.2f:小数点后保留2位的浮点数</li>
+<li>%5.2f:宽度为5，小数点后保留2位的浮点数</li>
+<li>%ld:长整型（long int）的整数</li>
+<li>%lf:双精度浮点数（double）</li>
+<li>%08x:宽度为8，如果输出数字少于指定宽度，使用0填充左边空位，十六进制输出。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>C</category>
       </categories>
   </entry>
 </search>
