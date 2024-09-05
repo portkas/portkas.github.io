@@ -8,7 +8,7 @@ categories:
 ```bash
 $ sudo vim /etc/hosts
 ```
-
+<!-- more -->
 2.查询可用IP
 使用[ipaddress](https://www.ipaddress.com/website/)网站查询`github.com`,`ssh.github.com`,`raw.githubusercontent.com`网站的可用IP
 

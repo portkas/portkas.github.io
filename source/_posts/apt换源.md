@@ -6,7 +6,7 @@ categories:
 
 Ubuntu24.04换源
 > Ubuntu24.04源文件地址已经更换为`etc/apt/source.list.d/ubuntu.sources`
-
+<!-- more -->
 1.备份当前源列表
 ```bash
 sudo cp /etc/apt/sources.list.d/ubuntu.sources  /etc/apt/sources.list.d/ubuntu.sources.bak
