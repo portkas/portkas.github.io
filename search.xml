@@ -798,6 +798,163 @@
 ]]></content>
   </entry>
   <entry>
+    <title>压缩解压</title>
+    <url>/2024/09/06/%E5%8E%8B%E7%BC%A9_%E8%A7%A3%E5%8E%8B/</url>
+    <content><![CDATA[<ul>
+<li>.tar.gz</li>
+<li>.tgz</li>
+<li>.tar.bz2</li>
+<li>.zip</li>
+<li>.rar</li>
+<li>.tar.xz</li>
+</ul>
+<span id="more"></span>
+<h1 id="tar"><a href="#tar" class="headerlink" title="tar"></a>tar</h1><p>Linux默认情况下，自带两个压缩工具<code>gzip</code>,<code>bzip2</code>和一个打包工具<code>tar</code>。打包工具只能进行打包，不能压缩，压缩工具只能进行压缩，不能进行打包。</p>
+<h2 id="1-压缩（-tar-gz-tar-bz2-tgz）"><a href="#1-压缩（-tar-gz-tar-bz2-tgz）" class="headerlink" title="1.压缩（.tar.gz|.tar.bz2|.tgz）"></a>1.压缩（.tar.gz|.tar.bz2|.tgz）</h2><ul>
+<li>c：创建压缩文件</li>
+<li>z：使用<code>gzip</code>的方式进行压缩</li>
+<li>j：使用<code>bzip2</code>的方式进行压缩</li>
+<li>v：压缩过程中显示压缩过程</li>
+<li>f：指定压缩包的名字</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 使用 gzip 的方式压缩:</span></span><br><span class="line">$ tar zcvf name.tar.gz file1 file2</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用 bzip2 的方式压缩：</span></span><br><span class="line">$ tar jcvf name.tar.bz2 file1 file2</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-解压缩（-tar-gz-tar-bz2-tgz）"><a href="#2-解压缩（-tar-gz-tar-bz2-tgz）" class="headerlink" title="2.解压缩（.tar.gz|.tar.bz2|.tgz）"></a>2.解压缩（.tar.gz|.tar.bz2|.tgz）</h2><ul>
+<li>x：释放压缩文件内容</li>
+<li>z：使用<code>gzip</code>的方式进行压缩</li>
+<li>j：使用<code>bzip2</code>的方式进行压缩</li>
+<li>v：压缩过程中显示压缩过程</li>
+<li>f：指定压缩包的名字</li>
+</ul>
+<blockquote>
+<p>如果需要解压到指定目录，需要指定参数<code>-C</code>，一般认为<code>.tgz</code>文件等同于<code>.tar.gz</code>文件，解压方式相同。</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 使用`gzip`的方式进行解压缩</span></span><br><span class="line">$ tar zxvf name.tar.gz -C &lt;dir-name&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用`bzip2`的方式进行解压缩</span></span><br><span class="line">$ tar jxvf name.tar.bz2 -C &lt;dir-name&gt;</span><br></pre></td></tr></table></figure>
+
+<h1 id="zip"><a href="#zip" class="headerlink" title="zip"></a>zip</h1><h2 id="1-安装"><a href="#1-安装" class="headerlink" title="1.安装"></a>1.安装</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> apt install zip</span><br><span class="line">$ <span class="built_in">sudo</span> apt install unzip</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-压缩和解压缩（-zip）"><a href="#2-压缩和解压缩（-zip）" class="headerlink" title="2.压缩和解压缩（.zip）"></a>2.压缩和解压缩（.zip）</h2><p>使用<code>zip</code>压缩目录的时候，需要添加参数<code>-r</code>，才能将子目录中的文件一并压缩。压缩文件会自动生成后缀，因此不需要额外指定。解压缩时，如果需要指定解压目录需要添加参数<code>-d</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 压缩</span></span><br><span class="line">$ zip zipname file1 file2 dir1 -r</span><br><span class="line"></span><br><span class="line"><span class="comment"># 解压缩</span></span><br><span class="line">$ unzip zipname -d &lt;dir-name&gt;</span><br></pre></td></tr></table></figure>
+
+<h1 id="rar"><a href="#rar" class="headerlink" title="rar"></a>rar</h1><h2 id="1-安装-1"><a href="#1-安装-1" class="headerlink" title="1.安装"></a>1.安装</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> apt install rar</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-压缩和解压缩（-rar）"><a href="#2-压缩和解压缩（-rar）" class="headerlink" title="2.压缩和解压缩（.rar）"></a>2.压缩和解压缩（.rar）</h2><p>如果压缩的文件带有目录，需要指定参数<code>-r</code>，压缩时需要使用参数<code>a（archive）</code>压缩归档的意思。压缩包也会自动添加后缀。解压缩时可以使用<code>rar</code>，也可以使用<code>unrar</code>，解压缩时需要指定参数<code>x</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 压缩</span></span><br><span class="line">$ rar a rarname file1 file2 dir1 -r</span><br><span class="line"></span><br><span class="line"><span class="comment"># 解压缩</span></span><br><span class="line">$ rar x rarname &lt;dir-name&gt;</span><br></pre></td></tr></table></figure>
+
+<h1 id="xz"><a href="#xz" class="headerlink" title="xz"></a>xz</h1><h2 id="1-压缩"><a href="#1-压缩" class="headerlink" title="1.压缩"></a>1.压缩</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 第一步：打包文件</span></span><br><span class="line">$ tar cvf name.tar file1 file2</span><br><span class="line"></span><br><span class="line"><span class="comment"># 第二步：使用xz压缩文件(生成文件带后缀xxx.tar.xz)</span></span><br><span class="line">$ xz -z name.tar</span><br></pre></td></tr></table></figure>
+
+<h2 id="解压缩"><a href="#解压缩" class="headerlink" title="解压缩"></a>解压缩</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 使用xz解压缩得到xxx.tar</span></span><br><span class="line">$ xz -d xxx.tar.gz</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将xxx.tar中的文件释放到当前目录</span></span><br><span class="line">$ tar xvf xxx.tar</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>查找命令</title>
+    <url>/2024/09/06/%E6%9F%A5%E6%89%BE%E5%91%BD%E4%BB%A4/</url>
+    <content><![CDATA[<ul>
+<li>find：用于搜索文件，通过属性搜索文件</li>
+<li>grep：用于搜索文件内容，正则表达式</li>
+<li>locate：根据文件名搜索本地的磁盘文件</li>
+</ul>
+<span id="more"></span>
+<h1 id="find"><a href="#find" class="headerlink" title="find"></a>find</h1><h2 id="1-根据文件名查找（-name）"><a href="#1-根据文件名查找（-name）" class="headerlink" title="1.根据文件名查找（-name）"></a>1.根据文件名查找（-name）</h2><p>常用通配符：</p>
+<ul>
+<li>*：可以匹配0个或多个字符</li>
+<li>？：用于匹配单个字符</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 查找当前路径下所有的.cpp文件</span></span><br><span class="line">find . -name <span class="string">&quot;*.cpp&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="2-根据文件类型查找（-type）"><a href="#2-根据文件类型查找（-type）" class="headerlink" title="2.根据文件类型查找（-type）"></a>2.根据文件类型查找（-type）</h2><table>
+<thead>
+<tr>
+<th align="center">文件类型</th>
+<th align="center">字符描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">普通文件</td>
+<td align="center">f</td>
+</tr>
+<tr>
+<td align="center">目录文件</td>
+<td align="center">d</td>
+</tr>
+<tr>
+<td align="center">软链接文件</td>
+<td align="center">l</td>
+</tr>
+<tr>
+<td align="center">字符设备文件</td>
+<td align="center">c</td>
+</tr>
+<tr>
+<td align="center">块设备文件</td>
+<td align="center">b</td>
+</tr>
+<tr>
+<td align="center">管道文件</td>
+<td align="center">p</td>
+</tr>
+<tr>
+<td align="center">本地套接字文件</td>
+<td align="center">s</td>
+</tr>
+</tbody></table>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 查找当前路径下所有的文件夹</span></span><br><span class="line">$ find . -<span class="built_in">type</span> d</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-根据文件大小查找（-size）"><a href="#3-根据文件大小查找（-size）" class="headerlink" title="3.根据文件大小查找（-size）"></a>3.根据文件大小查找（-size）</h2><ul>
+<li>-size 4k 表示区间(3k, 4k]</li>
+<li>-size -4k 表示区间[0k, 4k]</li>
+<li>-size +4k 表示区间(4k, 正无穷)</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 查找当前目录下 大于1M并且小于等于3M的文件</span></span><br><span class="line">$ find . -size +1M -size -3M</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-限制查找的目录层级（-maxdepth-mindepth）"><a href="#4-限制查找的目录层级（-maxdepth-mindepth）" class="headerlink" title="4.限制查找的目录层级（-maxdepth, -mindepth）"></a>4.限制查找的目录层级（-maxdepth, -mindepth）</h2><ul>
+<li>-maxdepth：最多搜索到第多少层目录</li>
+<li>-mindepth：最少搜索到第多少层目录</li>
+</ul>
+<p>这两个参数不能单独使用。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 从根目录开始，最多搜索五层，搜索&quot;.cpp&quot;文件</span></span><br><span class="line">$ find / -maxdepth 5 -name <span class="string">&quot;*.cpp&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="5-同时执行多个操作（-exec-ok）"><a href="#5-同时执行多个操作（-exec-ok）" class="headerlink" title="5.同时执行多个操作（-exec, -ok）"></a>5.同时执行多个操作（-exec, -ok）</h2><p><strong>问题：</strong> find . -name “ *. txt” | grep “a”中find后面可以使用|管道传递给grep，但是不能使用管道传递给ls，例如find . -name “ *.cpp” | ls</p>
+<!-- more -->
+
+<p>1.为什么 find . -name “*.txt” | grep “a” 可以工作？</p>
+<ul>
+<li>find . -name “*.txt” 会搜索当前目录及其子目录下所有扩展名为 .txt 的文件，并将这些文件名输出到标准输出（stdout）。</li>
+<li>grep “a” 会从标准输入（stdin）读取数据，然后搜索包含字符串 “a” 的行，并将这些行输出到标准输出。</li>
+<li>管道 | 将 find 命令的输出作为 grep 命令的输入，因此 grep 可以接收到文件名并进行搜索。</li>
+</ul>
+<p>2.为什么 find . -name “*.cpp” | ls 不能工作？</p>
+<ul>
+<li>ls 命令通常用于列出目录中的文件和目录，而不是处理文件名列表。</li>
+<li>find . -name “*.cpp” 会输出一系列文件名，但 ls 命令期望的是目录路径作为参数，而不是文件名列表。</li>
+</ul>
+<p>可以使用<code>exec</code>,<code>ok</code>,<code>xargs</code>实现find命令执行完毕之后。再执行其他子命令。</p>
+<h3 id="exec"><a href="#exec" class="headerlink" title="exec"></a>exec</h3><p><code>-exec</code>是find的参数。可以在exec参数后添加其他需要被执行的shell命令，命令的尾部需要加一个后缀<code>&#123;&#125; \;</code>，<code>&#123;&#125;</code>和<code>\;</code>中间用空格分开。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ find . -name <span class="string">&quot;*.cpp&quot;</span> -<span class="built_in">exec</span> <span class="built_in">ls</span> -l &#123;&#125; \;</span><br></pre></td></tr></table></figure>
+
+<h3 id="ok"><a href="#ok" class="headerlink" title="ok"></a>ok</h3><p><code>-ok</code>也是find命令的参数，是交互式的命令。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ find . -maxdepth 2 -name <span class="string">&quot;*.cpp&quot;</span> -ok <span class="built_in">ls</span> -l &#123;&#125; \;</span><br></pre></td></tr></table></figure>
+
+<h3 id="xargs"><a href="#xargs" class="headerlink" title="xargs"></a>xargs</h3><p>Unix命令，将接收到的输入数据转换为命令行参数，并构建一个完整的命令。通常与管道（|）组合使用。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ find . maxdepth 2 -name <span class="string">&quot;*.cpp&quot;</span> | xargs <span class="built_in">ls</span> -l</span><br></pre></td></tr></table></figure>
+
+<h1 id="grep"><a href="#grep" class="headerlink" title="grep"></a>grep</h1><ul>
+<li>-r：递归搜索目录中的文件内容</li>
+<li>-i：对应要搜索的关键字，忽略字符大小写</li>
+<li>-n：在现实符合样式的那一行之前，标出该行的行号</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ grep <span class="string">&quot;main&quot;</span> hello.c -i</span><br><span class="line">$ find . -name <span class="string">&quot;*.cpp&quot;</span> | grep <span class="string">&quot;main&quot;</span> -n</span><br></pre></td></tr></table></figure>
+
+<h1 id="locate"><a href="#locate" class="headerlink" title="locate"></a>locate</h1><p>locate不搜索具体目录，而是搜索本地的数据库文件，这个数据库包含本地的所有信息。在使用locate之前，先使用<code>updatedb</code>命令手动更新数据库。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 更新本地数据库文件</span></span><br><span class="line">$ <span class="built_in">sudo</span> updatedb</span><br><span class="line"></span><br><span class="line"><span class="comment"># 搜索所有目录下以main开头的文件</span></span><br><span class="line">$ locate main</span><br><span class="line"></span><br><span class="line"><span class="comment"># 搜索指定目录下的以某个关键字开头的文件（要用绝对路径）</span></span><br><span class="line">$ locate /home/zhm/Desktop/main</span><br><span class="line"></span><br><span class="line"><span class="comment"># 搜索的时候忽略文件名的大小写（-i）</span></span><br><span class="line">$ locate main -i </span><br><span class="line"></span><br><span class="line"><span class="comment"># 列出前N个匹配到的文件名称</span></span><br><span class="line">$ locate main -n 5</span><br><span class="line"></span><br><span class="line"><span class="comment"># 基于正则表达式进行文件匹配</span></span><br><span class="line"><span class="comment"># 示例：搜索以.cpp结尾的文件</span></span><br><span class="line">$ locate -r <span class="string">&quot;\.cpp$&quot;</span></span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+  </entry>
+  <entry>
     <title>格式化字符串</title>
     <url>/2024/09/05/%E6%A0%BC%E5%BC%8F%E5%AD%97%E7%AC%A6%E4%B8%B2/</url>
     <content><![CDATA[<h1 id="格式字符串"><a href="#格式字符串" class="headerlink" title="格式字符串"></a>格式字符串</h1><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">printf</span><span class="params">()</span>;</span><br><span class="line"><span class="type">int</span> <span class="title function_">scanf</span><span class="params">()</span>;</span><br></pre></td></tr></table></figure>
