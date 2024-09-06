@@ -1,140 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Github的SSH配置</title>
-    <url>/2024/09/05/Github%E7%9A%84SSH%E9%85%8D%E7%BD%AE/</url>
-    <content><![CDATA[<h1 id="1-创建公私密钥"><a href="#1-创建公私密钥" class="headerlink" title="1.创建公私密钥"></a>1.创建公私密钥</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ ssh-keygen -t rsa -C <span class="string">&quot;Github注册的邮箱地址&quot;</span></span><br><span class="line">$ <span class="built_in">cat</span> ～/.ssh/id_rsa.pub</span><br><span class="line"><span class="comment"># ps.在windows系统中.ssh文件在C:\Users\你的用户名\.ssh目录下</span></span><br></pre></td></tr></table></figure>
-
-<span id="more"></span>
-<h1 id="2-配置公钥"><a href="#2-配置公钥" class="headerlink" title="2.配置公钥"></a>2.配置公钥</h1><p>1.github -&gt; 个人头像 -&gt; setting -&gt; SSH and GPG keys -&gt; New SSH key<br>2.复制id_rsa.pub的内容到Key中<br>3.Title的内容自定义</p>
-<h1 id="3-验证是否设置成功"><a href="#3-验证是否设置成功" class="headerlink" title="3.验证是否设置成功"></a>3.验证是否设置成功</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ ssh -T git@github.com</span><br><span class="line">Hi portkas! You<span class="string">&#x27;ve successfully authenticated, but GitHub does not provide shell access.</span></span><br></pre></td></tr></table></figure>
-
-<h1 id="4-Q-A"><a href="#4-Q-A" class="headerlink" title="4.Q&amp;A"></a>4.Q&amp;A</h1><p>SSH登录安全性由非对称加密保证，产生密钥时，一次产生两个密钥，一个公钥，一个私钥，在git中一般命名为id_rsa.pub, id_rsa。</p>
-<h2 id="如何使用生成的一个私钥一个公钥进行验证呢？"><a href="#如何使用生成的一个私钥一个公钥进行验证呢？" class="headerlink" title="如何使用生成的一个私钥一个公钥进行验证呢？"></a>如何使用生成的一个私钥一个公钥进行验证呢？</h2><p>本地生成一个密钥对，其中公钥放到远程主机，私钥保存在本地，当本地主机需要登录远程主机时，本地主机向远程主机发送一个登录请求，远程收到消息后，随机生成一个字符串并用公钥加密，发回给本地。本地拿到该字符串，用存放在本地的私钥进行解密，再次发送到远程，远程比对该解密后的字符串与源字符串是否等同，如果等同则认证成功。</p>
-<h2 id="每使用一台主机都要配？"><a href="#每使用一台主机都要配？" class="headerlink" title="每使用一台主机都要配？"></a>每使用一台主机都要配？</h2><p>每使用一台新主机进行git远程操作，想要实现无密，都需要配置。并不是说每个账号配一次就够了，而是每一台主机都需要配。</p>
-<h2 id="配了为什么就不用密码了？"><a href="#配了为什么就不用密码了？" class="headerlink" title="配了为什么就不用密码了？"></a>配了为什么就不用密码了？</h2><p>因为配置的时候是把当前主机的公钥放到了你的github账号下，相当于当前主机和你的账号做了一个关联，你在这台主机上已经登录了你的账号，此时此刻github认为是该账号主人在操作这台主机，在配置ssh后就信任该主机了。所以下次在使用git的时候即使没有登录github，也能直接从本地push代码到远程了。</p>
-]]></content>
-      <categories>
-        <category>Git</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Git分支管理Hexo</title>
-    <url>/2024/09/05/Git%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86Hexo/</url>
-    <content><![CDATA[<h1 id="1-本地初始电脑"><a href="#1-本地初始电脑" class="headerlink" title="1.本地初始电脑"></a>1.本地初始电脑</h1><p>1.初始化Git仓库</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> blog</span><br><span class="line">$ git init  <span class="comment"># 创建.git子目录</span></span><br></pre></td></tr></table></figure>
-<span id="more"></span>
-<p>2.添加远程仓库</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git remote add origin git@github.com:yourname/yourname.github.io.git</span><br></pre></td></tr></table></figure>
-
-<p>3.拉取远端仓库所有内容及分支</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git fetch origin</span><br></pre></td></tr></table></figure>
-
-<p>5.新建分支</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git checkout -b master</span><br></pre></td></tr></table></figure>
-
-<p>4.在<code>./source/_post/</code>中添加.md博客并生成</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo clean</span><br><span class="line">$ hexo g</span><br><span class="line">$ hexo d</span><br></pre></td></tr></table></figure>
-
-<p>5.将本地仓库推送至远端</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git push origin master</span><br></pre></td></tr></table></figure>
-
-<h1 id="2-其他电脑"><a href="#2-其他电脑" class="headerlink" title="2.其他电脑"></a>2.其他电脑</h1><p>1.安装Node.js</p>
-<p>2.拉取远端仓库并进入文件夹</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span> git@github.com:yourname/yourname.github.io.git blogname</span><br><span class="line">$ <span class="built_in">cd</span> blogname</span><br></pre></td></tr></table></figure>
-
-<p>3.拉取远端仓库分支并切换至master分支（默认分支是main，master分支是自己建的）</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git fetch origin</span><br><span class="line">$ git checkout master</span><br></pre></td></tr></table></figure>
-
-<p>4.安装Hexo及相关依赖</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm install hexo	<span class="comment"># 安装hexo</span></span><br><span class="line">$ npm install hexo-cli -g <span class="comment"># 重新安装(如果上述安装不起作用）</span></span><br><span class="line">$ npm install	<span class="comment"># 安装依赖</span></span><br></pre></td></tr></table></figure>
-
-<p>5.安装<code>deploy-git</code></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
-
-<p>6.在<code>./source/_post/</code>中添加.md博客并生成</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo clean</span><br><span class="line">$ hexo g</span><br><span class="line">$ hexo d</span><br></pre></td></tr></table></figure>
-
-<p>8.将本地仓库推送至远端</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git push origin master</span><br></pre></td></tr></table></figure>
-
-<h1 id="3-更换主题"><a href="#3-更换主题" class="headerlink" title="3.更换主题"></a>3.更换主题</h1><p>1.进入<code>./themes</code>文件夹</p>
-<p>2.github上clone喜欢的主题</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span> git@github.com:xxx/xxx.git file-name</span><br></pre></td></tr></table></figure>
-
-<p>3.进入<code>file-name</code>文件夹</p>
-<p>4.删除.git文件夹</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">rm</span> -r .git</span><br></pre></td></tr></table></figure>
-
-<p>5.修改最外层目录下的<code>_config.yml</code>文件<br>theme: file-name</p>
-<p>6.修改.gitignore文件（或者把里面内容删掉也行）</p>
-<p>7.将本地仓库推送至远端</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git add .</span><br><span class="line">$ git commit -m &quot;add theme&quot;</span><br><span class="line">$ git push origin master</span><br></pre></td></tr></table></figure>
-
-<p>ps.修改好主题之后，主题配置在<code>file-name</code>文件夹中的<code>_config.yml</code>中进行配置。</p>
-<h1 id="4-说明"><a href="#4-说明" class="headerlink" title="4.说明"></a>4.说明</h1><p><code>main</code>分支用来部署博客：当执行<code>hexo d</code>的时候，博客部署在<code>main</code>分支，不需要执行<code>git push origin main</code>，因为<code>hexo d</code>指令已经将相应的<code>html</code>文件推送到远端服务器的<code>main</code>分支上了。<br><code>master</code>分支用来存储文件：比如<code>.md</code>文件，存放在<code>./source/_post</code>文件夹中，最后需要手动执行<code>git push origin master</code>。</p>
-]]></content>
-      <categories>
-        <category>个人博客</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Hexo搭建个人博客</title>
-    <url>/2024/09/05/Hexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
-    <content><![CDATA[<h1 id="1-前置条件"><a href="#1-前置条件" class="headerlink" title="1.前置条件"></a>1.前置条件</h1><ul>
-<li><a href="https://nodejs.org/en/download/package-manager/current">Node.js</a></li>
-<li><a href="https://git-scm.com/">git</a></li>
-<li>Github Pages<span id="more"></span></li>
-</ul>
-<h1 id="2-安装Node-js"><a href="#2-安装Node-js" class="headerlink" title="2.安装Node.js"></a>2.安装Node.js</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># installs nvm (Node Version Manager)</span></span><br><span class="line">$ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash</span><br><span class="line"></span><br><span class="line"><span class="comment"># download and install Node.js (you may need to restart the terminal)</span></span><br><span class="line">$ nvm install 22</span><br><span class="line"></span><br><span class="line"><span class="comment"># verifies the right Node.js version is in the environment</span></span><br><span class="line">$ node -v <span class="comment"># should print `v22.6.0`</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># verifies the right npm version is in the environment</span></span><br><span class="line">$ npm -v <span class="comment"># should print `10.8.2`</span></span><br></pre></td></tr></table></figure>
-
-<h1 id="3-本地运行Hexo"><a href="#3-本地运行Hexo" class="headerlink" title="3.本地运行Hexo"></a>3.本地运行Hexo</h1><h2 id="安装Hexo"><a href="#安装Hexo" class="headerlink" title="安装Hexo"></a>安装Hexo</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">mkdir</span> blog</span><br><span class="line">$ <span class="built_in">cd</span> blog</span><br><span class="line">$ npm install -g hexo-cli   <span class="comment"># 安装hexo</span></span><br><span class="line">$ hexo init                 <span class="comment"># 初始化hexo</span></span><br><span class="line">$ hexo install              <span class="comment"># 安装需要的包</span></span><br></pre></td></tr></table></figure>
-<p>初始化完成后项目文件夹如下所示：<br>.<br>├── _config.yml<br>├── package.json<br>├── scaffolds<br>├── source<br>|   ├── _drafts<br>|   └── _posts<br>└── themes          </p>
-<h2 id="Hexo的用法"><a href="#Hexo的用法" class="headerlink" title="Hexo的用法"></a>Hexo的用法</h2><ul>
-<li>启动内置预览服务（默认端口4000）  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo s    <span class="comment"># hexo serve</span></span><br></pre></td></tr></table></figure></li>
-<li>生成网站  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo g    <span class="comment"># hexo generate</span></span><br></pre></td></tr></table></figure></li>
-<li>部署到Github Pages上（部署之前需要配置）  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo d    <span class="comment"># hexo deploy</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成并部署，省去hexo g</span></span><br><span class="line">$ hexo d -g</span><br></pre></td></tr></table></figure></li>
-<li>#清除缓存文件db.json和已生成的静态文件 public  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo c    <span class="comment"># hexo clean</span></span><br></pre></td></tr></table></figure></li>
-<li>创建博客  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 创建完成后博客的.md文件存储在`./source/_post/`中</span></span><br><span class="line">$ hexo new <span class="string">&quot;blog name&quot;</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-<h1 id="3-配置"><a href="#3-配置" class="headerlink" title="3.配置"></a>3.配置</h1><p>_config.yml</p>
-<ul>
-<li>title : 网站标题</li>
-<li>subtitle : 副标题</li>
-<li>description : 网站描述</li>
-<li>keywords : 网站关键词</li>
-<li>author : 作者</li>
-<li>language : 语言</li>
-<li>timezone : 时区</li>
-</ul>
-<p>以上设置会出现在meta里。</p>
-<ul>
-<li>url : 网址</li>
-<li>root : 网站根目录</li>
-<li>permalink : 永久链接格式，比如year&#x2F;:month&#x2F;:day&#x2F;:title&#x2F;</li>
-<li>source_dir : 源文件夹，默认source</li>
-<li>public_dir : 生成的网站文件夹</li>
-<li>theme : 主题</li>
-</ul>
-<p>官网关于配置的描述：<a href="https://hexo.io/zh-cn/docs/configuration">https://hexo.io/zh-cn/docs/configuration</a></p>
-<h1 id="4-部署到Github-Pages"><a href="#4-部署到Github-Pages" class="headerlink" title="4.部署到Github Pages"></a>4.部署到Github Pages</h1><p>0.配置github的SSH<br>1.创建repo:git@github:yourname&#x2F;yourname.github.io.git<br>2.修改配置文件<code>_config.yml</code></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repo: git@github.com:yourname/yourname.github.io.git</span><br><span class="line">  branch: main</span><br></pre></td></tr></table></figure>
-<p>4.安装<code>deploy-git</code></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm  install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
-
-<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ul>
-<li><a href="https://hexo.io/docs/">Hexo官网</a></li>
-<li><a href="https://www.luogu.com.cn/article/vglpq15p">从零搭建 Hexo + Github 博客</a></li>
-<li><a href="https://note.tonycrane.cc/cs/tools/hexo/">Hexo 使用记录</a></li>
-<li><a href="https://hexo.io/zh-cn/docs/writing">Hexo写作</a></li>
-<li><a href="https://github.com/ppoffice/hexo-theme-icarus">主题</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>个人博客</category>
-      </categories>
-  </entry>
-  <entry>
     <title>Git</title>
     <url>/2024/09/05/Git/</url>
     <content><![CDATA[<h1 id="Git"><a href="#Git" class="headerlink" title="Git"></a>Git</h1><h2 id="1-Git特点："><a href="#1-Git特点：" class="headerlink" title="1.Git特点："></a>1.Git特点：</h2><p>1.直接记录快照，而非差异比较<br>2.近乎所有操作都是本地执行<br>3.Git保证完整性</p>
@@ -435,6 +301,140 @@
 ]]></content>
       <categories>
         <category>Git</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Github的SSH配置</title>
+    <url>/2024/09/05/Github%E7%9A%84SSH%E9%85%8D%E7%BD%AE/</url>
+    <content><![CDATA[<h1 id="1-创建公私密钥"><a href="#1-创建公私密钥" class="headerlink" title="1.创建公私密钥"></a>1.创建公私密钥</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ ssh-keygen -t rsa -C <span class="string">&quot;Github注册的邮箱地址&quot;</span></span><br><span class="line">$ <span class="built_in">cat</span> ～/.ssh/id_rsa.pub</span><br><span class="line"><span class="comment"># ps.在windows系统中.ssh文件在C:\Users\你的用户名\.ssh目录下</span></span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
+<h1 id="2-配置公钥"><a href="#2-配置公钥" class="headerlink" title="2.配置公钥"></a>2.配置公钥</h1><p>1.github -&gt; 个人头像 -&gt; setting -&gt; SSH and GPG keys -&gt; New SSH key<br>2.复制id_rsa.pub的内容到Key中<br>3.Title的内容自定义</p>
+<h1 id="3-验证是否设置成功"><a href="#3-验证是否设置成功" class="headerlink" title="3.验证是否设置成功"></a>3.验证是否设置成功</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ ssh -T git@github.com</span><br><span class="line">Hi portkas! You<span class="string">&#x27;ve successfully authenticated, but GitHub does not provide shell access.</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="4-Q-A"><a href="#4-Q-A" class="headerlink" title="4.Q&amp;A"></a>4.Q&amp;A</h1><p>SSH登录安全性由非对称加密保证，产生密钥时，一次产生两个密钥，一个公钥，一个私钥，在git中一般命名为id_rsa.pub, id_rsa。</p>
+<h2 id="如何使用生成的一个私钥一个公钥进行验证呢？"><a href="#如何使用生成的一个私钥一个公钥进行验证呢？" class="headerlink" title="如何使用生成的一个私钥一个公钥进行验证呢？"></a>如何使用生成的一个私钥一个公钥进行验证呢？</h2><p>本地生成一个密钥对，其中公钥放到远程主机，私钥保存在本地，当本地主机需要登录远程主机时，本地主机向远程主机发送一个登录请求，远程收到消息后，随机生成一个字符串并用公钥加密，发回给本地。本地拿到该字符串，用存放在本地的私钥进行解密，再次发送到远程，远程比对该解密后的字符串与源字符串是否等同，如果等同则认证成功。</p>
+<h2 id="每使用一台主机都要配？"><a href="#每使用一台主机都要配？" class="headerlink" title="每使用一台主机都要配？"></a>每使用一台主机都要配？</h2><p>每使用一台新主机进行git远程操作，想要实现无密，都需要配置。并不是说每个账号配一次就够了，而是每一台主机都需要配。</p>
+<h2 id="配了为什么就不用密码了？"><a href="#配了为什么就不用密码了？" class="headerlink" title="配了为什么就不用密码了？"></a>配了为什么就不用密码了？</h2><p>因为配置的时候是把当前主机的公钥放到了你的github账号下，相当于当前主机和你的账号做了一个关联，你在这台主机上已经登录了你的账号，此时此刻github认为是该账号主人在操作这台主机，在配置ssh后就信任该主机了。所以下次在使用git的时候即使没有登录github，也能直接从本地push代码到远程了。</p>
+]]></content>
+      <categories>
+        <category>Git</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Git分支管理Hexo</title>
+    <url>/2024/09/05/Git%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86Hexo/</url>
+    <content><![CDATA[<h1 id="1-本地初始电脑"><a href="#1-本地初始电脑" class="headerlink" title="1.本地初始电脑"></a>1.本地初始电脑</h1><p>1.初始化Git仓库</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> blog</span><br><span class="line">$ git init  <span class="comment"># 创建.git子目录</span></span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+<p>2.添加远程仓库</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git remote add origin git@github.com:yourname/yourname.github.io.git</span><br></pre></td></tr></table></figure>
+
+<p>3.拉取远端仓库所有内容及分支</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git fetch origin</span><br></pre></td></tr></table></figure>
+
+<p>5.新建分支</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git checkout -b master</span><br></pre></td></tr></table></figure>
+
+<p>4.在<code>./source/_post/</code>中添加.md博客并生成</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo clean</span><br><span class="line">$ hexo g</span><br><span class="line">$ hexo d</span><br></pre></td></tr></table></figure>
+
+<p>5.将本地仓库推送至远端</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git push origin master</span><br></pre></td></tr></table></figure>
+
+<h1 id="2-其他电脑"><a href="#2-其他电脑" class="headerlink" title="2.其他电脑"></a>2.其他电脑</h1><p>1.安装Node.js</p>
+<p>2.拉取远端仓库并进入文件夹</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span> git@github.com:yourname/yourname.github.io.git blogname</span><br><span class="line">$ <span class="built_in">cd</span> blogname</span><br></pre></td></tr></table></figure>
+
+<p>3.拉取远端仓库分支并切换至master分支（默认分支是main，master分支是自己建的）</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git fetch origin</span><br><span class="line">$ git checkout master</span><br></pre></td></tr></table></figure>
+
+<p>4.安装Hexo及相关依赖</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm install hexo	<span class="comment"># 安装hexo</span></span><br><span class="line">$ npm install hexo-cli -g <span class="comment"># 重新安装(如果上述安装不起作用）</span></span><br><span class="line">$ npm install	<span class="comment"># 安装依赖</span></span><br></pre></td></tr></table></figure>
+
+<p>5.安装<code>deploy-git</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
+
+<p>6.在<code>./source/_post/</code>中添加.md博客并生成</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo clean</span><br><span class="line">$ hexo g</span><br><span class="line">$ hexo d</span><br></pre></td></tr></table></figure>
+
+<p>8.将本地仓库推送至远端</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git push origin master</span><br></pre></td></tr></table></figure>
+
+<h1 id="3-更换主题"><a href="#3-更换主题" class="headerlink" title="3.更换主题"></a>3.更换主题</h1><p>1.进入<code>./themes</code>文件夹</p>
+<p>2.github上clone喜欢的主题</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span> git@github.com:xxx/xxx.git file-name</span><br></pre></td></tr></table></figure>
+
+<p>3.进入<code>file-name</code>文件夹</p>
+<p>4.删除.git文件夹</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">rm</span> -r .git</span><br></pre></td></tr></table></figure>
+
+<p>5.修改最外层目录下的<code>_config.yml</code>文件<br>theme: file-name</p>
+<p>6.修改.gitignore文件（或者把里面内容删掉也行）</p>
+<p>7.将本地仓库推送至远端</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git add .</span><br><span class="line">$ git commit -m &quot;add theme&quot;</span><br><span class="line">$ git push origin master</span><br></pre></td></tr></table></figure>
+
+<p>ps.修改好主题之后，主题配置在<code>file-name</code>文件夹中的<code>_config.yml</code>中进行配置。</p>
+<h1 id="4-说明"><a href="#4-说明" class="headerlink" title="4.说明"></a>4.说明</h1><p><code>main</code>分支用来部署博客：当执行<code>hexo d</code>的时候，博客部署在<code>main</code>分支，不需要执行<code>git push origin main</code>，因为<code>hexo d</code>指令已经将相应的<code>html</code>文件推送到远端服务器的<code>main</code>分支上了。<br><code>master</code>分支用来存储文件：比如<code>.md</code>文件，存放在<code>./source/_post</code>文件夹中，最后需要手动执行<code>git push origin master</code>。</p>
+]]></content>
+      <categories>
+        <category>个人博客</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Hexo搭建个人博客</title>
+    <url>/2024/09/05/Hexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
+    <content><![CDATA[<h1 id="1-前置条件"><a href="#1-前置条件" class="headerlink" title="1.前置条件"></a>1.前置条件</h1><ul>
+<li><a href="https://nodejs.org/en/download/package-manager/current">Node.js</a></li>
+<li><a href="https://git-scm.com/">git</a></li>
+<li>Github Pages<span id="more"></span></li>
+</ul>
+<h1 id="2-安装Node-js"><a href="#2-安装Node-js" class="headerlink" title="2.安装Node.js"></a>2.安装Node.js</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># installs nvm (Node Version Manager)</span></span><br><span class="line">$ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash</span><br><span class="line"></span><br><span class="line"><span class="comment"># download and install Node.js (you may need to restart the terminal)</span></span><br><span class="line">$ nvm install 22</span><br><span class="line"></span><br><span class="line"><span class="comment"># verifies the right Node.js version is in the environment</span></span><br><span class="line">$ node -v <span class="comment"># should print `v22.6.0`</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># verifies the right npm version is in the environment</span></span><br><span class="line">$ npm -v <span class="comment"># should print `10.8.2`</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="3-本地运行Hexo"><a href="#3-本地运行Hexo" class="headerlink" title="3.本地运行Hexo"></a>3.本地运行Hexo</h1><h2 id="安装Hexo"><a href="#安装Hexo" class="headerlink" title="安装Hexo"></a>安装Hexo</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">mkdir</span> blog</span><br><span class="line">$ <span class="built_in">cd</span> blog</span><br><span class="line">$ npm install -g hexo-cli   <span class="comment"># 安装hexo</span></span><br><span class="line">$ hexo init                 <span class="comment"># 初始化hexo</span></span><br><span class="line">$ hexo install              <span class="comment"># 安装需要的包</span></span><br></pre></td></tr></table></figure>
+<p>初始化完成后项目文件夹如下所示：<br>.<br>├── _config.yml<br>├── package.json<br>├── scaffolds<br>├── source<br>|   ├── _drafts<br>|   └── _posts<br>└── themes          </p>
+<h2 id="Hexo的用法"><a href="#Hexo的用法" class="headerlink" title="Hexo的用法"></a>Hexo的用法</h2><ul>
+<li>启动内置预览服务（默认端口4000）  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo s    <span class="comment"># hexo serve</span></span><br></pre></td></tr></table></figure></li>
+<li>生成网站  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo g    <span class="comment"># hexo generate</span></span><br></pre></td></tr></table></figure></li>
+<li>部署到Github Pages上（部署之前需要配置）  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo d    <span class="comment"># hexo deploy</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成并部署，省去hexo g</span></span><br><span class="line">$ hexo d -g</span><br></pre></td></tr></table></figure></li>
+<li>#清除缓存文件db.json和已生成的静态文件 public  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo c    <span class="comment"># hexo clean</span></span><br></pre></td></tr></table></figure></li>
+<li>创建博客  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 创建完成后博客的.md文件存储在`./source/_post/`中</span></span><br><span class="line">$ hexo new <span class="string">&quot;blog name&quot;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="3-配置"><a href="#3-配置" class="headerlink" title="3.配置"></a>3.配置</h1><p>_config.yml</p>
+<ul>
+<li>title : 网站标题</li>
+<li>subtitle : 副标题</li>
+<li>description : 网站描述</li>
+<li>keywords : 网站关键词</li>
+<li>author : 作者</li>
+<li>language : 语言</li>
+<li>timezone : 时区</li>
+</ul>
+<p>以上设置会出现在meta里。</p>
+<ul>
+<li>url : 网址</li>
+<li>root : 网站根目录</li>
+<li>permalink : 永久链接格式，比如year&#x2F;:month&#x2F;:day&#x2F;:title&#x2F;</li>
+<li>source_dir : 源文件夹，默认source</li>
+<li>public_dir : 生成的网站文件夹</li>
+<li>theme : 主题</li>
+</ul>
+<p>官网关于配置的描述：<a href="https://hexo.io/zh-cn/docs/configuration">https://hexo.io/zh-cn/docs/configuration</a></p>
+<h1 id="4-部署到Github-Pages"><a href="#4-部署到Github-Pages" class="headerlink" title="4.部署到Github Pages"></a>4.部署到Github Pages</h1><p>0.配置github的SSH<br>1.创建repo:git@github:yourname&#x2F;yourname.github.io.git<br>2.修改配置文件<code>_config.yml</code></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repo: git@github.com:yourname/yourname.github.io.git</span><br><span class="line">  branch: main</span><br></pre></td></tr></table></figure>
+<p>4.安装<code>deploy-git</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm  install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
+
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ul>
+<li><a href="https://hexo.io/docs/">Hexo官网</a></li>
+<li><a href="https://www.luogu.com.cn/article/vglpq15p">从零搭建 Hexo + Github 博客</a></li>
+<li><a href="https://note.tonycrane.cc/cs/tools/hexo/">Hexo 使用记录</a></li>
+<li><a href="https://hexo.io/zh-cn/docs/writing">Hexo写作</a></li>
+<li><a href="https://github.com/ppoffice/hexo-theme-icarus">主题</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>个人博客</category>
       </categories>
   </entry>
   <entry>
@@ -1110,6 +1110,33 @@
 ]]></content>
       <categories>
         <category>cmake</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>gcc</title>
+    <url>/2024/09/06/gcc/</url>
+    <content><![CDATA[<h1 id="gcc编译流程"><a href="#gcc编译流程" class="headerlink" title="gcc编译流程"></a>gcc编译流程</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 1.预处理</span></span><br><span class="line">$ gcc -E main.c -o main.i</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2.编译</span></span><br><span class="line">$ gcc -S main.i -o main.s</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3.汇编</span></span><br><span class="line">$ gcc -c main.s -o main.o</span><br><span class="line"></span><br><span class="line"><span class="comment"># 4.链接</span></span><br><span class="line">$ gcc main.o -o main</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+<h1 id="gcc常用参数"><a href="#gcc常用参数" class="headerlink" title="gcc常用参数"></a>gcc常用参数</h1><ul>
+<li>-E：预处理，不进行编译</li>
+<li>-S：编译，但不汇编</li>
+<li>-c：编译并汇编，但不链接</li>
+<li>-o：指定生成的文件名</li>
+<li>-I：指定include包含文件的目录</li>
+<li>-g：生成调试信息</li>
+<li>-D：编译的时候指定一个宏</li>
+<li>-W：不生成任何警告</li>
+<li>-Wall：生成所有警告</li>
+<li>-On：代码优化</li>
+<li>-l：编译的时候，指定使用的库</li>
+<li>-L：指定编译的时候搜索库的路径</li>
+<li>-fpic：生成与位置无关代码</li>
+<li>-shared：生成共享目标文件</li>
+<li>-std：指定标准</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Linux</category>
       </categories>
   </entry>
   <entry>
