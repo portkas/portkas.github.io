@@ -394,15 +394,20 @@ add_definitions(-DDEBUG)
 add_executable(app ./main.c)
 ```
 
+# 生成能够gdb调试的可执行文件
+在CMakeLists.txt中加入：
+```CMake
+SET(CMAKE_BUILD_TYPE "Debug")
+SET(CMAKE_CXX_FLAGS_DEBUG "$ENV{CXXFLAGS} -O0 -Wall -g2 -ggdb")
+SET(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")
+```
+CMAKE\_BUILD\_TYPE是CMake构建系统使用的一个变量，用于指定编译时的优化级别和调试信息的详细程度，常用的值有:
+* Debug
+* Release
+* RelWithDebInfo
+* MinSizeRel
+当这个变量值为 Debug 的时候,CMake 会使用变量 CMAKE\_CXX\_FLAGS\_DEBUG 和 CMAKE\_C\_FLAGS\_DEBUG 中的字符串作为编译选项生成 Makefile
+
 # Reference
 [大丙老师的 CMake 保姆级教程-上](https://subingwen.cn/cmake/CMake-primer/)
-
-
-
-
-
-
-
-
-
 [大丙老师的 CMake 保姆级教程-下](https://subingwen.cn/cmake/CMake-advanced/)
