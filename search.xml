@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Github的SSH配置</title>
+    <url>/2024/09/05/Github%E7%9A%84SSH%E9%85%8D%E7%BD%AE/</url>
+    <content><![CDATA[<h1 id="1-创建公私密钥"><a href="#1-创建公私密钥" class="headerlink" title="1.创建公私密钥"></a>1.创建公私密钥</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ ssh-keygen -t rsa -C <span class="string">&quot;Github注册的邮箱地址&quot;</span></span><br><span class="line">$ <span class="built_in">cat</span> ～/.ssh/id_rsa.pub</span><br><span class="line"><span class="comment"># ps.在windows系统中.ssh文件在C:\Users\你的用户名\.ssh目录下</span></span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
+<h1 id="2-配置公钥"><a href="#2-配置公钥" class="headerlink" title="2.配置公钥"></a>2.配置公钥</h1><p>1.github -&gt; 个人头像 -&gt; setting -&gt; SSH and GPG keys -&gt; New SSH key<br>2.复制id_rsa.pub的内容到Key中<br>3.Title的内容自定义</p>
+<h1 id="3-验证是否设置成功"><a href="#3-验证是否设置成功" class="headerlink" title="3.验证是否设置成功"></a>3.验证是否设置成功</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ ssh -T git@github.com</span><br><span class="line">Hi portkas! You<span class="string">&#x27;ve successfully authenticated, but GitHub does not provide shell access.</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="4-Q-A"><a href="#4-Q-A" class="headerlink" title="4.Q&amp;A"></a>4.Q&amp;A</h1><p>SSH登录安全性由非对称加密保证，产生密钥时，一次产生两个密钥，一个公钥，一个私钥，在git中一般命名为id_rsa.pub, id_rsa。</p>
+<h2 id="如何使用生成的一个私钥一个公钥进行验证呢？"><a href="#如何使用生成的一个私钥一个公钥进行验证呢？" class="headerlink" title="如何使用生成的一个私钥一个公钥进行验证呢？"></a>如何使用生成的一个私钥一个公钥进行验证呢？</h2><p>本地生成一个密钥对，其中公钥放到远程主机，私钥保存在本地，当本地主机需要登录远程主机时，本地主机向远程主机发送一个登录请求，远程收到消息后，随机生成一个字符串并用公钥加密，发回给本地。本地拿到该字符串，用存放在本地的私钥进行解密，再次发送到远程，远程比对该解密后的字符串与源字符串是否等同，如果等同则认证成功。</p>
+<h2 id="每使用一台主机都要配？"><a href="#每使用一台主机都要配？" class="headerlink" title="每使用一台主机都要配？"></a>每使用一台主机都要配？</h2><p>每使用一台新主机进行git远程操作，想要实现无密，都需要配置。并不是说每个账号配一次就够了，而是每一台主机都需要配。</p>
+<h2 id="配了为什么就不用密码了？"><a href="#配了为什么就不用密码了？" class="headerlink" title="配了为什么就不用密码了？"></a>配了为什么就不用密码了？</h2><p>因为配置的时候是把当前主机的公钥放到了你的github账号下，相当于当前主机和你的账号做了一个关联，你在这台主机上已经登录了你的账号，此时此刻github认为是该账号主人在操作这台主机，在配置ssh后就信任该主机了。所以下次在使用git的时候即使没有登录github，也能直接从本地push代码到远程了。</p>
+]]></content>
+      <categories>
+        <category>Git</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Git</title>
     <url>/2024/09/05/Git/</url>
     <content><![CDATA[<h1 id="Git"><a href="#Git" class="headerlink" title="Git"></a>Git</h1><h2 id="1-Git特点："><a href="#1-Git特点：" class="headerlink" title="1.Git特点："></a>1.Git特点：</h2><p>1.直接记录快照，而非差异比较<br>2.近乎所有操作都是本地执行<br>3.Git保证完整性</p>
@@ -304,24 +322,6 @@
       </categories>
   </entry>
   <entry>
-    <title>Github的SSH配置</title>
-    <url>/2024/09/05/Github%E7%9A%84SSH%E9%85%8D%E7%BD%AE/</url>
-    <content><![CDATA[<h1 id="1-创建公私密钥"><a href="#1-创建公私密钥" class="headerlink" title="1.创建公私密钥"></a>1.创建公私密钥</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ ssh-keygen -t rsa -C <span class="string">&quot;Github注册的邮箱地址&quot;</span></span><br><span class="line">$ <span class="built_in">cat</span> ～/.ssh/id_rsa.pub</span><br><span class="line"><span class="comment"># ps.在windows系统中.ssh文件在C:\Users\你的用户名\.ssh目录下</span></span><br></pre></td></tr></table></figure>
-
-<span id="more"></span>
-<h1 id="2-配置公钥"><a href="#2-配置公钥" class="headerlink" title="2.配置公钥"></a>2.配置公钥</h1><p>1.github -&gt; 个人头像 -&gt; setting -&gt; SSH and GPG keys -&gt; New SSH key<br>2.复制id_rsa.pub的内容到Key中<br>3.Title的内容自定义</p>
-<h1 id="3-验证是否设置成功"><a href="#3-验证是否设置成功" class="headerlink" title="3.验证是否设置成功"></a>3.验证是否设置成功</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ ssh -T git@github.com</span><br><span class="line">Hi portkas! You<span class="string">&#x27;ve successfully authenticated, but GitHub does not provide shell access.</span></span><br></pre></td></tr></table></figure>
-
-<h1 id="4-Q-A"><a href="#4-Q-A" class="headerlink" title="4.Q&amp;A"></a>4.Q&amp;A</h1><p>SSH登录安全性由非对称加密保证，产生密钥时，一次产生两个密钥，一个公钥，一个私钥，在git中一般命名为id_rsa.pub, id_rsa。</p>
-<h2 id="如何使用生成的一个私钥一个公钥进行验证呢？"><a href="#如何使用生成的一个私钥一个公钥进行验证呢？" class="headerlink" title="如何使用生成的一个私钥一个公钥进行验证呢？"></a>如何使用生成的一个私钥一个公钥进行验证呢？</h2><p>本地生成一个密钥对，其中公钥放到远程主机，私钥保存在本地，当本地主机需要登录远程主机时，本地主机向远程主机发送一个登录请求，远程收到消息后，随机生成一个字符串并用公钥加密，发回给本地。本地拿到该字符串，用存放在本地的私钥进行解密，再次发送到远程，远程比对该解密后的字符串与源字符串是否等同，如果等同则认证成功。</p>
-<h2 id="每使用一台主机都要配？"><a href="#每使用一台主机都要配？" class="headerlink" title="每使用一台主机都要配？"></a>每使用一台主机都要配？</h2><p>每使用一台新主机进行git远程操作，想要实现无密，都需要配置。并不是说每个账号配一次就够了，而是每一台主机都需要配。</p>
-<h2 id="配了为什么就不用密码了？"><a href="#配了为什么就不用密码了？" class="headerlink" title="配了为什么就不用密码了？"></a>配了为什么就不用密码了？</h2><p>因为配置的时候是把当前主机的公钥放到了你的github账号下，相当于当前主机和你的账号做了一个关联，你在这台主机上已经登录了你的账号，此时此刻github认为是该账号主人在操作这台主机，在配置ssh后就信任该主机了。所以下次在使用git的时候即使没有登录github，也能直接从本地push代码到远程了。</p>
-]]></content>
-      <categories>
-        <category>Git</category>
-      </categories>
-  </entry>
-  <entry>
     <title>Git分支管理Hexo</title>
     <url>/2024/09/05/Git%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86Hexo/</url>
     <content><![CDATA[<h1 id="1-本地初始电脑"><a href="#1-本地初始电脑" class="headerlink" title="1.本地初始电脑"></a>1.本地初始电脑</h1><p>1.初始化Git仓库</p>
@@ -538,6 +538,67 @@
 <h2 id="3-删除用户-userdel"><a href="#3-删除用户-userdel" class="headerlink" title="3.删除用户 userdel"></a>3.删除用户 userdel</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># sudo userdel &lt;username&gt; -r</span></span><br><span class="line">$ <span class="built_in">sudo</span> userdel wwl -r</span><br></pre></td></tr></table></figure>
 
 <h2 id="4-添加和删除用户组-groupadd-groupdel"><a href="#4-添加和删除用户组-groupadd-groupdel" class="headerlink" title="4.添加和删除用户组 groupadd&#x2F;groupdel"></a>4.添加和删除用户组 groupadd&#x2F;groupdel</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 基于普通用户创建新的用户组</span></span><br><span class="line">$ <span class="built_in">sudo</span> groupadd &lt;new-group-name&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 基于普通用户删除已经存在的用户组</span></span><br><span class="line">$ <span class="built_in">sudo</span> groupdel &lt;group-name&gt;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Tmux</title>
+    <url>/2024/09/08/Tmux/</url>
+    <content><![CDATA[<h1 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h1><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Ubuntu</span></span><br><span class="line">$ <span class="built_in">sudo</span> apt-get install tmux</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+<h2 id="启动和退出"><a href="#启动和退出" class="headerlink" title="启动和退出"></a>启动和退出</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 启动</span></span><br><span class="line">$ tmux</span><br><span class="line"></span><br><span class="line"><span class="comment"># 退出（或者使用快捷键ctrl+d）</span></span><br><span class="line">$ <span class="built_in">exit</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="前缀键"><a href="#前缀键" class="headerlink" title="前缀键"></a>前缀键</h2><p>Tmux中所有的快捷键都需要通过前缀键唤起，即先按前缀键，再按快捷键，才能生效。默认的前缀键为：ctrl+b</p>
+<h1 id="会话管理"><a href="#会话管理" class="headerlink" title="会话管理"></a>会话管理</h1><h2 id="新建会话"><a href="#新建会话" class="headerlink" title="新建会话"></a>新建会话</h2><p>第一个启动的Tmux窗口，编号是0, 第二个窗口的编号是1,以此类推。也可以在新建窗口时为窗口指定会话名。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ tmux new -s &lt;session-name&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="分离会话"><a href="#分离会话" class="headerlink" title="分离会话"></a>分离会话</h2><p>快捷键：ctrl+b d</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ tmux detach</span><br></pre></td></tr></table></figure>
+
+<h2 id="查看当前所有Tmux会话"><a href="#查看当前所有Tmux会话" class="headerlink" title="查看当前所有Tmux会话"></a>查看当前所有Tmux会话</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ tmux <span class="built_in">ls</span></span><br><span class="line"><span class="comment"># or</span></span><br><span class="line">$ tmux list-session</span><br></pre></td></tr></table></figure>
+
+<h2 id="接入会话"><a href="#接入会话" class="headerlink" title="接入会话"></a>接入会话</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ tmux attach -t &lt;session-name&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="杀死会话"><a href="#杀死会话" class="headerlink" title="杀死会话"></a>杀死会话</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ tmux kill-session -t &lt;session-name&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="切换会话"><a href="#切换会话" class="headerlink" title="切换会话"></a>切换会话</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ tmux switch -t &lt;session-name&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="重命名会话"><a href="#重命名会话" class="headerlink" title="重命名会话"></a>重命名会话</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ tmux rename-session -t &lt;old-name&gt; &lt;new-name&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="会话快捷键"><a href="#会话快捷键" class="headerlink" title="会话快捷键"></a>会话快捷键</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ctrl+b d：分离会话</span><br><span class="line">ctrl+b s：列出所有会话</span><br><span class="line">ctrl+b $：重命名当前会话</span><br></pre></td></tr></table></figure>
+
+<h1 id="窗格操作"><a href="#窗格操作" class="headerlink" title="窗格操作"></a>窗格操作</h1><h2 id="划分窗格"><a href="#划分窗格" class="headerlink" title="划分窗格"></a>划分窗格</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 划分上下两个窗格</span></span><br><span class="line">$ tmux split-window</span><br><span class="line"></span><br><span class="line"><span class="comment"># 划分左右两个窗格</span></span><br><span class="line">$ tmux split-window -h</span><br></pre></td></tr></table></figure>
+
+<h2 id="移动光标"><a href="#移动光标" class="headerlink" title="移动光标"></a>移动光标</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 光标切换到上方窗口</span></span><br><span class="line">$ tmux select-pane -U</span><br><span class="line"></span><br><span class="line"><span class="comment"># 光标切换到下方窗格</span></span><br><span class="line">$ tmux select-pane -D</span><br><span class="line"></span><br><span class="line"><span class="comment"># 光标切换到左边窗格</span></span><br><span class="line">$ tmux select-pane -L</span><br><span class="line"></span><br><span class="line"><span class="comment"># 光标切换到右边窗格</span></span><br><span class="line">$ tmux select-pane -R</span><br></pre></td></tr></table></figure>
+
+<h2 id="交换窗格位置"><a href="#交换窗格位置" class="headerlink" title="交换窗格位置"></a>交换窗格位置</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 当前窗格上移</span></span><br><span class="line">$ tmux swap-pane -U</span><br><span class="line"></span><br><span class="line"><span class="comment"># 当前窗格下移</span></span><br><span class="line">$ tmux swap-pane -D</span><br></pre></td></tr></table></figure>
+
+<h2 id="窗格快捷键总结"><a href="#窗格快捷键总结" class="headerlink" title="窗格快捷键总结"></a>窗格快捷键总结</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ]]></content>
       <categories>
         <category>Linux</category>
@@ -1113,6 +1174,22 @@
       </categories>
   </entry>
   <entry>
+    <title>.deb文件</title>
+    <url>/2024/09/08/deb%E6%96%87%E4%BB%B6/</url>
+    <content><![CDATA[<p>dep文件是debian，Ubuntu等Linux发行版的软件安装包</p>
+<span id="more"></span>
+<h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><p>deb包安装方法有两种：<br>1.直接“双击”安装<br>2.指令安装<br>2.1.终端命令行安装</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> dpkg -i &lt;package.deb&gt;</span><br></pre></td></tr></table></figure>
+
+<p>2.2.终端命令行卸载</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> dpkg -r &lt;package&gt;</span><br></pre></td></tr></table></figure>
+<h1 id="dpkg指令的其他用法"><a href="#dpkg指令的其他用法" class="headerlink" title="dpkg指令的其他用法"></a><code>dpkg</code>指令的其他用法</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ dpkg -i &lt;package.deb&gt;     <span class="comment">#安装一个 Debian 软件包，如手动下载的文件。</span></span><br><span class="line">$ dpkg -c &lt;package.deb&gt;     <span class="comment">#列出 package.deb 的内容。</span></span><br><span class="line">$ dpkg -I &lt;package.deb&gt;     <span class="comment">#从 package.deb 中提取包信息。</span></span><br><span class="line">$ dpkg -r &lt;package&gt;         <span class="comment">#移除一个已安装的包。</span></span><br><span class="line">$ dpkg -P &lt;package&gt;：       <span class="comment">#完全清除一个已安装的包。和 remove 不同的是，remove 只是删掉数据和可执行文件，purge 另外还删除所有的配制文件。</span></span><br><span class="line">$ dpkg -L &lt;package&gt;     <span class="comment">#列出 package 安装的所有文件清单。</span></span><br><span class="line">$ dpkg -s &lt;package&gt;     <span class="comment">#显示已安装包的信息。</span></span><br><span class="line">$ dpkg -S &lt;package&gt;     <span class="comment">#查看软件在哪个包里；</span></span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+  </entry>
+  <entry>
     <title>gcc</title>
     <url>/2024/09/06/gcc/</url>
     <content><![CDATA[<h1 id="gcc编译流程"><a href="#gcc编译流程" class="headerlink" title="gcc编译流程"></a>gcc编译流程</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 1.预处理</span></span><br><span class="line">$ gcc -E main.c -o main.i</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2.编译</span></span><br><span class="line">$ gcc -S main.i -o main.s</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3.汇编</span></span><br><span class="line">$ gcc -c main.s -o main.o</span><br><span class="line"></span><br><span class="line"><span class="comment"># 4.链接</span></span><br><span class="line">$ gcc main.o -o main</span><br></pre></td></tr></table></figure>
@@ -1163,6 +1240,148 @@
 ]]></content>
       <categories>
         <category>PC</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>makefile</title>
+    <url>/2024/09/08/makefile/</url>
+    <content><![CDATA[<h1 id="规则"><a href="#规则" class="headerlink" title="规则"></a>规则</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">target:depend</span><br><span class="line">    commend</span><br></pre></td></tr></table></figure>
+<p>每条规则由三部分组成：目标（target），依赖（depend），命令（comment）</p>
+<ul>
+<li>目标：目标可以有多个</li>
+<li>依赖：依赖可有可无</li>
+<li>命令：前面要有Tab缩进，shell命令</li>
+</ul>
+<span id="more"></span>
+<h1 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h1><p>make命令执行的时候根据时间戳判定是否执行makefile文件中相关规则的命令。</p>
+<ul>
+<li>目标是通过依赖生成的，目标时间戳&gt;所有依赖时间戳，则不会执行规则中的命令</li>
+<li>目标时间戳&lt;某些依赖的时间戳，则执行规则中的命令</li>
+<li>目标文件不存在，执行规则中的命令</li>
+</ul>
+<h1 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h1><h2 id="自定义变量"><a href="#自定义变量" class="headerlink" title="自定义变量"></a>自定义变量</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 定义变量（必须要同时赋值）</span><br><span class="line">变量名=变量值</span><br><span class="line"></span><br><span class="line"># 取变量值</span><br><span class="line">$(变量名)</span><br></pre></td></tr></table></figure>
+
+<h2 id="预定义变量"><a href="#预定义变量" class="headerlink" title="预定义变量"></a>预定义变量</h2><table>
+<thead>
+<tr>
+<th align="center">变量名</th>
+<th align="center">含义</th>
+<th align="center">默认值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">AR</td>
+<td align="center">生成静态库程序</td>
+<td align="center">ar</td>
+</tr>
+<tr>
+<td align="center">AS</td>
+<td align="center">汇编编译器</td>
+<td align="center">as</td>
+</tr>
+<tr>
+<td align="center">CC</td>
+<td align="center">C语言编译器</td>
+<td align="center">cc</td>
+</tr>
+<tr>
+<td align="center">CPP</td>
+<td align="center">C语言预编译器</td>
+<td align="center">$(CC) -E</td>
+</tr>
+<tr>
+<td align="center">CXX</td>
+<td align="center">C++编译器</td>
+<td align="center">g++</td>
+</tr>
+<tr>
+<td align="center">RM</td>
+<td align="center">删除文件程序</td>
+<td align="center">rm -f</td>
+</tr>
+<tr>
+<td align="center">ARFLAGS</td>
+<td align="center">生成静态库程序的选项</td>
+<td align="center">无</td>
+</tr>
+<tr>
+<td align="center">ASFLAGS</td>
+<td align="center">汇编语言编译器编译选项</td>
+<td align="center">无</td>
+</tr>
+<tr>
+<td align="center">CFLAGS</td>
+<td align="center">C语言编译器的编译选项</td>
+<td align="center">无</td>
+</tr>
+<tr>
+<td align="center">CPPFLAGS</td>
+<td align="center">C语言预编译器的编译选项</td>
+<td align="center">无</td>
+</tr>
+<tr>
+<td align="center">CXXFLAGS</td>
+<td align="center">C++编译器的编译选项</td>
+<td align="center">无</td>
+</tr>
+</tbody></table>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 示例：</span></span><br><span class="line">obj=main.o sub.o add.o</span><br><span class="line">target=calc</span><br><span class="line">CFLAGS=-O3</span><br><span class="line"><span class="variable">$(target)</span>:<span class="variable">$(obj)</span></span><br><span class="line">    <span class="variable">$(CC)</span> <span class="variable">$(obj)</span> -o <span class="variable">$(target)</span> <span class="variable">$(CFLAGS)</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="自动变量"><a href="#自动变量" class="headerlink" title="自动变量"></a>自动变量</h2><table>
+<thead>
+<tr>
+<th align="center">变量</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">$@</td>
+<td align="center">目标文件(target)的完整名称</td>
+</tr>
+<tr>
+<td align="center">$&lt;</td>
+<td align="center">第一个依赖文件的名称</td>
+</tr>
+<tr>
+<td align="center">$^</td>
+<td align="center">所有依赖文件的名称，以空格分开，不包含重复依赖</td>
+</tr>
+<tr>
+<td align="center">$*</td>
+<td align="center">目标文件的名称，不包含扩展名</td>
+</tr>
+<tr>
+<td align="center">$?</td>
+<td align="center">依赖项中，所有比目标文件时间戳晚的依赖文件，以空格分开</td>
+</tr>
+</tbody></table>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 示例：</span></span><br><span class="line"><span class="variable">$(target)</span>:<span class="variable">$(obj)</span></span><br><span class="line">    gcc <span class="variable">$^</span> -o <span class="variable">$@</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="模式匹配"><a href="#模式匹配" class="headerlink" title="模式匹配"></a>模式匹配</h1><p>使用模式匹配前：</p>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="section">calc:add.o  div.o  main.o  mult.o  sub.o</span></span><br><span class="line">        gcc  add.o  div.o  main.o  mult.o  sub.o -o calc</span><br><span class="line"></span><br><span class="line"><span class="section">add.o:add.c</span></span><br><span class="line">        gcc add.c -c</span><br><span class="line"></span><br><span class="line"><span class="section">div.o:div.c</span></span><br><span class="line">        gcc div.c -c</span><br><span class="line"></span><br><span class="line"><span class="section">main.o:main.c</span></span><br><span class="line">        gcc main.c -c</span><br><span class="line"></span><br><span class="line"><span class="section">sub.o:sub.c</span></span><br><span class="line">        gcc sub.c -c</span><br><span class="line"></span><br><span class="line"><span class="section">mult.o:mult.c</span></span><br><span class="line">        gcc mult.c -c</span><br></pre></td></tr></table></figure>
+
+<p>使用模式匹配后：</p>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="section">calc:add.o  div.o  main.o  mult.o  sub.o</span></span><br><span class="line">        gcc  add.o  div.o  main.o  mult.o  sub.o -o calc</span><br><span class="line"></span><br><span class="line"><span class="section">%.o:%.c</span></span><br><span class="line">	gcc <span class="variable">$&lt;</span> -c</span><br></pre></td></tr></table></figure>
+
+<h1 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h1><h2 id="wildcard"><a href="#wildcard" class="headerlink" title="wildcard"></a>wildcard</h2><p>函数功能:获取指定目录下指定类型的文件名，其返回值是以空格分割的指定目录下符合条件的文件名列表。<br>.<br>├── include<br>│   └── head.h<br>├── main.c<br>├── Makefile<br>└── src<br>    ├── add.c<br>    ├── div.c<br>    ├── mult.c<br>    └── sub.c</p>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 语法：</span></span><br><span class="line"><span class="variable">$(<span class="built_in">wildcard</span> 目录列表)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 示例：</span></span><br><span class="line">src=<span class="variable">$(<span class="built_in">wildcard</span> *.c ./src/*.c)</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="patsubst"><a href="#patsubst" class="headerlink" title="patsubst"></a>patsubst</h2><figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 语法：</span></span><br><span class="line"><span class="variable">$(<span class="built_in">patsubst</span> &lt;pattern&gt;, &lt;replacement&gt;, &lt;text&gt;)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 示例：将变量src中的所有文件名的后缀替换成.o</span></span><br><span class="line">obj=<span class="variable">$(<span class="built_in">patsubst</span> %.c, %.o, <span class="variable">$(src)</span>)</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="makefile示例"><a href="#makefile示例" class="headerlink" title="makefile示例"></a>makefile示例</h1><p>.<br>├── include<br>│   └── head.h<br>├── main.c<br>├── Makefile<br>└── src<br>    ├── add.c<br>    ├── div.c<br>    ├── mult.c<br>    └── sub.c</p>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 定义变量</span></span><br><span class="line">target=main</span><br><span class="line">include=./<span class="keyword">include</span></span><br><span class="line">CFLAGS=-O3 -g -Wall</span><br><span class="line"></span><br><span class="line"><span class="comment"># 搜索源文件</span></span><br><span class="line">src=<span class="variable">$(<span class="built_in">wildcard</span> *.c ./src/*.c)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 替换成.o结尾</span></span><br><span class="line">obj=<span class="variable">$(<span class="built_in">patsubst</span> %.c, %.o, <span class="variable">$(src)</span>)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 对汇编文件进行链接</span></span><br><span class="line"><span class="variable">$(target)</span>:<span class="variable">$(obj)</span></span><br><span class="line">   gcc <span class="variable">$^</span> -o <span class="variable">$@</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 对源文件进行逐个汇编</span></span><br><span class="line"><span class="section">%.o:%.c</span></span><br><span class="line">   gcc <span class="variable">$&lt;</span> -c -I<span class="variable">$(include)</span> -o <span class="variable">$@</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># clean</span></span><br><span class="line"><span class="meta"><span class="keyword">.PHONY</span>: clean</span></span><br><span class="line"><span class="section">clean:</span></span><br><span class="line">   rm <span class="variable">$(obj)</span> <span class="variable">$(target)</span> -f</span><br></pre></td></tr></table></figure>
+
+<h1 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h1><h2 id="递归扩展变量（-）"><a href="#递归扩展变量（-）" class="headerlink" title="递归扩展变量（&#x3D;）"></a>递归扩展变量（&#x3D;）</h2><figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="meta"><span class="keyword">.PHONY</span>: all</span></span><br><span class="line">foo = <span class="variable">$(bar)</span></span><br><span class="line">bar = <span class="variable">$(hello)</span></span><br><span class="line">hello = world</span><br><span class="line"></span><br><span class="line"><span class="section">all:</span></span><br><span class="line">    @echo <span class="variable">$(foo)</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ make</span><br><span class="line">world</span><br></pre></td></tr></table></figure>
+
+<h2 id="简单扩展变量（-）"><a href="#简单扩展变量（-）" class="headerlink" title="简单扩展变量（:&#x3D;）"></a>简单扩展变量（:&#x3D;）</h2><p>对于这种变量，make只对其进行一次扫描和扩展。</p>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="meta"><span class="keyword">.PHONY</span>: all</span></span><br><span class="line">x = foo</span><br><span class="line">y = <span class="variable">$(x)</span> b</span><br><span class="line">x = later</span><br><span class="line"></span><br><span class="line">xx := foo</span><br><span class="line">yy := <span class="variable">$(xx)</span> b</span><br><span class="line">xx := later</span><br><span class="line"></span><br><span class="line"><span class="section">all:</span></span><br><span class="line">    $echo <span class="string">&quot;x = <span class="variable">$(y)</span>, xx = <span class="variable">$(yy)</span>&quot;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ make</span><br><span class="line">x = later b, xx = foo b</span><br></pre></td></tr></table></figure>
+
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><p><a href="https://subingwen.cn/linux/makefile/">爱编程的大丙</a><br><a href="https://www.cnblogs.com/paul-617/p/15501875.html">makefile详解</a></p>
+]]></content>
+      <categories>
+        <category>Linux</category>
       </categories>
   </entry>
   <entry>
@@ -1426,6 +1645,65 @@
 ]]></content>
       <categories>
         <category>PC</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>静态库和动态库</title>
+    <url>/2024/09/08/%E9%9D%99%E6%80%81%E5%BA%93%E5%92%8C%E5%8A%A8%E6%80%81%E5%BA%93/</url>
+    <content><![CDATA[<h1 id="静态库"><a href="#静态库" class="headerlink" title="静态库"></a>静态库</h1><p>Linux中静态库以<code>lib</code>作为前缀，<code>.a</code>作为后缀，中间是库的名字。即<code>libxxx.a</code><br>Windows中静态库以<code>lib</code>作为前缀，<code>.lib</code>作为后缀，中间是库的名字。即<code>libxxx.lib</code></p>
+<span id="more"></span>
+<h2 id="生态静态链接库（ar）"><a href="#生态静态链接库（ar）" class="headerlink" title="生态静态链接库（ar）"></a>生态静态链接库（ar）</h2><ul>
+<li>c：创建一个库</li>
+<li>s：创建归档索引</li>
+<li>r：醍醐寺内归档文件中已有的文件或加入新文件</li>
+</ul>
+<p>.<br>├── include<br>│   └── head.h<br>└── src<br>    ├── add.c<br>    ├── div.c<br>    ├── mult.c<br>    └── sub.c</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 1.对源文件进行汇编操作</span></span><br><span class="line">$ gcc src/*.c -c -Iinclude</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2.打包.o文件生成静态库</span></span><br><span class="line">$ ar rcs libxxx.a *.o</span><br></pre></td></tr></table></figure>
+
+<h2 id="静态库的使用"><a href="#静态库的使用" class="headerlink" title="静态库的使用"></a>静态库的使用</h2><p>.<br>├── include<br>│   └── head.h<br>├── lib<br>│   └── libcalc.a<br>└── main.c</p>
+<ul>
+<li>-I：指定include包含的头文件路径</li>
+<li>-L：指定静态库&#x2F;动态库路径</li>
+<li>-l：指定静态库&#x2F;动态库名字（掐头去尾）</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 1.拿到发布的静态库和头文件</span></span><br><span class="line"><span class="comment"># 2.编写测试程序main.c</span></span><br><span class="line"><span class="comment"># 3.编译测试文件</span></span><br><span class="line">$ gcc main.c -o main -Iinclude -Llib -lxxx</span><br></pre></td></tr></table></figure>
+
+<h1 id="动态库"><a href="#动态库" class="headerlink" title="动态库"></a>动态库</h1><p>Linux中动态库以<code>lib</code>作为前缀，<code>.so</code>作为后缀，中间是库的名字。即<code>libxxx.so</code><br>Windows中动态库以<code>lib</code>作为前缀，<code>.dll</code>作为后缀，中间是库的名字。即<code>libxxx.dll</code></p>
+<h2 id="生成动态链接库（-fpic-shared）"><a href="#生成动态链接库（-fpic-shared）" class="headerlink" title="生成动态链接库（-fpic, -shared）"></a>生成动态链接库（-fpic, -shared）</h2><ul>
+<li>-fpic：生成与位置无关的代码</li>
+<li>-shared：生成一个动态链接库</li>
+</ul>
+<p>.<br>├── include<br>│   └── head.h<br>└── src<br>    ├── add.c<br>    ├── div.c<br>    ├── mult.c<br>    └── sub.c</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 1.将源文件进行汇编操作（-c, -fpic）</span></span><br><span class="line">$ gcc src/*.c -o -fpic -Iinclude</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2.将.o文件打包成动态库（-shared）</span></span><br><span class="line">$ gcc -shared *.o -o libxxx.so</span><br></pre></td></tr></table></figure>
+
+<h2 id="动态库的使用"><a href="#动态库的使用" class="headerlink" title="动态库的使用"></a>动态库的使用</h2><p>.<br>├── include<br>│   └── head.h<br>├── lib<br>│   └── libcalc.so<br>└── main.c</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 1.拿到发布的动态库和头文件</span></span><br><span class="line"><span class="comment"># 2.编写测试程序</span></span><br><span class="line"><span class="comment"># 3.编译测试程序</span></span><br><span class="line">$ gcc main.c -o main -Iinclude -Llib -lxxx</span><br><span class="line"></span><br><span class="line"><span class="comment"># 4.添加动态库加载目录</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="添加动态库加载目录"><a href="#添加动态库加载目录" class="headerlink" title="添加动态库加载目录"></a>添加动态库加载目录</h2><h3 id="方法1：修改LD-LIBRARY-PATH"><a href="#方法1：修改LD-LIBRARY-PATH" class="headerlink" title="方法1：修改LD_LIBRARY_PATH"></a>方法1：修改LD_LIBRARY_PATH</h3><p>1.找到相关的配置文件</p>
+<ul>
+<li>用户级别：<code>~/.bashrc</code></li>
+<li>系统级别：<code>/etc/profile</code></li>
+</ul>
+<p>2.使用vim打开配置文件，并添加动态库绝对路径(pwd查看)</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 在最后一行添加以下内容</span><br><span class="line">export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:动态库路径</span><br></pre></td></tr></table></figure>
+
+<p>3.让配置文件生效</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">source</span> ~/.bashrc</span><br><span class="line">$ <span class="built_in">source</span> /etc/profile</span><br></pre></td></tr></table></figure>
+
+<h3 id="方法2：更新-etc-ld-so-conf文件"><a href="#方法2：更新-etc-ld-so-conf文件" class="headerlink" title="方法2：更新&#x2F;etc&#x2F;ld.so.conf文件"></a>方法2：更新&#x2F;etc&#x2F;ld.so.conf文件</h3><p>1.将动态库的绝对路径添加到文件的末尾</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> vim /etc/ls.so.conf</span><br></pre></td></tr></table></figure>
+
+<p>2.更新<code>/etc/ld.so.conf</code>文件</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">source</span> ldconfig</span><br></pre></td></tr></table></figure>
+
+<h3 id="方法3：拷贝动态库到-lib-或-usr-lib文件中"><a href="#方法3：拷贝动态库到-lib-或-usr-lib文件中" class="headerlink" title="方法3：拷贝动态库到/lib/或/usr/lib文件中"></a>方法3：拷贝动态库到<code>/lib/</code>或<code>/usr/lib</code>文件中</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> <span class="built_in">cp</span> libxxx.so /usr/lib</span><br></pre></td></tr></table></figure>
+
+<h3 id="方法4：将库的软链接放到-lib-或-usr-lib文件中"><a href="#方法4：将库的软链接放到-lib-或-usr-lib文件中" class="headerlink" title="方法4：将库的软链接放到/lib/或/usr/lib文件中"></a>方法4：将库的软链接放到<code>/lib/</code>或<code>/usr/lib</code>文件中</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> <span class="built_in">ln</span> libxxx.so /usr/lib/libxxx.so</span><br></pre></td></tr></table></figure>
+
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><p><a href="https://www.cnblogs.com/zzLiuwh/p/17074760.html">Linux静态库与动态库整理</a></p>
+]]></content>
+      <categories>
+        <category>Linux</category>
       </categories>
   </entry>
 </search>
