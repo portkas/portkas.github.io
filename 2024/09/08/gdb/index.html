@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="开始编译程序的时候：1.打开编译选项（-g）2.关掉编译器优化选项（-O0）3.打开所有的warning（-Wall）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="gdb">
+<meta property="og:url" content="http://example.com/2024/09/08/gdb/index.html">
+<meta property="og:site_name" content="勿以浮沙筑高台">
+<meta property="og:description" content="开始编译程序的时候：1.打开编译选项（-g）2.关掉编译器优化选项（-O0）3.打开所有的warning（-Wall）">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-09-08T11:58:07.017Z">
+<meta property="article:modified_time" content="2024-09-08T11:58:07.018Z">
+<meta property="article:author" content="ZhangHangming">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2024/09/08/gdb/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>gdb | 勿以浮沙筑高台</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">勿以浮沙筑高台</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">张航铭的笔记本</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/09/08/gdb/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="ZhangHangming">
+      <meta itemprop="description" content="张航铭（ZhangHangming）的笔记本">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="勿以浮沙筑高台">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          gdb
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-09-08 19:58:07" itemprop="dateCreated datePublished" datetime="2024-09-08T19:58:07+08:00">2024-09-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h1><p>编译程序的时候：<br>1.打开编译选项（-g）<br>2.关掉编译器优化选项（-O0）<br>3.打开所有的warning（-Wall）</p>
+<span id="more"></span>
+
+<h1 id="启动和退出gdb"><a href="#启动和退出gdb" class="headerlink" title="启动和退出gdb"></a>启动和退出gdb</h1><h2 id="启动gdb"><a href="#启动gdb" class="headerlink" title="启动gdb"></a>启动gdb</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 语法：gdb 可执行程序</span></span><br><span class="line">$ gdb main</span><br></pre></td></tr></table></figure>
+
+<h2 id="gdb中命令行传参（set-args）"><a href="#gdb中命令行传参（set-args）" class="headerlink" title="gdb中命令行传参（set args）"></a>gdb中命令行传参（set args）</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 启动gdb之后</span></span><br><span class="line"><span class="comment"># 语法：set args 参数1 参数2 ...</span></span><br><span class="line"><span class="comment"># 通过gdb给应用程序设置命令行参数</span></span><br><span class="line">(gdb) <span class="built_in">set</span> args 1 2 3</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看设置的命令行参数</span></span><br><span class="line">(gdb) show args</span><br></pre></td></tr></table></figure>
+
+<h2 id="gdb中启动程序（run-start）"><a href="#gdb中启动程序（run-start）" class="headerlink" title="gdb中启动程序（run&#x2F;start）"></a>gdb中启动程序（run&#x2F;start）</h2><ul>
+<li>run（r）：如果程序设置了断点，会停在断点的位置，如果没有设置断点，程序执行到结束。</li>
+<li>start：启动程序，程序运行到main函数的第一行。</li>
+</ul>
+<p>ps.<code>run</code>和<code>start</code>在启动gdb之后只能执行其中一个，并只能执行一次。如果遇到断点需要继续执行，输入命令<code>continue(c)</code></p>
+<h2 id="退出gdb（quit）"><a href="#退出gdb（quit）" class="headerlink" title="退出gdb（quit）"></a>退出gdb（quit）</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(gdb) quit</span><br><span class="line">or</span><br><span class="line">(gdb) q</span><br></pre></td></tr></table></figure>
+
+<h1 id="查看代码（list）"><a href="#查看代码（list）" class="headerlink" title="查看代码（list）"></a>查看代码（list）</h1><h2 id="在当前文件下查看代码"><a href="#在当前文件下查看代码" class="headerlink" title="在当前文件下查看代码"></a>在当前文件下查看代码</h2><p>通过list查看代码，每次只显示10行，如果需要继续查看后面的代码，直接按回车（即再次执行list指令）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 从第一行开始显示</span><br><span class="line">(gdb) list</span><br><span class="line"></span><br><span class="line"># 显示第n行的上下文</span><br><span class="line">(gdb) list n</span><br><span class="line"></span><br><span class="line"># 显示某个函数的上下文</span><br><span class="line">(gdb) list &lt;function-name&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="显示其他文件下的代码"><a href="#显示其他文件下的代码" class="headerlink" title="显示其他文件下的代码"></a>显示其他文件下的代码</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 切换到指定的文件，并列出第n行对应的上下文</span><br><span class="line">(gdb) list &lt;filename&gt;:n</span><br><span class="line"></span><br><span class="line"># 切换到指定的文件，并列出函数的上下文</span><br><span class="line">(gdb) list &lt;filename&gt;:&lt;function-name&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="设置显示的行数"><a href="#设置显示的行数" class="headerlink" title="设置显示的行数"></a>设置显示的行数</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 设置每次显示的行数</span><br><span class="line">(gdb) set listsize 行数</span><br><span class="line"></span><br><span class="line"># 查看当前list一次能显示的行数</span><br><span class="line">(gdb) show listsize</span><br></pre></td></tr></table></figure>
+
+<h1 id="断点"><a href="#断点" class="headerlink" title="断点"></a>断点</h1><h2 id="设置断点（break）"><a href="#设置断点（break）" class="headerlink" title="设置断点（break）"></a>设置断点（break）</h2><ul>
+<li>常规断点</li>
+<li>条件断点</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># 在当前文件下设置断点</span><br><span class="line">(gdb) b &lt;n&gt;</span><br><span class="line">(gdb) b &lt;function-name&gt;</span><br><span class="line"></span><br><span class="line"># 在其他文件上设置断点（比如当前在PC指针在main.c文件下，但是想在sub.c中设置断点）</span><br><span class="line">(gdb) b &lt;filename&gt;:n</span><br><span class="line">(gdb) b &lt;filename&gt;:&lt;function-name&gt;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 条件断点：只有满足某个条件后程序才会停在这个断点的位置上</span><br><span class="line">(gdb) b &lt;n&gt; if 变量名==某个值</span><br></pre></td></tr></table></figure>
+
+<h2 id="查看断点（info）"><a href="#查看断点（info）" class="headerlink" title="查看断点（info）"></a>查看断点（info）</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(gdb) info b</span><br><span class="line">Num     Type           Disp Enb Address            What</span><br><span class="line">1       breakpoint     keep y   0x0000000000400cb5 in main() at test.cpp:12</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Num：断点的编号</li>
+<li>Enb：断点的状态，y表示使能，n表示未使能</li>
+<li>What：断点所在文件，函数，行数</li>
+</ul>
+<h2 id="删除断点（delete）"><a href="#删除断点（delete）" class="headerlink" title="删除断点（delete）"></a>删除断点（delete）</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># 删除一个断点</span><br><span class="line">(gdb) d 断点编号</span><br><span class="line"></span><br><span class="line"># 删除断点1,2,3</span><br><span class="line">(gdb) d 1 2 3</span><br><span class="line"></span><br><span class="line"># 删除一个范围的断点</span><br><span class="line">(gdb) d 断点编号1-断点编号N</span><br><span class="line"></span><br><span class="line"># 删除编号1到编号5的所有断点</span><br><span class="line">(gdb) d 1-5</span><br></pre></td></tr></table></figure>
+
+<h2 id="设置断点状态（enable-disable）"><a href="#设置断点状态（enable-disable）" class="headerlink" title="设置断点状态（enable&#x2F;disable）"></a>设置断点状态（enable&#x2F;disable）</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 设置断点无效</span><br><span class="line">(gdb) disable 断点编号</span><br><span class="line"></span><br><span class="line"># 设置断点有效</span><br><span class="line">(gdb) enable 断点编号</span><br></pre></td></tr></table></figure>
+
+<h1 id="调试"><a href="#调试" class="headerlink" title="调试"></a>调试</h1><h2 id="继续运行（continue）"><a href="#继续运行（continue）" class="headerlink" title="继续运行（continue）"></a>继续运行（continue）</h2><p>遇到断点，程序停止，可以执行c指令继续向下运行，直到遇到下一个断点。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(gdb) continue</span><br></pre></td></tr></table></figure>
+
+<h2 id="手动打印信息"><a href="#手动打印信息" class="headerlink" title="手动打印信息"></a>手动打印信息</h2><h3 id="打印变量值（print）"><a href="#打印变量值（print）" class="headerlink" title="打印变量值（print）"></a>打印变量值（print）</h3><table>
+<thead>
+<tr>
+<th align="center">格式化字符</th>
+<th align="center">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">&#x2F;x</td>
+<td align="center">十六进制</td>
+</tr>
+<tr>
+<td align="center">&#x2F;d</td>
+<td align="center">有符号十进制</td>
+</tr>
+<tr>
+<td align="center">&#x2F;u</td>
+<td align="center">无符号十进制</td>
+</tr>
+<tr>
+<td align="center">&#x2F;o</td>
+<td align="center">八进制</td>
+</tr>
+<tr>
+<td align="center">&#x2F;t</td>
+<td align="center">二进制</td>
+</tr>
+<tr>
+<td align="center">&#x2F;f</td>
+<td align="center">浮点型</td>
+</tr>
+<tr>
+<td align="center">&#x2F;c</td>
+<td align="center">字符型</td>
+</tr>
+</tbody></table>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(gdb) p 变量名</span><br><span class="line"># 以16进制打印变量i</span><br><span class="line">(gdb) p/x i</span><br></pre></td></tr></table></figure>
+
+<h3 id="打印变量类型（ptype）"><a href="#打印变量类型（ptype）" class="headerlink" title="打印变量类型（ptype）"></a>打印变量类型（ptype）</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(gdb) ptype 变量名</span><br><span class="line"># 打印数组array的类型</span><br><span class="line">(gdb) ptype array</span><br><span class="line">type = int[12]</span><br></pre></td></tr></table></figure>
+
+<h2 id="查看内存（x）"><a href="#查看内存（x）" class="headerlink" title="查看内存（x）"></a>查看内存（x）</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">x &lt;addr&gt;</span><br><span class="line"></span><br><span class="line"># 查看函数fun的地址,以16进制输出</span><br><span class="line">(gdb) x/x fun</span><br></pre></td></tr></table></figure>
+
+<h2 id="自动打印信息"><a href="#自动打印信息" class="headerlink" title="自动打印信息"></a>自动打印信息</h2><h3 id="设置某些变量自动打印变量值-display"><a href="#设置某些变量自动打印变量值-display" class="headerlink" title="设置某些变量自动打印变量值(display)"></a>设置某些变量自动打印变量值(display)</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(gdb) display 变量名</span><br><span class="line"></span><br><span class="line"># 以16进制自动显示变量i的值</span><br><span class="line">(gdb) display/x i</span><br></pre></td></tr></table></figure>
+
+<h3 id="查看自动显示列表-info-display"><a href="#查看自动显示列表-info-display" class="headerlink" title="查看自动显示列表(info display)"></a>查看自动显示列表(info display)</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(gdb) info display</span><br><span class="line">Auto-display expressions now in effect:</span><br><span class="line">Num Enb Expression</span><br><span class="line">2:   y  array[i]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Num：变量&#x2F;表达式的编号（唯一）。</li>
+<li>Enb：y表示激活状态，n表示禁用状态</li>
+<li>Expression：变量&#x2F;表达式的名字</li>
+</ul>
+<h3 id="取消自动显示-undisplay"><a href="#取消自动显示-undisplay" class="headerlink" title="取消自动显示(undisplay)"></a>取消自动显示(undisplay)</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 删除自动显示列表中的变量或表达式</span><br><span class="line">(gdb) undisplay 编号</span><br><span class="line"></span><br><span class="line"># 禁用某个变量自动显示</span><br><span class="line">(gdb) disable display 编号</span><br><span class="line"></span><br><span class="line"># 激活某个变量自动显示</span><br><span class="line">(gdb) enable display 编号</span><br></pre></td></tr></table></figure>
+
+<h2 id="单步调试"><a href="#单步调试" class="headerlink" title="单步调试"></a>单步调试</h2><h3 id="step（s）"><a href="#step（s）" class="headerlink" title="step（s）"></a>step（s）</h3><p>命令被执行一次，代码向下运行一行，如果有函数，则会进入函数体内部。</p>
+<h3 id="finish"><a href="#finish" class="headerlink" title="finish"></a>finish</h3><p>通过s单步调试进入函数体内部，如果想要跳出函数体，执行该命令。但是需要保证函数体内不能有有效断点，否则无法跳出。</p>
+<h3 id="next"><a href="#next" class="headerlink" title="next"></a>next</h3><p>命令被执行一次，代码向下运行一行，不会进入函数体内部。</p>
+<h3 id="until"><a href="#until" class="headerlink" title="until"></a>until</h3><p>通过until命令跳出循环体，需要满足以下条件：</p>
+<ul>
+<li>要跳出的函数体内部不能有有效的断点</li>
+<li>必须要在循环体的开始&#x2F;结束行执行该命令</li>
+</ul>
+<h2 id="设置变量值"><a href="#设置变量值" class="headerlink" title="设置变量值"></a>设置变量值</h2><p>在循环体中，如果循环比较久，可以直接设置变量到最后两次循环，然后单步运行查看运行结果。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(gdb) set var 变量名=值</span><br><span class="line"># 在100次的循环体中设置变量i为99</span><br><span class="line">(gdb) set var i=99</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/09/08/deb%E6%96%87%E4%BB%B6/" rel="prev" title=".deb文件">
+      <i class="fa fa-chevron-left"></i> .deb文件
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/09/08/cmake/" rel="next" title="CMake">
+      CMake <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BC%80%E5%A7%8B"><span class="nav-number">1.</span> <span class="nav-text">开始</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E5%92%8C%E9%80%80%E5%87%BAgdb"><span class="nav-number">2.</span> <span class="nav-text">启动和退出gdb</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8gdb"><span class="nav-number">2.1.</span> <span class="nav-text">启动gdb</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gdb%E4%B8%AD%E5%91%BD%E4%BB%A4%E8%A1%8C%E4%BC%A0%E5%8F%82%EF%BC%88set-args%EF%BC%89"><span class="nav-number">2.2.</span> <span class="nav-text">gdb中命令行传参（set args）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gdb%E4%B8%AD%E5%90%AF%E5%8A%A8%E7%A8%8B%E5%BA%8F%EF%BC%88run-start%EF%BC%89"><span class="nav-number">2.3.</span> <span class="nav-text">gdb中启动程序（run&#x2F;start）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%80%E5%87%BAgdb%EF%BC%88quit%EF%BC%89"><span class="nav-number">2.4.</span> <span class="nav-text">退出gdb（quit）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E4%BB%A3%E7%A0%81%EF%BC%88list%EF%BC%89"><span class="nav-number">3.</span> <span class="nav-text">查看代码（list）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8%E5%BD%93%E5%89%8D%E6%96%87%E4%BB%B6%E4%B8%8B%E6%9F%A5%E7%9C%8B%E4%BB%A3%E7%A0%81"><span class="nav-number">3.1.</span> <span class="nav-text">在当前文件下查看代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%98%BE%E7%A4%BA%E5%85%B6%E4%BB%96%E6%96%87%E4%BB%B6%E4%B8%8B%E7%9A%84%E4%BB%A3%E7%A0%81"><span class="nav-number">3.2.</span> <span class="nav-text">显示其他文件下的代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E6%98%BE%E7%A4%BA%E7%9A%84%E8%A1%8C%E6%95%B0"><span class="nav-number">3.3.</span> <span class="nav-text">设置显示的行数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%96%AD%E7%82%B9"><span class="nav-number">4.</span> <span class="nav-text">断点</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E6%96%AD%E7%82%B9%EF%BC%88break%EF%BC%89"><span class="nav-number">4.1.</span> <span class="nav-text">设置断点（break）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E6%96%AD%E7%82%B9%EF%BC%88info%EF%BC%89"><span class="nav-number">4.2.</span> <span class="nav-text">查看断点（info）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%A0%E9%99%A4%E6%96%AD%E7%82%B9%EF%BC%88delete%EF%BC%89"><span class="nav-number">4.3.</span> <span class="nav-text">删除断点（delete）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E6%96%AD%E7%82%B9%E7%8A%B6%E6%80%81%EF%BC%88enable-disable%EF%BC%89"><span class="nav-number">4.4.</span> <span class="nav-text">设置断点状态（enable&#x2F;disable）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%B0%83%E8%AF%95"><span class="nav-number">5.</span> <span class="nav-text">调试</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%A7%E7%BB%AD%E8%BF%90%E8%A1%8C%EF%BC%88continue%EF%BC%89"><span class="nav-number">5.1.</span> <span class="nav-text">继续运行（continue）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%8B%E5%8A%A8%E6%89%93%E5%8D%B0%E4%BF%A1%E6%81%AF"><span class="nav-number">5.2.</span> <span class="nav-text">手动打印信息</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%93%E5%8D%B0%E5%8F%98%E9%87%8F%E5%80%BC%EF%BC%88print%EF%BC%89"><span class="nav-number">5.2.1.</span> <span class="nav-text">打印变量值（print）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%93%E5%8D%B0%E5%8F%98%E9%87%8F%E7%B1%BB%E5%9E%8B%EF%BC%88ptype%EF%BC%89"><span class="nav-number">5.2.2.</span> <span class="nav-text">打印变量类型（ptype）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E5%86%85%E5%AD%98%EF%BC%88x%EF%BC%89"><span class="nav-number">5.3.</span> <span class="nav-text">查看内存（x）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E5%8A%A8%E6%89%93%E5%8D%B0%E4%BF%A1%E6%81%AF"><span class="nav-number">5.4.</span> <span class="nav-text">自动打印信息</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E6%9F%90%E4%BA%9B%E5%8F%98%E9%87%8F%E8%87%AA%E5%8A%A8%E6%89%93%E5%8D%B0%E5%8F%98%E9%87%8F%E5%80%BC-display"><span class="nav-number">5.4.1.</span> <span class="nav-text">设置某些变量自动打印变量值(display)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E8%87%AA%E5%8A%A8%E6%98%BE%E7%A4%BA%E5%88%97%E8%A1%A8-info-display"><span class="nav-number">5.4.2.</span> <span class="nav-text">查看自动显示列表(info display)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%96%E6%B6%88%E8%87%AA%E5%8A%A8%E6%98%BE%E7%A4%BA-undisplay"><span class="nav-number">5.4.3.</span> <span class="nav-text">取消自动显示(undisplay)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%95%E6%AD%A5%E8%B0%83%E8%AF%95"><span class="nav-number">5.5.</span> <span class="nav-text">单步调试</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#step%EF%BC%88s%EF%BC%89"><span class="nav-number">5.5.1.</span> <span class="nav-text">step（s）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#finish"><span class="nav-number">5.5.2.</span> <span class="nav-text">finish</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#next"><span class="nav-number">5.5.3.</span> <span class="nav-text">next</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#until"><span class="nav-number">5.5.4.</span> <span class="nav-text">until</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E5%8F%98%E9%87%8F%E5%80%BC"><span class="nav-number">5.6.</span> <span class="nav-text">设置变量值</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">ZhangHangming</p>
+  <div class="site-description" itemprop="description">张航铭（ZhangHangming）的笔记本</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ZhangHangming</span>
+</div>
+
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+-->
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+</html>

@@ -1021,7 +1021,7 @@
   </entry>
   <entry>
     <title>CMake</title>
-    <url>/2024/09/05/cmake/</url>
+    <url>/2024/09/08/cmake/</url>
     <content><![CDATA[<h1 id="1-CMake概述"><a href="#1-CMake概述" class="headerlink" title="1.CMake概述"></a>1.CMake概述</h1><p>CMake是一个项目构建工具，是跨平台的。CMake可以自动生成Makefile文件，管理项目更加简单。</p>
 <span id="more"></span>
 <h2 id="1-1-CMake使用流程"><a href="#1-1-CMake使用流程" class="headerlink" title="1.1 CMake使用流程"></a>1.1 CMake使用流程</h2><p>1.项目中添加CMakeLists.txt文件<br>2.新建一个名为build的文件夹<br>3.在build文件夹中执行cmake <CMakeLists-file-path>构建makefile文件<br>4.执行make指令</p>
@@ -1166,8 +1166,16 @@
 <p>为了测试更加灵活，一般不在代码中定义这个宏，而是在测试的时候把这个宏定义出来。</p>
 <figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 在gcc/g++命令中定义</span></span><br><span class="line">$ gcc main.c -DDEBUG -o app</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在CMakeLists.txt文件中定义</span></span><br><span class="line"><span class="keyword">add_definitions</span>(-DDEBUG)</span><br><span class="line"><span class="keyword">add_executable</span>(app ./main.c)</span><br></pre></td></tr></table></figure>
 
-<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><p><a href="https://subingwen.cn/cmake/CMake-primer/">大丙老师的 CMake 保姆级教程-上</a></p>
-<p><a href="https://subingwen.cn/cmake/CMake-advanced/">大丙老师的 CMake 保姆级教程-下</a></p>
+<h1 id="生成能够gdb调试的可执行文件"><a href="#生成能够gdb调试的可执行文件" class="headerlink" title="生成能够gdb调试的可执行文件"></a>生成能够gdb调试的可执行文件</h1><p>在CMakeLists.txt中加入：</p>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SET</span>(CMAKE_BUILD_TYPE <span class="string">&quot;Debug&quot;</span>)</span><br><span class="line"><span class="keyword">SET</span>(CMAKE_CXX_FLAGS_DEBUG <span class="string">&quot;$ENV&#123;CXXFLAGS&#125; -O0 -Wall -g2 -ggdb&quot;</span>)</span><br><span class="line"><span class="keyword">SET</span>(CMAKE_CXX_FLAGS_RELEASE <span class="string">&quot;$ENV&#123;CXXFLAGS&#125; -O3 -Wall&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>CMAKE_BUILD_TYPE是CMake构建系统使用的一个变量，用于指定编译时的优化级别和调试信息的详细程度，常用的值有:</p>
+<ul>
+<li>Debug</li>
+<li>Release</li>
+<li>RelWithDebInfo</li>
+<li>MinSizeRel<br>当这个变量值为 Debug 的时候,CMake 会使用变量 CMAKE_CXX_FLAGS_DEBUG 和 CMAKE_C_FLAGS_DEBUG 中的字符串作为编译选项生成 Makefile</li>
+</ul>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><p><a href="https://subingwen.cn/cmake/CMake-primer/">大丙老师的 CMake 保姆级教程-上</a><br><a href="https://subingwen.cn/cmake/CMake-advanced/">大丙老师的 CMake 保姆级教程-下</a></p>
 ]]></content>
       <categories>
         <category>cmake</category>
@@ -1212,6 +1220,117 @@
 <li>-std：指定标准</li>
 </ul>
 ]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>gdb</title>
+    <url>/2024/09/08/gdb/</url>
+    <content><![CDATA[<h1 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h1><p>编译程序的时候：<br>1.打开编译选项（-g）<br>2.关掉编译器优化选项（-O0）<br>3.打开所有的warning（-Wall）</p>
+<span id="more"></span>
+
+<h1 id="启动和退出gdb"><a href="#启动和退出gdb" class="headerlink" title="启动和退出gdb"></a>启动和退出gdb</h1><h2 id="启动gdb"><a href="#启动gdb" class="headerlink" title="启动gdb"></a>启动gdb</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 语法：gdb 可执行程序</span></span><br><span class="line">$ gdb main</span><br></pre></td></tr></table></figure>
+
+<h2 id="gdb中命令行传参（set-args）"><a href="#gdb中命令行传参（set-args）" class="headerlink" title="gdb中命令行传参（set args）"></a>gdb中命令行传参（set args）</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 启动gdb之后</span></span><br><span class="line"><span class="comment"># 语法：set args 参数1 参数2 ...</span></span><br><span class="line"><span class="comment"># 通过gdb给应用程序设置命令行参数</span></span><br><span class="line">(gdb) <span class="built_in">set</span> args 1 2 3</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看设置的命令行参数</span></span><br><span class="line">(gdb) show args</span><br></pre></td></tr></table></figure>
+
+<h2 id="gdb中启动程序（run-start）"><a href="#gdb中启动程序（run-start）" class="headerlink" title="gdb中启动程序（run&#x2F;start）"></a>gdb中启动程序（run&#x2F;start）</h2><ul>
+<li>run（r）：如果程序设置了断点，会停在断点的位置，如果没有设置断点，程序执行到结束。</li>
+<li>start：启动程序，程序运行到main函数的第一行。</li>
+</ul>
+<p>ps.<code>run</code>和<code>start</code>在启动gdb之后只能执行其中一个，并只能执行一次。如果遇到断点需要继续执行，输入命令<code>continue(c)</code></p>
+<h2 id="退出gdb（quit）"><a href="#退出gdb（quit）" class="headerlink" title="退出gdb（quit）"></a>退出gdb（quit）</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(gdb) quit</span><br><span class="line">or</span><br><span class="line">(gdb) q</span><br></pre></td></tr></table></figure>
+
+<h1 id="查看代码（list）"><a href="#查看代码（list）" class="headerlink" title="查看代码（list）"></a>查看代码（list）</h1><h2 id="在当前文件下查看代码"><a href="#在当前文件下查看代码" class="headerlink" title="在当前文件下查看代码"></a>在当前文件下查看代码</h2><p>通过list查看代码，每次只显示10行，如果需要继续查看后面的代码，直接按回车（即再次执行list指令）</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 从第一行开始显示</span><br><span class="line">(gdb) list</span><br><span class="line"></span><br><span class="line"># 显示第n行的上下文</span><br><span class="line">(gdb) list n</span><br><span class="line"></span><br><span class="line"># 显示某个函数的上下文</span><br><span class="line">(gdb) list &lt;function-name&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="显示其他文件下的代码"><a href="#显示其他文件下的代码" class="headerlink" title="显示其他文件下的代码"></a>显示其他文件下的代码</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 切换到指定的文件，并列出第n行对应的上下文</span><br><span class="line">(gdb) list &lt;filename&gt;:n</span><br><span class="line"></span><br><span class="line"># 切换到指定的文件，并列出函数的上下文</span><br><span class="line">(gdb) list &lt;filename&gt;:&lt;function-name&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="设置显示的行数"><a href="#设置显示的行数" class="headerlink" title="设置显示的行数"></a>设置显示的行数</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 设置每次显示的行数</span><br><span class="line">(gdb) set listsize 行数</span><br><span class="line"></span><br><span class="line"># 查看当前list一次能显示的行数</span><br><span class="line">(gdb) show listsize</span><br></pre></td></tr></table></figure>
+
+<h1 id="断点"><a href="#断点" class="headerlink" title="断点"></a>断点</h1><h2 id="设置断点（break）"><a href="#设置断点（break）" class="headerlink" title="设置断点（break）"></a>设置断点（break）</h2><ul>
+<li>常规断点</li>
+<li>条件断点</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 在当前文件下设置断点</span><br><span class="line">(gdb) b &lt;n&gt;</span><br><span class="line">(gdb) b &lt;function-name&gt;</span><br><span class="line"></span><br><span class="line"># 在其他文件上设置断点（比如当前在PC指针在main.c文件下，但是想在sub.c中设置断点）</span><br><span class="line">(gdb) b &lt;filename&gt;:n</span><br><span class="line">(gdb) b &lt;filename&gt;:&lt;function-name&gt;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 条件断点：只有满足某个条件后程序才会停在这个断点的位置上</span><br><span class="line">(gdb) b &lt;n&gt; if 变量名==某个值</span><br></pre></td></tr></table></figure>
+
+<h2 id="查看断点（info）"><a href="#查看断点（info）" class="headerlink" title="查看断点（info）"></a>查看断点（info）</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(gdb) info b</span><br><span class="line">Num     Type           Disp Enb Address            What</span><br><span class="line">1       breakpoint     keep y   0x0000000000400cb5 in main() at test.cpp:12</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Num：断点的编号</li>
+<li>Enb：断点的状态，y表示使能，n表示未使能</li>
+<li>What：断点所在文件，函数，行数</li>
+</ul>
+<h2 id="删除断点（delete）"><a href="#删除断点（delete）" class="headerlink" title="删除断点（delete）"></a>删除断点（delete）</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 删除一个断点</span><br><span class="line">(gdb) d 断点编号</span><br><span class="line"></span><br><span class="line"># 删除断点1,2,3</span><br><span class="line">(gdb) d 1 2 3</span><br><span class="line"></span><br><span class="line"># 删除一个范围的断点</span><br><span class="line">(gdb) d 断点编号1-断点编号N</span><br><span class="line"></span><br><span class="line"># 删除编号1到编号5的所有断点</span><br><span class="line">(gdb) d 1-5</span><br></pre></td></tr></table></figure>
+
+<h2 id="设置断点状态（enable-disable）"><a href="#设置断点状态（enable-disable）" class="headerlink" title="设置断点状态（enable&#x2F;disable）"></a>设置断点状态（enable&#x2F;disable）</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 设置断点无效</span><br><span class="line">(gdb) disable 断点编号</span><br><span class="line"></span><br><span class="line"># 设置断点有效</span><br><span class="line">(gdb) enable 断点编号</span><br></pre></td></tr></table></figure>
+
+<h1 id="调试"><a href="#调试" class="headerlink" title="调试"></a>调试</h1><h2 id="继续运行（continue）"><a href="#继续运行（continue）" class="headerlink" title="继续运行（continue）"></a>继续运行（continue）</h2><p>遇到断点，程序停止，可以执行c指令继续向下运行，直到遇到下一个断点。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(gdb) continue</span><br></pre></td></tr></table></figure>
+
+<h2 id="手动打印信息"><a href="#手动打印信息" class="headerlink" title="手动打印信息"></a>手动打印信息</h2><h3 id="打印变量值（print）"><a href="#打印变量值（print）" class="headerlink" title="打印变量值（print）"></a>打印变量值（print）</h3><table>
+<thead>
+<tr>
+<th align="center">格式化字符</th>
+<th align="center">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">&#x2F;x</td>
+<td align="center">十六进制</td>
+</tr>
+<tr>
+<td align="center">&#x2F;d</td>
+<td align="center">有符号十进制</td>
+</tr>
+<tr>
+<td align="center">&#x2F;u</td>
+<td align="center">无符号十进制</td>
+</tr>
+<tr>
+<td align="center">&#x2F;o</td>
+<td align="center">八进制</td>
+</tr>
+<tr>
+<td align="center">&#x2F;t</td>
+<td align="center">二进制</td>
+</tr>
+<tr>
+<td align="center">&#x2F;f</td>
+<td align="center">浮点型</td>
+</tr>
+<tr>
+<td align="center">&#x2F;c</td>
+<td align="center">字符型</td>
+</tr>
+</tbody></table>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(gdb) p 变量名</span><br><span class="line"># 以16进制打印变量i</span><br><span class="line">(gdb) p/x i</span><br></pre></td></tr></table></figure>
+
+<h3 id="打印变量类型（ptype）"><a href="#打印变量类型（ptype）" class="headerlink" title="打印变量类型（ptype）"></a>打印变量类型（ptype）</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(gdb) ptype 变量名</span><br><span class="line"># 打印数组array的类型</span><br><span class="line">(gdb) ptype array</span><br><span class="line">type = int[12]</span><br></pre></td></tr></table></figure>
+
+<h2 id="查看内存（x）"><a href="#查看内存（x）" class="headerlink" title="查看内存（x）"></a>查看内存（x）</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">x &lt;addr&gt;</span><br><span class="line"></span><br><span class="line"># 查看函数fun的地址,以16进制输出</span><br><span class="line">(gdb) x/x fun</span><br></pre></td></tr></table></figure>
+
+<h2 id="自动打印信息"><a href="#自动打印信息" class="headerlink" title="自动打印信息"></a>自动打印信息</h2><h3 id="设置某些变量自动打印变量值-display"><a href="#设置某些变量自动打印变量值-display" class="headerlink" title="设置某些变量自动打印变量值(display)"></a>设置某些变量自动打印变量值(display)</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(gdb) display 变量名</span><br><span class="line"></span><br><span class="line"># 以16进制自动显示变量i的值</span><br><span class="line">(gdb) display/x i</span><br></pre></td></tr></table></figure>
+
+<h3 id="查看自动显示列表-info-display"><a href="#查看自动显示列表-info-display" class="headerlink" title="查看自动显示列表(info display)"></a>查看自动显示列表(info display)</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(gdb) info display</span><br><span class="line">Auto-display expressions now in effect:</span><br><span class="line">Num Enb Expression</span><br><span class="line">2:   y  array[i]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Num：变量&#x2F;表达式的编号（唯一）。</li>
+<li>Enb：y表示激活状态，n表示禁用状态</li>
+<li>Expression：变量&#x2F;表达式的名字</li>
+</ul>
+<h3 id="取消自动显示-undisplay"><a href="#取消自动显示-undisplay" class="headerlink" title="取消自动显示(undisplay)"></a>取消自动显示(undisplay)</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 删除自动显示列表中的变量或表达式</span><br><span class="line">(gdb) undisplay 编号</span><br><span class="line"></span><br><span class="line"># 禁用某个变量自动显示</span><br><span class="line">(gdb) disable display 编号</span><br><span class="line"></span><br><span class="line"># 激活某个变量自动显示</span><br><span class="line">(gdb) enable display 编号</span><br></pre></td></tr></table></figure>
+
+<h2 id="单步调试"><a href="#单步调试" class="headerlink" title="单步调试"></a>单步调试</h2><h3 id="step（s）"><a href="#step（s）" class="headerlink" title="step（s）"></a>step（s）</h3><p>命令被执行一次，代码向下运行一行，如果有函数，则会进入函数体内部。</p>
+<h3 id="finish"><a href="#finish" class="headerlink" title="finish"></a>finish</h3><p>通过s单步调试进入函数体内部，如果想要跳出函数体，执行该命令。但是需要保证函数体内不能有有效断点，否则无法跳出。</p>
+<h3 id="next"><a href="#next" class="headerlink" title="next"></a>next</h3><p>命令被执行一次，代码向下运行一行，不会进入函数体内部。</p>
+<h3 id="until"><a href="#until" class="headerlink" title="until"></a>until</h3><p>通过until命令跳出循环体，需要满足以下条件：</p>
+<ul>
+<li>要跳出的函数体内部不能有有效的断点</li>
+<li>必须要在循环体的开始&#x2F;结束行执行该命令</li>
+</ul>
+<h2 id="设置变量值"><a href="#设置变量值" class="headerlink" title="设置变量值"></a>设置变量值</h2><p>在循环体中，如果循环比较久，可以直接设置变量到最后两次循环，然后单步运行查看运行结果。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(gdb) set var 变量名=值</span><br><span class="line"># 在100次的循环体中设置变量i为99</span><br><span class="line">(gdb) set var i=99</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>Linux</category>
       </categories>
