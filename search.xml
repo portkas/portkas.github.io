@@ -1,6 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Anaconda</title>
+    <url>/2024/10/31/Anaconda/</url>
+    <content><![CDATA[<span id="more"></span>
+<h1 id="常用指令"><a href="#常用指令" class="headerlink" title="常用指令"></a>常用指令</h1><h2 id="命令行窗口"><a href="#命令行窗口" class="headerlink" title="命令行窗口"></a>命令行窗口</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 查看版本号</span><br><span class="line">&gt; conda --version</span><br><span class="line"></span><br><span class="line"># 查看目前的镜像</span><br><span class="line">&gt; conda config </span><br><span class="line"></span><br><span class="line"># 添加路径</span><br><span class="line">&gt; conda config --add channels http://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/</span><br><span class="line">&gt; conda config –-add channels http://mirrors.ustc.edu.cn/anaconda/pkgs/free/</span><br><span class="line">&gt; conda config --add channels http://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/conda-forge/</span><br><span class="line">&gt; conda config --set show_channel_urls yes</span><br><span class="line"></span><br><span class="line"># 升级工具包</span><br><span class="line">&gt; conda upgrade --all</span><br></pre></td></tr></table></figure>
+
+<h2 id="Anaconda-Prompt"><a href="#Anaconda-Prompt" class="headerlink" title="Anaconda Prompt"></a>Anaconda Prompt</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 创建虚拟环境</span><br><span class="line">&gt; conda create -n &lt;env-name&gt; python=3.6</span><br><span class="line"></span><br><span class="line"># 列出所有可用的conda环境</span><br><span class="line">&gt; conda info --envs</span><br><span class="line"></span><br><span class="line"># 进入虚拟环境</span><br><span class="line">&gt; activate &lt;env-name&gt;</span><br><span class="line"></span><br><span class="line"># 退出虚拟环境</span><br><span class="line">&gt; deactivate</span><br><span class="line"></span><br><span class="line"># 安装package</span><br><span class="line">&gt; conda install &lt;package-name&gt;</span><br><span class="line"></span><br><span class="line"># 查看当前环境下安装的packages</span><br><span class="line">&gt; conda list</span><br><span class="line"></span><br><span class="line"># 安装package</span><br><span class="line">&gt; pip install -i http://pypi.tuna.tsinghua.edu.cn/simple --trusted-host pypi.tuna.tsinghua.edu.cn  matplotlib</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="ps"><a href="#ps" class="headerlink" title="ps"></a>ps</h2><p>Anaconda Prompt可以看作是命令行窗口（CMD）的增强版，专门为Anaconda用户设计，以支持Python开发和数据科学工作。</p>
+<ul>
+<li>Anaconda Prompt完全兼容CMD中的所有命令。</li>
+<li>Anaconda Prompt提供了conda命令，用于管理Anaconda环境和包。</li>
+<li>Anaconda Prompt预装了许多数据科学和机器学习相关的库</li>
+<li>Anaconda Prompt允许用户创建、激活和删除不同的Python环境（称为conda环境）</li>
+</ul>
+<h1 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h1><p><a href="https://blog.csdn.net/Inochigohan/article/details/120400990">anaconda安装</a><br><a href="https://blog.csdn.net/qq_39220334/article/details/121961742">清华镜像源</a><br><a href="https://www.cnblogs.com/lab-zj/p/16975410.html">conda常用命令</a><br><a href="https://blog.csdn.net/JineD/article/details/124774570">pip安装package</a></p>
+]]></content>
+      <categories>
+        <category>机器学习</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>CMake嵌套写法</title>
+    <url>/2024/10/31/CMake%E5%B5%8C%E5%A5%97%E5%86%99%E6%B3%95/</url>
+    <content><![CDATA[<p>[ ] CMake嵌套写法</p>
+<p>动态库：源文件非常多，生成的可执行文件比较小，发布的时候不仅需要发布可执行文件，还需要发布动态库。<br>静态库：源文件比较少，生成的可执行文件比较大，发布的时候只需要发布可执行文件就可以了。</p>
+<span id="more"></span>
+
+<p><code>CMAKE_CURRENT_SOURCE_DIR</code>:指向当前正在解析的CMakeLists.txt文件所在目录，它的值会随着CMake处理不同的CMakeLists.txt而变化。<br><code>PROJECT_SOURCE_DIR</code>:指向项目的根目录，即包含顶层CMakeLists.txt文件所在的目录。这个变量只在项目的顶层CMakeLists.txt文件中有效，即在调用project()命令之后。<br><code>CMAKE_SOURCE_DIR</code>：总是指向整个项目的根目录，这个变量在项目的顶层CMakeLists.txt文件中等同于<code>PROJECT_SOURCE_DIR</code>，并且在子目录中也是可以使用的。<br><code>PROJECT_BINARY_DIR</code>:指向项目的二进制文件，即CMake生成的构建文件（如Makefile）所在的目录。</p>
+<p>父节点里的变量可以在子节点中用（继承）<br>子节点中定义的变量不能再父节点中用</p>
+<h1 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h1><h2 id="文件结构"><a href="#文件结构" class="headerlink" title="文件结构"></a>文件结构</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ tree </span><br><span class="line">.</span><br><span class="line">├── CMakeLists.txt</span><br><span class="line">├── calc</span><br><span class="line">│   ├── CMakeLists.txt</span><br><span class="line">│   ├── add.cpp</span><br><span class="line">│   ├── div.cpp</span><br><span class="line">│   ├── mult.cpp</span><br><span class="line">│   └── sub.cpp</span><br><span class="line">├── include</span><br><span class="line">│   ├── calc.h</span><br><span class="line">│   └── sort.h</span><br><span class="line">├── sort</span><br><span class="line">│   ├── CMakeLists.txt</span><br><span class="line">│   ├── bubbleSort.cpp</span><br><span class="line">│   ├── insertionSort.cpp</span><br><span class="line">│   └── selectionSort.cpp</span><br><span class="line">├── test01</span><br><span class="line">│   ├── CMakeLists.txt</span><br><span class="line">│   └── sort.cpp</span><br><span class="line">└── test02</span><br><span class="line">    ├── CMakeLists.txt</span><br><span class="line">    └── calc.cpp</span><br><span class="line"></span><br><span class="line">5 directories, 16 files</span><br></pre></td></tr></table></figure>
+
+<h2 id="根目录CMakeLists-txt文件"><a href="#根目录CMakeLists-txt文件" class="headerlink" title="根目录CMakeLists.txt文件"></a>根目录CMakeLists.txt文件</h2><figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">cmake_minimum_required</span>(VERSION <span class="number">3.10</span>)</span><br><span class="line"><span class="keyword">project</span>(Demo_r)</span><br><span class="line"><span class="comment"># 定义变量</span></span><br><span class="line"><span class="comment"># 静态库生成路径</span></span><br><span class="line"><span class="keyword">set</span>(LIBPATH <span class="variable">$&#123;PROJECT_SOURCE_DIR&#125;</span>/lib)</span><br><span class="line"><span class="comment"># 可执行程序存储目录</span></span><br><span class="line"><span class="keyword">set</span>(EXECPATH <span class="variable">$&#123;PROJECT_SOURCE_DIR&#125;</span>/bin)</span><br><span class="line"><span class="comment"># 头文件路径</span></span><br><span class="line"><span class="keyword">set</span>(HEADPATH <span class="variable">$&#123;PROJECT_SOURCE_DIR&#125;</span>/<span class="keyword">include</span>)</span><br><span class="line"><span class="comment"># 库文件的名字</span></span><br><span class="line"><span class="keyword">set</span>(CALCLIB calc)</span><br><span class="line"><span class="keyword">set</span>(SORTLIB sort)</span><br><span class="line"><span class="comment"># 可执行程序的名字</span></span><br><span class="line"><span class="keyword">set</span>(APPNAME1 app1)</span><br><span class="line"><span class="keyword">set</span>(APPNAME2 app2)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 给当前节点添加子目录</span></span><br><span class="line"><span class="keyword">add_subdirectory</span>(calc)</span><br><span class="line"><span class="keyword">add_subdirectory</span>(sort)</span><br><span class="line"><span class="keyword">add_subdirectory</span>(test01)</span><br><span class="line"><span class="keyword">add_subdirectory</span>(test02)</span><br></pre></td></tr></table></figure>
+
+<h2 id="calc目录中CMakeLists-txt文件"><a href="#calc目录中CMakeLists-txt文件" class="headerlink" title="calc目录中CMakeLists.txt文件"></a>calc目录中CMakeLists.txt文件</h2><figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">cmake_minimum_required</span>(VERSION <span class="number">3.10</span>)</span><br><span class="line"><span class="keyword">project</span>(calc)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 搜索源文件</span></span><br><span class="line"><span class="keyword">aux_source_directory</span>(./ SRC)</span><br><span class="line"><span class="comment"># 指定包含的头文件</span></span><br><span class="line"><span class="keyword">include_directories</span>(<span class="variable">$&#123;HEADPATH&#125;</span>)</span><br><span class="line"><span class="comment"># 指定静态库生成的路径</span></span><br><span class="line"><span class="keyword">set</span>(LIBRARY_OUTPUT_PATH <span class="variable">$&#123;LIBPATH&#125;</span>)</span><br><span class="line"><span class="comment"># 生成静态库</span></span><br><span class="line"><span class="keyword">add_library</span>(<span class="variable">$&#123;CALCLIB&#125;</span> STATIC <span class="variable">$&#123;SRC&#125;</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="sort目录中CMakeLists-txt文件"><a href="#sort目录中CMakeLists-txt文件" class="headerlink" title="sort目录中CMakeLists.txt文件"></a>sort目录中CMakeLists.txt文件</h2><figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">cmake_minimum_required</span>(VERSION <span class="number">3.10</span>)</span><br><span class="line"><span class="keyword">project</span>(sort)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 搜索源文件</span></span><br><span class="line"><span class="keyword">aux_source_directory</span>(./ SRC)</span><br><span class="line"><span class="comment"># 指定包含的头文件</span></span><br><span class="line"><span class="keyword">include_directories</span>(<span class="variable">$&#123;HEADPATH&#125;</span>)</span><br><span class="line"><span class="comment"># 指定静态库生成的路径</span></span><br><span class="line"><span class="keyword">set</span>(LIBRARY_OUTPUT_PATH <span class="variable">$&#123;LIBPATH&#125;</span>)</span><br><span class="line"><span class="comment"># 生成静态库</span></span><br><span class="line"><span class="keyword">add_library</span>(<span class="variable">$&#123;SORTLIB&#125;</span> STATIC <span class="variable">$&#123;SRC&#125;</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="test01目录中CMakeLists-txt文件"><a href="#test01目录中CMakeLists-txt文件" class="headerlink" title="test01目录中CMakeLists.txt文件"></a>test01目录中CMakeLists.txt文件</h2><figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">cmake_minimum_required</span>(VERSION <span class="number">3.10</span>)</span><br><span class="line"><span class="keyword">project</span>(test01)</span><br><span class="line"></span><br><span class="line"><span class="keyword">aux_source_directory</span>(./ SRC)</span><br><span class="line"><span class="keyword">include_directories</span>(<span class="variable">$&#123;HEADPATH&#125;</span>)</span><br><span class="line"><span class="keyword">link_directories</span>(<span class="variable">$&#123;LIBPATH&#125;</span>)</span><br><span class="line"><span class="keyword">link_libraries</span>(<span class="variable">$&#123;SORTLIB&#125;</span>)</span><br><span class="line"><span class="keyword">set</span>(EXECUTABLE_OUTPUT_PATH <span class="variable">$&#123;EXECPATH&#125;</span>)</span><br><span class="line"><span class="keyword">add_executable</span>(<span class="variable">$&#123;APPNAME1&#125;</span> <span class="variable">$&#123;SRC&#125;</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="test02目录中CMakeLists-txt文件"><a href="#test02目录中CMakeLists-txt文件" class="headerlink" title="test02目录中CMakeLists.txt文件"></a>test02目录中CMakeLists.txt文件</h2><figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">cmake_minimum_required</span>(VERSION <span class="number">3.10</span>)</span><br><span class="line"><span class="keyword">project</span>(test02)</span><br><span class="line"></span><br><span class="line"><span class="keyword">aux_source_directory</span>(./ SRC)</span><br><span class="line"><span class="keyword">include_directories</span>(<span class="variable">$&#123;HEADPATH&#125;</span>)</span><br><span class="line"><span class="keyword">link_directories</span>(<span class="variable">$&#123;LIBPATH&#125;</span>)</span><br><span class="line"><span class="keyword">link_libraries</span>(<span class="variable">$&#123;CALCLIB&#125;</span>)</span><br><span class="line"><span class="keyword">set</span>(EXECUTABLE_OUTPUT_PATH <span class="variable">$&#123;EXECPATH&#125;</span>)</span><br><span class="line"><span class="keyword">add_executable</span>(<span class="variable">$&#123;APPNAME2&#125;</span> <span class="variable">$&#123;SRC&#125;</span>)</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>CMake</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Github的SSH配置</title>
     <url>/2024/09/02/Github%E7%9A%84SSH%E9%85%8D%E7%BD%AE/</url>
     <content><![CDATA[<h1 id="1-创建公私密钥"><a href="#1-创建公私密钥" class="headerlink" title="1.创建公私密钥"></a>1.创建公私密钥</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ ssh-keygen -t rsa -C <span class="string">&quot;Github注册的邮箱地址&quot;</span></span><br><span class="line">$ <span class="built_in">cat</span> ～/.ssh/id_rsa.pub</span><br><span class="line"><span class="comment"># ps.在windows系统中.ssh文件在C:\Users\你的用户名\.ssh目录下</span></span><br></pre></td></tr></table></figure>
@@ -16,66 +61,6 @@
 ]]></content>
       <categories>
         <category>Git</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Git分支管理Hexo</title>
-    <url>/2024/09/02/Git%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86Hexo/</url>
-    <content><![CDATA[<h1 id="1-本地初始电脑"><a href="#1-本地初始电脑" class="headerlink" title="1.本地初始电脑"></a>1.本地初始电脑</h1><p>1.初始化Git仓库</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> blog</span><br><span class="line">$ git init  <span class="comment"># 创建.git子目录</span></span><br></pre></td></tr></table></figure>
-<span id="more"></span>
-<p>2.添加远程仓库</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git remote add origin git@github.com:yourname/yourname.github.io.git</span><br></pre></td></tr></table></figure>
-
-<p>3.拉取远端仓库所有内容及分支</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git fetch origin</span><br></pre></td></tr></table></figure>
-
-<p>5.新建分支</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git checkout -b master</span><br></pre></td></tr></table></figure>
-
-<p>4.在<code>./source/_post/</code>中添加.md博客并生成</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo clean</span><br><span class="line">$ hexo g</span><br><span class="line">$ hexo d</span><br></pre></td></tr></table></figure>
-
-<p>5.将本地仓库推送至远端</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git push origin master</span><br></pre></td></tr></table></figure>
-
-<h1 id="2-其他电脑"><a href="#2-其他电脑" class="headerlink" title="2.其他电脑"></a>2.其他电脑</h1><p>1.安装Node.js</p>
-<p>2.拉取远端仓库并进入文件夹</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span> git@github.com:yourname/yourname.github.io.git blogname</span><br><span class="line">$ <span class="built_in">cd</span> blogname</span><br></pre></td></tr></table></figure>
-
-<p>3.拉取远端仓库分支并切换至master分支（默认分支是main，master分支是自己建的）</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git fetch origin</span><br><span class="line">$ git checkout master</span><br></pre></td></tr></table></figure>
-
-<p>4.安装Hexo及相关依赖</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm install hexo	<span class="comment"># 安装hexo</span></span><br><span class="line">$ npm install hexo-cli -g <span class="comment"># 重新安装(如果上述安装不起作用）</span></span><br><span class="line">$ npm install	<span class="comment"># 安装依赖</span></span><br></pre></td></tr></table></figure>
-
-<p>5.安装<code>deploy-git</code></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
-
-<p>6.在<code>./source/_post/</code>中添加.md博客并生成</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo clean</span><br><span class="line">$ hexo g</span><br><span class="line">$ hexo d</span><br></pre></td></tr></table></figure>
-
-<p>8.将本地仓库推送至远端</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git push origin master</span><br></pre></td></tr></table></figure>
-
-<h1 id="3-更换主题"><a href="#3-更换主题" class="headerlink" title="3.更换主题"></a>3.更换主题</h1><p>1.进入<code>./themes</code>文件夹</p>
-<p>2.github上clone喜欢的主题</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span> git@github.com:xxx/xxx.git file-name</span><br></pre></td></tr></table></figure>
-
-<p>3.进入<code>file-name</code>文件夹</p>
-<p>4.删除.git文件夹</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">rm</span> -r .git</span><br></pre></td></tr></table></figure>
-
-<p>5.修改最外层目录下的<code>_config.yml</code>文件<br>theme: file-name</p>
-<p>6.修改.gitignore文件（或者把里面内容删掉也行）</p>
-<p>7.将本地仓库推送至远端</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git add .</span><br><span class="line">$ git commit -m &quot;add theme&quot;</span><br><span class="line">$ git push origin master</span><br></pre></td></tr></table></figure>
-
-<p>ps.修改好主题之后，主题配置在<code>file-name</code>文件夹中的<code>_config.yml</code>中进行配置。</p>
-<h1 id="4-说明"><a href="#4-说明" class="headerlink" title="4.说明"></a>4.说明</h1><p><code>main</code>分支用来部署博客：当执行<code>hexo d</code>的时候，博客部署在<code>main</code>分支，不需要执行<code>git push origin main</code>，因为<code>hexo d</code>指令已经将相应的<code>html</code>文件推送到远端服务器的<code>main</code>分支上了。<br><code>master</code>分支用来存储文件：比如<code>.md</code>文件，存放在<code>./source/_post</code>文件夹中，最后需要手动执行<code>git push origin master</code>。</p>
-]]></content>
-      <categories>
-        <category>个人博客</category>
       </categories>
   </entry>
   <entry>
@@ -382,56 +367,60 @@
       </categories>
   </entry>
   <entry>
-    <title>Hexo搭建个人博客</title>
-    <url>/2024/09/02/Hexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
-    <content><![CDATA[<h1 id="1-前置条件"><a href="#1-前置条件" class="headerlink" title="1.前置条件"></a>1.前置条件</h1><ul>
-<li><a href="https://nodejs.org/en/download/package-manager/current">Node.js</a></li>
-<li><a href="https://git-scm.com/">git</a></li>
-<li>Github Pages<span id="more"></span></li>
-</ul>
-<h1 id="2-安装Node-js"><a href="#2-安装Node-js" class="headerlink" title="2.安装Node.js"></a>2.安装Node.js</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># installs nvm (Node Version Manager)</span></span><br><span class="line">$ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash</span><br><span class="line"></span><br><span class="line"><span class="comment"># download and install Node.js (you may need to restart the terminal)</span></span><br><span class="line">$ nvm install 22</span><br><span class="line"></span><br><span class="line"><span class="comment"># verifies the right Node.js version is in the environment</span></span><br><span class="line">$ node -v <span class="comment"># should print `v22.6.0`</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># verifies the right npm version is in the environment</span></span><br><span class="line">$ npm -v <span class="comment"># should print `10.8.2`</span></span><br></pre></td></tr></table></figure>
+    <title>Git分支管理Hexo</title>
+    <url>/2024/09/02/Git%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86Hexo/</url>
+    <content><![CDATA[<h1 id="1-本地初始电脑"><a href="#1-本地初始电脑" class="headerlink" title="1.本地初始电脑"></a>1.本地初始电脑</h1><p>1.初始化Git仓库</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> blog</span><br><span class="line">$ git init  <span class="comment"># 创建.git子目录</span></span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+<p>2.添加远程仓库</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git remote add origin git@github.com:yourname/yourname.github.io.git</span><br></pre></td></tr></table></figure>
 
-<h1 id="3-本地运行Hexo"><a href="#3-本地运行Hexo" class="headerlink" title="3.本地运行Hexo"></a>3.本地运行Hexo</h1><h2 id="安装Hexo"><a href="#安装Hexo" class="headerlink" title="安装Hexo"></a>安装Hexo</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">mkdir</span> blog</span><br><span class="line">$ <span class="built_in">cd</span> blog</span><br><span class="line">$ npm install -g hexo-cli   <span class="comment"># 安装hexo</span></span><br><span class="line">$ hexo init                 <span class="comment"># 初始化hexo</span></span><br><span class="line">$ hexo install              <span class="comment"># 安装需要的包</span></span><br></pre></td></tr></table></figure>
-<p>初始化完成后项目文件夹如下所示：<br>.<br>├── _config.yml<br>├── package.json<br>├── scaffolds<br>├── source<br>|   ├── _drafts<br>|   └── _posts<br>└── themes          </p>
-<h2 id="Hexo的用法"><a href="#Hexo的用法" class="headerlink" title="Hexo的用法"></a>Hexo的用法</h2><ul>
-<li>启动内置预览服务（默认端口4000）  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo s    <span class="comment"># hexo serve</span></span><br></pre></td></tr></table></figure></li>
-<li>生成网站  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo g    <span class="comment"># hexo generate</span></span><br></pre></td></tr></table></figure></li>
-<li>部署到Github Pages上（部署之前需要配置）  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo d    <span class="comment"># hexo deploy</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成并部署，省去hexo g</span></span><br><span class="line">$ hexo d -g</span><br></pre></td></tr></table></figure></li>
-<li>#清除缓存文件db.json和已生成的静态文件 public  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo c    <span class="comment"># hexo clean</span></span><br></pre></td></tr></table></figure></li>
-<li>创建博客  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 创建完成后博客的.md文件存储在`./source/_post/`中</span></span><br><span class="line">$ hexo new <span class="string">&quot;blog name&quot;</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-<h1 id="3-配置"><a href="#3-配置" class="headerlink" title="3.配置"></a>3.配置</h1><p>_config.yml</p>
-<ul>
-<li>title : 网站标题</li>
-<li>subtitle : 副标题</li>
-<li>description : 网站描述</li>
-<li>keywords : 网站关键词</li>
-<li>author : 作者</li>
-<li>language : 语言</li>
-<li>timezone : 时区</li>
-</ul>
-<p>以上设置会出现在meta里。</p>
-<ul>
-<li>url : 网址</li>
-<li>root : 网站根目录</li>
-<li>permalink : 永久链接格式，比如year&#x2F;:month&#x2F;:day&#x2F;:title&#x2F;</li>
-<li>source_dir : 源文件夹，默认source</li>
-<li>public_dir : 生成的网站文件夹</li>
-<li>theme : 主题</li>
-</ul>
-<p>官网关于配置的描述：<a href="https://hexo.io/zh-cn/docs/configuration">https://hexo.io/zh-cn/docs/configuration</a></p>
-<h1 id="4-部署到Github-Pages"><a href="#4-部署到Github-Pages" class="headerlink" title="4.部署到Github Pages"></a>4.部署到Github Pages</h1><p>0.配置github的SSH<br>1.创建repo:git@github:yourname&#x2F;yourname.github.io.git<br>2.修改配置文件<code>_config.yml</code></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repo: git@github.com:yourname/yourname.github.io.git</span><br><span class="line">  branch: main</span><br></pre></td></tr></table></figure>
-<p>4.安装<code>deploy-git</code></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm  install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
+<p>3.拉取远端仓库所有内容及分支</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git fetch origin</span><br></pre></td></tr></table></figure>
 
-<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ul>
-<li><a href="https://hexo.io/docs/">Hexo官网</a></li>
-<li><a href="https://www.luogu.com.cn/article/vglpq15p">从零搭建 Hexo + Github 博客</a></li>
-<li><a href="https://note.tonycrane.cc/cs/tools/hexo/">Hexo 使用记录</a></li>
-<li><a href="https://hexo.io/zh-cn/docs/writing">Hexo写作</a></li>
-<li><a href="https://github.com/ppoffice/hexo-theme-icarus">主题</a></li>
-</ul>
+<p>5.新建分支</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git checkout -b master</span><br></pre></td></tr></table></figure>
+
+<p>4.在<code>./source/_post/</code>中添加.md博客并生成</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo clean</span><br><span class="line">$ hexo g</span><br><span class="line">$ hexo d</span><br></pre></td></tr></table></figure>
+
+<p>5.将本地仓库推送至远端</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git push origin master</span><br></pre></td></tr></table></figure>
+
+<h1 id="2-其他电脑"><a href="#2-其他电脑" class="headerlink" title="2.其他电脑"></a>2.其他电脑</h1><p>1.安装Node.js</p>
+<p>2.拉取远端仓库并进入文件夹</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span> git@github.com:yourname/yourname.github.io.git blogname</span><br><span class="line">$ <span class="built_in">cd</span> blogname</span><br></pre></td></tr></table></figure>
+
+<p>3.拉取远端仓库分支并切换至master分支（默认分支是main，master分支是自己建的）</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git fetch origin</span><br><span class="line">$ git checkout master</span><br></pre></td></tr></table></figure>
+
+<p>4.安装Hexo及相关依赖</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm install hexo	<span class="comment"># 安装hexo</span></span><br><span class="line">$ npm install hexo-cli -g <span class="comment"># 重新安装(如果上述安装不起作用）</span></span><br><span class="line">$ npm install	<span class="comment"># 安装依赖</span></span><br></pre></td></tr></table></figure>
+
+<p>5.安装<code>deploy-git</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
+
+<p>6.在<code>./source/_post/</code>中添加.md博客并生成</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo clean</span><br><span class="line">$ hexo g</span><br><span class="line">$ hexo d</span><br></pre></td></tr></table></figure>
+
+<p>8.将本地仓库推送至远端</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git push origin master</span><br></pre></td></tr></table></figure>
+
+<h1 id="3-更换主题"><a href="#3-更换主题" class="headerlink" title="3.更换主题"></a>3.更换主题</h1><p>1.进入<code>./themes</code>文件夹</p>
+<p>2.github上clone喜欢的主题</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span> git@github.com:xxx/xxx.git file-name</span><br></pre></td></tr></table></figure>
+
+<p>3.进入<code>file-name</code>文件夹</p>
+<p>4.删除.git文件夹</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">rm</span> -r .git</span><br></pre></td></tr></table></figure>
+
+<p>5.修改最外层目录下的<code>_config.yml</code>文件<br>theme: file-name</p>
+<p>6.修改.gitignore文件（或者把里面内容删掉也行）</p>
+<p>7.将本地仓库推送至远端</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git add .</span><br><span class="line">$ git commit -m &quot;add theme&quot;</span><br><span class="line">$ git push origin master</span><br></pre></td></tr></table></figure>
+
+<p>ps.修改好主题之后，主题配置在<code>file-name</code>文件夹中的<code>_config.yml</code>中进行配置。</p>
+<h1 id="4-说明"><a href="#4-说明" class="headerlink" title="4.说明"></a>4.说明</h1><p><code>main</code>分支用来部署博客：当执行<code>hexo d</code>的时候，博客部署在<code>main</code>分支，不需要执行<code>git push origin main</code>，因为<code>hexo d</code>指令已经将相应的<code>html</code>文件推送到远端服务器的<code>main</code>分支上了。<br><code>master</code>分支用来存储文件：比如<code>.md</code>文件，存放在<code>./source/_post</code>文件夹中，最后需要手动执行<code>git push origin master</code>。</p>
 ]]></content>
       <categories>
         <category>个人博客</category>
@@ -602,6 +591,62 @@
 ]]></content>
       <categories>
         <category>Linux</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Hexo搭建个人博客</title>
+    <url>/2024/09/02/Hexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
+    <content><![CDATA[<h1 id="1-前置条件"><a href="#1-前置条件" class="headerlink" title="1.前置条件"></a>1.前置条件</h1><ul>
+<li><a href="https://nodejs.org/en/download/package-manager/current">Node.js</a></li>
+<li><a href="https://git-scm.com/">git</a></li>
+<li>Github Pages<span id="more"></span></li>
+</ul>
+<h1 id="2-安装Node-js"><a href="#2-安装Node-js" class="headerlink" title="2.安装Node.js"></a>2.安装Node.js</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># installs nvm (Node Version Manager)</span></span><br><span class="line">$ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash</span><br><span class="line"></span><br><span class="line"><span class="comment"># download and install Node.js (you may need to restart the terminal)</span></span><br><span class="line">$ nvm install 22</span><br><span class="line"></span><br><span class="line"><span class="comment"># verifies the right Node.js version is in the environment</span></span><br><span class="line">$ node -v <span class="comment"># should print `v22.6.0`</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># verifies the right npm version is in the environment</span></span><br><span class="line">$ npm -v <span class="comment"># should print `10.8.2`</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="3-本地运行Hexo"><a href="#3-本地运行Hexo" class="headerlink" title="3.本地运行Hexo"></a>3.本地运行Hexo</h1><h2 id="安装Hexo"><a href="#安装Hexo" class="headerlink" title="安装Hexo"></a>安装Hexo</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">mkdir</span> blog</span><br><span class="line">$ <span class="built_in">cd</span> blog</span><br><span class="line">$ npm install -g hexo-cli   <span class="comment"># 安装hexo</span></span><br><span class="line">$ hexo init                 <span class="comment"># 初始化hexo</span></span><br><span class="line">$ hexo install              <span class="comment"># 安装需要的包</span></span><br></pre></td></tr></table></figure>
+<p>初始化完成后项目文件夹如下所示：<br>.<br>├── _config.yml<br>├── package.json<br>├── scaffolds<br>├── source<br>|   ├── _drafts<br>|   └── _posts<br>└── themes          </p>
+<h2 id="Hexo的用法"><a href="#Hexo的用法" class="headerlink" title="Hexo的用法"></a>Hexo的用法</h2><ul>
+<li>启动内置预览服务（默认端口4000）  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo s    <span class="comment"># hexo serve</span></span><br></pre></td></tr></table></figure></li>
+<li>生成网站  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo g    <span class="comment"># hexo generate</span></span><br></pre></td></tr></table></figure></li>
+<li>部署到Github Pages上（部署之前需要配置）  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo d    <span class="comment"># hexo deploy</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成并部署，省去hexo g</span></span><br><span class="line">$ hexo d -g</span><br></pre></td></tr></table></figure></li>
+<li>#清除缓存文件db.json和已生成的静态文件 public  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo c    <span class="comment"># hexo clean</span></span><br></pre></td></tr></table></figure></li>
+<li>创建博客  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 创建完成后博客的.md文件存储在`./source/_post/`中</span></span><br><span class="line">$ hexo new <span class="string">&quot;blog name&quot;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="3-配置"><a href="#3-配置" class="headerlink" title="3.配置"></a>3.配置</h1><p>_config.yml</p>
+<ul>
+<li>title : 网站标题</li>
+<li>subtitle : 副标题</li>
+<li>description : 网站描述</li>
+<li>keywords : 网站关键词</li>
+<li>author : 作者</li>
+<li>language : 语言</li>
+<li>timezone : 时区</li>
+</ul>
+<p>以上设置会出现在meta里。</p>
+<ul>
+<li>url : 网址</li>
+<li>root : 网站根目录</li>
+<li>permalink : 永久链接格式，比如year&#x2F;:month&#x2F;:day&#x2F;:title&#x2F;</li>
+<li>source_dir : 源文件夹，默认source</li>
+<li>public_dir : 生成的网站文件夹</li>
+<li>theme : 主题</li>
+</ul>
+<p>官网关于配置的描述：<a href="https://hexo.io/zh-cn/docs/configuration">https://hexo.io/zh-cn/docs/configuration</a></p>
+<h1 id="4-部署到Github-Pages"><a href="#4-部署到Github-Pages" class="headerlink" title="4.部署到Github Pages"></a>4.部署到Github Pages</h1><p>0.配置github的SSH<br>1.创建repo:git@github:yourname&#x2F;yourname.github.io.git<br>2.修改配置文件<code>_config.yml</code></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repo: git@github.com:yourname/yourname.github.io.git</span><br><span class="line">  branch: main</span><br></pre></td></tr></table></figure>
+<p>4.安装<code>deploy-git</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm  install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
+
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ul>
+<li><a href="https://hexo.io/docs/">Hexo官网</a></li>
+<li><a href="https://www.luogu.com.cn/article/vglpq15p">从零搭建 Hexo + Github 博客</a></li>
+<li><a href="https://note.tonycrane.cc/cs/tools/hexo/">Hexo 使用记录</a></li>
+<li><a href="https://hexo.io/zh-cn/docs/writing">Hexo写作</a></li>
+<li><a href="https://github.com/ppoffice/hexo-theme-icarus">主题</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>个人博客</category>
       </categories>
   </entry>
   <entry>
@@ -1558,6 +1603,79 @@
 </ul>
 <p>子进程和父进程的<strong>区别</strong>：<br>1.父子进程各自的虚拟地址是相互独立的，不会互相影响和干扰。<br>2.父子进程的代码区虽然相同，但是执行的代码逻辑可能是不同的。一些情况下会用if判断父子进程，分别执行不同的代码块。<br>3.内核区存储的父子进程ID是不同的。<br>4.fork调用成功之后，会返回两个值，父子进程的返回值是不同的。</p>
 ]]></content>
+  </entry>
+  <entry>
+    <title>光机接口测试</title>
+    <url>/2024/10/31/%E5%85%89%E6%9C%BA-%E6%8E%A5%E5%8F%A3%E6%B5%8B%E8%AF%95/</url>
+    <content><![CDATA[<p>DLPC-API-1.10给的API比较杂，有很多也用不上，需要自己另外定义接口，官方给的有一个示例程序，程序里封装了一部分接口，先测试这些接口能不能用，然后在这个基础上增加需要的接口，实例程序中的包括：</p>
+<span id="more"></span>
+<ul>
+<li>I2C 写入</li>
+<li>I2C 读取</li>
+<li>初始化命令层</li>
+<li>以秒为单位等待指定的时间</li>
+<li>生成一个1位（二维）图案</li>
+<li>生成一个8位（灰度）图案</li>
+<li>填充数组<code>s_PatternSets 中的 DLPC34XX_INT_PAT_PatternSet_s</code>结构</li>
+<li>填充数组<code>s_PatternOrderTable 中的 DLPC34XX_INT_PAT_PatternOrderTableEntry_s</code>结构</li>
+<li>将数据复制到 Flash 编程缓冲区以便后续写入</li>
+<li>将缓冲区数据编程到 Flash 中</li>
+<li>将数据写入文件</li>
+<li>生成图案数据并写入到文件</li>
+<li>缓存图案数据并编程到 Flash 中</li>
+<li>生成和编程图案数据到 Flash 中</li>
+<li>从 Flash 中加载图案顺序表条目</li>
+<li>加载特定的图案顺序表条目</li>
+<li>写入测试图案网格线</li>
+<li>写入测试图案色条</li>
+<li>写入选定视图外观（Look）</li>
+<li>加载预构建的模式数据</li>
+<li>写入 LABB 和 CAIC 设置</li>
+<li>加载固件</li>
+</ul>
+<h1 id="过程记录"><a href="#过程记录" class="headerlink" title="过程记录"></a>过程记录</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">unsigned int WriteI2C(uint16_t WriteDataLength, uint8_t *WriteData, DLPC_COMMON_CommandProtocolData_s *ProtocolData) &#123;</span><br><span class="line">    // 实现写入 I2C 设备的逻辑</span><br><span class="line">    // ...</span><br><span class="line">    return SUCCESS; // 或者在出错时返回错误代码</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 假设您有一个函数接受一个回调函数指针</span><br><span class="line">void ExecuteWriteOperation(DLPC_COMMON_WriteCommandCallback callback) &#123;</span><br><span class="line">    // ...</span><br><span class="line">    unsigned int result = callback(WriteDataLength, WriteData, &amp;ProtocolData);</span><br><span class="line">    // ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 在调用 ExecuteWriteOperation 时，您可以传递 WriteI2C 函数</span><br><span class="line">ExecuteWriteOperation(WriteI2C);</span><br></pre></td></tr></table></figure>
+<p>在这个例子中，ExecuteWriteOperation 函数接受一个类型为 DLPC_COMMON_WriteCommandCallback 的回调函数，并在内部调用它。这样，您可以将不同的写入操作作为回调传递给 ExecuteWriteOperation，而不需要修改其内部实现。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(gdb) ptype DLPC_COMMON_WriteCommandCallback</span><br><span class="line">type = unsigned int (*)(uint16_t, uint8_t *, DLPC_COMMON_CommandProtocolData_s *)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>函数指针：定义回调函数，可以在不同的上下文中被调用。抽象特定的行为，使得代码更加模块化和可重用。</li>
+<li>返回类型：unsigned int</li>
+<li>参数列表：<ul>
+<li>uint16_t：无符号的16位整数</li>
+<li>uint8_t *：指向无符号8位的整数的指针参数，数据缓冲区</li>
+<li>DLPC_COMMON_CommandProtocolData_s *：指向结构体的指针，协议相关</li>
+</ul>
+</li>
+</ul>
+<p>当光机接入或者没有接入USB的时候均出现：Status &#x3D; CY_ERROR_REQUEST_FAILED, NumDevices &#x3D; 0 ‘\000’</p>
+<ul>
+<li>CY_ERROR_REQUEST_FAILED：发送到 USB Serial 设备的请求失败</li>
+<li>表明函数 CyGetListofDevices 没有成功地找到任何连接的设备</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">zhm@Ubuntu:~/Jetson/StructLight/CyUSBSerial_SDK_Linux/linux/library$ lsusb</span><br><span class="line">Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub</span><br><span class="line">Bus 001 Device 002: ID 0bda:8771 Realtek Semiconductor Corp. Bluetooth Radio</span><br><span class="line">Bus 001 Device 003: ID 0000:3825   USB OPTICAL MOUSE</span><br><span class="line">Bus 001 Device 004: ID 1c4f:0026 SiGma Micro Keyboard</span><br><span class="line">Bus 001 Device 005: ID 05e3:0608 Genesys Logic, Inc. Hub</span><br><span class="line">Bus 001 Device 018: ID 04b4:000a Cypress Semiconductor Corp. USB-Serial (Dual Channel)</span><br><span class="line">Bus 002 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub</span><br></pre></td></tr></table></figure>
+<p>说明Cypress USB-Serial设备已经被系统识别，并且分配了设备ID 04b4:000a</p>
+<p>驱动程序：libusb-1.0库（需要测试它能不能用）<br>经过测试，是可以用的。</p>
+<p>使用sudo apt-get install <package>的时候，出现无法命中等问题，换源之后问题依然没有解决，可以尝试使用下面的方法。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1. sudo vim /etc/resolv.conf # 添加如下内容</span><br><span class="line">nameserver 8.8.8.8</span><br><span class="line">nameserver 8.8.4.4</span><br><span class="line">nameserver 127.0.0.1</span><br><span class="line"></span><br><span class="line">2. 输入Esc，:wq，保存并退出</span><br></pre></td></tr></table></figure>
+
+<h1 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h1><p><code>InitConnectionAndCommandLayer();</code>出现错误，函数内部为：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 初始化命令层，设置读/写缓冲区和回调函数。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">InitConnectionAndCommandLayer</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 初始化命令库，设置读/写缓冲区和对应的 I2C 读写函数</span></span><br><span class="line">    DLPC_COMMON_InitCommandLibrary(s_WriteBuffer,</span><br><span class="line">                                   <span class="keyword">sizeof</span>(s_WriteBuffer),</span><br><span class="line">                                   s_ReadBuffer,</span><br><span class="line">                                   <span class="keyword">sizeof</span>(s_ReadBuffer),</span><br><span class="line">                                   WriteI2C,</span><br><span class="line">                                   ReadI2C);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 连接到 Cypress I2C</span></span><br><span class="line">    CYPRESS_I2C_ConnectToCyI2C();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>CYPRESS_I2C_ConnectToCyI2C();</code>函数内部为，添加<code>printf</code>定位问题出现位置：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">bool</span> <span class="title function_">CYPRESS_I2C_ConnectToCyI2C</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    CY_RETURN_STATUS Status;	</span><br><span class="line">    CY_I2C_CONFIG I2CConfig;</span><br><span class="line">    <span class="keyword">if</span> (GetCyI2CHandle(&amp;s_Handle) == <span class="literal">false</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Get CyI2C Handle Failed!!! \n&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    I2CConfig.frequency      = I2C_CLOCK_FREQUENCY_HZ;</span><br><span class="line">    I2CConfig.slaveAddress   = <span class="number">0x30</span>;</span><br><span class="line">    I2CConfig.isMaster       = <span class="literal">true</span>;</span><br><span class="line">    I2CConfig.isClockStretch = <span class="literal">false</span>;</span><br><span class="line">    </span><br><span class="line">    Status = CySetI2cConfig(s_Handle, &amp;I2CConfig);</span><br><span class="line">    <span class="keyword">if</span> (Status != CY_SUCCESS)</span><br><span class="line">    &#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;Connect to I2C Error %d!!! \n&quot;</span>, Status);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    s_DataConfig.isNakBit     = <span class="literal">true</span>;</span><br><span class="line">    s_DataConfig.isStopBit    = <span class="literal">true</span>;</span><br><span class="line">    s_DataConfig.slaveAddress = DLP_I2C_SLAVE_ADDRESS;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>GetCyI2CHandle(&amp;s_Handle)</code>这里出现错误，添加<code>printf</code>定位问题，函数内部为：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* Gets the handle of the connected Cypress USB-Serial bridge controller */</span></span><br><span class="line"><span class="type">bool</span> <span class="title function_">GetCyI2CHandle</span><span class="params">(CY_HANDLE* Handle)</span></span><br><span class="line">&#123;</span><br><span class="line">    CY_RETURN_STATUS Status;</span><br><span class="line">    CY_DEVICE_INFO   DeviceInfo;</span><br><span class="line">    <span class="type">uint8_t</span>          NumDevices = <span class="number">0</span>;</span><br><span class="line">    <span class="type">uint8_t</span>          DeviceIdx;</span><br><span class="line">    <span class="type">uint8_t</span>          InterfaceIdx;</span><br><span class="line"></span><br><span class="line">    Status = CyGetListofDevices(&amp;NumDevices);</span><br><span class="line">    <span class="keyword">if</span> ((Status != CY_SUCCESS) || (NumDevices == <span class="number">0</span>))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Status: %d\n&quot;</span>, Status);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;NumDevices: %d\n&quot;</span>, NumDevices);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;无设备连接成功,没有设备连接!!!\n&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (DeviceIdx = <span class="number">0</span>; DeviceIdx &lt; NumDevices; DeviceIdx++)</span><br><span class="line">    &#123;</span><br><span class="line">        Status = CyGetDeviceInfo(DeviceIdx, &amp;DeviceInfo);</span><br><span class="line">        <span class="keyword">if</span> (Status != CY_SUCCESS)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (InterfaceIdx = <span class="number">0</span>; InterfaceIdx &lt; DeviceInfo.numInterfaces; InterfaceIdx++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (DeviceInfo.deviceType[InterfaceIdx] == CY_TYPE_I2C)</span><br><span class="line">            &#123;</span><br><span class="line">                Status = CyOpen(DeviceIdx, InterfaceIdx, Handle);</span><br><span class="line">                <span class="keyword">if</span> (Status == CY_SUCCESS)</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;Get I2C Handle Error %d!!! \n&quot;</span>, Status);</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用gdb定位到<code>Status = CyGetListofDevices(&amp;NumDevices);</code>，Status输出为<code>CY_ERROR_REQUEST_FAILED</code>，定位到<code>CyGetListofDevices(&amp;NumDevices);</code>：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">   Summary</span></span><br><span class="line"><span class="comment">   This API retrieves number of USB devices connected to the host.</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">   Description</span></span><br><span class="line"><span class="comment">   This API retrieves the number of devices connected to the host.</span></span><br><span class="line"><span class="comment">   In Windows family of operating systems the API retrieves only the number of devices that are attached</span></span><br><span class="line"><span class="comment">   to CyUSB3.SYS driver. For other operating systems, it retrieves the total number of USB devices present</span></span><br><span class="line"><span class="comment">   on the bus. It includes both USB Serial device as well as other devices.</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">   Note: In case of Linux and Mac apart from providing number of devices connected, it builds the</span></span><br><span class="line"><span class="comment">   device list which is used for opening the device and obtaining device handle. Thus the API should be</span></span><br><span class="line"><span class="comment">   called during device discovery in the application.</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">   Return Value</span></span><br><span class="line"><span class="comment">   * CY_SUCCESS on success </span></span><br><span class="line"><span class="comment">   * CY_ERROR_DEVICE_NOT_FOUND if there are no devices attached.</span></span><br><span class="line"><span class="comment">   * CY_ERROR_REQUEST_FAILED if library was not initialized.</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">   See Also</span></span><br><span class="line"><span class="comment">   * CyGetDeviceInfo</span></span><br><span class="line"><span class="comment">   * CyGetDeviceInfoVidPid</span></span><br><span class="line"><span class="comment">   * CyOpen</span></span><br><span class="line"><span class="comment">   * CyClose</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">CYWINEXPORT CY_RETURN_STATUS <span class="title function_">CyGetListofDevices</span> <span class="params">(</span></span><br><span class="line"><span class="params">    UINT8* numDevices                            <span class="comment">/*Number of Devices connected*/</span></span></span><br><span class="line"><span class="params">    )</span>;</span><br></pre></td></tr></table></figure>
+<p>定位到这里<code>CY_ERROR_REQUEST_FAILED if library was not initialized.</code>出现的原因是，因为library没有初始化。修改<code>GetCyI2CHandle(CY_HANDLE* Handle)</code>代码，添加初始化函数：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">bool</span> <span class="title function_">GetCyI2CHandle</span><span class="params">(CY_HANDLE* Handle)</span></span><br><span class="line">&#123;</span><br><span class="line">    CY_RETURN_STATUS Status;</span><br><span class="line">    CY_DEVICE_INFO   DeviceInfo;</span><br><span class="line">    <span class="type">uint8_t</span>          NumDevices = <span class="number">0</span>;</span><br><span class="line">    <span class="type">uint8_t</span>          DeviceIdx;</span><br><span class="line">    <span class="type">uint8_t</span>          InterfaceIdx;</span><br><span class="line"></span><br><span class="line">    Status = CyLibraryInit();</span><br><span class="line">    <span class="keyword">if</span> (Status != CY_SUCCESS) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%d 设备初始化失败!!!\n&quot;</span>, Status);</span><br><span class="line">    &#125;</span><br><span class="line">    Status = CyGetListofDevices(&amp;NumDevices);</span><br><span class="line">    <span class="keyword">if</span> ((Status != CY_SUCCESS) || (NumDevices == <span class="number">0</span>))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Status: %d\n&quot;</span>, Status);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;NumDevices: %d\n&quot;</span>, NumDevices);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;无设备连接成功,没有设备连接!!!\n&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (DeviceIdx = <span class="number">0</span>; DeviceIdx &lt; NumDevices; DeviceIdx++)</span><br><span class="line">    &#123;</span><br><span class="line">        Status = CyGetDeviceInfo(DeviceIdx, &amp;DeviceInfo);</span><br><span class="line">        <span class="keyword">if</span> (Status != CY_SUCCESS)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (InterfaceIdx = <span class="number">0</span>; InterfaceIdx &lt; DeviceInfo.numInterfaces; InterfaceIdx++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (DeviceInfo.deviceType[InterfaceIdx] == CY_TYPE_I2C)</span><br><span class="line">            &#123;</span><br><span class="line">                Status = CyOpen(DeviceIdx, InterfaceIdx, Handle);</span><br><span class="line">                <span class="keyword">if</span> (Status == CY_SUCCESS)</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;Get I2C Handle Error %d!!! \n&quot;</span>, Status);</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>问题解决。</p>
+<p>总结：<br>1、首先是单独测试USB驱动程序能不能用，写了一个单独测试USB的程序，可以正常运行。<br>2、检查PC机有没有连接到光机设备，可以使用<code>lsusb</code>指令。光机是连接到PC机上的。<br>3、检查程序有没有问题。<code>printf</code>和<code>gdb</code>定位问题。</p>
+]]></content>
+      <categories>
+        <category>嵌入式结构光三维重建项目</category>
+      </categories>
   </entry>
   <entry>
     <title>压缩解压</title>
