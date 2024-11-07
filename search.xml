@@ -64,6 +64,172 @@
       </categories>
   </entry>
   <entry>
+    <title>Git分支管理Hexo</title>
+    <url>/2024/09/02/Git%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86Hexo/</url>
+    <content><![CDATA[<h1 id="1-本地初始电脑"><a href="#1-本地初始电脑" class="headerlink" title="1.本地初始电脑"></a>1.本地初始电脑</h1><p>1.初始化Git仓库</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> blog</span><br><span class="line">$ git init  <span class="comment"># 创建.git子目录</span></span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+<p>2.添加远程仓库</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git remote add origin git@github.com:yourname/yourname.github.io.git</span><br></pre></td></tr></table></figure>
+
+<p>3.拉取远端仓库所有内容及分支</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git fetch origin</span><br></pre></td></tr></table></figure>
+
+<p>5.新建分支</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git checkout -b master</span><br></pre></td></tr></table></figure>
+
+<p>4.在<code>./source/_post/</code>中添加.md博客并生成</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo clean</span><br><span class="line">$ hexo g</span><br><span class="line">$ hexo d</span><br></pre></td></tr></table></figure>
+
+<p>5.将本地仓库推送至远端</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git push origin master</span><br></pre></td></tr></table></figure>
+
+<h1 id="2-其他电脑"><a href="#2-其他电脑" class="headerlink" title="2.其他电脑"></a>2.其他电脑</h1><p>1.安装Node.js</p>
+<p>2.拉取远端仓库并进入文件夹</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span> git@github.com:yourname/yourname.github.io.git blogname</span><br><span class="line">$ <span class="built_in">cd</span> blogname</span><br></pre></td></tr></table></figure>
+
+<p>3.拉取远端仓库分支并切换至master分支（默认分支是main，master分支是自己建的）</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git fetch origin</span><br><span class="line">$ git checkout master</span><br></pre></td></tr></table></figure>
+
+<p>4.安装Hexo及相关依赖</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm install hexo	<span class="comment"># 安装hexo</span></span><br><span class="line">$ npm install hexo-cli -g <span class="comment"># 重新安装(如果上述安装不起作用）</span></span><br><span class="line">$ npm install	<span class="comment"># 安装依赖</span></span><br></pre></td></tr></table></figure>
+
+<p>5.安装<code>deploy-git</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
+
+<p>6.在<code>./source/_post/</code>中添加.md博客并生成</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo clean</span><br><span class="line">$ hexo g</span><br><span class="line">$ hexo d</span><br></pre></td></tr></table></figure>
+
+<p>8.将本地仓库推送至远端</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git push origin master</span><br></pre></td></tr></table></figure>
+
+<h1 id="3-更换主题"><a href="#3-更换主题" class="headerlink" title="3.更换主题"></a>3.更换主题</h1><p>1.进入<code>./themes</code>文件夹</p>
+<p>2.github上clone喜欢的主题</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span> git@github.com:xxx/xxx.git file-name</span><br></pre></td></tr></table></figure>
+
+<p>3.进入<code>file-name</code>文件夹</p>
+<p>4.删除.git文件夹</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">rm</span> -r .git</span><br></pre></td></tr></table></figure>
+
+<p>5.修改最外层目录下的<code>_config.yml</code>文件<br>theme: file-name</p>
+<p>6.修改.gitignore文件（或者把里面内容删掉也行）</p>
+<p>7.将本地仓库推送至远端</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git add .</span><br><span class="line">$ git commit -m &quot;add theme&quot;</span><br><span class="line">$ git push origin master</span><br></pre></td></tr></table></figure>
+
+<p>ps.修改好主题之后，主题配置在<code>file-name</code>文件夹中的<code>_config.yml</code>中进行配置。</p>
+<h1 id="4-说明"><a href="#4-说明" class="headerlink" title="4.说明"></a>4.说明</h1><p><code>main</code>分支用来部署博客：当执行<code>hexo d</code>的时候，博客部署在<code>main</code>分支，不需要执行<code>git push origin main</code>，因为<code>hexo d</code>指令已经将相应的<code>html</code>文件推送到远端服务器的<code>main</code>分支上了。<br><code>master</code>分支用来存储文件：比如<code>.md</code>文件，存放在<code>./source/_post</code>文件夹中，最后需要手动执行<code>git push origin master</code>。</p>
+]]></content>
+      <categories>
+        <category>个人博客</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Linux基础</title>
+    <url>/2024/09/20/Linux%E5%9F%BA%E7%A1%80/</url>
+    <content><![CDATA[<h1 id="Linux内核"><a href="#Linux内核" class="headerlink" title="Linux内核"></a>Linux内核</h1><p>1.进程调度 SCHED<br>2.内存管理 MMU<br>3.虚拟文件系统 VFS<br>4.网络接口<br>5.进程间通信</p>
+<span id="more"></span>
+<h1 id="Linux目录"><a href="#Linux目录" class="headerlink" title="Linux目录"></a>Linux目录</h1><ul>
+<li>bin：存储可执行程序，比如各种命令的可执行程序</li>
+<li>sbin：root用户使用的一些二进制可执行程序</li>
+<li>etc：配置文件目录，存储应用程序的配置文件</li>
+<li>lib：系统或安装的软件所使用的静态库和动态库</li>
+<li>media：挂在目录，挂在外部设备</li>
+<li>mnt：临时挂载目录，比如U盘可以挂载在这个目录下</li>
+<li>proc：内存使用的映射目录，给操作系统使用</li>
+<li>tmp：临时目录，重启电脑数据被自动删除</li>
+<li>boot：存储开机相关的设置</li>
+<li>home：普通用户的家目录</li>
+<li>root：root用户的家目录</li>
+<li>dev：设备目录，所有硬件会被抽象成文件存储起来比如键盘，鼠标</li>
+<li>opt：第三方软件的安装目录</li>
+<li>var：日志文件</li>
+<li>usr：系统的资源目录<ul>
+<li>&#x2F;usr&#x2F;bin：可执行二进制程序</li>
+<li>&#x2F;usr&#x2F;include：标准头文件目录</li>
+<li>&#x2F;usr&#x2F;local：安装的第三方软件，同opt目录</li>
+</ul>
+</li>
+</ul>
+<h1 id="快捷键"><a href="#快捷键" class="headerlink" title="快捷键"></a>快捷键</h1><table>
+<thead>
+<tr>
+<th align="center">快捷键</th>
+<th align="center">功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">Ctrl+a</td>
+<td align="center">光标移动到命令行行首</td>
+</tr>
+<tr>
+<td align="center">Ctrl+e</td>
+<td align="center">光标移动到命令行行尾</td>
+</tr>
+<tr>
+<td align="center">Ctrl+u</td>
+<td align="center">删除光标前的字符串</td>
+</tr>
+<tr>
+<td align="center">Ctrl+k</td>
+<td align="center">删除光标后的字符串</td>
+</tr>
+</tbody></table>
+<h1 id="文件管理命令"><a href="#文件管理命令" class="headerlink" title="文件管理命令"></a>文件管理命令</h1><h2 id="1-在邻近的两个目录之间切换-cd"><a href="#1-在邻近的两个目录之间切换-cd" class="headerlink" title="1.在邻近的两个目录之间切换 cd"></a>1.在邻近的两个目录之间切换 cd</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#通过cd进入目录1</span></span><br><span class="line">$ <span class="built_in">cd</span> /home/zhm/Desktop/Linux    </span><br><span class="line"></span><br><span class="line"><span class="comment">#通过cd进入目录2</span></span><br><span class="line">$ <span class="built_in">cd</span> /Download/Clash</span><br><span class="line"></span><br><span class="line"><span class="comment">#在两个目录之间切换</span></span><br><span class="line">$ <span class="built_in">cd</span> -</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-ls命令"><a href="#2-ls命令" class="headerlink" title="2.ls命令"></a>2.ls命令</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#查看当前目录下所有文件包括隐藏文件</span></span><br><span class="line">$ <span class="built_in">ls</span> -a</span><br><span class="line"></span><br><span class="line"><span class="comment">#显示文件详细信息</span></span><br><span class="line">$ <span class="built_in">ls</span> -l <span class="comment">#可以缩写成ll</span></span><br><span class="line">drwxrwxr-x 5 zhm zhm 4.0K  9月  4 21:25 ./</span><br><span class="line">drwxr-xr-x 3 zhm zhm 4.0K  9月  4 13:52 ../</span><br><span class="line">drwxrwxr-x 5 zhm zhm 4.0K  9月  4 18:29 gcc/</span><br><span class="line">drwxrwxr-x 2 zhm zhm 4.0K  9月  4 21:25 makefile/</span><br><span class="line">drwxrwxr-x 2 zhm zhm 4.0K  9月  3 21:03 search/</span><br></pre></td></tr></table></figure>
+<ul>
+<li>文件类型<ul>
+<li>-:普通文件</li>
+<li>d:目录</li>
+<li>l:软链接文件</li>
+<li>c:字符设备</li>
+<li>b:块设备</li>
+<li>p:管道文件</li>
+<li>s:本地套接字文件</li>
+</ul>
+</li>
+<li>文件所有者权限</li>
+<li>文件所属组权限</li>
+<li>其他人权限</li>
+<li>硬链接计数</li>
+<li>文件所有者</li>
+<li>文件所有组</li>
+<li>文件大小</li>
+<li>文件修改时间</li>
+<li>文件名</li>
+</ul>
+<h2 id="3-删除文件或目录"><a href="#3-删除文件或目录" class="headerlink" title="3.删除文件或目录"></a>3.删除文件或目录</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 删除文件</span></span><br><span class="line">$ <span class="built_in">rm</span> file1.c file2.c</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除目录</span></span><br><span class="line">$ <span class="built_in">rm</span> <span class="built_in">dir</span> -r</span><br><span class="line"></span><br><span class="line"><span class="comment"># 强制删除目录</span></span><br><span class="line">$ <span class="built_in">rm</span> <span class="built_in">dir</span> -rf</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-拷贝文件或目录"><a href="#4-拷贝文件或目录" class="headerlink" title="4.拷贝文件或目录"></a>4.拷贝文件或目录</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 拷贝文件（文件不存在则创建，文件存在则覆盖）</span></span><br><span class="line">$ <span class="built_in">cp</span> fileA fileB</span><br><span class="line"></span><br><span class="line"><span class="comment"># 拷贝目录（拷贝目录需要参数 -r）</span></span><br><span class="line"><span class="comment"># 情景1：目录A存在，目录B不存在（创建B，并将A放入B）</span></span><br><span class="line">$ <span class="built_in">cp</span> dirA dirB -r</span><br><span class="line"></span><br><span class="line"><span class="comment"># 情景2：目录A存在，目录B也存在（直接将A放入B）</span></span><br><span class="line">$ <span class="built_in">cp</span> dirA dirB -r</span><br><span class="line"></span><br><span class="line"><span class="comment"># 情景3：把目录A中的所有文件拷贝到目录B中（A中文件放入B）</span></span><br><span class="line">$ <span class="built_in">cp</span> dirA/* dirB -r</span><br></pre></td></tr></table></figure>
+
+<h2 id="5-查看文件内容"><a href="#5-查看文件内容" class="headerlink" title="5.查看文件内容"></a>5.查看文件内容</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">cat</span> filename</span><br><span class="line">$ more filename</span><br><span class="line">    - 回车：显示下一行</span><br><span class="line">    - 空格：向下滚动一屏</span><br><span class="line">    - b：返回上一屏</span><br><span class="line">    - q：退出</span><br><span class="line">$ less filename</span><br><span class="line">    - 空格：向下翻页</span><br><span class="line">    - b：向上翻页</span><br><span class="line">    - 回车：显示下一行</span><br><span class="line">    - 上下键：上下滚动</span><br><span class="line">    - q：退出</span><br></pre></td></tr></table></figure>
+
+<h2 id="6-创建链接"><a href="#6-创建链接" class="headerlink" title="6.创建链接"></a>6.创建链接</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 软链接：相当于创建快捷方式</span></span><br><span class="line"><span class="comment"># 创建软链接并放到另一个目录</span></span><br><span class="line">$ <span class="built_in">ln</span> -s hello /home/zhm/Desktop/Linux/search/link/hello.link</span><br><span class="line"></span><br><span class="line"><span class="comment"># 硬链接：多个文件指向同一个内存</span></span><br><span class="line">$ <span class="built_in">ln</span> hello ./link/hello.link</span><br></pre></td></tr></table></figure>
+
+<h2 id="7-文件属性"><a href="#7-文件属性" class="headerlink" title="7.文件属性"></a>7.文件属性</h2><h3 id="7-1-修改文件权限-chmod"><a href="#7-1-修改文件权限-chmod" class="headerlink" title="7.1 修改文件权限 chmod"></a>7.1 修改文件权限 chmod</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 语法格式</span></span><br><span class="line"><span class="comment"># chmod who [+|-|=] mod filename</span></span><br><span class="line"><span class="comment"># chmod [+|-|=] mod filename</span></span><br><span class="line">    - <span class="built_in">who</span>:</span><br><span class="line">        - u：user 文件所有者</span><br><span class="line">        - g：group 文件所有组</span><br><span class="line">        - o：other 其他用户</span><br><span class="line">        - a：all 以上三类</span><br><span class="line">    - [+|-|=]:</span><br><span class="line">        - +：添加权限</span><br><span class="line">        - -：去除权限</span><br><span class="line">        - =：覆盖权限</span><br><span class="line">    - mod</span><br><span class="line">        - r/4：读权限</span><br><span class="line">        - w/2：写权限</span><br><span class="line">        - x/1：执行权限</span><br><span class="line">        - -/0：没有权限</span><br><span class="line"></span><br><span class="line"><span class="comment"># 示例：给文件所有者添加执行权限</span></span><br><span class="line">$ <span class="built_in">chmod</span> u +x hello</span><br><span class="line"></span><br><span class="line"><span class="comment"># 示例：给所有用户添加读写执行权限</span></span><br><span class="line"><span class="comment"># 7 = 4 + 3 + 1（读 + 写 + 执行）</span></span><br><span class="line">$ <span class="built_in">chmod</span> 777 hello</span><br></pre></td></tr></table></figure>
+
+<h3 id="7-2-修改文件所有者-chown"><a href="#7-2-修改文件所有者-chown" class="headerlink" title="7.2 修改文件所有者 chown"></a>7.2 修改文件所有者 chown</h3><p>创建新用户的时候，系统会自动创建出对应用户名组，比如创建一个新的用户wwl，则会同时创建出一个新的用户组wwl。默认情况下，文件通过哪个用户创建出来，就属于哪个用户以及属于用户对应的组。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 修改文件所有者</span></span><br><span class="line"><span class="comment"># sudo chown 新的所有者 文件名</span></span><br><span class="line">$ <span class="built_in">sudo</span> <span class="built_in">chown</span> wwl &lt;filename&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 修改文件所有者和所属组</span></span><br><span class="line"><span class="comment"># sudo chown 新的文件所有者：新的文件所属组 文件名</span></span><br><span class="line">$ <span class="built_in">sudo</span> <span class="built_in">chown</span> wwl:wwl &lt;filename&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="7-3-修改文件所属组-chgrp"><a href="#7-3-修改文件所属组-chgrp" class="headerlink" title="7.3 修改文件所属组 chgrp"></a>7.3 修改文件所属组 chgrp</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># sudo chgrp 新的组 文件名</span></span><br><span class="line">$ <span class="built_in">sudo</span> <span class="built_in">chgrp</span> wwl &lt;filename&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="8-which"><a href="#8-which" class="headerlink" title="8.which"></a>8.which</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 查看要执行的命令所在的实际路径</span></span><br><span class="line">$ <span class="built_in">which</span> <span class="built_in">ls</span></span><br><span class="line">/usr/bin/ls</span><br></pre></td></tr></table></figure>
+
+<h2 id="9-输出重定向"><a href="#9-输出重定向" class="headerlink" title="9.输出重定向"></a>9.输出重定向</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># &gt; : 将文件内容写入到指定文件中，覆盖原数据</span></span><br><span class="line"><span class="comment"># &gt;&gt; : 将文件内容追加到指定文件的尾部</span></span><br><span class="line">$ <span class="built_in">cat</span> hello.c &gt; hello.cpp</span><br><span class="line">$ <span class="built_in">date</span> &gt;&gt; time.txt</span><br></pre></td></tr></table></figure>
+
+<h1 id="用户管理命令"><a href="#用户管理命令" class="headerlink" title="用户管理命令"></a>用户管理命令</h1><h2 id="1-切换用户-su"><a href="#1-切换用户-su" class="headerlink" title="1.切换用户 su"></a>1.切换用户 su</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 使用 su 只切换用户，当前的工作目录不会变化</span></span><br><span class="line">$ su wwl</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用 su - 不仅会切换用户，工作目录也会切换为当前用户的家目录</span></span><br><span class="line">$ su - wwl </span><br></pre></td></tr></table></figure>
+
+<h2 id="2-添加用户-adduser"><a href="#2-添加用户-adduser" class="headerlink" title="2.添加用户 adduser"></a>2.添加用户 adduser</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># sudo adduser &lt;username&gt;</span></span><br><span class="line">$ <span class="built_in">sudo</span> adduser wwl</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-删除用户-userdel"><a href="#3-删除用户-userdel" class="headerlink" title="3.删除用户 userdel"></a>3.删除用户 userdel</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># sudo userdel &lt;username&gt; -r</span></span><br><span class="line">$ <span class="built_in">sudo</span> userdel wwl -r</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-添加和删除用户组-groupadd-groupdel"><a href="#4-添加和删除用户组-groupadd-groupdel" class="headerlink" title="4.添加和删除用户组 groupadd&#x2F;groupdel"></a>4.添加和删除用户组 groupadd&#x2F;groupdel</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 基于普通用户创建新的用户组</span></span><br><span class="line">$ <span class="built_in">sudo</span> groupadd &lt;new-group-name&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 基于普通用户删除已经存在的用户组</span></span><br><span class="line">$ <span class="built_in">sudo</span> groupdel &lt;group-name&gt;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Git</title>
     <url>/2024/09/02/Git/</url>
     <content><![CDATA[<h1 id="Git"><a href="#Git" class="headerlink" title="Git"></a>Git</h1><h2 id="1-Git特点："><a href="#1-Git特点：" class="headerlink" title="1.Git特点："></a>1.Git特点：</h2><p>1.直接记录快照，而非差异比较<br>2.近乎所有操作都是本地执行<br>3.Git保证完整性</p>
@@ -364,233 +530,6 @@
 ]]></content>
       <categories>
         <category>Git</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Git分支管理Hexo</title>
-    <url>/2024/09/02/Git%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86Hexo/</url>
-    <content><![CDATA[<h1 id="1-本地初始电脑"><a href="#1-本地初始电脑" class="headerlink" title="1.本地初始电脑"></a>1.本地初始电脑</h1><p>1.初始化Git仓库</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> blog</span><br><span class="line">$ git init  <span class="comment"># 创建.git子目录</span></span><br></pre></td></tr></table></figure>
-<span id="more"></span>
-<p>2.添加远程仓库</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git remote add origin git@github.com:yourname/yourname.github.io.git</span><br></pre></td></tr></table></figure>
-
-<p>3.拉取远端仓库所有内容及分支</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git fetch origin</span><br></pre></td></tr></table></figure>
-
-<p>5.新建分支</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git checkout -b master</span><br></pre></td></tr></table></figure>
-
-<p>4.在<code>./source/_post/</code>中添加.md博客并生成</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo clean</span><br><span class="line">$ hexo g</span><br><span class="line">$ hexo d</span><br></pre></td></tr></table></figure>
-
-<p>5.将本地仓库推送至远端</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git push origin master</span><br></pre></td></tr></table></figure>
-
-<h1 id="2-其他电脑"><a href="#2-其他电脑" class="headerlink" title="2.其他电脑"></a>2.其他电脑</h1><p>1.安装Node.js</p>
-<p>2.拉取远端仓库并进入文件夹</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span> git@github.com:yourname/yourname.github.io.git blogname</span><br><span class="line">$ <span class="built_in">cd</span> blogname</span><br></pre></td></tr></table></figure>
-
-<p>3.拉取远端仓库分支并切换至master分支（默认分支是main，master分支是自己建的）</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git fetch origin</span><br><span class="line">$ git checkout master</span><br></pre></td></tr></table></figure>
-
-<p>4.安装Hexo及相关依赖</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm install hexo	<span class="comment"># 安装hexo</span></span><br><span class="line">$ npm install hexo-cli -g <span class="comment"># 重新安装(如果上述安装不起作用）</span></span><br><span class="line">$ npm install	<span class="comment"># 安装依赖</span></span><br></pre></td></tr></table></figure>
-
-<p>5.安装<code>deploy-git</code></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
-
-<p>6.在<code>./source/_post/</code>中添加.md博客并生成</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo clean</span><br><span class="line">$ hexo g</span><br><span class="line">$ hexo d</span><br></pre></td></tr></table></figure>
-
-<p>8.将本地仓库推送至远端</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git push origin master</span><br></pre></td></tr></table></figure>
-
-<h1 id="3-更换主题"><a href="#3-更换主题" class="headerlink" title="3.更换主题"></a>3.更换主题</h1><p>1.进入<code>./themes</code>文件夹</p>
-<p>2.github上clone喜欢的主题</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span> git@github.com:xxx/xxx.git file-name</span><br></pre></td></tr></table></figure>
-
-<p>3.进入<code>file-name</code>文件夹</p>
-<p>4.删除.git文件夹</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">rm</span> -r .git</span><br></pre></td></tr></table></figure>
-
-<p>5.修改最外层目录下的<code>_config.yml</code>文件<br>theme: file-name</p>
-<p>6.修改.gitignore文件（或者把里面内容删掉也行）</p>
-<p>7.将本地仓库推送至远端</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git add .</span><br><span class="line">$ git commit -m &quot;add theme&quot;</span><br><span class="line">$ git push origin master</span><br></pre></td></tr></table></figure>
-
-<p>ps.修改好主题之后，主题配置在<code>file-name</code>文件夹中的<code>_config.yml</code>中进行配置。</p>
-<h1 id="4-说明"><a href="#4-说明" class="headerlink" title="4.说明"></a>4.说明</h1><p><code>main</code>分支用来部署博客：当执行<code>hexo d</code>的时候，博客部署在<code>main</code>分支，不需要执行<code>git push origin main</code>，因为<code>hexo d</code>指令已经将相应的<code>html</code>文件推送到远端服务器的<code>main</code>分支上了。<br><code>master</code>分支用来存储文件：比如<code>.md</code>文件，存放在<code>./source/_post</code>文件夹中，最后需要手动执行<code>git push origin master</code>。</p>
-]]></content>
-      <categories>
-        <category>个人博客</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Linux基础</title>
-    <url>/2024/09/20/Linux%E5%9F%BA%E7%A1%80/</url>
-    <content><![CDATA[<h1 id="Linux内核"><a href="#Linux内核" class="headerlink" title="Linux内核"></a>Linux内核</h1><p>1.进程调度 SCHED<br>2.内存管理 MMU<br>3.虚拟文件系统 VFS<br>4.网络接口<br>5.进程间通信</p>
-<span id="more"></span>
-<h1 id="Linux目录"><a href="#Linux目录" class="headerlink" title="Linux目录"></a>Linux目录</h1><ul>
-<li>bin：存储可执行程序，比如各种命令的可执行程序</li>
-<li>sbin：root用户使用的一些二进制可执行程序</li>
-<li>etc：配置文件目录，存储应用程序的配置文件</li>
-<li>lib：系统或安装的软件所使用的静态库和动态库</li>
-<li>media：挂在目录，挂在外部设备</li>
-<li>mnt：临时挂载目录，比如U盘可以挂载在这个目录下</li>
-<li>proc：内存使用的映射目录，给操作系统使用</li>
-<li>tmp：临时目录，重启电脑数据被自动删除</li>
-<li>boot：存储开机相关的设置</li>
-<li>home：普通用户的家目录</li>
-<li>root：root用户的家目录</li>
-<li>dev：设备目录，所有硬件会被抽象成文件存储起来比如键盘，鼠标</li>
-<li>opt：第三方软件的安装目录</li>
-<li>var：日志文件</li>
-<li>usr：系统的资源目录<ul>
-<li>&#x2F;usr&#x2F;bin：可执行二进制程序</li>
-<li>&#x2F;usr&#x2F;include：标准头文件目录</li>
-<li>&#x2F;usr&#x2F;local：安装的第三方软件，同opt目录</li>
-</ul>
-</li>
-</ul>
-<h1 id="快捷键"><a href="#快捷键" class="headerlink" title="快捷键"></a>快捷键</h1><table>
-<thead>
-<tr>
-<th align="center">快捷键</th>
-<th align="center">功能</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">Ctrl+a</td>
-<td align="center">光标移动到命令行行首</td>
-</tr>
-<tr>
-<td align="center">Ctrl+e</td>
-<td align="center">光标移动到命令行行尾</td>
-</tr>
-<tr>
-<td align="center">Ctrl+u</td>
-<td align="center">删除光标前的字符串</td>
-</tr>
-<tr>
-<td align="center">Ctrl+k</td>
-<td align="center">删除光标后的字符串</td>
-</tr>
-</tbody></table>
-<h1 id="文件管理命令"><a href="#文件管理命令" class="headerlink" title="文件管理命令"></a>文件管理命令</h1><h2 id="1-在邻近的两个目录之间切换-cd"><a href="#1-在邻近的两个目录之间切换-cd" class="headerlink" title="1.在邻近的两个目录之间切换 cd"></a>1.在邻近的两个目录之间切换 cd</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#通过cd进入目录1</span></span><br><span class="line">$ <span class="built_in">cd</span> /home/zhm/Desktop/Linux    </span><br><span class="line"></span><br><span class="line"><span class="comment">#通过cd进入目录2</span></span><br><span class="line">$ <span class="built_in">cd</span> /Download/Clash</span><br><span class="line"></span><br><span class="line"><span class="comment">#在两个目录之间切换</span></span><br><span class="line">$ <span class="built_in">cd</span> -</span><br></pre></td></tr></table></figure>
-
-<h2 id="2-ls命令"><a href="#2-ls命令" class="headerlink" title="2.ls命令"></a>2.ls命令</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#查看当前目录下所有文件包括隐藏文件</span></span><br><span class="line">$ <span class="built_in">ls</span> -a</span><br><span class="line"></span><br><span class="line"><span class="comment">#显示文件详细信息</span></span><br><span class="line">$ <span class="built_in">ls</span> -l <span class="comment">#可以缩写成ll</span></span><br><span class="line">drwxrwxr-x 5 zhm zhm 4.0K  9月  4 21:25 ./</span><br><span class="line">drwxr-xr-x 3 zhm zhm 4.0K  9月  4 13:52 ../</span><br><span class="line">drwxrwxr-x 5 zhm zhm 4.0K  9月  4 18:29 gcc/</span><br><span class="line">drwxrwxr-x 2 zhm zhm 4.0K  9月  4 21:25 makefile/</span><br><span class="line">drwxrwxr-x 2 zhm zhm 4.0K  9月  3 21:03 search/</span><br></pre></td></tr></table></figure>
-<ul>
-<li>文件类型<ul>
-<li>-:普通文件</li>
-<li>d:目录</li>
-<li>l:软链接文件</li>
-<li>c:字符设备</li>
-<li>b:块设备</li>
-<li>p:管道文件</li>
-<li>s:本地套接字文件</li>
-</ul>
-</li>
-<li>文件所有者权限</li>
-<li>文件所属组权限</li>
-<li>其他人权限</li>
-<li>硬链接计数</li>
-<li>文件所有者</li>
-<li>文件所有组</li>
-<li>文件大小</li>
-<li>文件修改时间</li>
-<li>文件名</li>
-</ul>
-<h2 id="3-删除文件或目录"><a href="#3-删除文件或目录" class="headerlink" title="3.删除文件或目录"></a>3.删除文件或目录</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 删除文件</span></span><br><span class="line">$ <span class="built_in">rm</span> file1.c file2.c</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除目录</span></span><br><span class="line">$ <span class="built_in">rm</span> <span class="built_in">dir</span> -r</span><br><span class="line"></span><br><span class="line"><span class="comment"># 强制删除目录</span></span><br><span class="line">$ <span class="built_in">rm</span> <span class="built_in">dir</span> -rf</span><br></pre></td></tr></table></figure>
-
-<h2 id="4-拷贝文件或目录"><a href="#4-拷贝文件或目录" class="headerlink" title="4.拷贝文件或目录"></a>4.拷贝文件或目录</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 拷贝文件（文件不存在则创建，文件存在则覆盖）</span></span><br><span class="line">$ <span class="built_in">cp</span> fileA fileB</span><br><span class="line"></span><br><span class="line"><span class="comment"># 拷贝目录（拷贝目录需要参数 -r）</span></span><br><span class="line"><span class="comment"># 情景1：目录A存在，目录B不存在（创建B，并将A放入B）</span></span><br><span class="line">$ <span class="built_in">cp</span> dirA dirB -r</span><br><span class="line"></span><br><span class="line"><span class="comment"># 情景2：目录A存在，目录B也存在（直接将A放入B）</span></span><br><span class="line">$ <span class="built_in">cp</span> dirA dirB -r</span><br><span class="line"></span><br><span class="line"><span class="comment"># 情景3：把目录A中的所有文件拷贝到目录B中（A中文件放入B）</span></span><br><span class="line">$ <span class="built_in">cp</span> dirA/* dirB -r</span><br></pre></td></tr></table></figure>
-
-<h2 id="5-查看文件内容"><a href="#5-查看文件内容" class="headerlink" title="5.查看文件内容"></a>5.查看文件内容</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">cat</span> filename</span><br><span class="line">$ more filename</span><br><span class="line">    - 回车：显示下一行</span><br><span class="line">    - 空格：向下滚动一屏</span><br><span class="line">    - b：返回上一屏</span><br><span class="line">    - q：退出</span><br><span class="line">$ less filename</span><br><span class="line">    - 空格：向下翻页</span><br><span class="line">    - b：向上翻页</span><br><span class="line">    - 回车：显示下一行</span><br><span class="line">    - 上下键：上下滚动</span><br><span class="line">    - q：退出</span><br></pre></td></tr></table></figure>
-
-<h2 id="6-创建链接"><a href="#6-创建链接" class="headerlink" title="6.创建链接"></a>6.创建链接</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 软链接：相当于创建快捷方式</span></span><br><span class="line"><span class="comment"># 创建软链接并放到另一个目录</span></span><br><span class="line">$ <span class="built_in">ln</span> -s hello /home/zhm/Desktop/Linux/search/link/hello.link</span><br><span class="line"></span><br><span class="line"><span class="comment"># 硬链接：多个文件指向同一个内存</span></span><br><span class="line">$ <span class="built_in">ln</span> hello ./link/hello.link</span><br></pre></td></tr></table></figure>
-
-<h2 id="7-文件属性"><a href="#7-文件属性" class="headerlink" title="7.文件属性"></a>7.文件属性</h2><h3 id="7-1-修改文件权限-chmod"><a href="#7-1-修改文件权限-chmod" class="headerlink" title="7.1 修改文件权限 chmod"></a>7.1 修改文件权限 chmod</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 语法格式</span></span><br><span class="line"><span class="comment"># chmod who [+|-|=] mod filename</span></span><br><span class="line"><span class="comment"># chmod [+|-|=] mod filename</span></span><br><span class="line">    - <span class="built_in">who</span>:</span><br><span class="line">        - u：user 文件所有者</span><br><span class="line">        - g：group 文件所有组</span><br><span class="line">        - o：other 其他用户</span><br><span class="line">        - a：all 以上三类</span><br><span class="line">    - [+|-|=]:</span><br><span class="line">        - +：添加权限</span><br><span class="line">        - -：去除权限</span><br><span class="line">        - =：覆盖权限</span><br><span class="line">    - mod</span><br><span class="line">        - r/4：读权限</span><br><span class="line">        - w/2：写权限</span><br><span class="line">        - x/1：执行权限</span><br><span class="line">        - -/0：没有权限</span><br><span class="line"></span><br><span class="line"><span class="comment"># 示例：给文件所有者添加执行权限</span></span><br><span class="line">$ <span class="built_in">chmod</span> u +x hello</span><br><span class="line"></span><br><span class="line"><span class="comment"># 示例：给所有用户添加读写执行权限</span></span><br><span class="line"><span class="comment"># 7 = 4 + 3 + 1（读 + 写 + 执行）</span></span><br><span class="line">$ <span class="built_in">chmod</span> 777 hello</span><br></pre></td></tr></table></figure>
-
-<h3 id="7-2-修改文件所有者-chown"><a href="#7-2-修改文件所有者-chown" class="headerlink" title="7.2 修改文件所有者 chown"></a>7.2 修改文件所有者 chown</h3><p>创建新用户的时候，系统会自动创建出对应用户名组，比如创建一个新的用户wwl，则会同时创建出一个新的用户组wwl。默认情况下，文件通过哪个用户创建出来，就属于哪个用户以及属于用户对应的组。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 修改文件所有者</span></span><br><span class="line"><span class="comment"># sudo chown 新的所有者 文件名</span></span><br><span class="line">$ <span class="built_in">sudo</span> <span class="built_in">chown</span> wwl &lt;filename&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 修改文件所有者和所属组</span></span><br><span class="line"><span class="comment"># sudo chown 新的文件所有者：新的文件所属组 文件名</span></span><br><span class="line">$ <span class="built_in">sudo</span> <span class="built_in">chown</span> wwl:wwl &lt;filename&gt;</span><br></pre></td></tr></table></figure>
-
-<h3 id="7-3-修改文件所属组-chgrp"><a href="#7-3-修改文件所属组-chgrp" class="headerlink" title="7.3 修改文件所属组 chgrp"></a>7.3 修改文件所属组 chgrp</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># sudo chgrp 新的组 文件名</span></span><br><span class="line">$ <span class="built_in">sudo</span> <span class="built_in">chgrp</span> wwl &lt;filename&gt;</span><br></pre></td></tr></table></figure>
-
-<h2 id="8-which"><a href="#8-which" class="headerlink" title="8.which"></a>8.which</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 查看要执行的命令所在的实际路径</span></span><br><span class="line">$ <span class="built_in">which</span> <span class="built_in">ls</span></span><br><span class="line">/usr/bin/ls</span><br></pre></td></tr></table></figure>
-
-<h2 id="9-输出重定向"><a href="#9-输出重定向" class="headerlink" title="9.输出重定向"></a>9.输出重定向</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># &gt; : 将文件内容写入到指定文件中，覆盖原数据</span></span><br><span class="line"><span class="comment"># &gt;&gt; : 将文件内容追加到指定文件的尾部</span></span><br><span class="line">$ <span class="built_in">cat</span> hello.c &gt; hello.cpp</span><br><span class="line">$ <span class="built_in">date</span> &gt;&gt; time.txt</span><br></pre></td></tr></table></figure>
-
-<h1 id="用户管理命令"><a href="#用户管理命令" class="headerlink" title="用户管理命令"></a>用户管理命令</h1><h2 id="1-切换用户-su"><a href="#1-切换用户-su" class="headerlink" title="1.切换用户 su"></a>1.切换用户 su</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 使用 su 只切换用户，当前的工作目录不会变化</span></span><br><span class="line">$ su wwl</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用 su - 不仅会切换用户，工作目录也会切换为当前用户的家目录</span></span><br><span class="line">$ su - wwl </span><br></pre></td></tr></table></figure>
-
-<h2 id="2-添加用户-adduser"><a href="#2-添加用户-adduser" class="headerlink" title="2.添加用户 adduser"></a>2.添加用户 adduser</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># sudo adduser &lt;username&gt;</span></span><br><span class="line">$ <span class="built_in">sudo</span> adduser wwl</span><br></pre></td></tr></table></figure>
-
-<h2 id="3-删除用户-userdel"><a href="#3-删除用户-userdel" class="headerlink" title="3.删除用户 userdel"></a>3.删除用户 userdel</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># sudo userdel &lt;username&gt; -r</span></span><br><span class="line">$ <span class="built_in">sudo</span> userdel wwl -r</span><br></pre></td></tr></table></figure>
-
-<h2 id="4-添加和删除用户组-groupadd-groupdel"><a href="#4-添加和删除用户组-groupadd-groupdel" class="headerlink" title="4.添加和删除用户组 groupadd&#x2F;groupdel"></a>4.添加和删除用户组 groupadd&#x2F;groupdel</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 基于普通用户创建新的用户组</span></span><br><span class="line">$ <span class="built_in">sudo</span> groupadd &lt;new-group-name&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 基于普通用户删除已经存在的用户组</span></span><br><span class="line">$ <span class="built_in">sudo</span> groupdel &lt;group-name&gt;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Tmux</title>
-    <url>/2024/09/20/Tmux/</url>
-    <content><![CDATA[<h1 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h1><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Ubuntu</span></span><br><span class="line">$ <span class="built_in">sudo</span> apt-get install tmux</span><br></pre></td></tr></table></figure>
-<span id="more"></span>
-<h2 id="启动和退出"><a href="#启动和退出" class="headerlink" title="启动和退出"></a>启动和退出</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 启动</span></span><br><span class="line">$ tmux</span><br><span class="line"></span><br><span class="line"><span class="comment"># 退出（或者使用快捷键ctrl+d）</span></span><br><span class="line">$ <span class="built_in">exit</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="前缀键"><a href="#前缀键" class="headerlink" title="前缀键"></a>前缀键</h2><p>Tmux中所有的快捷键都需要通过前缀键唤起，即先按前缀键，再按快捷键，才能生效。默认的前缀键为：ctrl+b</p>
-<h1 id="会话管理"><a href="#会话管理" class="headerlink" title="会话管理"></a>会话管理</h1><h2 id="新建会话"><a href="#新建会话" class="headerlink" title="新建会话"></a>新建会话</h2><p>第一个启动的Tmux窗口，编号是0, 第二个窗口的编号是1,以此类推。也可以在新建窗口时为窗口指定会话名。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ tmux new -s &lt;session-name&gt;</span><br></pre></td></tr></table></figure>
-
-<h2 id="分离会话"><a href="#分离会话" class="headerlink" title="分离会话"></a>分离会话</h2><p>快捷键：ctrl+b d</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ tmux detach</span><br></pre></td></tr></table></figure>
-
-<h2 id="查看当前所有Tmux会话"><a href="#查看当前所有Tmux会话" class="headerlink" title="查看当前所有Tmux会话"></a>查看当前所有Tmux会话</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ tmux <span class="built_in">ls</span></span><br><span class="line"><span class="comment"># or</span></span><br><span class="line">$ tmux list-session</span><br></pre></td></tr></table></figure>
-
-<h2 id="接入会话"><a href="#接入会话" class="headerlink" title="接入会话"></a>接入会话</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ tmux attach -t &lt;session-name&gt;</span><br></pre></td></tr></table></figure>
-
-<h2 id="杀死会话"><a href="#杀死会话" class="headerlink" title="杀死会话"></a>杀死会话</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ tmux kill-session -t &lt;session-name&gt;</span><br></pre></td></tr></table></figure>
-
-<h2 id="切换会话"><a href="#切换会话" class="headerlink" title="切换会话"></a>切换会话</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ tmux switch -t &lt;session-name&gt;</span><br></pre></td></tr></table></figure>
-
-<h2 id="重命名会话"><a href="#重命名会话" class="headerlink" title="重命名会话"></a>重命名会话</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ tmux rename-session -t &lt;old-name&gt; &lt;new-name&gt;</span><br></pre></td></tr></table></figure>
-
-<h2 id="会话快捷键"><a href="#会话快捷键" class="headerlink" title="会话快捷键"></a>会话快捷键</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ctrl+b d：分离会话</span><br><span class="line">ctrl+b s：列出所有会话</span><br><span class="line">ctrl+b $：重命名当前会话</span><br></pre></td></tr></table></figure>
-
-<h1 id="窗格操作"><a href="#窗格操作" class="headerlink" title="窗格操作"></a>窗格操作</h1><h2 id="划分窗格"><a href="#划分窗格" class="headerlink" title="划分窗格"></a>划分窗格</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 划分上下两个窗格</span></span><br><span class="line">$ tmux split-window</span><br><span class="line"></span><br><span class="line"><span class="comment"># 划分左右两个窗格</span></span><br><span class="line">$ tmux split-window -h</span><br></pre></td></tr></table></figure>
-
-<h2 id="移动光标"><a href="#移动光标" class="headerlink" title="移动光标"></a>移动光标</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 光标切换到上方窗口</span></span><br><span class="line">$ tmux select-pane -U</span><br><span class="line"></span><br><span class="line"><span class="comment"># 光标切换到下方窗格</span></span><br><span class="line">$ tmux select-pane -D</span><br><span class="line"></span><br><span class="line"><span class="comment"># 光标切换到左边窗格</span></span><br><span class="line">$ tmux select-pane -L</span><br><span class="line"></span><br><span class="line"><span class="comment"># 光标切换到右边窗格</span></span><br><span class="line">$ tmux select-pane -R</span><br></pre></td></tr></table></figure>
-
-<h2 id="交换窗格位置"><a href="#交换窗格位置" class="headerlink" title="交换窗格位置"></a>交换窗格位置</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 当前窗格上移</span></span><br><span class="line">$ tmux swap-pane -U</span><br><span class="line"></span><br><span class="line"><span class="comment"># 当前窗格下移</span></span><br><span class="line">$ tmux swap-pane -D</span><br></pre></td></tr></table></figure>
-
-<h2 id="窗格快捷键总结"><a href="#窗格快捷键总结" class="headerlink" title="窗格快捷键总结"></a>窗格快捷键总结</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-]]></content>
-      <categories>
-        <category>Linux</category>
       </categories>
   </entry>
   <entry>
@@ -1024,6 +963,67 @@
       </categories>
   </entry>
   <entry>
+    <title>Tmux</title>
+    <url>/2024/09/20/Tmux/</url>
+    <content><![CDATA[<h1 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h1><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Ubuntu</span></span><br><span class="line">$ <span class="built_in">sudo</span> apt-get install tmux</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+<h2 id="启动和退出"><a href="#启动和退出" class="headerlink" title="启动和退出"></a>启动和退出</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 启动</span></span><br><span class="line">$ tmux</span><br><span class="line"></span><br><span class="line"><span class="comment"># 退出（或者使用快捷键ctrl+d）</span></span><br><span class="line">$ <span class="built_in">exit</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="前缀键"><a href="#前缀键" class="headerlink" title="前缀键"></a>前缀键</h2><p>Tmux中所有的快捷键都需要通过前缀键唤起，即先按前缀键，再按快捷键，才能生效。默认的前缀键为：ctrl+b</p>
+<h1 id="会话管理"><a href="#会话管理" class="headerlink" title="会话管理"></a>会话管理</h1><h2 id="新建会话"><a href="#新建会话" class="headerlink" title="新建会话"></a>新建会话</h2><p>第一个启动的Tmux窗口，编号是0, 第二个窗口的编号是1,以此类推。也可以在新建窗口时为窗口指定会话名。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ tmux new -s &lt;session-name&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="分离会话"><a href="#分离会话" class="headerlink" title="分离会话"></a>分离会话</h2><p>快捷键：ctrl+b d</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ tmux detach</span><br></pre></td></tr></table></figure>
+
+<h2 id="查看当前所有Tmux会话"><a href="#查看当前所有Tmux会话" class="headerlink" title="查看当前所有Tmux会话"></a>查看当前所有Tmux会话</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ tmux <span class="built_in">ls</span></span><br><span class="line"><span class="comment"># or</span></span><br><span class="line">$ tmux list-session</span><br></pre></td></tr></table></figure>
+
+<h2 id="接入会话"><a href="#接入会话" class="headerlink" title="接入会话"></a>接入会话</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ tmux attach -t &lt;session-name&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="杀死会话"><a href="#杀死会话" class="headerlink" title="杀死会话"></a>杀死会话</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ tmux kill-session -t &lt;session-name&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="切换会话"><a href="#切换会话" class="headerlink" title="切换会话"></a>切换会话</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ tmux switch -t &lt;session-name&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="重命名会话"><a href="#重命名会话" class="headerlink" title="重命名会话"></a>重命名会话</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ tmux rename-session -t &lt;old-name&gt; &lt;new-name&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="会话快捷键"><a href="#会话快捷键" class="headerlink" title="会话快捷键"></a>会话快捷键</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ctrl+b d：分离会话</span><br><span class="line">ctrl+b s：列出所有会话</span><br><span class="line">ctrl+b $：重命名当前会话</span><br></pre></td></tr></table></figure>
+
+<h1 id="窗格操作"><a href="#窗格操作" class="headerlink" title="窗格操作"></a>窗格操作</h1><h2 id="划分窗格"><a href="#划分窗格" class="headerlink" title="划分窗格"></a>划分窗格</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 划分上下两个窗格</span></span><br><span class="line">$ tmux split-window</span><br><span class="line"></span><br><span class="line"><span class="comment"># 划分左右两个窗格</span></span><br><span class="line">$ tmux split-window -h</span><br></pre></td></tr></table></figure>
+
+<h2 id="移动光标"><a href="#移动光标" class="headerlink" title="移动光标"></a>移动光标</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 光标切换到上方窗口</span></span><br><span class="line">$ tmux select-pane -U</span><br><span class="line"></span><br><span class="line"><span class="comment"># 光标切换到下方窗格</span></span><br><span class="line">$ tmux select-pane -D</span><br><span class="line"></span><br><span class="line"><span class="comment"># 光标切换到左边窗格</span></span><br><span class="line">$ tmux select-pane -L</span><br><span class="line"></span><br><span class="line"><span class="comment"># 光标切换到右边窗格</span></span><br><span class="line">$ tmux select-pane -R</span><br></pre></td></tr></table></figure>
+
+<h2 id="交换窗格位置"><a href="#交换窗格位置" class="headerlink" title="交换窗格位置"></a>交换窗格位置</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 当前窗格上移</span></span><br><span class="line">$ tmux swap-pane -U</span><br><span class="line"></span><br><span class="line"><span class="comment"># 当前窗格下移</span></span><br><span class="line">$ tmux swap-pane -D</span><br></pre></td></tr></table></figure>
+
+<h2 id="窗格快捷键总结"><a href="#窗格快捷键总结" class="headerlink" title="窗格快捷键总结"></a>窗格快捷键总结</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+  </entry>
+  <entry>
     <title>apt换源</title>
     <url>/2024/09/20/apt%E6%8D%A2%E6%BA%90/</url>
     <content><![CDATA[<p>Ubuntu24.04换源</p>
@@ -1062,29 +1062,6 @@
 ]]></content>
       <categories>
         <category>C</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>.bashrc</title>
-    <url>/2024/09/20/bashrc/</url>
-    <content><![CDATA[<p>.bashrc是一个用于配置Bash Shell的脚本文件。位于<code>~/.bashrc</code>，当打开一个新的Bash终端会话时，Bash会自动执行这个文件中的命令，这个文件通常用于：设置环境变量，定义别名，配置Shell选项。</p>
-<span id="more"></span>
-<h1 id="设置环境变量"><a href="#设置环境变量" class="headerlink" title="设置环境变量"></a>设置环境变量</h1><h2 id="设置PATH环境变量"><a href="#设置PATH环境变量" class="headerlink" title="设置PATH环境变量"></a>设置PATH环境变量</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">export PATH=/usr/local/bin:$PATH</span><br></pre></td></tr></table></figure>
-<p>将&#x2F;usr&#x2F;local&#x2F;lib目录添加到PATH环境变量的前面，当在命令行中输入命令时，系统首先会在&#x2F;usr&#x2F;local&#x2F;lib目录先查找。</p>
-<h2 id="设置一个新的环境变量"><a href="#设置一个新的环境变量" class="headerlink" title="设置一个新的环境变量"></a>设置一个新的环境变量</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">export VAR = &quot;Hello,World!&quot;</span><br></pre></td></tr></table></figure>
-<p>创建一个名为VAR的新环境变量，并将它的值设置为<code>Hello,World!</code></p>
-<h2 id="为特定应用设置环境变量"><a href="#为特定应用设置环境变量" class="headerlink" title="为特定应用设置环境变量"></a>为特定应用设置环境变量</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64</span><br><span class="line">export PATH=$JAVA_HOME/bin:$PATH</span><br></pre></td></tr></table></figure>
-<p>设置了JAVA_HOME环境变量，指向java的安装命令，并将bin目录添加到PATH中，之后就可以直接在命令中使用java命令。</p>
-<h2 id="设置库目录"><a href="#设置库目录" class="headerlink" title="设置库目录"></a>设置库目录</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH</span><br></pre></td></tr></table></figure>
-<p>将<code>/usr/local/lib</code>目录添加到<code>LD_LIBRARY_PATH</code>环境变量中。</p>
-<h2 id="条件性设置环境变量"><a href="#条件性设置环境变量" class="headerlink" title="条件性设置环境变量"></a>条件性设置环境变量</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">if [ -d /opt/myapp ]; then</span><br><span class="line">    export MYAPP_HOME=/opt/myapp</span><br><span class="line">    export PATH=$MYAPP_HOME/bin:$PATH</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
-<p>检查&#x2F;opt&#x2F;myapp目录是否存在，如果存在则设置MY_HOME环境变量，并将bin目录添加到PATH中。</p>
-<h1 id="设置别名"><a href="#设置别名" class="headerlink" title="设置别名"></a>设置别名</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 为 ls 和其他命令启用颜色支持，并添加有用的别名</span><br><span class="line">if [ -x /usr/bin/dircolors ]; then</span><br><span class="line">    test -r ~/.dircolors &amp;&amp; eval &quot;$(dircolors -b ~/.dircolors)&quot; || eval &quot;$(dircolors -b)&quot;</span><br><span class="line">    alias ls=&#x27;ls --color=auto&#x27;</span><br><span class="line">    #alias dir=&#x27;dir --color=auto&#x27;</span><br><span class="line">    #alias vdir=&#x27;vdir --color=auto&#x27;</span><br><span class="line"></span><br><span class="line">    alias grep=&#x27;grep --color=auto&#x27;</span><br><span class="line">    alias fgrep=&#x27;fgrep --color=auto&#x27;</span><br><span class="line">    alias egrep=&#x27;egrep --color=auto&#x27;</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
-<p><code>if [ -x /usr/bin/dircolors ]; </code>:检查 &#x2F;usr&#x2F;bin&#x2F;dircolors 文件是否存在并且具有可执行权限，从而决定是否要执行后续命令。</p>
-<p><code>test -r ~/.dircolors &amp;&amp; eval &quot;$(dircolors -b ~/.dircolors)&quot; || eval &quot;$(dircolors -b)&quot;</code>:检查 ~&#x2F;.dircolors 文件是否存在并且可读。如果文件存在且可读，使用 dircolors 命令和该文件的设置来配置颜色。如果文件不存在或不可读，使用 dircolors 命令的默认设置来配置颜色。目的是确保 LS_COLORS 环境变量被设置，以便 ls 命令能够根据这些设置显示颜色。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 其他别名</span><br><span class="line">alias ll=&#x27;ls -alF&#x27;</span><br><span class="line">alias la=&#x27;ls -A&#x27;</span><br><span class="line">alias l=&#x27;ls -CF&#x27;</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>Linux</category>
       </categories>
   </entry>
   <entry>
@@ -1250,17 +1227,24 @@
       </categories>
   </entry>
   <entry>
-    <title>.deb文件</title>
-    <url>/2024/09/20/deb%E6%96%87%E4%BB%B6/</url>
-    <content><![CDATA[<p>dep文件是debian，Ubuntu等Linux发行版的软件安装包</p>
+    <title>.bashrc</title>
+    <url>/2024/09/20/bashrc/</url>
+    <content><![CDATA[<p>.bashrc是一个用于配置Bash Shell的脚本文件。位于<code>~/.bashrc</code>，当打开一个新的Bash终端会话时，Bash会自动执行这个文件中的命令，这个文件通常用于：设置环境变量，定义别名，配置Shell选项。</p>
 <span id="more"></span>
-<h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><p>deb包安装方法有两种：<br>1.直接“双击”安装<br>2.指令安装<br>2.1.终端命令行安装</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> dpkg -i &lt;package.deb&gt;</span><br></pre></td></tr></table></figure>
-
-<p>2.2.终端命令行卸载</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> dpkg -r &lt;package&gt;</span><br></pre></td></tr></table></figure>
-<h1 id="dpkg指令的其他用法"><a href="#dpkg指令的其他用法" class="headerlink" title="dpkg指令的其他用法"></a><code>dpkg</code>指令的其他用法</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ dpkg -i &lt;package.deb&gt;     <span class="comment">#安装一个 Debian 软件包，如手动下载的文件。</span></span><br><span class="line">$ dpkg -c &lt;package.deb&gt;     <span class="comment">#列出 package.deb 的内容。</span></span><br><span class="line">$ dpkg -I &lt;package.deb&gt;     <span class="comment">#从 package.deb 中提取包信息。</span></span><br><span class="line">$ dpkg -r &lt;package&gt;         <span class="comment">#移除一个已安装的包。</span></span><br><span class="line">$ dpkg -P &lt;package&gt;：       <span class="comment">#完全清除一个已安装的包。和 remove 不同的是，remove 只是删掉数据和可执行文件，purge 另外还删除所有的配制文件。</span></span><br><span class="line">$ dpkg -L &lt;package&gt;     <span class="comment">#列出 package 安装的所有文件清单。</span></span><br><span class="line">$ dpkg -s &lt;package&gt;     <span class="comment">#显示已安装包的信息。</span></span><br><span class="line">$ dpkg -S &lt;package&gt;     <span class="comment">#查看软件在哪个包里；</span></span><br></pre></td></tr></table></figure>
-]]></content>
+<h1 id="设置环境变量"><a href="#设置环境变量" class="headerlink" title="设置环境变量"></a>设置环境变量</h1><h2 id="设置PATH环境变量"><a href="#设置PATH环境变量" class="headerlink" title="设置PATH环境变量"></a>设置PATH环境变量</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">export PATH=/usr/local/bin:$PATH</span><br></pre></td></tr></table></figure>
+<p>将&#x2F;usr&#x2F;local&#x2F;lib目录添加到PATH环境变量的前面，当在命令行中输入命令时，系统首先会在&#x2F;usr&#x2F;local&#x2F;lib目录先查找。</p>
+<h2 id="设置一个新的环境变量"><a href="#设置一个新的环境变量" class="headerlink" title="设置一个新的环境变量"></a>设置一个新的环境变量</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">export VAR = &quot;Hello,World!&quot;</span><br></pre></td></tr></table></figure>
+<p>创建一个名为VAR的新环境变量，并将它的值设置为<code>Hello,World!</code></p>
+<h2 id="为特定应用设置环境变量"><a href="#为特定应用设置环境变量" class="headerlink" title="为特定应用设置环境变量"></a>为特定应用设置环境变量</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64</span><br><span class="line">export PATH=$JAVA_HOME/bin:$PATH</span><br></pre></td></tr></table></figure>
+<p>设置了JAVA_HOME环境变量，指向java的安装命令，并将bin目录添加到PATH中，之后就可以直接在命令中使用java命令。</p>
+<h2 id="设置库目录"><a href="#设置库目录" class="headerlink" title="设置库目录"></a>设置库目录</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH</span><br></pre></td></tr></table></figure>
+<p>将<code>/usr/local/lib</code>目录添加到<code>LD_LIBRARY_PATH</code>环境变量中。</p>
+<h2 id="条件性设置环境变量"><a href="#条件性设置环境变量" class="headerlink" title="条件性设置环境变量"></a>条件性设置环境变量</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">if [ -d /opt/myapp ]; then</span><br><span class="line">    export MYAPP_HOME=/opt/myapp</span><br><span class="line">    export PATH=$MYAPP_HOME/bin:$PATH</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
+<p>检查&#x2F;opt&#x2F;myapp目录是否存在，如果存在则设置MY_HOME环境变量，并将bin目录添加到PATH中。</p>
+<h1 id="设置别名"><a href="#设置别名" class="headerlink" title="设置别名"></a>设置别名</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 为 ls 和其他命令启用颜色支持，并添加有用的别名</span><br><span class="line">if [ -x /usr/bin/dircolors ]; then</span><br><span class="line">    test -r ~/.dircolors &amp;&amp; eval &quot;$(dircolors -b ~/.dircolors)&quot; || eval &quot;$(dircolors -b)&quot;</span><br><span class="line">    alias ls=&#x27;ls --color=auto&#x27;</span><br><span class="line">    #alias dir=&#x27;dir --color=auto&#x27;</span><br><span class="line">    #alias vdir=&#x27;vdir --color=auto&#x27;</span><br><span class="line"></span><br><span class="line">    alias grep=&#x27;grep --color=auto&#x27;</span><br><span class="line">    alias fgrep=&#x27;fgrep --color=auto&#x27;</span><br><span class="line">    alias egrep=&#x27;egrep --color=auto&#x27;</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
+<p><code>if [ -x /usr/bin/dircolors ]; </code>:检查 &#x2F;usr&#x2F;bin&#x2F;dircolors 文件是否存在并且具有可执行权限，从而决定是否要执行后续命令。</p>
+<p><code>test -r ~/.dircolors &amp;&amp; eval &quot;$(dircolors -b ~/.dircolors)&quot; || eval &quot;$(dircolors -b)&quot;</code>:检查 ~&#x2F;.dircolors 文件是否存在并且可读。如果文件存在且可读，使用 dircolors 命令和该文件的设置来配置颜色。如果文件不存在或不可读，使用 dircolors 命令的默认设置来配置颜色。目的是确保 LS_COLORS 环境变量被设置，以便 ls 命令能够根据这些设置显示颜色。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 其他别名</span><br><span class="line">alias ll=&#x27;ls -alF&#x27;</span><br><span class="line">alias la=&#x27;ls -A&#x27;</span><br><span class="line">alias l=&#x27;ls -CF&#x27;</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>Linux</category>
       </categories>
@@ -1290,6 +1274,48 @@
 ]]></content>
       <categories>
         <category>Linux</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>.deb文件</title>
+    <url>/2024/09/20/deb%E6%96%87%E4%BB%B6/</url>
+    <content><![CDATA[<p>dep文件是debian，Ubuntu等Linux发行版的软件安装包</p>
+<span id="more"></span>
+<h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><p>deb包安装方法有两种：<br>1.直接“双击”安装<br>2.指令安装<br>2.1.终端命令行安装</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> dpkg -i &lt;package.deb&gt;</span><br></pre></td></tr></table></figure>
+
+<p>2.2.终端命令行卸载</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> dpkg -r &lt;package&gt;</span><br></pre></td></tr></table></figure>
+<h1 id="dpkg指令的其他用法"><a href="#dpkg指令的其他用法" class="headerlink" title="dpkg指令的其他用法"></a><code>dpkg</code>指令的其他用法</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ dpkg -i &lt;package.deb&gt;     <span class="comment">#安装一个 Debian 软件包，如手动下载的文件。</span></span><br><span class="line">$ dpkg -c &lt;package.deb&gt;     <span class="comment">#列出 package.deb 的内容。</span></span><br><span class="line">$ dpkg -I &lt;package.deb&gt;     <span class="comment">#从 package.deb 中提取包信息。</span></span><br><span class="line">$ dpkg -r &lt;package&gt;         <span class="comment">#移除一个已安装的包。</span></span><br><span class="line">$ dpkg -P &lt;package&gt;：       <span class="comment">#完全清除一个已安装的包。和 remove 不同的是，remove 只是删掉数据和可执行文件，purge 另外还删除所有的配制文件。</span></span><br><span class="line">$ dpkg -L &lt;package&gt;     <span class="comment">#列出 package 安装的所有文件清单。</span></span><br><span class="line">$ dpkg -s &lt;package&gt;     <span class="comment">#显示已安装包的信息。</span></span><br><span class="line">$ dpkg -S &lt;package&gt;     <span class="comment">#查看软件在哪个包里；</span></span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>hosts</title>
+    <url>/2024/09/20/hosts/</url>
+    <content><![CDATA[<p>在Ubuntu上安装nvm遇到：curl: (28) Failed to connect to raw.githubusercontent.com port 443: Connection timed out [closed]<br>1.打开<code>/etc/hosts</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> vim /etc/hosts</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+<p>2.查询可用IP<br>使用<a href="https://www.ipaddress.com/website/">ipaddress</a>网站查询<code>github.com</code>,<code>ssh.github.com</code>,<code>raw.githubusercontent.com</code>网站的可用IP</p>
+<p>3.在末尾添加以下IP地址</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">140.82.114.3  github.com</span><br><span class="line">140.82.113.36  ssh.github.com</span><br><span class="line">199.232.68.133 raw.githubusercontent.com</span><br></pre></td></tr></table></figure>
+
+<p>4.保存文件并退出</p>
+<p>5.可以使用ping查看域名是否有received</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ ping 199.232.68.133</span><br><span class="line">PING 199.232.68.133 (199.232.68.133) 56(84) bytes of data.</span><br><span class="line">64 bytes from 199.232.68.133: icmp_seq=1 ttl=43 time=234 ms</span><br><span class="line">64 bytes from 199.232.68.133: icmp_seq=2 ttl=43 time=234 ms</span><br><span class="line">64 bytes from 199.232.68.133: icmp_seq=3 ttl=43 time=234 ms</span><br><span class="line">64 bytes from 199.232.68.133: icmp_seq=4 ttl=43 time=233 ms</span><br><span class="line">^C</span><br><span class="line">--- 199.232.68.133 ping statistics ---</span><br><span class="line">4 packets transmitted, 4 received, 0% packet loss, time 3004ms</span><br><span class="line">rtt min/avg/max/mdev = 233.337/233.849/234.302/0.421 ms</span><br></pre></td></tr></table></figure>
+
+<p><strong>ps.为什么要这样做呢??? hosts是什么配置文件呢???</strong><br><strong>hosts文件是什么？</strong><br>在Linux系统中，<code>/etc/hosts</code>文件是一个本地的DNS解析文件，用于将IP地址和主机名映射起来。当你访问某个域名时，系统会首先检查这个文件，如果在这里找到了对应的IP地址，就会直接使用，而不再通过外部DNS服务器查询。<br><strong>为什么要这么做？</strong><br>这是将GitHub相关的域名（如 github.com、ssh.github.com 和 raw.githubusercontent.com）手动映射到指定的IP地址。这么做的目的通常有以下几种可能：</p>
+<ul>
+<li>解决访问问题：有时候由于DNS解析缓慢或者网络封锁，GitHub相关服务的域名可能会无法访问，通过手动在&#x2F;etc&#x2F;hosts中添加这些映射，可以直接访问指定的IP，绕过DNS解析。</li>
+<li>加快访问速度：如果你已经知道某个域名的IP地址，手动添加可以减少系统查询外部DNS的时间，从而提升访问速度。</li>
+<li>绕过DNS劫持：在某些情况下，网络服务提供商或某些恶意软件可能会劫持DNS请求，将你引导到错误的网站，通过手动配置IP可以避免这种情况。</li>
+</ul>
+<p>IP地址可能会随着时间变化，所以如果GitHub更新了服务器的IP地址，而你还在使用旧的配置，可能会导致访问失败。</p>
+]]></content>
+      <categories>
+        <category>PC</category>
       </categories>
   </entry>
   <entry>
@@ -1401,32 +1427,6 @@
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(gdb) set var 变量名=值</span><br><span class="line"># 在100次的循环体中设置变量i为99</span><br><span class="line">(gdb) set var i=99</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>Linux</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>hosts</title>
-    <url>/2024/09/20/hosts/</url>
-    <content><![CDATA[<p>在Ubuntu上安装nvm遇到：curl: (28) Failed to connect to raw.githubusercontent.com port 443: Connection timed out [closed]<br>1.打开<code>/etc/hosts</code></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> vim /etc/hosts</span><br></pre></td></tr></table></figure>
-<span id="more"></span>
-<p>2.查询可用IP<br>使用<a href="https://www.ipaddress.com/website/">ipaddress</a>网站查询<code>github.com</code>,<code>ssh.github.com</code>,<code>raw.githubusercontent.com</code>网站的可用IP</p>
-<p>3.在末尾添加以下IP地址</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">140.82.114.3  github.com</span><br><span class="line">140.82.113.36  ssh.github.com</span><br><span class="line">199.232.68.133 raw.githubusercontent.com</span><br></pre></td></tr></table></figure>
-
-<p>4.保存文件并退出</p>
-<p>5.可以使用ping查看域名是否有received</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ ping 199.232.68.133</span><br><span class="line">PING 199.232.68.133 (199.232.68.133) 56(84) bytes of data.</span><br><span class="line">64 bytes from 199.232.68.133: icmp_seq=1 ttl=43 time=234 ms</span><br><span class="line">64 bytes from 199.232.68.133: icmp_seq=2 ttl=43 time=234 ms</span><br><span class="line">64 bytes from 199.232.68.133: icmp_seq=3 ttl=43 time=234 ms</span><br><span class="line">64 bytes from 199.232.68.133: icmp_seq=4 ttl=43 time=233 ms</span><br><span class="line">^C</span><br><span class="line">--- 199.232.68.133 ping statistics ---</span><br><span class="line">4 packets transmitted, 4 received, 0% packet loss, time 3004ms</span><br><span class="line">rtt min/avg/max/mdev = 233.337/233.849/234.302/0.421 ms</span><br></pre></td></tr></table></figure>
-
-<p><strong>ps.为什么要这样做呢??? hosts是什么配置文件呢???</strong><br><strong>hosts文件是什么？</strong><br>在Linux系统中，<code>/etc/hosts</code>文件是一个本地的DNS解析文件，用于将IP地址和主机名映射起来。当你访问某个域名时，系统会首先检查这个文件，如果在这里找到了对应的IP地址，就会直接使用，而不再通过外部DNS服务器查询。<br><strong>为什么要这么做？</strong><br>这是将GitHub相关的域名（如 github.com、ssh.github.com 和 raw.githubusercontent.com）手动映射到指定的IP地址。这么做的目的通常有以下几种可能：</p>
-<ul>
-<li>解决访问问题：有时候由于DNS解析缓慢或者网络封锁，GitHub相关服务的域名可能会无法访问，通过手动在&#x2F;etc&#x2F;hosts中添加这些映射，可以直接访问指定的IP，绕过DNS解析。</li>
-<li>加快访问速度：如果你已经知道某个域名的IP地址，手动添加可以减少系统查询外部DNS的时间，从而提升访问速度。</li>
-<li>绕过DNS劫持：在某些情况下，网络服务提供商或某些恶意软件可能会劫持DNS请求，将你引导到错误的网站，通过手动配置IP可以避免这种情况。</li>
-</ul>
-<p>IP地址可能会随着时间变化，所以如果GitHub更新了服务器的IP地址，而你还在使用旧的配置，可能会导致访问失败。</p>
-]]></content>
-      <categories>
-        <category>PC</category>
       </categories>
   </entry>
   <entry>
@@ -1835,36 +1835,120 @@
       </categories>
   </entry>
   <entry>
-    <title>格式化字符串</title>
-    <url>/2024/09/02/%E6%A0%BC%E5%BC%8F%E5%AD%97%E7%AC%A6%E4%B8%B2/</url>
-    <content><![CDATA[<h1 id="格式字符串"><a href="#格式字符串" class="headerlink" title="格式字符串"></a>格式字符串</h1><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">printf</span><span class="params">()</span>;</span><br><span class="line"><span class="type">int</span> <span class="title function_">scanf</span><span class="params">()</span>;</span><br></pre></td></tr></table></figure>
+    <title>多线程基础</title>
+    <url>/2024/11/07/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%9F%BA%E7%A1%80/</url>
+    <content><![CDATA[<p>并发</p>
+<ol>
+<li>多线程</li>
+<li>多进程</li>
+</ol>
+<h1 id="基础概念"><a href="#基础概念" class="headerlink" title="基础概念"></a>基础概念</h1><p>线程是轻量级的进程，在Linux环境下，线程的本质仍然是进程。操作系统会以进程为单位，分配系统资源。进程是资源分配的最小单位，线程是操作系统调度执行的最小单位。</p>
 <span id="more"></span>
-<p>格式说明符：</p>
-<ul>
-<li>%d:十进制整数</li>
-<li>%u:无符号十进制整数</li>
-<li>%x:十六进制整数</li>
-<li>%o:八进制整数</li>
-<li>%f:浮点数（小数点形式）</li>
-<li>%e:浮点数（科学计数法形式）</li>
-<li>%g:通用浮点数（自动选择%f&#x2F;%e）</li>
-<li>%s:字符串</li>
-<li>%c:字符</li>
-<li>%%:%字符</li>
+<p>线程和进程的区别：</p>
+<ol>
+<li>进程有自己独立的地址空间，多个线程公用同一个地址空间<ul>
+<li>在一个地址空间中多个线程共享资源有：代码段，堆区，全局数据区，打开的文件（文件描述符）</li>
+<li>在一个地址空间中多个线程独享资源有：栈区，寄存器</li>
 </ul>
-<p>标志，宽度，精度，长度修饰符：</p>
-<ul>
-<li>%+d:带正负号的整数</li>
-<li>%10d:宽度为10的整数，如果数字较短则用空格填充</li>
-<li>%.2f:小数点后保留2位的浮点数</li>
-<li>%5.2f:宽度为5，小数点后保留2位的浮点数</li>
-<li>%ld:长整型（long int）的整数</li>
-<li>%lf:双精度浮点数（double）</li>
-<li>%08x:宽度为8，如果输出数字少于指定宽度，使用0填充左边空位，十六进制输出。</li>
+</li>
+<li>线程是程序的最小执行单位，进程是操作系统中资源分配的最小单位<ul>
+<li>每个进程对应一个虚拟地址空间，一个进程只能抢一个CPU时间片</li>
+<li>一个地址空间中可以划分出多个线程，可以抢占更多的时间片</li>
 </ul>
+</li>
+<li>CPU的调度和切换：线程的上下文切换比进程快的多<ul>
+<li>上下文切换：进程和线程分时复用CPU时间片，在切换之前会将上一个任务的状态进行保存，下次切换回这个任务的时候，加载这个状态继续运行任务从保存到再次加载这个过程就是一次上下文切换。</li>
+<li>线程更加廉价，启动速度更快，退出也快，对系统资源的冲击小</li>
+</ul>
+</li>
+</ol>
+<p>在处理多任务程序的时候，使用多线程比使用多进程更有优势，但是线程并不是越多越好：</p>
+<ol>
+<li>文件IO操作：文件IO对CPU使用率不高，线程数 &#x3D; 2 * CPU核心数</li>
+<li>处理复杂算法：线程数 &#x3D; CPU核心数</li>
+</ol>
+<p>什么时候用多进程？</p>
+<ul>
+<li>在处理一个程序的时候，需要去启动另一个程序的时候，使用多进程。</li>
+</ul>
+<p>并发的话，优先考虑多线程。</p>
+<h1 id="线程函数"><a href="#线程函数" class="headerlink" title="线程函数"></a>线程函数</h1><p>头文件 &lt;pthread.h&gt;</p>
+<h2 id="线程ID"><a href="#线程ID" class="headerlink" title="线程ID"></a>线程ID</h2><p>每个线程都有一个唯一的线程ID</p>
+<ul>
+<li>类型：pthread_t</li>
+<li>无符号长整形</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 返回当前线程的ID</span></span><br><span class="line"><span class="type">pthread_t</span> <span class="title function_">pthread_self</span><span class="params">(<span class="type">void</span>)</span>;</span><br></pre></td></tr></table></figure>
+
+<h2 id="创建线程"><a href="#创建线程" class="headerlink" title="创建线程"></a>创建线程</h2><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">pthread_create</span><span class="params">(<span class="type">pthread_t</span> *thread, <span class="type">const</span> <span class="type">pthread_attr_t</span> *attr, <span class="type">void</span>*(*start_routine)(<span class="type">void</span>*), <span class="type">void</span> *arg)</span>;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>参数<ul>
+<li>thread：传出参数，线程创建成功，会将线程ID写入到这个指针指向的内存中</li>
+<li>attr：线程属性，一般使用默认属性，写NULL</li>
+<li>start_routine：函数指针，子线程的处理动作</li>
+<li>arg：作为实参传递到start_routine指向的函数内部</li>
+</ul>
+</li>
+<li>返回值：线程创建成功返回0，创建失败返回对应的错误号</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span>* <span class="title function_">myPrintf</span><span class="params">(<span class="type">void</span> *arg)</span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;子线程id:%ld\n&quot;</span>, pthread_self());</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++)&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;子线程中i = %d\n&quot;</span>, i);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="type">int</span> pRet = <span class="number">0</span>;</span><br><span class="line">    <span class="type">pthread_t</span> tid;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++)&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;主线程中i = %d\n&quot;</span>, i);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;father_pthread_id:%ld\n&quot;</span>, pthread_self());</span><br><span class="line">    pRet = pthread_create(&amp;tid, <span class="literal">NULL</span>, myPrintf, <span class="literal">NULL</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;son_pthread_id:%ld\n&quot;</span>, tid);</span><br><span class="line">    sleep(<span class="number">1</span>);   <span class="comment">// 延迟一秒（CPU挂起）</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>子线程被创建出来之后需要抢cpu时间片,抢不到就不能运行，如果主线程退出了,虚拟地址空间就被释放了,子线程就一并被销毁了。但是如果某一个子线程退出了,主线程仍在运行,虚拟地址空间依旧存在。在没有人为干预的情况下，虚拟地址空间的生命周期和主线程是一样的，与子线程无关。</p>
+<h2 id="线程退出"><a href="#线程退出" class="headerlink" title="线程退出"></a>线程退出</h2><p>调用该函数，当前线程马上退出，并且不会影响到其他线程的正常运行，不管是子线程还是主线程中都可以使用。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">pthread_exit</span><span class="params">(<span class="type">void</span> *retval)</span></span><br></pre></td></tr></table></figure>
+<p>参数：</p>
+<ul>
+<li>线程退出的时候携带的数据，当前子线程的主线程会得到该数据，如果不需要指定为NULL即可。</li>
+</ul>
+<h2 id="线程回收"><a href="#线程回收" class="headerlink" title="线程回收"></a>线程回收</h2><p>子线程退出的时候，其内核资源由主线程进行回收（非内核资源例如栈，代码区资源会在子线程退出的时候，自动释放）。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">pthread_join</span><span class="params">(<span class="type">pthread_t</span> thread, <span class="type">void</span> **retval)</span>;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>阻塞函数<ul>
+<li>如果还有子线程在运行，调用该函数就会阻塞，子线程退出函数解除阻塞进行资源回收，函数被调用一次，只能回收一个子线程，如果有多个子线程则需要循环进行回收。</li>
+</ul>
+</li>
+<li>参数：<ul>
+<li>thread：要回收的子线程的线程ID</li>
+<li>retval：二级指针，指向一级指针的地址，是一个传出参数，这个地址中存储了pthread_exit()传递出的数据，如果不需要这个参数，可以指定为NULL</li>
+</ul>
+</li>
+<li>返回值：<ul>
+<li>线程回收成功返回0，回收失败返回错误码</li>
+</ul>
+</li>
+<li>用法：<ul>
+<li>在子线程退出的时候使用pthread_exit(void* retval)的参数将数据传出，在回收这个子线程的时候通过pthread_join(pthread_t thread, void **retval)的第二个参数来接收子线程传递出的数据。</li>
+<li>需要注意的是，在进行数据回收的时候，不能回收子线程栈上的数据，因为如果多个线程共用同一个虚拟地址空间，每个线程在栈区都有一块属于自己的内存，相当于栈区被这几个线程平分了，当线程退出，线程在栈区的内存也就被回收了，因此随着子线程的退出，写入到栈区的数据也就被释放了。</li>
+<li>可以使用全局变量</li>
+<li>也可以使用主线程栈</li>
+</ul>
+</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Person</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="type">int</span> old;</span><br><span class="line">    <span class="type">char</span>* name;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="type">void</span>* <span class="title function_">callback</span><span class="params">(<span class="type">void</span> *arg)</span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;子线程id:%ld\n&quot;</span>, pthread_self());</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++)&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;子线程中i = %d\n&quot;</span>, i);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">Person</span>* <span class="title">p</span> =</span> (<span class="keyword">struct</span> Person*)arg;</span><br><span class="line">    p -&gt; old = <span class="number">10</span>;</span><br><span class="line">    p -&gt; name = <span class="string">&quot;zhang&quot;</span>;</span><br><span class="line">    pthread_exit(arg);</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++)&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;主线程中i = %d\n&quot;</span>, i);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;father_pthread_id:%ld\n&quot;</span>, pthread_self());</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> pRet = <span class="number">0</span>;</span><br><span class="line">    <span class="type">pthread_t</span> tid;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">Person</span> <span class="title">p1</span>;</span>   <span class="comment">// 主线程栈</span></span><br><span class="line">    <span class="type">void</span>* ptr = <span class="literal">NULL</span>;   <span class="comment">// 传回参数</span></span><br><span class="line">    pRet = pthread_create(&amp;tid, <span class="literal">NULL</span>, callback, &amp;p1);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;son_pthread_id:%ld\n&quot;</span>, tid);</span><br><span class="line">    pthread_join(tid, &amp;ptr);</span><br><span class="line">    <span class="comment">// 因为ptr是一个void*类型，如果不想这么写，也可以通过类型转换，将ptr转成Person指针</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;name:%s\n&quot;</span>, p1.name);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;old:%d\n&quot;</span>, p1.old);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="线程分离"><a href="#线程分离" class="headerlink" title="线程分离"></a>线程分离</h2><p>线程分离之后，子线程退出的时候，其占用的内核资源就会被系统的其他进程接管并回收。优势在于，不需要在主线程进行阻塞，等待子线程结束，由主线程回收子线程资源。搭配pthread_exit()函数，可以实现主线程退出，子线程依然有其他线程进行资源的回收。<br>在某些情况下，程序中的主线程也有自己的业务流程，如果想让主线程负责子线程的资源回收，调用pthread_join()函数，子要子线程不退出，主线程就会一直被阻塞，主线程的任务也不能推进。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">pthread_detach</span><span class="params">(<span class="type">pthread_t</span> thread)</span>;</span><br></pre></td></tr></table></figure>
+<p>参数：<br>    - thread：要分离的子线程ID</p>
+<p>示例代码：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;pthread.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 子线程的处理代码</span></span><br><span class="line"><span class="type">void</span>* <span class="title function_">working</span><span class="params">(<span class="type">void</span>* arg)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;我是子线程, 线程ID: %ld\n&quot;</span>, pthread_self());</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>; i&lt;<span class="number">9</span>; ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;child == i: = %d\n&quot;</span>, i);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 1. 创建一个子线程</span></span><br><span class="line">    <span class="type">pthread_t</span> tid;</span><br><span class="line">    pthread_create(&amp;tid, <span class="literal">NULL</span>, working, <span class="literal">NULL</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;子线程创建成功, 线程ID: %ld\n&quot;</span>, tid);</span><br><span class="line">    <span class="comment">// 2. 子线程不会执行下边的代码, 主线程执行</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;我是主线程, 线程ID: %ld\n&quot;</span>, pthread_self());</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>; i&lt;<span class="number">3</span>; ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;i = %d\n&quot;</span>, i);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 设置子线程和主线程分离</span></span><br><span class="line">    pthread_detach(tid);</span><br><span class="line">    <span class="comment">// 让主线程自己退出即可</span></span><br><span class="line">    pthread_exit(<span class="literal">NULL</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="线程取消"><a href="#线程取消" class="headerlink" title="线程取消"></a>线程取消</h2><p>在某些情况下，在一个线程中杀死另一个线程：<br>step1：在线程A中调用pthread_cancel(pthreadB_ID)函数，指定杀死线程B，这个时候线程B并不会直接被杀死<br>step2：在线程B中若执行一次系统调用（从用户区切换到内核区），线程B自动被杀死，否则线程B可以一直运行下去</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">int pthread_cancel(pthread_t thread);</span><br></pre></td></tr></table></figure>
+<ol>
+<li>参数：要杀死的线程的线程ID</li>
+<li>返回值：函数调用成功返回0，调用失败返回错误码</li>
+</ol>
+<p>示例代码：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;pthread.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 子线程的处理代码</span></span><br><span class="line"><span class="type">void</span>* <span class="title function_">working</span><span class="params">(<span class="type">void</span>* arg)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> j=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>; i&lt;<span class="number">9</span>; ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        j++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 这个函数会调用系统函数, 因此这是个间接的系统调用</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;我是子线程, 线程ID: %ld\n&quot;</span>, pthread_self());</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>; i&lt;<span class="number">9</span>; ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot; child i: %d\n&quot;</span>, i);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 1. 创建一个子线程</span></span><br><span class="line">    <span class="type">pthread_t</span> tid;</span><br><span class="line">    pthread_create(&amp;tid, <span class="literal">NULL</span>, working, <span class="literal">NULL</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;子线程创建成功, 线程ID: %ld\n&quot;</span>, tid);</span><br><span class="line">    <span class="comment">// 2. 子线程不会执行下边的代码, 主线程执行</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;我是主线程, 线程ID: %ld\n&quot;</span>, pthread_self());</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>; i&lt;<span class="number">3</span>; ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;i = %d\n&quot;</span>, i);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 杀死子线程, 如果子线程中做系统调用, 子线程就结束了</span></span><br><span class="line">    pthread_cancel(tid);</span><br><span class="line">    <span class="comment">// 让主线程自己退出即可</span></span><br><span class="line">    pthread_exit(<span class="literal">NULL</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="线程ID比较"><a href="#线程ID比较" class="headerlink" title="线程ID比较"></a>线程ID比较</h2><p>在Linux中线程ID本质是一个无符号长整型，因此可以直接使用比较操作符比较这两个线程的ID，但是线程库是可以跨平台使用的，在某些平台上pthread_t可能不是一个单纯的整型，这种情况下比较两个线程的ID就要使用线程比较函数。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">pthread_equal</span><span class="params">(<span class="type">pthread_t</span> t1, <span class="type">pthread_t</span> t2)</span>;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>参数：t1和t2是要比较的线程的线程ID</li>
+<li>返回值：如果两个线程ID相等返回非0值，否则返回0</li>
+</ol>
 ]]></content>
       <categories>
-        <category>C</category>
+        <category>操作系统</category>
       </categories>
   </entry>
   <entry>
@@ -1905,6 +1989,39 @@
 ]]></content>
       <categories>
         <category>PC</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>格式化字符串</title>
+    <url>/2024/09/02/%E6%A0%BC%E5%BC%8F%E5%AD%97%E7%AC%A6%E4%B8%B2/</url>
+    <content><![CDATA[<h1 id="格式字符串"><a href="#格式字符串" class="headerlink" title="格式字符串"></a>格式字符串</h1><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">printf</span><span class="params">()</span>;</span><br><span class="line"><span class="type">int</span> <span class="title function_">scanf</span><span class="params">()</span>;</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+<p>格式说明符：</p>
+<ul>
+<li>%d:十进制整数</li>
+<li>%u:无符号十进制整数</li>
+<li>%x:十六进制整数</li>
+<li>%o:八进制整数</li>
+<li>%f:浮点数（小数点形式）</li>
+<li>%e:浮点数（科学计数法形式）</li>
+<li>%g:通用浮点数（自动选择%f&#x2F;%e）</li>
+<li>%s:字符串</li>
+<li>%c:字符</li>
+<li>%%:%字符</li>
+</ul>
+<p>标志，宽度，精度，长度修饰符：</p>
+<ul>
+<li>%+d:带正负号的整数</li>
+<li>%10d:宽度为10的整数，如果数字较短则用空格填充</li>
+<li>%.2f:小数点后保留2位的浮点数</li>
+<li>%5.2f:宽度为5，小数点后保留2位的浮点数</li>
+<li>%ld:长整型（long int）的整数</li>
+<li>%lf:双精度浮点数（double）</li>
+<li>%08x:宽度为8，如果输出数字少于指定宽度，使用0填充左边空位，十六进制输出。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>C</category>
       </categories>
   </entry>
   <entry>
