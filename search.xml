@@ -64,172 +64,6 @@
       </categories>
   </entry>
   <entry>
-    <title>Git分支管理Hexo</title>
-    <url>/2024/09/02/Git%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86Hexo/</url>
-    <content><![CDATA[<h1 id="1-本地初始电脑"><a href="#1-本地初始电脑" class="headerlink" title="1.本地初始电脑"></a>1.本地初始电脑</h1><p>1.初始化Git仓库</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> blog</span><br><span class="line">$ git init  <span class="comment"># 创建.git子目录</span></span><br></pre></td></tr></table></figure>
-<span id="more"></span>
-<p>2.添加远程仓库</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git remote add origin git@github.com:yourname/yourname.github.io.git</span><br></pre></td></tr></table></figure>
-
-<p>3.拉取远端仓库所有内容及分支</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git fetch origin</span><br></pre></td></tr></table></figure>
-
-<p>5.新建分支</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git checkout -b master</span><br></pre></td></tr></table></figure>
-
-<p>4.在<code>./source/_post/</code>中添加.md博客并生成</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo clean</span><br><span class="line">$ hexo g</span><br><span class="line">$ hexo d</span><br></pre></td></tr></table></figure>
-
-<p>5.将本地仓库推送至远端</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git push origin master</span><br></pre></td></tr></table></figure>
-
-<h1 id="2-其他电脑"><a href="#2-其他电脑" class="headerlink" title="2.其他电脑"></a>2.其他电脑</h1><p>1.安装Node.js</p>
-<p>2.拉取远端仓库并进入文件夹</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span> git@github.com:yourname/yourname.github.io.git blogname</span><br><span class="line">$ <span class="built_in">cd</span> blogname</span><br></pre></td></tr></table></figure>
-
-<p>3.拉取远端仓库分支并切换至master分支（默认分支是main，master分支是自己建的）</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git fetch origin</span><br><span class="line">$ git checkout master</span><br></pre></td></tr></table></figure>
-
-<p>4.安装Hexo及相关依赖</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm install hexo	<span class="comment"># 安装hexo</span></span><br><span class="line">$ npm install hexo-cli -g <span class="comment"># 重新安装(如果上述安装不起作用）</span></span><br><span class="line">$ npm install	<span class="comment"># 安装依赖</span></span><br></pre></td></tr></table></figure>
-
-<p>5.安装<code>deploy-git</code></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
-
-<p>6.在<code>./source/_post/</code>中添加.md博客并生成</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo clean</span><br><span class="line">$ hexo g</span><br><span class="line">$ hexo d</span><br></pre></td></tr></table></figure>
-
-<p>8.将本地仓库推送至远端</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git push origin master</span><br></pre></td></tr></table></figure>
-
-<h1 id="3-更换主题"><a href="#3-更换主题" class="headerlink" title="3.更换主题"></a>3.更换主题</h1><p>1.进入<code>./themes</code>文件夹</p>
-<p>2.github上clone喜欢的主题</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span> git@github.com:xxx/xxx.git file-name</span><br></pre></td></tr></table></figure>
-
-<p>3.进入<code>file-name</code>文件夹</p>
-<p>4.删除.git文件夹</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">rm</span> -r .git</span><br></pre></td></tr></table></figure>
-
-<p>5.修改最外层目录下的<code>_config.yml</code>文件<br>theme: file-name</p>
-<p>6.修改.gitignore文件（或者把里面内容删掉也行）</p>
-<p>7.将本地仓库推送至远端</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git add .</span><br><span class="line">$ git commit -m &quot;add theme&quot;</span><br><span class="line">$ git push origin master</span><br></pre></td></tr></table></figure>
-
-<p>ps.修改好主题之后，主题配置在<code>file-name</code>文件夹中的<code>_config.yml</code>中进行配置。</p>
-<h1 id="4-说明"><a href="#4-说明" class="headerlink" title="4.说明"></a>4.说明</h1><p><code>main</code>分支用来部署博客：当执行<code>hexo d</code>的时候，博客部署在<code>main</code>分支，不需要执行<code>git push origin main</code>，因为<code>hexo d</code>指令已经将相应的<code>html</code>文件推送到远端服务器的<code>main</code>分支上了。<br><code>master</code>分支用来存储文件：比如<code>.md</code>文件，存放在<code>./source/_post</code>文件夹中，最后需要手动执行<code>git push origin master</code>。</p>
-]]></content>
-      <categories>
-        <category>个人博客</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Linux基础</title>
-    <url>/2024/09/20/Linux%E5%9F%BA%E7%A1%80/</url>
-    <content><![CDATA[<h1 id="Linux内核"><a href="#Linux内核" class="headerlink" title="Linux内核"></a>Linux内核</h1><p>1.进程调度 SCHED<br>2.内存管理 MMU<br>3.虚拟文件系统 VFS<br>4.网络接口<br>5.进程间通信</p>
-<span id="more"></span>
-<h1 id="Linux目录"><a href="#Linux目录" class="headerlink" title="Linux目录"></a>Linux目录</h1><ul>
-<li>bin：存储可执行程序，比如各种命令的可执行程序</li>
-<li>sbin：root用户使用的一些二进制可执行程序</li>
-<li>etc：配置文件目录，存储应用程序的配置文件</li>
-<li>lib：系统或安装的软件所使用的静态库和动态库</li>
-<li>media：挂在目录，挂在外部设备</li>
-<li>mnt：临时挂载目录，比如U盘可以挂载在这个目录下</li>
-<li>proc：内存使用的映射目录，给操作系统使用</li>
-<li>tmp：临时目录，重启电脑数据被自动删除</li>
-<li>boot：存储开机相关的设置</li>
-<li>home：普通用户的家目录</li>
-<li>root：root用户的家目录</li>
-<li>dev：设备目录，所有硬件会被抽象成文件存储起来比如键盘，鼠标</li>
-<li>opt：第三方软件的安装目录</li>
-<li>var：日志文件</li>
-<li>usr：系统的资源目录<ul>
-<li>&#x2F;usr&#x2F;bin：可执行二进制程序</li>
-<li>&#x2F;usr&#x2F;include：标准头文件目录</li>
-<li>&#x2F;usr&#x2F;local：安装的第三方软件，同opt目录</li>
-</ul>
-</li>
-</ul>
-<h1 id="快捷键"><a href="#快捷键" class="headerlink" title="快捷键"></a>快捷键</h1><table>
-<thead>
-<tr>
-<th align="center">快捷键</th>
-<th align="center">功能</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">Ctrl+a</td>
-<td align="center">光标移动到命令行行首</td>
-</tr>
-<tr>
-<td align="center">Ctrl+e</td>
-<td align="center">光标移动到命令行行尾</td>
-</tr>
-<tr>
-<td align="center">Ctrl+u</td>
-<td align="center">删除光标前的字符串</td>
-</tr>
-<tr>
-<td align="center">Ctrl+k</td>
-<td align="center">删除光标后的字符串</td>
-</tr>
-</tbody></table>
-<h1 id="文件管理命令"><a href="#文件管理命令" class="headerlink" title="文件管理命令"></a>文件管理命令</h1><h2 id="1-在邻近的两个目录之间切换-cd"><a href="#1-在邻近的两个目录之间切换-cd" class="headerlink" title="1.在邻近的两个目录之间切换 cd"></a>1.在邻近的两个目录之间切换 cd</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#通过cd进入目录1</span></span><br><span class="line">$ <span class="built_in">cd</span> /home/zhm/Desktop/Linux    </span><br><span class="line"></span><br><span class="line"><span class="comment">#通过cd进入目录2</span></span><br><span class="line">$ <span class="built_in">cd</span> /Download/Clash</span><br><span class="line"></span><br><span class="line"><span class="comment">#在两个目录之间切换</span></span><br><span class="line">$ <span class="built_in">cd</span> -</span><br></pre></td></tr></table></figure>
-
-<h2 id="2-ls命令"><a href="#2-ls命令" class="headerlink" title="2.ls命令"></a>2.ls命令</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#查看当前目录下所有文件包括隐藏文件</span></span><br><span class="line">$ <span class="built_in">ls</span> -a</span><br><span class="line"></span><br><span class="line"><span class="comment">#显示文件详细信息</span></span><br><span class="line">$ <span class="built_in">ls</span> -l <span class="comment">#可以缩写成ll</span></span><br><span class="line">drwxrwxr-x 5 zhm zhm 4.0K  9月  4 21:25 ./</span><br><span class="line">drwxr-xr-x 3 zhm zhm 4.0K  9月  4 13:52 ../</span><br><span class="line">drwxrwxr-x 5 zhm zhm 4.0K  9月  4 18:29 gcc/</span><br><span class="line">drwxrwxr-x 2 zhm zhm 4.0K  9月  4 21:25 makefile/</span><br><span class="line">drwxrwxr-x 2 zhm zhm 4.0K  9月  3 21:03 search/</span><br></pre></td></tr></table></figure>
-<ul>
-<li>文件类型<ul>
-<li>-:普通文件</li>
-<li>d:目录</li>
-<li>l:软链接文件</li>
-<li>c:字符设备</li>
-<li>b:块设备</li>
-<li>p:管道文件</li>
-<li>s:本地套接字文件</li>
-</ul>
-</li>
-<li>文件所有者权限</li>
-<li>文件所属组权限</li>
-<li>其他人权限</li>
-<li>硬链接计数</li>
-<li>文件所有者</li>
-<li>文件所有组</li>
-<li>文件大小</li>
-<li>文件修改时间</li>
-<li>文件名</li>
-</ul>
-<h2 id="3-删除文件或目录"><a href="#3-删除文件或目录" class="headerlink" title="3.删除文件或目录"></a>3.删除文件或目录</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 删除文件</span></span><br><span class="line">$ <span class="built_in">rm</span> file1.c file2.c</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除目录</span></span><br><span class="line">$ <span class="built_in">rm</span> <span class="built_in">dir</span> -r</span><br><span class="line"></span><br><span class="line"><span class="comment"># 强制删除目录</span></span><br><span class="line">$ <span class="built_in">rm</span> <span class="built_in">dir</span> -rf</span><br></pre></td></tr></table></figure>
-
-<h2 id="4-拷贝文件或目录"><a href="#4-拷贝文件或目录" class="headerlink" title="4.拷贝文件或目录"></a>4.拷贝文件或目录</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 拷贝文件（文件不存在则创建，文件存在则覆盖）</span></span><br><span class="line">$ <span class="built_in">cp</span> fileA fileB</span><br><span class="line"></span><br><span class="line"><span class="comment"># 拷贝目录（拷贝目录需要参数 -r）</span></span><br><span class="line"><span class="comment"># 情景1：目录A存在，目录B不存在（创建B，并将A放入B）</span></span><br><span class="line">$ <span class="built_in">cp</span> dirA dirB -r</span><br><span class="line"></span><br><span class="line"><span class="comment"># 情景2：目录A存在，目录B也存在（直接将A放入B）</span></span><br><span class="line">$ <span class="built_in">cp</span> dirA dirB -r</span><br><span class="line"></span><br><span class="line"><span class="comment"># 情景3：把目录A中的所有文件拷贝到目录B中（A中文件放入B）</span></span><br><span class="line">$ <span class="built_in">cp</span> dirA/* dirB -r</span><br></pre></td></tr></table></figure>
-
-<h2 id="5-查看文件内容"><a href="#5-查看文件内容" class="headerlink" title="5.查看文件内容"></a>5.查看文件内容</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">cat</span> filename</span><br><span class="line">$ more filename</span><br><span class="line">    - 回车：显示下一行</span><br><span class="line">    - 空格：向下滚动一屏</span><br><span class="line">    - b：返回上一屏</span><br><span class="line">    - q：退出</span><br><span class="line">$ less filename</span><br><span class="line">    - 空格：向下翻页</span><br><span class="line">    - b：向上翻页</span><br><span class="line">    - 回车：显示下一行</span><br><span class="line">    - 上下键：上下滚动</span><br><span class="line">    - q：退出</span><br></pre></td></tr></table></figure>
-
-<h2 id="6-创建链接"><a href="#6-创建链接" class="headerlink" title="6.创建链接"></a>6.创建链接</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 软链接：相当于创建快捷方式</span></span><br><span class="line"><span class="comment"># 创建软链接并放到另一个目录</span></span><br><span class="line">$ <span class="built_in">ln</span> -s hello /home/zhm/Desktop/Linux/search/link/hello.link</span><br><span class="line"></span><br><span class="line"><span class="comment"># 硬链接：多个文件指向同一个内存</span></span><br><span class="line">$ <span class="built_in">ln</span> hello ./link/hello.link</span><br></pre></td></tr></table></figure>
-
-<h2 id="7-文件属性"><a href="#7-文件属性" class="headerlink" title="7.文件属性"></a>7.文件属性</h2><h3 id="7-1-修改文件权限-chmod"><a href="#7-1-修改文件权限-chmod" class="headerlink" title="7.1 修改文件权限 chmod"></a>7.1 修改文件权限 chmod</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 语法格式</span></span><br><span class="line"><span class="comment"># chmod who [+|-|=] mod filename</span></span><br><span class="line"><span class="comment"># chmod [+|-|=] mod filename</span></span><br><span class="line">    - <span class="built_in">who</span>:</span><br><span class="line">        - u：user 文件所有者</span><br><span class="line">        - g：group 文件所有组</span><br><span class="line">        - o：other 其他用户</span><br><span class="line">        - a：all 以上三类</span><br><span class="line">    - [+|-|=]:</span><br><span class="line">        - +：添加权限</span><br><span class="line">        - -：去除权限</span><br><span class="line">        - =：覆盖权限</span><br><span class="line">    - mod</span><br><span class="line">        - r/4：读权限</span><br><span class="line">        - w/2：写权限</span><br><span class="line">        - x/1：执行权限</span><br><span class="line">        - -/0：没有权限</span><br><span class="line"></span><br><span class="line"><span class="comment"># 示例：给文件所有者添加执行权限</span></span><br><span class="line">$ <span class="built_in">chmod</span> u +x hello</span><br><span class="line"></span><br><span class="line"><span class="comment"># 示例：给所有用户添加读写执行权限</span></span><br><span class="line"><span class="comment"># 7 = 4 + 3 + 1（读 + 写 + 执行）</span></span><br><span class="line">$ <span class="built_in">chmod</span> 777 hello</span><br></pre></td></tr></table></figure>
-
-<h3 id="7-2-修改文件所有者-chown"><a href="#7-2-修改文件所有者-chown" class="headerlink" title="7.2 修改文件所有者 chown"></a>7.2 修改文件所有者 chown</h3><p>创建新用户的时候，系统会自动创建出对应用户名组，比如创建一个新的用户wwl，则会同时创建出一个新的用户组wwl。默认情况下，文件通过哪个用户创建出来，就属于哪个用户以及属于用户对应的组。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 修改文件所有者</span></span><br><span class="line"><span class="comment"># sudo chown 新的所有者 文件名</span></span><br><span class="line">$ <span class="built_in">sudo</span> <span class="built_in">chown</span> wwl &lt;filename&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 修改文件所有者和所属组</span></span><br><span class="line"><span class="comment"># sudo chown 新的文件所有者：新的文件所属组 文件名</span></span><br><span class="line">$ <span class="built_in">sudo</span> <span class="built_in">chown</span> wwl:wwl &lt;filename&gt;</span><br></pre></td></tr></table></figure>
-
-<h3 id="7-3-修改文件所属组-chgrp"><a href="#7-3-修改文件所属组-chgrp" class="headerlink" title="7.3 修改文件所属组 chgrp"></a>7.3 修改文件所属组 chgrp</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># sudo chgrp 新的组 文件名</span></span><br><span class="line">$ <span class="built_in">sudo</span> <span class="built_in">chgrp</span> wwl &lt;filename&gt;</span><br></pre></td></tr></table></figure>
-
-<h2 id="8-which"><a href="#8-which" class="headerlink" title="8.which"></a>8.which</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 查看要执行的命令所在的实际路径</span></span><br><span class="line">$ <span class="built_in">which</span> <span class="built_in">ls</span></span><br><span class="line">/usr/bin/ls</span><br></pre></td></tr></table></figure>
-
-<h2 id="9-输出重定向"><a href="#9-输出重定向" class="headerlink" title="9.输出重定向"></a>9.输出重定向</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># &gt; : 将文件内容写入到指定文件中，覆盖原数据</span></span><br><span class="line"><span class="comment"># &gt;&gt; : 将文件内容追加到指定文件的尾部</span></span><br><span class="line">$ <span class="built_in">cat</span> hello.c &gt; hello.cpp</span><br><span class="line">$ <span class="built_in">date</span> &gt;&gt; time.txt</span><br></pre></td></tr></table></figure>
-
-<h1 id="用户管理命令"><a href="#用户管理命令" class="headerlink" title="用户管理命令"></a>用户管理命令</h1><h2 id="1-切换用户-su"><a href="#1-切换用户-su" class="headerlink" title="1.切换用户 su"></a>1.切换用户 su</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 使用 su 只切换用户，当前的工作目录不会变化</span></span><br><span class="line">$ su wwl</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用 su - 不仅会切换用户，工作目录也会切换为当前用户的家目录</span></span><br><span class="line">$ su - wwl </span><br></pre></td></tr></table></figure>
-
-<h2 id="2-添加用户-adduser"><a href="#2-添加用户-adduser" class="headerlink" title="2.添加用户 adduser"></a>2.添加用户 adduser</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># sudo adduser &lt;username&gt;</span></span><br><span class="line">$ <span class="built_in">sudo</span> adduser wwl</span><br></pre></td></tr></table></figure>
-
-<h2 id="3-删除用户-userdel"><a href="#3-删除用户-userdel" class="headerlink" title="3.删除用户 userdel"></a>3.删除用户 userdel</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># sudo userdel &lt;username&gt; -r</span></span><br><span class="line">$ <span class="built_in">sudo</span> userdel wwl -r</span><br></pre></td></tr></table></figure>
-
-<h2 id="4-添加和删除用户组-groupadd-groupdel"><a href="#4-添加和删除用户组-groupadd-groupdel" class="headerlink" title="4.添加和删除用户组 groupadd&#x2F;groupdel"></a>4.添加和删除用户组 groupadd&#x2F;groupdel</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 基于普通用户创建新的用户组</span></span><br><span class="line">$ <span class="built_in">sudo</span> groupadd &lt;new-group-name&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 基于普通用户删除已经存在的用户组</span></span><br><span class="line">$ <span class="built_in">sudo</span> groupdel &lt;group-name&gt;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-  </entry>
-  <entry>
     <title>Git</title>
     <url>/2024/09/02/Git/</url>
     <content><![CDATA[<h1 id="Git"><a href="#Git" class="headerlink" title="Git"></a>Git</h1><h2 id="1-Git特点："><a href="#1-Git特点：" class="headerlink" title="1.Git特点："></a>1.Git特点：</h2><p>1.直接记录快照，而非差异比较<br>2.近乎所有操作都是本地执行<br>3.Git保证完整性</p>
@@ -533,6 +367,66 @@
       </categories>
   </entry>
   <entry>
+    <title>Git分支管理Hexo</title>
+    <url>/2024/09/02/Git%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86Hexo/</url>
+    <content><![CDATA[<h1 id="1-本地初始电脑"><a href="#1-本地初始电脑" class="headerlink" title="1.本地初始电脑"></a>1.本地初始电脑</h1><p>1.初始化Git仓库</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> blog</span><br><span class="line">$ git init  <span class="comment"># 创建.git子目录</span></span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+<p>2.添加远程仓库</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git remote add origin git@github.com:yourname/yourname.github.io.git</span><br></pre></td></tr></table></figure>
+
+<p>3.拉取远端仓库所有内容及分支</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git fetch origin</span><br></pre></td></tr></table></figure>
+
+<p>5.新建分支</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git checkout -b master</span><br></pre></td></tr></table></figure>
+
+<p>4.在<code>./source/_post/</code>中添加.md博客并生成</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo clean</span><br><span class="line">$ hexo g</span><br><span class="line">$ hexo d</span><br></pre></td></tr></table></figure>
+
+<p>5.将本地仓库推送至远端</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git push origin master</span><br></pre></td></tr></table></figure>
+
+<h1 id="2-其他电脑"><a href="#2-其他电脑" class="headerlink" title="2.其他电脑"></a>2.其他电脑</h1><p>1.安装Node.js</p>
+<p>2.拉取远端仓库并进入文件夹</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span> git@github.com:yourname/yourname.github.io.git blogname</span><br><span class="line">$ <span class="built_in">cd</span> blogname</span><br></pre></td></tr></table></figure>
+
+<p>3.拉取远端仓库分支并切换至master分支（默认分支是main，master分支是自己建的）</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git fetch origin</span><br><span class="line">$ git checkout master</span><br></pre></td></tr></table></figure>
+
+<p>4.安装Hexo及相关依赖</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm install hexo	<span class="comment"># 安装hexo</span></span><br><span class="line">$ npm install hexo-cli -g <span class="comment"># 重新安装(如果上述安装不起作用）</span></span><br><span class="line">$ npm install	<span class="comment"># 安装依赖</span></span><br></pre></td></tr></table></figure>
+
+<p>5.安装<code>deploy-git</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
+
+<p>6.在<code>./source/_post/</code>中添加.md博客并生成</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo clean</span><br><span class="line">$ hexo g</span><br><span class="line">$ hexo d</span><br></pre></td></tr></table></figure>
+
+<p>8.将本地仓库推送至远端</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git push origin master</span><br></pre></td></tr></table></figure>
+
+<h1 id="3-更换主题"><a href="#3-更换主题" class="headerlink" title="3.更换主题"></a>3.更换主题</h1><p>1.进入<code>./themes</code>文件夹</p>
+<p>2.github上clone喜欢的主题</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span> git@github.com:xxx/xxx.git file-name</span><br></pre></td></tr></table></figure>
+
+<p>3.进入<code>file-name</code>文件夹</p>
+<p>4.删除.git文件夹</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">rm</span> -r .git</span><br></pre></td></tr></table></figure>
+
+<p>5.修改最外层目录下的<code>_config.yml</code>文件<br>theme: file-name</p>
+<p>6.修改.gitignore文件（或者把里面内容删掉也行）</p>
+<p>7.将本地仓库推送至远端</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git add .</span><br><span class="line">$ git commit -m &quot;add theme&quot;</span><br><span class="line">$ git push origin master</span><br></pre></td></tr></table></figure>
+
+<p>ps.修改好主题之后，主题配置在<code>file-name</code>文件夹中的<code>_config.yml</code>中进行配置。</p>
+<h1 id="4-说明"><a href="#4-说明" class="headerlink" title="4.说明"></a>4.说明</h1><p><code>main</code>分支用来部署博客：当执行<code>hexo d</code>的时候，博客部署在<code>main</code>分支，不需要执行<code>git push origin main</code>，因为<code>hexo d</code>指令已经将相应的<code>html</code>文件推送到远端服务器的<code>main</code>分支上了。<br><code>master</code>分支用来存储文件：比如<code>.md</code>文件，存放在<code>./source/_post</code>文件夹中，最后需要手动执行<code>git push origin master</code>。</p>
+]]></content>
+      <categories>
+        <category>个人博客</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Hexo搭建个人博客</title>
     <url>/2024/09/02/Hexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
     <content><![CDATA[<h1 id="1-前置条件"><a href="#1-前置条件" class="headerlink" title="1.前置条件"></a>1.前置条件</h1><ul>
@@ -586,6 +480,173 @@
 ]]></content>
       <categories>
         <category>个人博客</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Linux基础</title>
+    <url>/2024/09/20/Linux%E5%9F%BA%E7%A1%80/</url>
+    <content><![CDATA[<h1 id="Linux内核"><a href="#Linux内核" class="headerlink" title="Linux内核"></a>Linux内核</h1><p>1.进程调度 SCHED<br>2.内存管理 MMU<br>3.虚拟文件系统 VFS<br>4.网络接口<br>5.进程间通信</p>
+<span id="more"></span>
+<h1 id="Linux目录"><a href="#Linux目录" class="headerlink" title="Linux目录"></a>Linux目录</h1><ul>
+<li>bin：存储可执行程序，比如各种命令的可执行程序</li>
+<li>sbin：root用户使用的一些二进制可执行程序</li>
+<li>etc：配置文件目录，存储应用程序的配置文件</li>
+<li>lib：系统或安装的软件所使用的静态库和动态库</li>
+<li>media：挂在目录，挂在外部设备</li>
+<li>mnt：临时挂载目录，比如U盘可以挂载在这个目录下</li>
+<li>proc：内存使用的映射目录，给操作系统使用</li>
+<li>tmp：临时目录，重启电脑数据被自动删除</li>
+<li>boot：存储开机相关的设置</li>
+<li>home：普通用户的家目录</li>
+<li>root：root用户的家目录</li>
+<li>dev：设备目录，所有硬件会被抽象成文件存储起来比如键盘，鼠标</li>
+<li>opt：第三方软件的安装目录</li>
+<li>var：日志文件</li>
+<li>usr：系统的资源目录<ul>
+<li>&#x2F;usr&#x2F;bin：可执行二进制程序</li>
+<li>&#x2F;usr&#x2F;include：标准头文件目录</li>
+<li>&#x2F;usr&#x2F;local：安装的第三方软件，同opt目录</li>
+</ul>
+</li>
+</ul>
+<h1 id="快捷键"><a href="#快捷键" class="headerlink" title="快捷键"></a>快捷键</h1><table>
+<thead>
+<tr>
+<th align="center">快捷键</th>
+<th align="center">功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">Ctrl+a</td>
+<td align="center">光标移动到命令行行首</td>
+</tr>
+<tr>
+<td align="center">Ctrl+e</td>
+<td align="center">光标移动到命令行行尾</td>
+</tr>
+<tr>
+<td align="center">Ctrl+u</td>
+<td align="center">删除光标前的字符串</td>
+</tr>
+<tr>
+<td align="center">Ctrl+k</td>
+<td align="center">删除光标后的字符串</td>
+</tr>
+</tbody></table>
+<h1 id="文件管理命令"><a href="#文件管理命令" class="headerlink" title="文件管理命令"></a>文件管理命令</h1><h2 id="1-在邻近的两个目录之间切换-cd"><a href="#1-在邻近的两个目录之间切换-cd" class="headerlink" title="1.在邻近的两个目录之间切换 cd"></a>1.在邻近的两个目录之间切换 cd</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#通过cd进入目录1</span></span><br><span class="line">$ <span class="built_in">cd</span> /home/zhm/Desktop/Linux    </span><br><span class="line"></span><br><span class="line"><span class="comment">#通过cd进入目录2</span></span><br><span class="line">$ <span class="built_in">cd</span> /Download/Clash</span><br><span class="line"></span><br><span class="line"><span class="comment">#在两个目录之间切换</span></span><br><span class="line">$ <span class="built_in">cd</span> -</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-ls命令"><a href="#2-ls命令" class="headerlink" title="2.ls命令"></a>2.ls命令</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#查看当前目录下所有文件包括隐藏文件</span></span><br><span class="line">$ <span class="built_in">ls</span> -a</span><br><span class="line"></span><br><span class="line"><span class="comment">#显示文件详细信息</span></span><br><span class="line">$ <span class="built_in">ls</span> -l <span class="comment">#可以缩写成ll</span></span><br><span class="line">drwxrwxr-x 5 zhm zhm 4.0K  9月  4 21:25 ./</span><br><span class="line">drwxr-xr-x 3 zhm zhm 4.0K  9月  4 13:52 ../</span><br><span class="line">drwxrwxr-x 5 zhm zhm 4.0K  9月  4 18:29 gcc/</span><br><span class="line">drwxrwxr-x 2 zhm zhm 4.0K  9月  4 21:25 makefile/</span><br><span class="line">drwxrwxr-x 2 zhm zhm 4.0K  9月  3 21:03 search/</span><br></pre></td></tr></table></figure>
+<ul>
+<li>文件类型<ul>
+<li>-:普通文件</li>
+<li>d:目录</li>
+<li>l:软链接文件</li>
+<li>c:字符设备</li>
+<li>b:块设备</li>
+<li>p:管道文件</li>
+<li>s:本地套接字文件</li>
+</ul>
+</li>
+<li>文件所有者权限</li>
+<li>文件所属组权限</li>
+<li>其他人权限</li>
+<li>硬链接计数</li>
+<li>文件所有者</li>
+<li>文件所有组</li>
+<li>文件大小</li>
+<li>文件修改时间</li>
+<li>文件名</li>
+</ul>
+<h2 id="3-删除文件或目录"><a href="#3-删除文件或目录" class="headerlink" title="3.删除文件或目录"></a>3.删除文件或目录</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 删除文件</span></span><br><span class="line">$ <span class="built_in">rm</span> file1.c file2.c</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除目录</span></span><br><span class="line">$ <span class="built_in">rm</span> <span class="built_in">dir</span> -r</span><br><span class="line"></span><br><span class="line"><span class="comment"># 强制删除目录</span></span><br><span class="line">$ <span class="built_in">rm</span> <span class="built_in">dir</span> -rf</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-拷贝文件或目录"><a href="#4-拷贝文件或目录" class="headerlink" title="4.拷贝文件或目录"></a>4.拷贝文件或目录</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 拷贝文件（文件不存在则创建，文件存在则覆盖）</span></span><br><span class="line">$ <span class="built_in">cp</span> fileA fileB</span><br><span class="line"></span><br><span class="line"><span class="comment"># 拷贝目录（拷贝目录需要参数 -r）</span></span><br><span class="line"><span class="comment"># 情景1：目录A存在，目录B不存在（创建B，并将A放入B）</span></span><br><span class="line">$ <span class="built_in">cp</span> dirA dirB -r</span><br><span class="line"></span><br><span class="line"><span class="comment"># 情景2：目录A存在，目录B也存在（直接将A放入B）</span></span><br><span class="line">$ <span class="built_in">cp</span> dirA dirB -r</span><br><span class="line"></span><br><span class="line"><span class="comment"># 情景3：把目录A中的所有文件拷贝到目录B中（A中文件放入B）</span></span><br><span class="line">$ <span class="built_in">cp</span> dirA/* dirB -r</span><br></pre></td></tr></table></figure>
+
+<h2 id="5-查看文件内容"><a href="#5-查看文件内容" class="headerlink" title="5.查看文件内容"></a>5.查看文件内容</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">cat</span> filename</span><br><span class="line">$ more filename</span><br><span class="line">    - 回车：显示下一行</span><br><span class="line">    - 空格：向下滚动一屏</span><br><span class="line">    - b：返回上一屏</span><br><span class="line">    - q：退出</span><br><span class="line">$ less filename</span><br><span class="line">    - 空格：向下翻页</span><br><span class="line">    - b：向上翻页</span><br><span class="line">    - 回车：显示下一行</span><br><span class="line">    - 上下键：上下滚动</span><br><span class="line">    - q：退出</span><br></pre></td></tr></table></figure>
+
+<h2 id="6-创建链接"><a href="#6-创建链接" class="headerlink" title="6.创建链接"></a>6.创建链接</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 软链接：相当于创建快捷方式</span></span><br><span class="line"><span class="comment"># 创建软链接并放到另一个目录</span></span><br><span class="line">$ <span class="built_in">ln</span> -s hello /home/zhm/Desktop/Linux/search/link/hello.link</span><br><span class="line"></span><br><span class="line"><span class="comment"># 硬链接：多个文件指向同一个内存</span></span><br><span class="line">$ <span class="built_in">ln</span> hello ./link/hello.link</span><br></pre></td></tr></table></figure>
+
+<h2 id="7-文件属性"><a href="#7-文件属性" class="headerlink" title="7.文件属性"></a>7.文件属性</h2><h3 id="7-1-修改文件权限-chmod"><a href="#7-1-修改文件权限-chmod" class="headerlink" title="7.1 修改文件权限 chmod"></a>7.1 修改文件权限 chmod</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 语法格式</span></span><br><span class="line"><span class="comment"># chmod who [+|-|=] mod filename</span></span><br><span class="line"><span class="comment"># chmod [+|-|=] mod filename</span></span><br><span class="line">    - <span class="built_in">who</span>:</span><br><span class="line">        - u：user 文件所有者</span><br><span class="line">        - g：group 文件所有组</span><br><span class="line">        - o：other 其他用户</span><br><span class="line">        - a：all 以上三类</span><br><span class="line">    - [+|-|=]:</span><br><span class="line">        - +：添加权限</span><br><span class="line">        - -：去除权限</span><br><span class="line">        - =：覆盖权限</span><br><span class="line">    - mod</span><br><span class="line">        - r/4：读权限</span><br><span class="line">        - w/2：写权限</span><br><span class="line">        - x/1：执行权限</span><br><span class="line">        - -/0：没有权限</span><br><span class="line"></span><br><span class="line"><span class="comment"># 示例：给文件所有者添加执行权限</span></span><br><span class="line">$ <span class="built_in">chmod</span> u +x hello</span><br><span class="line"></span><br><span class="line"><span class="comment"># 示例：给所有用户添加读写执行权限</span></span><br><span class="line"><span class="comment"># 7 = 4 + 3 + 1（读 + 写 + 执行）</span></span><br><span class="line">$ <span class="built_in">chmod</span> 777 hello</span><br></pre></td></tr></table></figure>
+
+<h3 id="7-2-修改文件所有者-chown"><a href="#7-2-修改文件所有者-chown" class="headerlink" title="7.2 修改文件所有者 chown"></a>7.2 修改文件所有者 chown</h3><p>创建新用户的时候，系统会自动创建出对应用户名组，比如创建一个新的用户wwl，则会同时创建出一个新的用户组wwl。默认情况下，文件通过哪个用户创建出来，就属于哪个用户以及属于用户对应的组。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 修改文件所有者</span></span><br><span class="line"><span class="comment"># sudo chown 新的所有者 文件名</span></span><br><span class="line">$ <span class="built_in">sudo</span> <span class="built_in">chown</span> wwl &lt;filename&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 修改文件所有者和所属组</span></span><br><span class="line"><span class="comment"># sudo chown 新的文件所有者：新的文件所属组 文件名</span></span><br><span class="line">$ <span class="built_in">sudo</span> <span class="built_in">chown</span> wwl:wwl &lt;filename&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="7-3-修改文件所属组-chgrp"><a href="#7-3-修改文件所属组-chgrp" class="headerlink" title="7.3 修改文件所属组 chgrp"></a>7.3 修改文件所属组 chgrp</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># sudo chgrp 新的组 文件名</span></span><br><span class="line">$ <span class="built_in">sudo</span> <span class="built_in">chgrp</span> wwl &lt;filename&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="8-which"><a href="#8-which" class="headerlink" title="8.which"></a>8.which</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 查看要执行的命令所在的实际路径</span></span><br><span class="line">$ <span class="built_in">which</span> <span class="built_in">ls</span></span><br><span class="line">/usr/bin/ls</span><br></pre></td></tr></table></figure>
+
+<h2 id="9-输出重定向"><a href="#9-输出重定向" class="headerlink" title="9.输出重定向"></a>9.输出重定向</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># &gt; : 将文件内容写入到指定文件中，覆盖原数据</span></span><br><span class="line"><span class="comment"># &gt;&gt; : 将文件内容追加到指定文件的尾部</span></span><br><span class="line">$ <span class="built_in">cat</span> hello.c &gt; hello.cpp</span><br><span class="line">$ <span class="built_in">date</span> &gt;&gt; time.txt</span><br></pre></td></tr></table></figure>
+
+<h1 id="用户管理命令"><a href="#用户管理命令" class="headerlink" title="用户管理命令"></a>用户管理命令</h1><h2 id="1-切换用户-su"><a href="#1-切换用户-su" class="headerlink" title="1.切换用户 su"></a>1.切换用户 su</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 使用 su 只切换用户，当前的工作目录不会变化</span></span><br><span class="line">$ su wwl</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用 su - 不仅会切换用户，工作目录也会切换为当前用户的家目录</span></span><br><span class="line">$ su - wwl </span><br></pre></td></tr></table></figure>
+
+<h2 id="2-添加用户-adduser"><a href="#2-添加用户-adduser" class="headerlink" title="2.添加用户 adduser"></a>2.添加用户 adduser</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># sudo adduser &lt;username&gt;</span></span><br><span class="line">$ <span class="built_in">sudo</span> adduser wwl</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-删除用户-userdel"><a href="#3-删除用户-userdel" class="headerlink" title="3.删除用户 userdel"></a>3.删除用户 userdel</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># sudo userdel &lt;username&gt; -r</span></span><br><span class="line">$ <span class="built_in">sudo</span> userdel wwl -r</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-添加和删除用户组-groupadd-groupdel"><a href="#4-添加和删除用户组-groupadd-groupdel" class="headerlink" title="4.添加和删除用户组 groupadd&#x2F;groupdel"></a>4.添加和删除用户组 groupadd&#x2F;groupdel</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 基于普通用户创建新的用户组</span></span><br><span class="line">$ <span class="built_in">sudo</span> groupadd &lt;new-group-name&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 基于普通用户删除已经存在的用户组</span></span><br><span class="line">$ <span class="built_in">sudo</span> groupdel &lt;group-name&gt;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Tmux</title>
+    <url>/2024/09/20/Tmux/</url>
+    <content><![CDATA[<h1 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h1><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Ubuntu</span></span><br><span class="line">$ <span class="built_in">sudo</span> apt-get install tmux</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+<h2 id="启动和退出"><a href="#启动和退出" class="headerlink" title="启动和退出"></a>启动和退出</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 启动</span></span><br><span class="line">$ tmux</span><br><span class="line"></span><br><span class="line"><span class="comment"># 退出（或者使用快捷键ctrl+d）</span></span><br><span class="line">$ <span class="built_in">exit</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="前缀键"><a href="#前缀键" class="headerlink" title="前缀键"></a>前缀键</h2><p>Tmux中所有的快捷键都需要通过前缀键唤起，即先按前缀键，再按快捷键，才能生效。默认的前缀键为：ctrl+b</p>
+<h1 id="会话管理"><a href="#会话管理" class="headerlink" title="会话管理"></a>会话管理</h1><h2 id="新建会话"><a href="#新建会话" class="headerlink" title="新建会话"></a>新建会话</h2><p>第一个启动的Tmux窗口，编号是0, 第二个窗口的编号是1,以此类推。也可以在新建窗口时为窗口指定会话名。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ tmux new -s &lt;session-name&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="分离会话"><a href="#分离会话" class="headerlink" title="分离会话"></a>分离会话</h2><p>快捷键：ctrl+b d</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ tmux detach</span><br></pre></td></tr></table></figure>
+
+<h2 id="查看当前所有Tmux会话"><a href="#查看当前所有Tmux会话" class="headerlink" title="查看当前所有Tmux会话"></a>查看当前所有Tmux会话</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ tmux <span class="built_in">ls</span></span><br><span class="line"><span class="comment"># or</span></span><br><span class="line">$ tmux list-session</span><br></pre></td></tr></table></figure>
+
+<h2 id="接入会话"><a href="#接入会话" class="headerlink" title="接入会话"></a>接入会话</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ tmux attach -t &lt;session-name&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="杀死会话"><a href="#杀死会话" class="headerlink" title="杀死会话"></a>杀死会话</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ tmux kill-session -t &lt;session-name&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="切换会话"><a href="#切换会话" class="headerlink" title="切换会话"></a>切换会话</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ tmux switch -t &lt;session-name&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="重命名会话"><a href="#重命名会话" class="headerlink" title="重命名会话"></a>重命名会话</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ tmux rename-session -t &lt;old-name&gt; &lt;new-name&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="会话快捷键"><a href="#会话快捷键" class="headerlink" title="会话快捷键"></a>会话快捷键</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ctrl+b d：分离会话</span><br><span class="line">ctrl+b s：列出所有会话</span><br><span class="line">ctrl+b $：重命名当前会话</span><br></pre></td></tr></table></figure>
+
+<h1 id="窗格操作"><a href="#窗格操作" class="headerlink" title="窗格操作"></a>窗格操作</h1><h2 id="划分窗格"><a href="#划分窗格" class="headerlink" title="划分窗格"></a>划分窗格</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 划分上下两个窗格</span></span><br><span class="line">$ tmux split-window</span><br><span class="line"></span><br><span class="line"><span class="comment"># 划分左右两个窗格</span></span><br><span class="line">$ tmux split-window -h</span><br></pre></td></tr></table></figure>
+
+<h2 id="移动光标"><a href="#移动光标" class="headerlink" title="移动光标"></a>移动光标</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 光标切换到上方窗口</span></span><br><span class="line">$ tmux select-pane -U</span><br><span class="line"></span><br><span class="line"><span class="comment"># 光标切换到下方窗格</span></span><br><span class="line">$ tmux select-pane -D</span><br><span class="line"></span><br><span class="line"><span class="comment"># 光标切换到左边窗格</span></span><br><span class="line">$ tmux select-pane -L</span><br><span class="line"></span><br><span class="line"><span class="comment"># 光标切换到右边窗格</span></span><br><span class="line">$ tmux select-pane -R</span><br></pre></td></tr></table></figure>
+
+<h2 id="交换窗格位置"><a href="#交换窗格位置" class="headerlink" title="交换窗格位置"></a>交换窗格位置</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 当前窗格上移</span></span><br><span class="line">$ tmux swap-pane -U</span><br><span class="line"></span><br><span class="line"><span class="comment"># 当前窗格下移</span></span><br><span class="line">$ tmux swap-pane -D</span><br></pre></td></tr></table></figure>
+
+<h2 id="窗格快捷键总结"><a href="#窗格快捷键总结" class="headerlink" title="窗格快捷键总结"></a>窗格快捷键总结</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+]]></content>
+      <categories>
+        <category>Linux</category>
       </categories>
   </entry>
   <entry>
@@ -963,67 +1024,6 @@
       </categories>
   </entry>
   <entry>
-    <title>Tmux</title>
-    <url>/2024/09/20/Tmux/</url>
-    <content><![CDATA[<h1 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h1><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Ubuntu</span></span><br><span class="line">$ <span class="built_in">sudo</span> apt-get install tmux</span><br></pre></td></tr></table></figure>
-<span id="more"></span>
-<h2 id="启动和退出"><a href="#启动和退出" class="headerlink" title="启动和退出"></a>启动和退出</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 启动</span></span><br><span class="line">$ tmux</span><br><span class="line"></span><br><span class="line"><span class="comment"># 退出（或者使用快捷键ctrl+d）</span></span><br><span class="line">$ <span class="built_in">exit</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="前缀键"><a href="#前缀键" class="headerlink" title="前缀键"></a>前缀键</h2><p>Tmux中所有的快捷键都需要通过前缀键唤起，即先按前缀键，再按快捷键，才能生效。默认的前缀键为：ctrl+b</p>
-<h1 id="会话管理"><a href="#会话管理" class="headerlink" title="会话管理"></a>会话管理</h1><h2 id="新建会话"><a href="#新建会话" class="headerlink" title="新建会话"></a>新建会话</h2><p>第一个启动的Tmux窗口，编号是0, 第二个窗口的编号是1,以此类推。也可以在新建窗口时为窗口指定会话名。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ tmux new -s &lt;session-name&gt;</span><br></pre></td></tr></table></figure>
-
-<h2 id="分离会话"><a href="#分离会话" class="headerlink" title="分离会话"></a>分离会话</h2><p>快捷键：ctrl+b d</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ tmux detach</span><br></pre></td></tr></table></figure>
-
-<h2 id="查看当前所有Tmux会话"><a href="#查看当前所有Tmux会话" class="headerlink" title="查看当前所有Tmux会话"></a>查看当前所有Tmux会话</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ tmux <span class="built_in">ls</span></span><br><span class="line"><span class="comment"># or</span></span><br><span class="line">$ tmux list-session</span><br></pre></td></tr></table></figure>
-
-<h2 id="接入会话"><a href="#接入会话" class="headerlink" title="接入会话"></a>接入会话</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ tmux attach -t &lt;session-name&gt;</span><br></pre></td></tr></table></figure>
-
-<h2 id="杀死会话"><a href="#杀死会话" class="headerlink" title="杀死会话"></a>杀死会话</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ tmux kill-session -t &lt;session-name&gt;</span><br></pre></td></tr></table></figure>
-
-<h2 id="切换会话"><a href="#切换会话" class="headerlink" title="切换会话"></a>切换会话</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ tmux switch -t &lt;session-name&gt;</span><br></pre></td></tr></table></figure>
-
-<h2 id="重命名会话"><a href="#重命名会话" class="headerlink" title="重命名会话"></a>重命名会话</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ tmux rename-session -t &lt;old-name&gt; &lt;new-name&gt;</span><br></pre></td></tr></table></figure>
-
-<h2 id="会话快捷键"><a href="#会话快捷键" class="headerlink" title="会话快捷键"></a>会话快捷键</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ctrl+b d：分离会话</span><br><span class="line">ctrl+b s：列出所有会话</span><br><span class="line">ctrl+b $：重命名当前会话</span><br></pre></td></tr></table></figure>
-
-<h1 id="窗格操作"><a href="#窗格操作" class="headerlink" title="窗格操作"></a>窗格操作</h1><h2 id="划分窗格"><a href="#划分窗格" class="headerlink" title="划分窗格"></a>划分窗格</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 划分上下两个窗格</span></span><br><span class="line">$ tmux split-window</span><br><span class="line"></span><br><span class="line"><span class="comment"># 划分左右两个窗格</span></span><br><span class="line">$ tmux split-window -h</span><br></pre></td></tr></table></figure>
-
-<h2 id="移动光标"><a href="#移动光标" class="headerlink" title="移动光标"></a>移动光标</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 光标切换到上方窗口</span></span><br><span class="line">$ tmux select-pane -U</span><br><span class="line"></span><br><span class="line"><span class="comment"># 光标切换到下方窗格</span></span><br><span class="line">$ tmux select-pane -D</span><br><span class="line"></span><br><span class="line"><span class="comment"># 光标切换到左边窗格</span></span><br><span class="line">$ tmux select-pane -L</span><br><span class="line"></span><br><span class="line"><span class="comment"># 光标切换到右边窗格</span></span><br><span class="line">$ tmux select-pane -R</span><br></pre></td></tr></table></figure>
-
-<h2 id="交换窗格位置"><a href="#交换窗格位置" class="headerlink" title="交换窗格位置"></a>交换窗格位置</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 当前窗格上移</span></span><br><span class="line">$ tmux swap-pane -U</span><br><span class="line"></span><br><span class="line"><span class="comment"># 当前窗格下移</span></span><br><span class="line">$ tmux swap-pane -D</span><br></pre></td></tr></table></figure>
-
-<h2 id="窗格快捷键总结"><a href="#窗格快捷键总结" class="headerlink" title="窗格快捷键总结"></a>窗格快捷键总结</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-  </entry>
-  <entry>
     <title>apt换源</title>
     <url>/2024/09/20/apt%E6%8D%A2%E6%BA%90/</url>
     <content><![CDATA[<p>Ubuntu24.04换源</p>
@@ -1062,6 +1062,29 @@
 ]]></content>
       <categories>
         <category>C</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>.bashrc</title>
+    <url>/2024/09/20/bashrc/</url>
+    <content><![CDATA[<p>.bashrc是一个用于配置Bash Shell的脚本文件。位于<code>~/.bashrc</code>，当打开一个新的Bash终端会话时，Bash会自动执行这个文件中的命令，这个文件通常用于：设置环境变量，定义别名，配置Shell选项。</p>
+<span id="more"></span>
+<h1 id="设置环境变量"><a href="#设置环境变量" class="headerlink" title="设置环境变量"></a>设置环境变量</h1><h2 id="设置PATH环境变量"><a href="#设置PATH环境变量" class="headerlink" title="设置PATH环境变量"></a>设置PATH环境变量</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">export PATH=/usr/local/bin:$PATH</span><br></pre></td></tr></table></figure>
+<p>将&#x2F;usr&#x2F;local&#x2F;lib目录添加到PATH环境变量的前面，当在命令行中输入命令时，系统首先会在&#x2F;usr&#x2F;local&#x2F;lib目录先查找。</p>
+<h2 id="设置一个新的环境变量"><a href="#设置一个新的环境变量" class="headerlink" title="设置一个新的环境变量"></a>设置一个新的环境变量</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">export VAR = &quot;Hello,World!&quot;</span><br></pre></td></tr></table></figure>
+<p>创建一个名为VAR的新环境变量，并将它的值设置为<code>Hello,World!</code></p>
+<h2 id="为特定应用设置环境变量"><a href="#为特定应用设置环境变量" class="headerlink" title="为特定应用设置环境变量"></a>为特定应用设置环境变量</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64</span><br><span class="line">export PATH=$JAVA_HOME/bin:$PATH</span><br></pre></td></tr></table></figure>
+<p>设置了JAVA_HOME环境变量，指向java的安装命令，并将bin目录添加到PATH中，之后就可以直接在命令中使用java命令。</p>
+<h2 id="设置库目录"><a href="#设置库目录" class="headerlink" title="设置库目录"></a>设置库目录</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH</span><br></pre></td></tr></table></figure>
+<p>将<code>/usr/local/lib</code>目录添加到<code>LD_LIBRARY_PATH</code>环境变量中。</p>
+<h2 id="条件性设置环境变量"><a href="#条件性设置环境变量" class="headerlink" title="条件性设置环境变量"></a>条件性设置环境变量</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">if [ -d /opt/myapp ]; then</span><br><span class="line">    export MYAPP_HOME=/opt/myapp</span><br><span class="line">    export PATH=$MYAPP_HOME/bin:$PATH</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
+<p>检查&#x2F;opt&#x2F;myapp目录是否存在，如果存在则设置MY_HOME环境变量，并将bin目录添加到PATH中。</p>
+<h1 id="设置别名"><a href="#设置别名" class="headerlink" title="设置别名"></a>设置别名</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 为 ls 和其他命令启用颜色支持，并添加有用的别名</span><br><span class="line">if [ -x /usr/bin/dircolors ]; then</span><br><span class="line">    test -r ~/.dircolors &amp;&amp; eval &quot;$(dircolors -b ~/.dircolors)&quot; || eval &quot;$(dircolors -b)&quot;</span><br><span class="line">    alias ls=&#x27;ls --color=auto&#x27;</span><br><span class="line">    #alias dir=&#x27;dir --color=auto&#x27;</span><br><span class="line">    #alias vdir=&#x27;vdir --color=auto&#x27;</span><br><span class="line"></span><br><span class="line">    alias grep=&#x27;grep --color=auto&#x27;</span><br><span class="line">    alias fgrep=&#x27;fgrep --color=auto&#x27;</span><br><span class="line">    alias egrep=&#x27;egrep --color=auto&#x27;</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
+<p><code>if [ -x /usr/bin/dircolors ]; </code>:检查 &#x2F;usr&#x2F;bin&#x2F;dircolors 文件是否存在并且具有可执行权限，从而决定是否要执行后续命令。</p>
+<p><code>test -r ~/.dircolors &amp;&amp; eval &quot;$(dircolors -b ~/.dircolors)&quot; || eval &quot;$(dircolors -b)&quot;</code>:检查 ~&#x2F;.dircolors 文件是否存在并且可读。如果文件存在且可读，使用 dircolors 命令和该文件的设置来配置颜色。如果文件不存在或不可读，使用 dircolors 命令的默认设置来配置颜色。目的是确保 LS_COLORS 环境变量被设置，以便 ls 命令能够根据这些设置显示颜色。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 其他别名</span><br><span class="line">alias ll=&#x27;ls -alF&#x27;</span><br><span class="line">alias la=&#x27;ls -A&#x27;</span><br><span class="line">alias l=&#x27;ls -CF&#x27;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>Linux</category>
       </categories>
   </entry>
   <entry>
@@ -1227,24 +1250,17 @@
       </categories>
   </entry>
   <entry>
-    <title>.bashrc</title>
-    <url>/2024/09/20/bashrc/</url>
-    <content><![CDATA[<p>.bashrc是一个用于配置Bash Shell的脚本文件。位于<code>~/.bashrc</code>，当打开一个新的Bash终端会话时，Bash会自动执行这个文件中的命令，这个文件通常用于：设置环境变量，定义别名，配置Shell选项。</p>
+    <title>.deb文件</title>
+    <url>/2024/09/20/deb%E6%96%87%E4%BB%B6/</url>
+    <content><![CDATA[<p>dep文件是debian，Ubuntu等Linux发行版的软件安装包</p>
 <span id="more"></span>
-<h1 id="设置环境变量"><a href="#设置环境变量" class="headerlink" title="设置环境变量"></a>设置环境变量</h1><h2 id="设置PATH环境变量"><a href="#设置PATH环境变量" class="headerlink" title="设置PATH环境变量"></a>设置PATH环境变量</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">export PATH=/usr/local/bin:$PATH</span><br></pre></td></tr></table></figure>
-<p>将&#x2F;usr&#x2F;local&#x2F;lib目录添加到PATH环境变量的前面，当在命令行中输入命令时，系统首先会在&#x2F;usr&#x2F;local&#x2F;lib目录先查找。</p>
-<h2 id="设置一个新的环境变量"><a href="#设置一个新的环境变量" class="headerlink" title="设置一个新的环境变量"></a>设置一个新的环境变量</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">export VAR = &quot;Hello,World!&quot;</span><br></pre></td></tr></table></figure>
-<p>创建一个名为VAR的新环境变量，并将它的值设置为<code>Hello,World!</code></p>
-<h2 id="为特定应用设置环境变量"><a href="#为特定应用设置环境变量" class="headerlink" title="为特定应用设置环境变量"></a>为特定应用设置环境变量</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64</span><br><span class="line">export PATH=$JAVA_HOME/bin:$PATH</span><br></pre></td></tr></table></figure>
-<p>设置了JAVA_HOME环境变量，指向java的安装命令，并将bin目录添加到PATH中，之后就可以直接在命令中使用java命令。</p>
-<h2 id="设置库目录"><a href="#设置库目录" class="headerlink" title="设置库目录"></a>设置库目录</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH</span><br></pre></td></tr></table></figure>
-<p>将<code>/usr/local/lib</code>目录添加到<code>LD_LIBRARY_PATH</code>环境变量中。</p>
-<h2 id="条件性设置环境变量"><a href="#条件性设置环境变量" class="headerlink" title="条件性设置环境变量"></a>条件性设置环境变量</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">if [ -d /opt/myapp ]; then</span><br><span class="line">    export MYAPP_HOME=/opt/myapp</span><br><span class="line">    export PATH=$MYAPP_HOME/bin:$PATH</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
-<p>检查&#x2F;opt&#x2F;myapp目录是否存在，如果存在则设置MY_HOME环境变量，并将bin目录添加到PATH中。</p>
-<h1 id="设置别名"><a href="#设置别名" class="headerlink" title="设置别名"></a>设置别名</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 为 ls 和其他命令启用颜色支持，并添加有用的别名</span><br><span class="line">if [ -x /usr/bin/dircolors ]; then</span><br><span class="line">    test -r ~/.dircolors &amp;&amp; eval &quot;$(dircolors -b ~/.dircolors)&quot; || eval &quot;$(dircolors -b)&quot;</span><br><span class="line">    alias ls=&#x27;ls --color=auto&#x27;</span><br><span class="line">    #alias dir=&#x27;dir --color=auto&#x27;</span><br><span class="line">    #alias vdir=&#x27;vdir --color=auto&#x27;</span><br><span class="line"></span><br><span class="line">    alias grep=&#x27;grep --color=auto&#x27;</span><br><span class="line">    alias fgrep=&#x27;fgrep --color=auto&#x27;</span><br><span class="line">    alias egrep=&#x27;egrep --color=auto&#x27;</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
-<p><code>if [ -x /usr/bin/dircolors ]; </code>:检查 &#x2F;usr&#x2F;bin&#x2F;dircolors 文件是否存在并且具有可执行权限，从而决定是否要执行后续命令。</p>
-<p><code>test -r ~/.dircolors &amp;&amp; eval &quot;$(dircolors -b ~/.dircolors)&quot; || eval &quot;$(dircolors -b)&quot;</code>:检查 ~&#x2F;.dircolors 文件是否存在并且可读。如果文件存在且可读，使用 dircolors 命令和该文件的设置来配置颜色。如果文件不存在或不可读，使用 dircolors 命令的默认设置来配置颜色。目的是确保 LS_COLORS 环境变量被设置，以便 ls 命令能够根据这些设置显示颜色。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 其他别名</span><br><span class="line">alias ll=&#x27;ls -alF&#x27;</span><br><span class="line">alias la=&#x27;ls -A&#x27;</span><br><span class="line">alias l=&#x27;ls -CF&#x27;</span><br></pre></td></tr></table></figure>]]></content>
+<h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><p>deb包安装方法有两种：<br>1.直接“双击”安装<br>2.指令安装<br>2.1.终端命令行安装</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> dpkg -i &lt;package.deb&gt;</span><br></pre></td></tr></table></figure>
+
+<p>2.2.终端命令行卸载</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> dpkg -r &lt;package&gt;</span><br></pre></td></tr></table></figure>
+<h1 id="dpkg指令的其他用法"><a href="#dpkg指令的其他用法" class="headerlink" title="dpkg指令的其他用法"></a><code>dpkg</code>指令的其他用法</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ dpkg -i &lt;package.deb&gt;     <span class="comment">#安装一个 Debian 软件包，如手动下载的文件。</span></span><br><span class="line">$ dpkg -c &lt;package.deb&gt;     <span class="comment">#列出 package.deb 的内容。</span></span><br><span class="line">$ dpkg -I &lt;package.deb&gt;     <span class="comment">#从 package.deb 中提取包信息。</span></span><br><span class="line">$ dpkg -r &lt;package&gt;         <span class="comment">#移除一个已安装的包。</span></span><br><span class="line">$ dpkg -P &lt;package&gt;：       <span class="comment">#完全清除一个已安装的包。和 remove 不同的是，remove 只是删掉数据和可执行文件，purge 另外还删除所有的配制文件。</span></span><br><span class="line">$ dpkg -L &lt;package&gt;     <span class="comment">#列出 package 安装的所有文件清单。</span></span><br><span class="line">$ dpkg -s &lt;package&gt;     <span class="comment">#显示已安装包的信息。</span></span><br><span class="line">$ dpkg -S &lt;package&gt;     <span class="comment">#查看软件在哪个包里；</span></span><br></pre></td></tr></table></figure>
+]]></content>
       <categories>
         <category>Linux</category>
       </categories>
@@ -1271,22 +1287,6 @@
 <li>-shared：生成共享目标文件</li>
 <li>-std：指定标准</li>
 </ul>
-]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>.deb文件</title>
-    <url>/2024/09/20/deb%E6%96%87%E4%BB%B6/</url>
-    <content><![CDATA[<p>dep文件是debian，Ubuntu等Linux发行版的软件安装包</p>
-<span id="more"></span>
-<h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><p>deb包安装方法有两种：<br>1.直接“双击”安装<br>2.指令安装<br>2.1.终端命令行安装</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> dpkg -i &lt;package.deb&gt;</span><br></pre></td></tr></table></figure>
-
-<p>2.2.终端命令行卸载</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> dpkg -r &lt;package&gt;</span><br></pre></td></tr></table></figure>
-<h1 id="dpkg指令的其他用法"><a href="#dpkg指令的其他用法" class="headerlink" title="dpkg指令的其他用法"></a><code>dpkg</code>指令的其他用法</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ dpkg -i &lt;package.deb&gt;     <span class="comment">#安装一个 Debian 软件包，如手动下载的文件。</span></span><br><span class="line">$ dpkg -c &lt;package.deb&gt;     <span class="comment">#列出 package.deb 的内容。</span></span><br><span class="line">$ dpkg -I &lt;package.deb&gt;     <span class="comment">#从 package.deb 中提取包信息。</span></span><br><span class="line">$ dpkg -r &lt;package&gt;         <span class="comment">#移除一个已安装的包。</span></span><br><span class="line">$ dpkg -P &lt;package&gt;：       <span class="comment">#完全清除一个已安装的包。和 remove 不同的是，remove 只是删掉数据和可执行文件，purge 另外还删除所有的配制文件。</span></span><br><span class="line">$ dpkg -L &lt;package&gt;     <span class="comment">#列出 package 安装的所有文件清单。</span></span><br><span class="line">$ dpkg -s &lt;package&gt;     <span class="comment">#显示已安装包的信息。</span></span><br><span class="line">$ dpkg -S &lt;package&gt;     <span class="comment">#查看软件在哪个包里；</span></span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>Linux</category>
@@ -1730,111 +1730,6 @@
       </categories>
   </entry>
   <entry>
-    <title>查找命令</title>
-    <url>/2024/09/20/%E6%9F%A5%E6%89%BE%E5%91%BD%E4%BB%A4/</url>
-    <content><![CDATA[<ul>
-<li>find：用于搜索文件，通过属性搜索文件</li>
-<li>grep：用于搜索文件内容，正则表达式</li>
-<li>locate：根据文件名搜索本地的磁盘文件</li>
-</ul>
-<span id="more"></span>
-<h1 id="find"><a href="#find" class="headerlink" title="find"></a>find</h1><h2 id="1-根据文件名查找（-name）"><a href="#1-根据文件名查找（-name）" class="headerlink" title="1.根据文件名查找（-name）"></a>1.根据文件名查找（-name）</h2><p>常用通配符：</p>
-<ul>
-<li>*：可以匹配0个或多个字符</li>
-<li>？：用于匹配单个字符</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 查找当前路径下所有的.cpp文件</span></span><br><span class="line">find . -name <span class="string">&quot;*.cpp&quot;</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="2-根据文件类型查找（-type）"><a href="#2-根据文件类型查找（-type）" class="headerlink" title="2.根据文件类型查找（-type）"></a>2.根据文件类型查找（-type）</h2><table>
-<thead>
-<tr>
-<th align="center">文件类型</th>
-<th align="center">字符描述</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">普通文件</td>
-<td align="center">f</td>
-</tr>
-<tr>
-<td align="center">目录文件</td>
-<td align="center">d</td>
-</tr>
-<tr>
-<td align="center">软链接文件</td>
-<td align="center">l</td>
-</tr>
-<tr>
-<td align="center">字符设备文件</td>
-<td align="center">c</td>
-</tr>
-<tr>
-<td align="center">块设备文件</td>
-<td align="center">b</td>
-</tr>
-<tr>
-<td align="center">管道文件</td>
-<td align="center">p</td>
-</tr>
-<tr>
-<td align="center">本地套接字文件</td>
-<td align="center">s</td>
-</tr>
-</tbody></table>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 查找当前路径下所有的文件夹</span></span><br><span class="line">$ find . -<span class="built_in">type</span> d</span><br></pre></td></tr></table></figure>
-
-<h2 id="3-根据文件大小查找（-size）"><a href="#3-根据文件大小查找（-size）" class="headerlink" title="3.根据文件大小查找（-size）"></a>3.根据文件大小查找（-size）</h2><ul>
-<li>-size 4k 表示区间(3k, 4k]</li>
-<li>-size -4k 表示区间[0k, 4k]</li>
-<li>-size +4k 表示区间(4k, 正无穷)</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 查找当前目录下 大于1M并且小于等于3M的文件</span></span><br><span class="line">$ find . -size +1M -size -3M</span><br></pre></td></tr></table></figure>
-
-<h2 id="4-限制查找的目录层级（-maxdepth-mindepth）"><a href="#4-限制查找的目录层级（-maxdepth-mindepth）" class="headerlink" title="4.限制查找的目录层级（-maxdepth, -mindepth）"></a>4.限制查找的目录层级（-maxdepth, -mindepth）</h2><ul>
-<li>-maxdepth：最多搜索到第多少层目录</li>
-<li>-mindepth：最少搜索到第多少层目录</li>
-</ul>
-<p>这两个参数不能单独使用。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 从根目录开始，最多搜索五层，搜索&quot;.cpp&quot;文件</span></span><br><span class="line">$ find / -maxdepth 5 -name <span class="string">&quot;*.cpp&quot;</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="5-同时执行多个操作（-exec-ok）"><a href="#5-同时执行多个操作（-exec-ok）" class="headerlink" title="5.同时执行多个操作（-exec, -ok）"></a>5.同时执行多个操作（-exec, -ok）</h2><p><strong>问题：</strong> find . -name “ *. txt” | grep “a”中find后面可以使用|管道传递给grep，但是不能使用管道传递给ls，例如find . -name “ *.cpp” | ls</p>
-<!-- more -->
-
-<p>1.为什么 find . -name “*.txt” | grep “a” 可以工作？</p>
-<ul>
-<li>find . -name “*.txt” 会搜索当前目录及其子目录下所有扩展名为 .txt 的文件，并将这些文件名输出到标准输出（stdout）。</li>
-<li>grep “a” 会从标准输入（stdin）读取数据，然后搜索包含字符串 “a” 的行，并将这些行输出到标准输出。</li>
-<li>管道 | 将 find 命令的输出作为 grep 命令的输入，因此 grep 可以接收到文件名并进行搜索。</li>
-</ul>
-<p>2.为什么 find . -name “*.cpp” | ls 不能工作？</p>
-<ul>
-<li>ls 命令通常用于列出目录中的文件和目录，而不是处理文件名列表。</li>
-<li>find . -name “*.cpp” 会输出一系列文件名，但 ls 命令期望的是目录路径作为参数，而不是文件名列表。</li>
-</ul>
-<p>可以使用<code>exec</code>,<code>ok</code>,<code>xargs</code>实现find命令执行完毕之后。再执行其他子命令。</p>
-<h3 id="exec"><a href="#exec" class="headerlink" title="exec"></a>exec</h3><p><code>-exec</code>是find的参数。可以在exec参数后添加其他需要被执行的shell命令，命令的尾部需要加一个后缀<code>&#123;&#125; \;</code>，<code>&#123;&#125;</code>和<code>\;</code>中间用空格分开。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ find . -name <span class="string">&quot;*.cpp&quot;</span> -<span class="built_in">exec</span> <span class="built_in">ls</span> -l &#123;&#125; \;</span><br></pre></td></tr></table></figure>
-
-<h3 id="ok"><a href="#ok" class="headerlink" title="ok"></a>ok</h3><p><code>-ok</code>也是find命令的参数，是交互式的命令。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ find . -maxdepth 2 -name <span class="string">&quot;*.cpp&quot;</span> -ok <span class="built_in">ls</span> -l &#123;&#125; \;</span><br></pre></td></tr></table></figure>
-
-<h3 id="xargs"><a href="#xargs" class="headerlink" title="xargs"></a>xargs</h3><p>Unix命令，将接收到的输入数据转换为命令行参数，并构建一个完整的命令。通常与管道（|）组合使用。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ find . maxdepth 2 -name <span class="string">&quot;*.cpp&quot;</span> | xargs <span class="built_in">ls</span> -l</span><br></pre></td></tr></table></figure>
-
-<h1 id="grep"><a href="#grep" class="headerlink" title="grep"></a>grep</h1><ul>
-<li>-r：递归搜索目录中的文件内容</li>
-<li>-i：对应要搜索的关键字，忽略字符大小写</li>
-<li>-n：在现实符合样式的那一行之前，标出该行的行号</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ grep <span class="string">&quot;main&quot;</span> hello.c -i</span><br><span class="line">$ find . -name <span class="string">&quot;*.cpp&quot;</span> | grep <span class="string">&quot;main&quot;</span> -n</span><br></pre></td></tr></table></figure>
-
-<h1 id="locate"><a href="#locate" class="headerlink" title="locate"></a>locate</h1><p>locate不搜索具体目录，而是搜索本地的数据库文件，这个数据库包含本地的所有信息。在使用locate之前，先使用<code>updatedb</code>命令手动更新数据库。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 更新本地数据库文件</span></span><br><span class="line">$ <span class="built_in">sudo</span> updatedb</span><br><span class="line"></span><br><span class="line"><span class="comment"># 搜索所有目录下以main开头的文件</span></span><br><span class="line">$ locate main</span><br><span class="line"></span><br><span class="line"><span class="comment"># 搜索指定目录下的以某个关键字开头的文件（要用绝对路径）</span></span><br><span class="line">$ locate /home/zhm/Desktop/main</span><br><span class="line"></span><br><span class="line"><span class="comment"># 搜索的时候忽略文件名的大小写（-i）</span></span><br><span class="line">$ locate main -i </span><br><span class="line"></span><br><span class="line"><span class="comment"># 列出前N个匹配到的文件名称</span></span><br><span class="line">$ locate main -n 5</span><br><span class="line"></span><br><span class="line"><span class="comment"># 基于正则表达式进行文件匹配</span></span><br><span class="line"><span class="comment"># 示例：搜索以.cpp结尾的文件</span></span><br><span class="line">$ locate -r <span class="string">&quot;\.cpp$&quot;</span></span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-  </entry>
-  <entry>
     <title>多线程基础</title>
     <url>/2024/11/07/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%9F%BA%E7%A1%80/</url>
     <content><![CDATA[<p>并发</p>
@@ -1952,6 +1847,144 @@
       </categories>
   </entry>
   <entry>
+    <title>查找命令</title>
+    <url>/2024/09/20/%E6%9F%A5%E6%89%BE%E5%91%BD%E4%BB%A4/</url>
+    <content><![CDATA[<ul>
+<li>find：用于搜索文件，通过属性搜索文件</li>
+<li>grep：用于搜索文件内容，正则表达式</li>
+<li>locate：根据文件名搜索本地的磁盘文件</li>
+</ul>
+<span id="more"></span>
+<h1 id="find"><a href="#find" class="headerlink" title="find"></a>find</h1><h2 id="1-根据文件名查找（-name）"><a href="#1-根据文件名查找（-name）" class="headerlink" title="1.根据文件名查找（-name）"></a>1.根据文件名查找（-name）</h2><p>常用通配符：</p>
+<ul>
+<li>*：可以匹配0个或多个字符</li>
+<li>？：用于匹配单个字符</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 查找当前路径下所有的.cpp文件</span></span><br><span class="line">find . -name <span class="string">&quot;*.cpp&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="2-根据文件类型查找（-type）"><a href="#2-根据文件类型查找（-type）" class="headerlink" title="2.根据文件类型查找（-type）"></a>2.根据文件类型查找（-type）</h2><table>
+<thead>
+<tr>
+<th align="center">文件类型</th>
+<th align="center">字符描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">普通文件</td>
+<td align="center">f</td>
+</tr>
+<tr>
+<td align="center">目录文件</td>
+<td align="center">d</td>
+</tr>
+<tr>
+<td align="center">软链接文件</td>
+<td align="center">l</td>
+</tr>
+<tr>
+<td align="center">字符设备文件</td>
+<td align="center">c</td>
+</tr>
+<tr>
+<td align="center">块设备文件</td>
+<td align="center">b</td>
+</tr>
+<tr>
+<td align="center">管道文件</td>
+<td align="center">p</td>
+</tr>
+<tr>
+<td align="center">本地套接字文件</td>
+<td align="center">s</td>
+</tr>
+</tbody></table>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 查找当前路径下所有的文件夹</span></span><br><span class="line">$ find . -<span class="built_in">type</span> d</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-根据文件大小查找（-size）"><a href="#3-根据文件大小查找（-size）" class="headerlink" title="3.根据文件大小查找（-size）"></a>3.根据文件大小查找（-size）</h2><ul>
+<li>-size 4k 表示区间(3k, 4k]</li>
+<li>-size -4k 表示区间[0k, 4k]</li>
+<li>-size +4k 表示区间(4k, 正无穷)</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 查找当前目录下 大于1M并且小于等于3M的文件</span></span><br><span class="line">$ find . -size +1M -size -3M</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-限制查找的目录层级（-maxdepth-mindepth）"><a href="#4-限制查找的目录层级（-maxdepth-mindepth）" class="headerlink" title="4.限制查找的目录层级（-maxdepth, -mindepth）"></a>4.限制查找的目录层级（-maxdepth, -mindepth）</h2><ul>
+<li>-maxdepth：最多搜索到第多少层目录</li>
+<li>-mindepth：最少搜索到第多少层目录</li>
+</ul>
+<p>这两个参数不能单独使用。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 从根目录开始，最多搜索五层，搜索&quot;.cpp&quot;文件</span></span><br><span class="line">$ find / -maxdepth 5 -name <span class="string">&quot;*.cpp&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="5-同时执行多个操作（-exec-ok）"><a href="#5-同时执行多个操作（-exec-ok）" class="headerlink" title="5.同时执行多个操作（-exec, -ok）"></a>5.同时执行多个操作（-exec, -ok）</h2><p><strong>问题：</strong> find . -name “ *. txt” | grep “a”中find后面可以使用|管道传递给grep，但是不能使用管道传递给ls，例如find . -name “ *.cpp” | ls</p>
+<!-- more -->
+
+<p>1.为什么 find . -name “*.txt” | grep “a” 可以工作？</p>
+<ul>
+<li>find . -name “*.txt” 会搜索当前目录及其子目录下所有扩展名为 .txt 的文件，并将这些文件名输出到标准输出（stdout）。</li>
+<li>grep “a” 会从标准输入（stdin）读取数据，然后搜索包含字符串 “a” 的行，并将这些行输出到标准输出。</li>
+<li>管道 | 将 find 命令的输出作为 grep 命令的输入，因此 grep 可以接收到文件名并进行搜索。</li>
+</ul>
+<p>2.为什么 find . -name “*.cpp” | ls 不能工作？</p>
+<ul>
+<li>ls 命令通常用于列出目录中的文件和目录，而不是处理文件名列表。</li>
+<li>find . -name “*.cpp” 会输出一系列文件名，但 ls 命令期望的是目录路径作为参数，而不是文件名列表。</li>
+</ul>
+<p>可以使用<code>exec</code>,<code>ok</code>,<code>xargs</code>实现find命令执行完毕之后。再执行其他子命令。</p>
+<h3 id="exec"><a href="#exec" class="headerlink" title="exec"></a>exec</h3><p><code>-exec</code>是find的参数。可以在exec参数后添加其他需要被执行的shell命令，命令的尾部需要加一个后缀<code>&#123;&#125; \;</code>，<code>&#123;&#125;</code>和<code>\;</code>中间用空格分开。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ find . -name <span class="string">&quot;*.cpp&quot;</span> -<span class="built_in">exec</span> <span class="built_in">ls</span> -l &#123;&#125; \;</span><br></pre></td></tr></table></figure>
+
+<h3 id="ok"><a href="#ok" class="headerlink" title="ok"></a>ok</h3><p><code>-ok</code>也是find命令的参数，是交互式的命令。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ find . -maxdepth 2 -name <span class="string">&quot;*.cpp&quot;</span> -ok <span class="built_in">ls</span> -l &#123;&#125; \;</span><br></pre></td></tr></table></figure>
+
+<h3 id="xargs"><a href="#xargs" class="headerlink" title="xargs"></a>xargs</h3><p>Unix命令，将接收到的输入数据转换为命令行参数，并构建一个完整的命令。通常与管道（|）组合使用。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ find . maxdepth 2 -name <span class="string">&quot;*.cpp&quot;</span> | xargs <span class="built_in">ls</span> -l</span><br></pre></td></tr></table></figure>
+
+<h1 id="grep"><a href="#grep" class="headerlink" title="grep"></a>grep</h1><ul>
+<li>-r：递归搜索目录中的文件内容</li>
+<li>-i：对应要搜索的关键字，忽略字符大小写</li>
+<li>-n：在现实符合样式的那一行之前，标出该行的行号</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ grep <span class="string">&quot;main&quot;</span> hello.c -i</span><br><span class="line">$ find . -name <span class="string">&quot;*.cpp&quot;</span> | grep <span class="string">&quot;main&quot;</span> -n</span><br></pre></td></tr></table></figure>
+
+<h1 id="locate"><a href="#locate" class="headerlink" title="locate"></a>locate</h1><p>locate不搜索具体目录，而是搜索本地的数据库文件，这个数据库包含本地的所有信息。在使用locate之前，先使用<code>updatedb</code>命令手动更新数据库。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 更新本地数据库文件</span></span><br><span class="line">$ <span class="built_in">sudo</span> updatedb</span><br><span class="line"></span><br><span class="line"><span class="comment"># 搜索所有目录下以main开头的文件</span></span><br><span class="line">$ locate main</span><br><span class="line"></span><br><span class="line"><span class="comment"># 搜索指定目录下的以某个关键字开头的文件（要用绝对路径）</span></span><br><span class="line">$ locate /home/zhm/Desktop/main</span><br><span class="line"></span><br><span class="line"><span class="comment"># 搜索的时候忽略文件名的大小写（-i）</span></span><br><span class="line">$ locate main -i </span><br><span class="line"></span><br><span class="line"><span class="comment"># 列出前N个匹配到的文件名称</span></span><br><span class="line">$ locate main -n 5</span><br><span class="line"></span><br><span class="line"><span class="comment"># 基于正则表达式进行文件匹配</span></span><br><span class="line"><span class="comment"># 示例：搜索以.cpp结尾的文件</span></span><br><span class="line">$ locate -r <span class="string">&quot;\.cpp$&quot;</span></span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>格式化字符串</title>
+    <url>/2024/09/02/%E6%A0%BC%E5%BC%8F%E5%AD%97%E7%AC%A6%E4%B8%B2/</url>
+    <content><![CDATA[<h1 id="格式字符串"><a href="#格式字符串" class="headerlink" title="格式字符串"></a>格式字符串</h1><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">printf</span><span class="params">()</span>;</span><br><span class="line"><span class="type">int</span> <span class="title function_">scanf</span><span class="params">()</span>;</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+<p>格式说明符：</p>
+<ul>
+<li>%d:十进制整数</li>
+<li>%u:无符号十进制整数</li>
+<li>%x:十六进制整数</li>
+<li>%o:八进制整数</li>
+<li>%f:浮点数（小数点形式）</li>
+<li>%e:浮点数（科学计数法形式）</li>
+<li>%g:通用浮点数（自动选择%f&#x2F;%e）</li>
+<li>%s:字符串</li>
+<li>%c:字符</li>
+<li>%%:%字符</li>
+</ul>
+<p>标志，宽度，精度，长度修饰符：</p>
+<ul>
+<li>%+d:带正负号的整数</li>
+<li>%10d:宽度为10的整数，如果数字较短则用空格填充</li>
+<li>%.2f:小数点后保留2位的浮点数</li>
+<li>%5.2f:宽度为5，小数点后保留2位的浮点数</li>
+<li>%ld:长整型（long int）的整数</li>
+<li>%lf:双精度浮点数（double）</li>
+<li>%08x:宽度为8，如果输出数字少于指定宽度，使用0填充左边空位，十六进制输出。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>C</category>
+      </categories>
+  </entry>
+  <entry>
     <title>双系统</title>
     <url>/2024/09/02/%E9%87%8D%E8%A3%85%E7%B3%BB%E7%BB%9F/</url>
     <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>1.重装了Windows10专业版系统<br>2.增加了Ubuntu24.04双系统</p>
@@ -1992,36 +2025,225 @@
       </categories>
   </entry>
   <entry>
-    <title>格式化字符串</title>
-    <url>/2024/09/02/%E6%A0%BC%E5%BC%8F%E5%AD%97%E7%AC%A6%E4%B8%B2/</url>
-    <content><![CDATA[<h1 id="格式字符串"><a href="#格式字符串" class="headerlink" title="格式字符串"></a>格式字符串</h1><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">printf</span><span class="params">()</span>;</span><br><span class="line"><span class="type">int</span> <span class="title function_">scanf</span><span class="params">()</span>;</span><br></pre></td></tr></table></figure>
+    <title>线程同步</title>
+    <url>/2024/11/08/%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5/</url>
+    <content><![CDATA[<h1 id="基础概念"><a href="#基础概念" class="headerlink" title="基础概念"></a>基础概念</h1><p>避免多个线程同时访问并修改同一块内存，造成数据冲突。线程同步的结果是，如果多个线程都要访问并修改同一块内存时，依次只让一个进程进行访问，其余进程阻塞，直到所有进程执行完毕。<br>阻塞：意味着失去CPU时间片</p>
 <span id="more"></span>
-<p>格式说明符：</p>
+
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;pthread.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> MAX 50</span></span><br><span class="line"><span class="type">int</span> number = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span>* <span class="title function_">ThreadWorkingA</span><span class="params">(<span class="type">void</span>* arg)</span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>; i &lt; MAX; i++)&#123;</span><br><span class="line">        <span class="type">int</span> cur = number;</span><br><span class="line">        cur++;</span><br><span class="line">        usleep(<span class="number">10</span>);</span><br><span class="line">        number = cur;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;thread A id = %ld, nummber = %d\n&quot;</span>, pthread_self(), number);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span>* <span class="title function_">ThreadWorkingB</span><span class="params">(<span class="type">void</span>* arg)</span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>; i &lt; MAX; i++)&#123;</span><br><span class="line">        <span class="type">int</span> cur = number;</span><br><span class="line">        cur++;</span><br><span class="line">        usleep(<span class="number">10</span>);</span><br><span class="line">        number = cur;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;thread B id = %ld, nummber = %d\n&quot;</span>, pthread_self(), number);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="type">pthread_t</span> p1, p2;</span><br><span class="line">    pthread_create(&amp;p1, <span class="literal">NULL</span>, ThreadWorkingA, <span class="literal">NULL</span>);</span><br><span class="line">    pthread_create(&amp;p2, <span class="literal">NULL</span>, ThreadWorkingB, <span class="literal">NULL</span>);</span><br><span class="line">    pthread_join(p1, <span class="literal">NULL</span>);</span><br><span class="line">    pthread_join(p2, <span class="literal">NULL</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>程序运行时，每次都不能运行到number&#x3D;100，这是因为线程A修改了cur数据之后，CPU被挂起，导致没有及时修改number数据，不能及时更新到物理内存中，线程B此时从物理内存中读取到的数据不是最新状态，只能从旧数据开始累加。</p>
+<h1 id="线程同步方式"><a href="#线程同步方式" class="headerlink" title="线程同步方式"></a>线程同步方式</h1><p>多个线程访问共享资源的时候，很容易出现问题，因此需要进行线程同步，常用的线程同步方式有四种：</p>
+<ol>
+<li>互斥锁</li>
+<li>读写锁</li>
+<li>条件变量</li>
+<li>信号量</li>
+</ol>
+<p>共享资源&#x2F;临界资源：</p>
 <ul>
-<li>%d:十进制整数</li>
-<li>%u:无符号十进制整数</li>
-<li>%x:十六进制整数</li>
-<li>%o:八进制整数</li>
-<li>%f:浮点数（小数点形式）</li>
-<li>%e:浮点数（科学计数法形式）</li>
-<li>%g:通用浮点数（自动选择%f&#x2F;%e）</li>
-<li>%s:字符串</li>
-<li>%c:字符</li>
-<li>%%:%字符</li>
+<li>全局数据区</li>
+<li>堆区变量</li>
 </ul>
-<p>标志，宽度，精度，长度修饰符：</p>
+<p>确定临界资源之后，与临界资源相关的上下文代码块被称为临界区，确定好临界区之后，就可以进行线程同步了。</p>
+<ol>
+<li>在临界区代码块起始位置，添加加锁函数，对临界区上锁</li>
+<li>在临界区代码块的结束位置，添加解锁函数，对临界区解锁</li>
+<li>通过锁机制可以保证临界区代码最多只能同时有一个线程访问，即并行访问变成了串行访问</li>
+</ol>
+<h2 id="互斥锁"><a href="#互斥锁" class="headerlink" title="互斥锁"></a>互斥锁</h2><h3 id="互斥锁类型"><a href="#互斥锁类型" class="headerlink" title="互斥锁类型"></a>互斥锁类型</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">pthread_mutex_t</span> mutex;</span><br></pre></td></tr></table></figure>
+<p>创建的锁对象中保存了这把锁的状态信息：锁定还是打开，如果是锁定状态还记录了给这把锁加锁的线程信息（线程ID）。一个互斥锁变量，只能被一个线程锁定，被锁定之后，其他线程再对互斥锁变量加锁，就会被阻塞，直到这把锁被解锁。一般情况下，一个共享资源对应一把互斥锁，锁的个数和线程个数无关。</p>
+<h3 id="互斥锁初始化"><a href="#互斥锁初始化" class="headerlink" title="互斥锁初始化"></a>互斥锁初始化</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">pthread_mutex_init</span><span class="params">(<span class="type">pthread_mutex_t</span> *resrict mutex, <span class="type">const</span> <span class="type">pthread_mutexattr_t</span> *<span class="keyword">restrict</span> attr)</span>;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>restrict<ul>
+<li>关键字，用来修饰指针，只有这个关键字修饰的指针可以访问指向的内存空间，其他指针不行</li>
+</ul>
+</li>
+<li>参数：<ul>
+<li>mutex：互斥锁变量的地址</li>
+<li>attr：互斥锁的属性，一般使用默认属性，指定为NULL</li>
+</ul>
+</li>
+<li>返回值<ul>
+<li>函数调用成功返回0，调用失败返回对应的错误号</li>
+</ul>
+</li>
+</ol>
+<h3 id="释放互斥锁资源"><a href="#释放互斥锁资源" class="headerlink" title="释放互斥锁资源"></a>释放互斥锁资源</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">pthread_mutex_destroy</span><span class="params">(<span class="type">pthread_mutex_t</span> *mutex)</span>;</span><br></pre></td></tr></table></figure>
+<p>参数：</p>
 <ul>
-<li>%+d:带正负号的整数</li>
-<li>%10d:宽度为10的整数，如果数字较短则用空格填充</li>
-<li>%.2f:小数点后保留2位的浮点数</li>
-<li>%5.2f:宽度为5，小数点后保留2位的浮点数</li>
-<li>%ld:长整型（long int）的整数</li>
-<li>%lf:双精度浮点数（double）</li>
-<li>%08x:宽度为8，如果输出数字少于指定宽度，使用0填充左边空位，十六进制输出。</li>
+<li>mutex：互斥锁的地址</li>
 </ul>
+<p>返回值：</p>
+<ul>
+<li>如果函数调用成功返回0，否则返回错误号</li>
+</ul>
+<h3 id="加锁"><a href="#加锁" class="headerlink" title="加锁"></a>加锁</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">pthread_mutex_lock</span><span class="params">(<span class="type">pthread_mutex_t</span> *mutex)</span>;</span><br></pre></td></tr></table></figure>
+<p>这个函数的调用，首先会判断参数mutex互斥锁中的状态是不是锁定状态：</p>
+<ul>
+<li>如果这个锁没有被锁定，是打开状态，则这个线程可以加锁成功，并在这个锁中记录是哪个线程加锁成功了</li>
+<li>如果这个锁处于被锁定状态，还没有被开锁，那其他线程用这个锁的时候，就会加锁失败，并阻塞在这把锁上</li>
+<li>当这把锁被开锁之后，那些阻塞在这把锁上的线程就解除阻塞，并通过竞争的方式抢占这把锁，没抢到的线程继续阻塞</li>
+</ul>
+<h3 id="尝试加锁"><a href="#尝试加锁" class="headerlink" title="尝试加锁"></a>尝试加锁</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">pthread_mutex_trylock</span><span class="params">(<span class="type">pthread_mutex_t</span> *mutex)</span>;</span><br></pre></td></tr></table></figure>
+<p>调用这个函数对互斥锁变量加锁有两种情况：</p>
+<ol>
+<li>如果这把锁没有被锁定，是打开的，则线程加锁成功</li>
+<li>如果锁变量被锁住了，加锁失败，直接返回错误码，并且调用这个函数加锁的线程不会被阻塞</li>
+</ol>
+<h3 id="解锁"><a href="#解锁" class="headerlink" title="解锁"></a>解锁</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">pthread_mutex_unlock</span><span class="params">(<span class="type">pthread_mutex_t</span> *mutex)</span>;</span><br></pre></td></tr></table></figure>
+<p>不是所有线程都可以对互斥锁解锁，而是哪个线程加的锁，哪个线程才能解锁成功。</p>
+<h3 id="互斥锁使用示例"><a href="#互斥锁使用示例" class="headerlink" title="互斥锁使用示例"></a>互斥锁使用示例</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/time.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> MAX 50</span></span><br><span class="line"><span class="type">int</span> number = <span class="number">0</span>;</span><br><span class="line"><span class="type">pthread_mutex_t</span> mutex;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span>* <span class="title function_">ThreadWorkingA</span><span class="params">(<span class="type">void</span>* arg)</span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>; i &lt; MAX; i++)&#123;</span><br><span class="line">        pthread_mutex_lock(&amp;mutex);</span><br><span class="line">        <span class="type">int</span> cur = number;</span><br><span class="line">        cur++;</span><br><span class="line">        number = cur;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;thread A id = %ld, nummber = %d\n&quot;</span>, pthread_self(), number);</span><br><span class="line">        pthread_mutex_unlock(&amp;mutex);</span><br><span class="line">        usleep(<span class="number">5</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span>* <span class="title function_">ThreadWorkingB</span><span class="params">(<span class="type">void</span>* arg)</span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>; i &lt; MAX; i++)&#123;</span><br><span class="line">        pthread_mutex_lock(&amp;mutex);</span><br><span class="line">        <span class="type">int</span> cur = number;</span><br><span class="line">        cur++;</span><br><span class="line">        usleep(<span class="number">10</span>);</span><br><span class="line">        number = cur;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;thread B id = %ld, nummber = %d\n&quot;</span>, pthread_self(), number);</span><br><span class="line">        pthread_mutex_unlock(&amp;mutex);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="type">pthread_t</span> p1, p2;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">timeval</span> <span class="title">start</span>, <span class="title">end</span>;</span> </span><br><span class="line">    gettimeofday(&amp;start, <span class="literal">NULL</span>); </span><br><span class="line"></span><br><span class="line">    pthread_mutex_init(&amp;mutex, <span class="literal">NULL</span>);</span><br><span class="line">    pthread_create(&amp;p1, <span class="literal">NULL</span>, ThreadWorkingA, <span class="literal">NULL</span>);</span><br><span class="line">    pthread_create(&amp;p2, <span class="literal">NULL</span>, ThreadWorkingB, <span class="literal">NULL</span>);</span><br><span class="line">    pthread_join(p1, <span class="literal">NULL</span>);</span><br><span class="line">    pthread_join(p2, <span class="literal">NULL</span>);</span><br><span class="line">    pthread_mutex_destroy(&amp;mutex);</span><br><span class="line"></span><br><span class="line">    gettimeofday(&amp;end, <span class="literal">NULL</span>); </span><br><span class="line">    <span class="type">long</span> seconds = end.tv_sec - start.tv_sec;</span><br><span class="line">    <span class="type">long</span> micros = seconds * <span class="number">1000000</span> + end.tv_usec - start.tv_usec;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Elapsed time: %ld microseconds\n&quot;</span>, micros);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>加锁前：Elapsed time: 5095 microseconds<br>加锁后：Elapsed time: 10915 microseconds</p>
+<h2 id="死锁"><a href="#死锁" class="headerlink" title="死锁"></a>死锁</h2><p>死锁：所有线程都被阻塞，并且线程的阻塞无法解开（可以解锁的线程也被阻塞了）。<br>造成死锁的场景如下：</p>
+<ol>
+<li>加锁之后忘记解锁；</li>
+<li>重复加锁；</li>
+<li>程序中有多个共享资源，互相加锁，导致互相被阻塞</li>
+</ol>
+<p>解决方法：</p>
+<ol>
+<li>对共享资源访问完之后，一定要解锁，或者在加锁的时候使用trylock()</li>
+<li>如果程序中有多把锁，可以控制对锁的访问顺序，或者在对其他互斥锁进行加锁操作之前，先释放当前线程拥有的互斥锁</li>
+<li>引入专门用于死锁检测的模块</li>
+</ol>
+<h2 id="读写锁"><a href="#读写锁" class="headerlink" title="读写锁"></a>读写锁</h2><p>读写锁是互斥锁的升级版，在做读操作的时候可以提高程序的执行效率，如果所有的线程都是读操作，那么读是并行的。</p>
+<ol>
+<li>读锁是共享的</li>
+<li>写锁是独占的</li>
+<li>使用读写锁分别对两个临界区加了读锁和写锁，两个线程要同时访问这两个临界区，访问写锁临界区的线程继续运行，访问读锁的临界区的线程阻塞。因为写锁比读锁的优先级高。</li>
+</ol>
+<h3 id="读写锁类型"><a href="#读写锁类型" class="headerlink" title="读写锁类型"></a>读写锁类型</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">pthread_rwlock_t</span> rwlock;</span><br></pre></td></tr></table></figure>
+<p>读写锁中保存了这把锁的状态信息：</p>
+<ul>
+<li>锁的状态：锁定&#x2F;打开</li>
+<li>锁定的是什么操作：读操作&#x2F;写操作，使用读写锁锁定了写操作之后，需要先解锁才能执行写操作，反之亦然。不能使用一把锁同时进行读锁定和写锁定。</li>
+<li>哪个线程将这把锁锁上的</li>
+</ul>
+<h3 id="读写锁初始化"><a href="#读写锁初始化" class="headerlink" title="读写锁初始化"></a>读写锁初始化</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">pthread_rwlock_init</span><span class="params">(<span class="type">pthread_rwlock_t</span> *<span class="keyword">restrict</span> rwlock, <span class="type">const</span> <span class="type">pthread_rwlockattr_t</span> *<span class="keyword">restrict</span> attr)</span>;</span><br></pre></td></tr></table></figure>
+<p>参数：</p>
+<ul>
+<li>rwlock：读写锁的地址，传出参数</li>
+<li>attr：读写锁属性，一般使用默认属性，指定为NULL</li>
+</ul>
+<h3 id="释放读写锁占用的系统资源"><a href="#释放读写锁占用的系统资源" class="headerlink" title="释放读写锁占用的系统资源"></a>释放读写锁占用的系统资源</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">pthread_rwlock_destroy</span><span class="params">(<span class="type">pthread_rwlock_t</span> *rwlock)</span>;</span><br></pre></td></tr></table></figure>
+<p>参数：</p>
+<ul>
+<li>rwlock：读写锁的地址</li>
+</ul>
+<p>返回值：</p>
+<ul>
+<li>如果函数调用成功返回0，否则返回错误号</li>
+</ul>
+<h3 id="读操作加锁"><a href="#读操作加锁" class="headerlink" title="读操作加锁"></a>读操作加锁</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">pthread_rwlock_rdlock</span><span class="params">(<span class="type">pthread_rwlock_t</span> *rwlock)</span>;</span><br></pre></td></tr></table></figure>
+<p>调用该函数的时候，如果读写锁是打开的，那么加锁成功；如果读写锁已经锁定了读操作，调用该函数依然可以加锁成功，因为读锁是共享的；但是如果读写锁已经锁定了写操作，那么调用这个函数的线程就会被阻塞。</p>
+<h3 id="写操作加锁"><a href="#写操作加锁" class="headerlink" title="写操作加锁"></a>写操作加锁</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">pthread_rwlock_wrlock</span><span class="params">(<span class="type">pthread_rwlock_t</span> *rwlock)</span>;</span><br></pre></td></tr></table></figure>
+<p>调用这个函数，如果读写锁是打开的，那么加锁成功；如果读写锁已经锁定了读操作或者写操作，调用这个函数的线程就会被阻塞。</p>
+<h3 id="尝试读操作加锁"><a href="#尝试读操作加锁" class="headerlink" title="尝试读操作加锁"></a>尝试读操作加锁</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">pthread_rwlock_tryrdlock</span><span class="params">(<span class="type">pthread_rwlock_t</span> *rwlock)</span>;</span><br></pre></td></tr></table></figure>
+<p>这个函数可以有效的避免死锁，如果加读锁失败，不会阻塞当前线程，直接返回错误号。<br>调用该函数，如果读写锁是打开的，那么加锁成功；如果读写锁已经锁定了读操作，调用这个函数依然可以加锁成功；如果读写锁已经锁定了写操作，调用这个函数加锁失败，对应的线程不会被阻塞，可以在程序中对函数返回值进行判断，添加加锁失败之后的处理动作。</p>
+<h3 id="尝试写操作加锁"><a href="#尝试写操作加锁" class="headerlink" title="尝试写操作加锁"></a>尝试写操作加锁</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">pthread_rwlock_trywrlock</span><span class="params">(<span class="type">pthread_rwlock_t</span> *rwlock)</span>;</span><br></pre></td></tr></table></figure>
+<p>调用这个函数，如果读写锁是打开的，那么加锁成功；如果读写锁已经锁定了读操作或者写操作，调用这个函数加锁失败，但是线程不会阻塞，可以在程序中对函数返回值进行判断，添加加锁失败之后的处理动作。</p>
+<h3 id="读-写锁解锁"><a href="#读-写锁解锁" class="headerlink" title="读&#x2F;写锁解锁"></a>读&#x2F;写锁解锁</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">pthread_rwlock_unlock</span><span class="params">(<span class="type">pthread_rwlock_t</span> *rwlock)</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="读写锁的使用"><a href="#读写锁的使用" class="headerlink" title="读写锁的使用"></a>读写锁的使用</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/time.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> count 50</span></span><br><span class="line"><span class="type">int</span> number = <span class="number">0</span>;</span><br><span class="line"><span class="type">pthread_rwlock_t</span> rwlock;</span><br><span class="line"><span class="comment">// pthread_mutex_t mutex;</span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span>* <span class="title function_">WriteThread</span><span class="params">(<span class="type">void</span>* arg)</span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; count; i++)</span><br><span class="line">    &#123;   </span><br><span class="line">        pthread_rwlock_wrlock(&amp;rwlock);</span><br><span class="line">        <span class="comment">// pthread_mutex_lock(&amp;mutex);</span></span><br><span class="line">        <span class="type">int</span> cur = number;</span><br><span class="line">        cur ++;</span><br><span class="line">        usleep(<span class="number">5</span>);</span><br><span class="line">        number = cur;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;++写操作完毕，number = %d, tid = %ld\n&quot;</span>, number, pthread_self());</span><br><span class="line">        <span class="comment">// pthread_mutex_unlock(&amp;mutex);</span></span><br><span class="line">        pthread_rwlock_unlock(&amp;rwlock);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span>* <span class="title function_">ReadThread</span><span class="params">(<span class="type">void</span>* arg)</span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; count; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        pthread_rwlock_rdlock(&amp;rwlock);</span><br><span class="line">        <span class="comment">// pthread_mutex_lock(&amp;mutex);</span></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;--读操作完毕，number = %d, tid = %ld\n&quot;</span>, number, pthread_self());</span><br><span class="line">        <span class="comment">// pthread_mutex_unlock(&amp;mutex);</span></span><br><span class="line">        pthread_rwlock_unlock(&amp;rwlock);</span><br><span class="line">        usleep(<span class="number">5</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">timeval</span> <span class="title">start</span>, <span class="title">end</span>;</span></span><br><span class="line">    gettimeofday(&amp;start, <span class="literal">NULL</span>);</span><br><span class="line">    pthread_rwlock_init(&amp;rwlock, <span class="literal">NULL</span>);</span><br><span class="line">    <span class="comment">// pthread_mutex_init(&amp;mutex, NULL);</span></span><br><span class="line">    <span class="type">pthread_t</span> wtid[<span class="number">3</span>];</span><br><span class="line">    <span class="type">pthread_t</span> rtid[<span class="number">5</span>];</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>; i&lt;<span class="number">3</span>; i++)&#123;</span><br><span class="line">        pthread_create(&amp;wtid[i], <span class="literal">NULL</span>, WriteThread, <span class="literal">NULL</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>; i&lt;<span class="number">5</span>; i++)&#123;</span><br><span class="line">        pthread_create(&amp;rtid[i], <span class="literal">NULL</span>, ReadThread, <span class="literal">NULL</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>; i&lt;<span class="number">3</span>; i++)&#123;</span><br><span class="line">        pthread_join(wtid[i], <span class="literal">NULL</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>; i&lt;<span class="number">5</span>; i++)&#123;</span><br><span class="line">        pthread_join(rtid[i], <span class="literal">NULL</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// pthread_mutex_destroy(&amp;mutex);</span></span><br><span class="line">    pthread_rwlock_destroy(&amp;rwlock);</span><br><span class="line"></span><br><span class="line">    gettimeofday(&amp;end, <span class="literal">NULL</span>);</span><br><span class="line">    <span class="type">long</span> seconds = end.tv_sec - start.tv_sec;</span><br><span class="line">    <span class="type">long</span> micros = seconds*<span class="number">1000000</span> + end.tv_usec - start.tv_usec;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Elapsed time: %ld microseconds\n&quot;</span>, micros);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>w&#x3D;3, r&#x3D;20<br>读写锁运行时间：读写锁 - Elapsed time: 42484 microseconds<br>互斥锁运行时间：互斥锁 - Elapsed time: 44594 microseconds</p>
+<p>w&#x3D;3, r&#x3D;100<br>读写锁 - Elapsed time: 123020 microseconds<br>互斥锁 - Elapsed time: 125475 microseconds</p>
+<p>w&#x3D;0, r&#x3D;100<br>读写锁 - Elapsed time: 108057 microseconds<br>互斥锁 - Elapsed time: 113061 microseconds</p>
+<p>w&#x3D;0, r&#x3D;1000<br>读写锁 - Elapsed time: 1006307 microseconds<br>互斥锁 - Elapsed time: 939342 microseconds</p>
+<p>w&#x3D;0, r&#x3D;1000（把延时加到锁里面，对比非常明显）<br>读写锁 - Elapsed time: 977554 microseconds<br>互斥锁 - Elapsed time: 4813041 microseconds</p>
+<p>无论是读写锁还是互斥锁，它们在操作系统层面都有开销。这个开销包括上下文切换、锁的获取和释放等。如果不将延时放入上锁的代码内，系统层面的开销占据了主导地位，使得读写锁的性能优势不明显。</p>
+<h2 id="条件变量"><a href="#条件变量" class="headerlink" title="条件变量"></a>条件变量</h2><ol>
+<li>条件变量的主要作用不是处理线程同步，而是进行线程的阻塞。</li>
+<li>条件变量一般需要配合互斥锁来使用。</li>
+<li>假设一共有1-26个线程，共同访问同一把互斥锁，如果其中一个线程加锁成功，那么其余的25个线程访问互斥锁都阻塞，所有线程都只能顺序访问临界区</li>
+<li>条件变量只有满足指定条件下才会阻塞线程，如果条件不满足，多个线程可以同时进入临界区，同时读写资源（也会出现共享资源中的数据混乱）</li>
+</ol>
+<h3 id="条件变量类型"><a href="#条件变量类型" class="headerlink" title="条件变量类型"></a>条件变量类型</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">pthread_cond_t</span> cond;</span><br></pre></td></tr></table></figure>
+<p>里面记录了被条件变量阻塞的线程的线程信息，以便在解除阻塞的时候使用。</p>
+<h3 id="条件变量初始化"><a href="#条件变量初始化" class="headerlink" title="条件变量初始化"></a>条件变量初始化</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">pthread_cond_init</span><span class="params">(<span class="type">pthread_cond_t</span> *<span class="keyword">restrict</span> cond, <span class="type">const</span> <span class="type">pthread_condattr_t</span> *<span class="keyword">restrict</span> attr)</span>;</span><br></pre></td></tr></table></figure>
+<p>参数：</p>
+<ul>
+<li>cond：条件变量的地址，传出参数</li>
+<li>attr：条件变量的属性，一般使用默认属性，指定为NULL</li>
+</ul>
+<h3 id="条件变量销毁并释放资源"><a href="#条件变量销毁并释放资源" class="headerlink" title="条件变量销毁并释放资源"></a>条件变量销毁并释放资源</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">pthread_cond_destroy</span><span class="params">(<span class="type">pthread_cond_t</span> *cond)</span>;</span><br></pre></td></tr></table></figure>
+<p>参数：</p>
+<ul>
+<li>cond：条件变量的地址</li>
+</ul>
+<h3 id="条件变量的线程阻塞函数"><a href="#条件变量的线程阻塞函数" class="headerlink" title="条件变量的线程阻塞函数"></a>条件变量的线程阻塞函数</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">pthread_cond_wait</span><span class="params">(<span class="type">pthread_cond_t</span> *<span class="keyword">restrict</span> cond, <span class="type">pthread_mutex_t</span> *<span class="keyword">restrict</span> mutex)</span>;</span><br></pre></td></tr></table></figure>
+<p>参数：</p>
+<ul>
+<li>cond：条件变量的地址</li>
+<li>mutex：互斥锁的地址</li>
+</ul>
+<p>函数在阻塞线程的时候，需要一个互斥锁参数，这个互斥锁的功能主要是进行线程同步，让线程顺序进入临界区，避免出现共享资源的数据混乱，该函数会对互斥锁做以下几件事情：</p>
+<ol>
+<li>在阻塞线程的时候，如果线程已经对互斥锁mutex上锁，那么该函数会将这把锁打开，从而避免死锁</li>
+<li>当线程解除阻塞的时候，函数内部会帮助这个线程再次将这个mutex互斥锁上锁，继续向下访问临界区</li>
+</ol>
+<h3 id="条件变量的线程阻塞函数（定时解除）"><a href="#条件变量的线程阻塞函数（定时解除）" class="headerlink" title="条件变量的线程阻塞函数（定时解除）"></a>条件变量的线程阻塞函数（定时解除）</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">pthread_cond_timewait</span><span class="params">(<span class="type">pthread_cond_t</span> *<span class="keyword">restrict</span> cond, <span class="type">pthread_mutex_t</span> *<span class="keyword">restrict</span> mutex, <span class="type">const</span> <span class="keyword">struct</span> timespec *<span class="keyword">restrict</span> abstime)</span>;</span><br></pre></td></tr></table></figure>
+<p>将线程阻塞一定的时间，时间到达之后，线程解除阻塞。<br>其中struct timespec的结构为：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 表示的时间为从1971.1.1到某个时间点的时间</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">timespec</span> &#123;</span></span><br><span class="line">    <span class="type">time_t</span> tv_sec;  <span class="comment">// 秒</span></span><br><span class="line">    <span class="type">long</span> tv_nsec;   <span class="comment">// 纳秒</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>timespec参数的赋值方式比较麻烦：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">time_t</span> mytime = time(<span class="literal">NULL</span>); <span class="comment">// 1971.1.1 0:0:0到当前的总秒数</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">timespec</span> <span class="title">tmsp</span>;</span></span><br><span class="line">tmsp.tv_sec = time(<span class="literal">NULL</span>) + <span class="number">100</span>; <span class="comment">// 线程阻塞100s</span></span><br><span class="line">tmsp.tv_nsec = <span class="number">0</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="条件变量的唤醒阻塞函数"><a href="#条件变量的唤醒阻塞函数" class="headerlink" title="条件变量的唤醒阻塞函数"></a>条件变量的唤醒阻塞函数</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 唤醒阻塞在条件变量上的线程（至少一个，总数不定，相当于随机唤醒几个被阻塞在条件变量上的线程）</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">pthread_cond_signal</span><span class="params">(<span class="type">pthread_cond_t</span> *cond)</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 唤醒被阻塞在条件变量上的线程，被阻塞的线程全部解除阻塞</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">pthread_cond_broadcast</span><span class="params">(<span class="type">pthread_cond_t</span> *cond)</span>;</span><br></pre></td></tr></table></figure>
+<p>上述两个唤醒阻塞函数的区别是，第一个是随机唤醒几个被阻塞在条件变量上的线程，第二个是唤醒所有被阻塞在条件变量上的线程。因为条件变量搭配互斥锁使用，很多情况下，即使将阻塞在条件变量上的互斥锁全部唤醒，当其中一个线程抢占到互斥锁之后，其余线程也会立马进行阻塞状态。以及如果，当消费者远远大于生产者的数目，当生产者供不应求的时候，也没必要唤醒全部被条件变量阻塞的线程，因为唤醒之后，又会立马因为供不应求，再次陷入阻塞。</p>
+<h3 id="条件变量的使用"><a href="#条件变量的使用" class="headerlink" title="条件变量的使用"></a>条件变量的使用</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/time.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> N 5</span></span><br><span class="line"><span class="type">pthread_cond_t</span> cond;</span><br><span class="line"><span class="type">pthread_mutex_t</span> mutex;</span><br><span class="line"><span class="type">int</span> total = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 链表（仓库）</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Node</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="type">int</span> number;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">Node</span>* <span class="title">next</span>;</span>    </span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 指向头节点的指针</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Node</span>* <span class="title">HEAD</span> =</span> <span class="literal">NULL</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 生产者</span></span><br><span class="line"><span class="type">void</span>* <span class="title function_">producer</span><span class="params">(<span class="type">void</span>* arg)</span>&#123;</span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>)&#123;   <span class="comment">//  一直生产</span></span><br><span class="line">        pthread_mutex_lock(&amp;mutex);</span><br><span class="line">        <span class="comment">// 创建新节点（生产）</span></span><br><span class="line">        <span class="class"><span class="keyword">struct</span> <span class="title">Node</span> *<span class="title">newNode</span> =</span> (<span class="keyword">struct</span> Node*)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">struct</span> Node));</span><br><span class="line">        newNode -&gt; next = HEAD;</span><br><span class="line">        newNode -&gt;number = ++total;</span><br><span class="line">        HEAD = newNode;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;+++producer, number = %d, tid = %ld\n&quot;</span>, newNode-&gt;number, pthread_self());</span><br><span class="line">        pthread_mutex_unlock(&amp;mutex);</span><br><span class="line">        pthread_cond_broadcast(&amp;cond);</span><br><span class="line">        sleep(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 消费者</span></span><br><span class="line"><span class="type">void</span>* <span class="title function_">consumer</span><span class="params">(<span class="type">void</span>* arg)</span>&#123;</span><br><span class="line">    <span class="keyword">while</span> (<span class="number">1</span>)</span><br><span class="line">    &#123;   </span><br><span class="line">        pthread_mutex_lock(&amp;mutex);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 这里能不能改成if判断？？？</span></span><br><span class="line">        <span class="comment">// 不能。有一个消费者线程通过 pthread_cond_wait()加锁成功, 其余没有加锁成功的线程继续阻塞</span></span><br><span class="line">        <span class="comment">// 加锁成功的线程向下运行，并成功删除一个节点，然后解锁</span></span><br><span class="line">        <span class="comment">// 没有加锁成功的线程解除阻塞继续抢这把锁，另外一个子线程加锁成功</span></span><br><span class="line">        <span class="comment">// 但是这个线程删除链表节点的时候链表已经为空了, 后边访问这个空节点的时候就会出现段错误。</span></span><br><span class="line">        <span class="keyword">while</span> (HEAD == <span class="literal">NULL</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            pthread_cond_wait(&amp;cond, &amp;mutex);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="class"><span class="keyword">struct</span> <span class="title">Node</span> *<span class="title">newNode</span> =</span> HEAD;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;--consumer: number: %d, tid = %ld\n&quot;</span>, newNode-&gt;number, pthread_self());</span><br><span class="line">        HEAD = newNode -&gt; next;</span><br><span class="line">        <span class="built_in">free</span>(newNode);</span><br><span class="line">        pthread_mutex_unlock(&amp;mutex);</span><br><span class="line">        sleep(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">    pthread_cond_init(&amp;cond, <span class="literal">NULL</span>);</span><br><span class="line">    pthread_mutex_init(&amp;mutex, <span class="literal">NULL</span>);</span><br><span class="line">    <span class="comment">// 五个生产者</span></span><br><span class="line">    <span class="type">pthread_t</span> ptid[N];</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; N; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        pthread_create(&amp;ptid[i], <span class="literal">NULL</span>, producer, <span class="literal">NULL</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 五个消费者</span></span><br><span class="line">    <span class="type">pthread_t</span> ctid[N];</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; N; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        pthread_create(&amp;ctid[i], <span class="literal">NULL</span>, consumer, <span class="literal">NULL</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 释放线程资源</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; N; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        pthread_join(ptid[i], <span class="literal">NULL</span>);</span><br><span class="line">        pthread_join(ctid[i], <span class="literal">NULL</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 释放条件变量和锁的资源</span></span><br><span class="line">    pthread_cond_destroy(&amp;cond);</span><br><span class="line">    pthread_mutex_destroy(&amp;mutex);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="信号量"><a href="#信号量" class="headerlink" title="信号量"></a>信号量</h2><p>对于信号量，我的理解是，他代表一种资源，如果信号量不为0，即代表有剩余资源，线程可以继续运行；如果信号量为0，即代表资源为空，线程阻塞。<br>信号量的主要作用也是阻塞线程，并不能保证线程安全，如果要保证线程安全，需要信号量和互斥锁一起使用。</p>
+<ol>
+<li>信号量的头文件为：&lt;semaphore.h&gt;</li>
+<li>信号量的类型为：sem_t sem;</li>
+</ol>
+<h3 id="信号量初始化"><a href="#信号量初始化" class="headerlink" title="信号量初始化"></a>信号量初始化</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">sem_init</span><span class="params">(<span class="type">sem_t</span> *sem, <span class="type">int</span> pshared, <span class="type">unsigned</span> <span class="type">int</span> value)</span>;</span><br></pre></td></tr></table></figure>
+<p>参数：</p>
+<ul>
+<li>sem：信号量变量地址</li>
+<li>pshared：<ul>
+<li>0：线程同步</li>
+<li>非0：进程同步</li>
+</ul>
+</li>
+<li>value：初始化当前信号量拥有的资源数，如果资源数为0，线程就会被阻塞</li>
+</ul>
+<h3 id="信号量的资源释放"><a href="#信号量的资源释放" class="headerlink" title="信号量的资源释放"></a>信号量的资源释放</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">sem_destroy</span><span class="params">(<span class="type">sem_t</span> *sem)</span>;</span><br></pre></td></tr></table></figure>
+<p>参数：</p>
+<ul>
+<li>信号量变量的地址</li>
+</ul>
+<h3 id="信号量资源消耗（-1）函数"><a href="#信号量资源消耗（-1）函数" class="headerlink" title="信号量资源消耗（-1）函数"></a>信号量资源消耗（-1）函数</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">sem_wait</span><span class="params">(<span class="type">sem_t</span> *sem)</span>;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>当sem中的资源数大于0，线程不会阻塞，线程会占用sem中的一个资源，并且资源数减1</li>
+<li>当sem中的资源数减为0时，资源被耗尽，线程阻塞</li>
+</ul>
+<h3 id="信号量资源增加（-1）函数"><a href="#信号量资源增加（-1）函数" class="headerlink" title="信号量资源增加（+1）函数"></a>信号量资源增加（+1）函数</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">sem_post</span><span class="params">(<span class="type">sem_t</span> *sem)</span>;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>调用该函数，会将sem中的资源数加1</li>
+<li>如果有线程在调用sem_wait，sem_trywait，sem_timedwait时因为sem中的资源数为0被阻塞了，这时这些线程会解除阻塞，获取到资源之后继续向下运行。</li>
+</ul>
+<h3 id="其他信号量资源消耗函数"><a href="#其他信号量资源消耗函数" class="headerlink" title="其他信号量资源消耗函数"></a>其他信号量资源消耗函数</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 尝试获取资源</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">sem_trywait</span><span class="params">(<span class="type">sem_t</span> *sem)</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 定时阻塞获取资源</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">sem_timewait</span><span class="params">(<span class="type">sem_t</span> *sem, <span class="type">const</span> <span class="keyword">struct</span> timespec *abs_timeout)</span>;</span><br></pre></td></tr></table></figure>
+<p>第一个函数：</p>
+<ul>
+<li>当sem中的资源数大于0，线程不会阻塞，线程会占用sem中的一个资源，并且资源数减1</li>
+<li>当sem中的资源数减为0时，资源被耗尽，但是线程不会阻塞，而是直接返回错误号，可以加判断语句，用于处理获取资源失败的情况</li>
+</ul>
+<p>第二个函数：</p>
+<ul>
+<li>当sem中的资源数大于0，线程不会阻塞，线程会占用sem中的一个资源，并且资源数减1</li>
+<li>当sem中的资源数减为0时，资源被耗尽，线程开始阻塞，当阻塞指定时长之后，线程解除阻塞</li>
+</ul>
+<h3 id="获取信号量资源数函数"><a href="#获取信号量资源数函数" class="headerlink" title="获取信号量资源数函数"></a>获取信号量资源数函数</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">sem_getvalue</span><span class="params">(<span class="type">sem_t</span> *sem, <span class="type">int</span> *sval)</span>;</span><br></pre></td></tr></table></figure>
+<p>参数：</p>
+<ul>
+<li>sem：信号量变量的地址</li>
+<li>sval：传出参数，传出信号量剩余资源</li>
+</ul>
+<h3 id="信号量使用方式"><a href="#信号量使用方式" class="headerlink" title="信号量使用方式"></a>信号量使用方式</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;semaphore.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;pthread.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> N 5</span></span><br><span class="line"><span class="type">sem_t</span> psem;</span><br><span class="line"><span class="type">sem_t</span> csem;</span><br><span class="line"><span class="type">pthread_mutex_t</span> mutex;</span><br><span class="line"><span class="type">int</span> total = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Node</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="type">int</span> number;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">Node</span>* <span class="title">next</span>;</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Node</span> * <span class="title">head</span> =</span> <span class="literal">NULL</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span>* <span class="title function_">producer</span><span class="params">(<span class="type">void</span>* arg)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        sem_wait(&amp;psem);</span><br><span class="line">        pthread_mutex_lock(&amp;mutex);</span><br><span class="line">        <span class="class"><span class="keyword">struct</span> <span class="title">Node</span>* <span class="title">pnew</span> =</span> (<span class="keyword">struct</span> Node*)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">struct</span> Node));</span><br><span class="line">        pnew-&gt;number = ++total;</span><br><span class="line">        pnew-&gt;next = head;</span><br><span class="line">        head = pnew;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;+++producer, number = %d, tid = %ld\n&quot;</span>, pnew-&gt;number, pthread_self());</span><br><span class="line">        pthread_mutex_unlock(&amp;mutex);</span><br><span class="line">        sem_post(&amp;csem);</span><br><span class="line">        sleep(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span>* <span class="title function_">consumer</span><span class="params">(<span class="type">void</span>* arg)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        sem_wait(&amp;csem);</span><br><span class="line">        pthread_mutex_lock(&amp;mutex);</span><br><span class="line">        <span class="class"><span class="keyword">struct</span> <span class="title">Node</span>* <span class="title">pnode</span> =</span> head;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;--consumer: number: %d, tid = %ld\n&quot;</span>, pnode-&gt;number, pthread_self());</span><br><span class="line">        head  = pnode-&gt;next;</span><br><span class="line">        <span class="built_in">free</span>(pnode);</span><br><span class="line">        pthread_mutex_unlock(&amp;mutex);</span><br><span class="line">        sem_post(&amp;psem);</span><br><span class="line">        sleep(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    sem_init(&amp;psem, <span class="number">0</span>, <span class="number">5</span>);</span><br><span class="line">    sem_init(&amp;csem, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">    pthread_mutex_init(&amp;mutex, <span class="literal">NULL</span>);</span><br><span class="line">    <span class="type">pthread_t</span> ptid[N];</span><br><span class="line">    <span class="type">pthread_t</span> ctid[N];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>; i&lt;N; ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        pthread_create(&amp;ptid[i], <span class="literal">NULL</span>, producer, <span class="literal">NULL</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>; i&lt;N; ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        pthread_create(&amp;ctid[i], <span class="literal">NULL</span>, consumer, <span class="literal">NULL</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>; i&lt;N; ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        pthread_join(ptid[i], <span class="literal">NULL</span>);</span><br><span class="line">        pthread_join(ctid[i], <span class="literal">NULL</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    sem_destroy(&amp;psem);</span><br><span class="line">    sem_destroy(&amp;csem);</span><br><span class="line">    pthread_mutex_destroy(&amp;mutex);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果生产者和消费者使用的信号量总资源数为1，那么不会出现生产者线程和消费者线程同时访问共享资源的情况，不管生产者和消费者线程有多少个，它们都是顺序执行的。</p>
 ]]></content>
       <categories>
-        <category>C</category>
+        <category>操作系统</category>
       </categories>
   </entry>
   <entry>
