@@ -1,27 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Anaconda</title>
-    <url>/2024/10/31/Anaconda/</url>
-    <content><![CDATA[<span id="more"></span>
-<h1 id="常用指令"><a href="#常用指令" class="headerlink" title="常用指令"></a>常用指令</h1><h2 id="命令行窗口"><a href="#命令行窗口" class="headerlink" title="命令行窗口"></a>命令行窗口</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 查看版本号</span><br><span class="line">&gt; conda --version</span><br><span class="line"></span><br><span class="line"># 查看目前的镜像</span><br><span class="line">&gt; conda config </span><br><span class="line"></span><br><span class="line"># 添加路径</span><br><span class="line">&gt; conda config --add channels http://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/</span><br><span class="line">&gt; conda config –-add channels http://mirrors.ustc.edu.cn/anaconda/pkgs/free/</span><br><span class="line">&gt; conda config --add channels http://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/conda-forge/</span><br><span class="line">&gt; conda config --set show_channel_urls yes</span><br><span class="line"></span><br><span class="line"># 升级工具包</span><br><span class="line">&gt; conda upgrade --all</span><br></pre></td></tr></table></figure>
-
-<h2 id="Anaconda-Prompt"><a href="#Anaconda-Prompt" class="headerlink" title="Anaconda Prompt"></a>Anaconda Prompt</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 创建虚拟环境</span><br><span class="line">&gt; conda create -n &lt;env-name&gt; python=3.6</span><br><span class="line"></span><br><span class="line"># 列出所有可用的conda环境</span><br><span class="line">&gt; conda info --envs</span><br><span class="line"></span><br><span class="line"># 进入虚拟环境</span><br><span class="line">&gt; activate &lt;env-name&gt;</span><br><span class="line"></span><br><span class="line"># 退出虚拟环境</span><br><span class="line">&gt; deactivate</span><br><span class="line"></span><br><span class="line"># 安装package</span><br><span class="line">&gt; conda install &lt;package-name&gt;</span><br><span class="line"></span><br><span class="line"># 查看当前环境下安装的packages</span><br><span class="line">&gt; conda list</span><br><span class="line"></span><br><span class="line"># 安装package</span><br><span class="line">&gt; pip install -i http://pypi.tuna.tsinghua.edu.cn/simple --trusted-host pypi.tuna.tsinghua.edu.cn  matplotlib</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h2 id="ps"><a href="#ps" class="headerlink" title="ps"></a>ps</h2><p>Anaconda Prompt可以看作是命令行窗口（CMD）的增强版，专门为Anaconda用户设计，以支持Python开发和数据科学工作。</p>
-<ul>
-<li>Anaconda Prompt完全兼容CMD中的所有命令。</li>
-<li>Anaconda Prompt提供了conda命令，用于管理Anaconda环境和包。</li>
-<li>Anaconda Prompt预装了许多数据科学和机器学习相关的库</li>
-<li>Anaconda Prompt允许用户创建、激活和删除不同的Python环境（称为conda环境）</li>
-</ul>
-<h1 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h1><p><a href="https://blog.csdn.net/Inochigohan/article/details/120400990">anaconda安装</a><br><a href="https://blog.csdn.net/qq_39220334/article/details/121961742">清华镜像源</a><br><a href="https://www.cnblogs.com/lab-zj/p/16975410.html">conda常用命令</a><br><a href="https://blog.csdn.net/JineD/article/details/124774570">pip安装package</a></p>
-]]></content>
-      <categories>
-        <category>机器学习</category>
-      </categories>
-  </entry>
-  <entry>
     <title>CMake嵌套写法</title>
     <url>/2024/10/31/CMake%E5%B5%8C%E5%A5%97%E5%86%99%E6%B3%95/</url>
     <content><![CDATA[<p>[ ] CMake嵌套写法</p>
@@ -46,21 +25,140 @@
       </categories>
   </entry>
   <entry>
-    <title>Github的SSH配置</title>
-    <url>/2024/09/02/Github%E7%9A%84SSH%E9%85%8D%E7%BD%AE/</url>
-    <content><![CDATA[<h1 id="1-创建公私密钥"><a href="#1-创建公私密钥" class="headerlink" title="1.创建公私密钥"></a>1.创建公私密钥</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ ssh-keygen -t rsa -C <span class="string">&quot;Github注册的邮箱地址&quot;</span></span><br><span class="line">$ <span class="built_in">cat</span> ～/.ssh/id_rsa.pub</span><br><span class="line"><span class="comment"># ps.在windows系统中.ssh文件在C:\Users\你的用户名\.ssh目录下</span></span><br></pre></td></tr></table></figure>
+    <title>Anaconda</title>
+    <url>/2024/10/31/Anaconda/</url>
+    <content><![CDATA[<span id="more"></span>
+<h1 id="常用指令"><a href="#常用指令" class="headerlink" title="常用指令"></a>常用指令</h1><h2 id="命令行窗口"><a href="#命令行窗口" class="headerlink" title="命令行窗口"></a>命令行窗口</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 查看版本号</span><br><span class="line">&gt; conda --version</span><br><span class="line"></span><br><span class="line"># 查看目前的镜像</span><br><span class="line">&gt; conda config </span><br><span class="line"></span><br><span class="line"># 添加路径</span><br><span class="line">&gt; conda config --add channels http://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/</span><br><span class="line">&gt; conda config –-add channels http://mirrors.ustc.edu.cn/anaconda/pkgs/free/</span><br><span class="line">&gt; conda config --add channels http://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/conda-forge/</span><br><span class="line">&gt; conda config --set show_channel_urls yes</span><br><span class="line"></span><br><span class="line"># 升级工具包</span><br><span class="line">&gt; conda upgrade --all</span><br></pre></td></tr></table></figure>
 
-<span id="more"></span>
-<h1 id="2-配置公钥"><a href="#2-配置公钥" class="headerlink" title="2.配置公钥"></a>2.配置公钥</h1><p>1.github -&gt; 个人头像 -&gt; setting -&gt; SSH and GPG keys -&gt; New SSH key<br>2.复制id_rsa.pub的内容到Key中<br>3.Title的内容自定义</p>
-<h1 id="3-验证是否设置成功"><a href="#3-验证是否设置成功" class="headerlink" title="3.验证是否设置成功"></a>3.验证是否设置成功</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ ssh -T git@github.com</span><br><span class="line">Hi portkas! You<span class="string">&#x27;ve successfully authenticated, but GitHub does not provide shell access.</span></span><br></pre></td></tr></table></figure>
+<h2 id="Anaconda-Prompt"><a href="#Anaconda-Prompt" class="headerlink" title="Anaconda Prompt"></a>Anaconda Prompt</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 创建虚拟环境</span><br><span class="line">&gt; conda create -n &lt;env-name&gt; python=3.6</span><br><span class="line"></span><br><span class="line"># 列出所有可用的conda环境</span><br><span class="line">&gt; conda info --envs</span><br><span class="line"></span><br><span class="line"># 进入虚拟环境</span><br><span class="line">&gt; activate &lt;env-name&gt;</span><br><span class="line"></span><br><span class="line"># 退出虚拟环境</span><br><span class="line">&gt; deactivate</span><br><span class="line"></span><br><span class="line"># 安装package</span><br><span class="line">&gt; conda install &lt;package-name&gt;</span><br><span class="line"></span><br><span class="line"># 查看当前环境下安装的packages</span><br><span class="line">&gt; conda list</span><br><span class="line"></span><br><span class="line"># 安装package</span><br><span class="line">&gt; pip install -i http://pypi.tuna.tsinghua.edu.cn/simple --trusted-host pypi.tuna.tsinghua.edu.cn  matplotlib</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<h1 id="4-Q-A"><a href="#4-Q-A" class="headerlink" title="4.Q&amp;A"></a>4.Q&amp;A</h1><p>SSH登录安全性由非对称加密保证，产生密钥时，一次产生两个密钥，一个公钥，一个私钥，在git中一般命名为id_rsa.pub, id_rsa。</p>
-<h2 id="如何使用生成的一个私钥一个公钥进行验证呢？"><a href="#如何使用生成的一个私钥一个公钥进行验证呢？" class="headerlink" title="如何使用生成的一个私钥一个公钥进行验证呢？"></a>如何使用生成的一个私钥一个公钥进行验证呢？</h2><p>本地生成一个密钥对，其中公钥放到远程主机，私钥保存在本地，当本地主机需要登录远程主机时，本地主机向远程主机发送一个登录请求，远程收到消息后，随机生成一个字符串并用公钥加密，发回给本地。本地拿到该字符串，用存放在本地的私钥进行解密，再次发送到远程，远程比对该解密后的字符串与源字符串是否等同，如果等同则认证成功。</p>
-<h2 id="每使用一台主机都要配？"><a href="#每使用一台主机都要配？" class="headerlink" title="每使用一台主机都要配？"></a>每使用一台主机都要配？</h2><p>每使用一台新主机进行git远程操作，想要实现无密，都需要配置。并不是说每个账号配一次就够了，而是每一台主机都需要配。</p>
-<h2 id="配了为什么就不用密码了？"><a href="#配了为什么就不用密码了？" class="headerlink" title="配了为什么就不用密码了？"></a>配了为什么就不用密码了？</h2><p>因为配置的时候是把当前主机的公钥放到了你的github账号下，相当于当前主机和你的账号做了一个关联，你在这台主机上已经登录了你的账号，此时此刻github认为是该账号主人在操作这台主机，在配置ssh后就信任该主机了。所以下次在使用git的时候即使没有登录github，也能直接从本地push代码到远程了。</p>
+<h2 id="ps"><a href="#ps" class="headerlink" title="ps"></a>ps</h2><p>Anaconda Prompt可以看作是命令行窗口（CMD）的增强版，专门为Anaconda用户设计，以支持Python开发和数据科学工作。</p>
+<ul>
+<li>Anaconda Prompt完全兼容CMD中的所有命令。</li>
+<li>Anaconda Prompt提供了conda命令，用于管理Anaconda环境和包。</li>
+<li>Anaconda Prompt预装了许多数据科学和机器学习相关的库</li>
+<li>Anaconda Prompt允许用户创建、激活和删除不同的Python环境（称为conda环境）</li>
+</ul>
+<h1 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h1><p><a href="https://blog.csdn.net/Inochigohan/article/details/120400990">anaconda安装</a><br><a href="https://blog.csdn.net/qq_39220334/article/details/121961742">清华镜像源</a><br><a href="https://www.cnblogs.com/lab-zj/p/16975410.html">conda常用命令</a><br><a href="https://blog.csdn.net/JineD/article/details/124774570">pip安装package</a></p>
 ]]></content>
       <categories>
-        <category>Git</category>
+        <category>机器学习</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Git分支管理Hexo</title>
+    <url>/2024/09/02/Git%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86Hexo/</url>
+    <content><![CDATA[<h1 id="1-本地初始电脑"><a href="#1-本地初始电脑" class="headerlink" title="1.本地初始电脑"></a>1.本地初始电脑</h1><p>1.初始化Git仓库</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> blog</span><br><span class="line">$ git init  <span class="comment"># 创建.git子目录</span></span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+<p>2.添加远程仓库</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git remote add origin git@github.com:yourname/yourname.github.io.git</span><br></pre></td></tr></table></figure>
+
+<p>3.拉取远端仓库所有内容及分支</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git fetch origin</span><br></pre></td></tr></table></figure>
+
+<p>5.新建分支</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git checkout -b master</span><br></pre></td></tr></table></figure>
+
+<p>4.在<code>./source/_post/</code>中添加.md博客并生成</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo clean</span><br><span class="line">$ hexo g</span><br><span class="line">$ hexo d</span><br></pre></td></tr></table></figure>
+
+<p>5.将本地仓库推送至远端</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git push origin master</span><br></pre></td></tr></table></figure>
+
+<h1 id="2-其他电脑"><a href="#2-其他电脑" class="headerlink" title="2.其他电脑"></a>2.其他电脑</h1><p>1.安装Node.js</p>
+<p>2.拉取远端仓库并进入文件夹</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span> git@github.com:yourname/yourname.github.io.git blogname</span><br><span class="line">$ <span class="built_in">cd</span> blogname</span><br></pre></td></tr></table></figure>
+
+<p>3.拉取远端仓库分支并切换至master分支（默认分支是main，master分支是自己建的）</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git fetch origin</span><br><span class="line">$ git checkout master</span><br></pre></td></tr></table></figure>
+
+<p>4.安装Hexo及相关依赖</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm install hexo	<span class="comment"># 安装hexo</span></span><br><span class="line">$ npm install hexo-cli -g <span class="comment"># 重新安装(如果上述安装不起作用）</span></span><br><span class="line">$ npm install	<span class="comment"># 安装依赖</span></span><br></pre></td></tr></table></figure>
+
+<p>5.安装<code>deploy-git</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
+
+<p>6.在<code>./source/_post/</code>中添加.md博客并生成</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo clean</span><br><span class="line">$ hexo g</span><br><span class="line">$ hexo d</span><br></pre></td></tr></table></figure>
+
+<p>8.将本地仓库推送至远端</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git push origin master</span><br></pre></td></tr></table></figure>
+
+<h1 id="3-更换主题"><a href="#3-更换主题" class="headerlink" title="3.更换主题"></a>3.更换主题</h1><p>1.进入<code>./themes</code>文件夹</p>
+<p>2.github上clone喜欢的主题</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span> git@github.com:xxx/xxx.git file-name</span><br></pre></td></tr></table></figure>
+
+<p>3.进入<code>file-name</code>文件夹</p>
+<p>4.删除.git文件夹</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">rm</span> -r .git</span><br></pre></td></tr></table></figure>
+
+<p>5.修改最外层目录下的<code>_config.yml</code>文件<br>theme: file-name</p>
+<p>6.修改.gitignore文件（或者把里面内容删掉也行）</p>
+<p>7.将本地仓库推送至远端</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git add .</span><br><span class="line">$ git commit -m &quot;add theme&quot;</span><br><span class="line">$ git push origin master</span><br></pre></td></tr></table></figure>
+
+<p>ps.修改好主题之后，主题配置在<code>file-name</code>文件夹中的<code>_config.yml</code>中进行配置。</p>
+<h1 id="4-说明"><a href="#4-说明" class="headerlink" title="4.说明"></a>4.说明</h1><p><code>main</code>分支用来部署博客：当执行<code>hexo d</code>的时候，博客部署在<code>main</code>分支，不需要执行<code>git push origin main</code>，因为<code>hexo d</code>指令已经将相应的<code>html</code>文件推送到远端服务器的<code>main</code>分支上了。<br><code>master</code>分支用来存储文件：比如<code>.md</code>文件，存放在<code>./source/_post</code>文件夹中，最后需要手动执行<code>git push origin master</code>。</p>
+]]></content>
+      <categories>
+        <category>个人博客</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Hexo搭建个人博客</title>
+    <url>/2024/09/02/Hexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
+    <content><![CDATA[<h1 id="1-前置条件"><a href="#1-前置条件" class="headerlink" title="1.前置条件"></a>1.前置条件</h1><ul>
+<li><a href="https://nodejs.org/en/download/package-manager/current">Node.js</a></li>
+<li><a href="https://git-scm.com/">git</a></li>
+<li>Github Pages<span id="more"></span></li>
+</ul>
+<h1 id="2-安装Node-js"><a href="#2-安装Node-js" class="headerlink" title="2.安装Node.js"></a>2.安装Node.js</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># installs nvm (Node Version Manager)</span></span><br><span class="line">$ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash</span><br><span class="line"></span><br><span class="line"><span class="comment"># download and install Node.js (you may need to restart the terminal)</span></span><br><span class="line">$ nvm install 22</span><br><span class="line"></span><br><span class="line"><span class="comment"># verifies the right Node.js version is in the environment</span></span><br><span class="line">$ node -v <span class="comment"># should print `v22.6.0`</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># verifies the right npm version is in the environment</span></span><br><span class="line">$ npm -v <span class="comment"># should print `10.8.2`</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="3-本地运行Hexo"><a href="#3-本地运行Hexo" class="headerlink" title="3.本地运行Hexo"></a>3.本地运行Hexo</h1><h2 id="安装Hexo"><a href="#安装Hexo" class="headerlink" title="安装Hexo"></a>安装Hexo</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">mkdir</span> blog</span><br><span class="line">$ <span class="built_in">cd</span> blog</span><br><span class="line">$ npm install -g hexo-cli   <span class="comment"># 安装hexo</span></span><br><span class="line">$ hexo init                 <span class="comment"># 初始化hexo</span></span><br><span class="line">$ hexo install              <span class="comment"># 安装需要的包</span></span><br></pre></td></tr></table></figure>
+<p>初始化完成后项目文件夹如下所示：<br>.<br>├── _config.yml<br>├── package.json<br>├── scaffolds<br>├── source<br>|   ├── _drafts<br>|   └── _posts<br>└── themes          </p>
+<h2 id="Hexo的用法"><a href="#Hexo的用法" class="headerlink" title="Hexo的用法"></a>Hexo的用法</h2><ul>
+<li>启动内置预览服务（默认端口4000）  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo s    <span class="comment"># hexo serve</span></span><br></pre></td></tr></table></figure></li>
+<li>生成网站  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo g    <span class="comment"># hexo generate</span></span><br></pre></td></tr></table></figure></li>
+<li>部署到Github Pages上（部署之前需要配置）  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo d    <span class="comment"># hexo deploy</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成并部署，省去hexo g</span></span><br><span class="line">$ hexo d -g</span><br></pre></td></tr></table></figure></li>
+<li>#清除缓存文件db.json和已生成的静态文件 public  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo c    <span class="comment"># hexo clean</span></span><br></pre></td></tr></table></figure></li>
+<li>创建博客  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 创建完成后博客的.md文件存储在`./source/_post/`中</span></span><br><span class="line">$ hexo new <span class="string">&quot;blog name&quot;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="3-配置"><a href="#3-配置" class="headerlink" title="3.配置"></a>3.配置</h1><p>_config.yml</p>
+<ul>
+<li>title : 网站标题</li>
+<li>subtitle : 副标题</li>
+<li>description : 网站描述</li>
+<li>keywords : 网站关键词</li>
+<li>author : 作者</li>
+<li>language : 语言</li>
+<li>timezone : 时区</li>
+</ul>
+<p>以上设置会出现在meta里。</p>
+<ul>
+<li>url : 网址</li>
+<li>root : 网站根目录</li>
+<li>permalink : 永久链接格式，比如year&#x2F;:month&#x2F;:day&#x2F;:title&#x2F;</li>
+<li>source_dir : 源文件夹，默认source</li>
+<li>public_dir : 生成的网站文件夹</li>
+<li>theme : 主题</li>
+</ul>
+<p>官网关于配置的描述：<a href="https://hexo.io/zh-cn/docs/configuration">https://hexo.io/zh-cn/docs/configuration</a></p>
+<h1 id="4-部署到Github-Pages"><a href="#4-部署到Github-Pages" class="headerlink" title="4.部署到Github Pages"></a>4.部署到Github Pages</h1><p>0.配置github的SSH<br>1.创建repo:git@github:yourname&#x2F;yourname.github.io.git<br>2.修改配置文件<code>_config.yml</code></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repo: git@github.com:yourname/yourname.github.io.git</span><br><span class="line">  branch: main</span><br></pre></td></tr></table></figure>
+<p>4.安装<code>deploy-git</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm  install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
+
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ul>
+<li><a href="https://hexo.io/docs/">Hexo官网</a></li>
+<li><a href="https://www.luogu.com.cn/article/vglpq15p">从零搭建 Hexo + Github 博客</a></li>
+<li><a href="https://note.tonycrane.cc/cs/tools/hexo/">Hexo 使用记录</a></li>
+<li><a href="https://hexo.io/zh-cn/docs/writing">Hexo写作</a></li>
+<li><a href="https://github.com/ppoffice/hexo-theme-icarus">主题</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>个人博客</category>
       </categories>
   </entry>
   <entry>
@@ -367,119 +465,77 @@
       </categories>
   </entry>
   <entry>
-    <title>Git分支管理Hexo</title>
-    <url>/2024/09/02/Git%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86Hexo/</url>
-    <content><![CDATA[<h1 id="1-本地初始电脑"><a href="#1-本地初始电脑" class="headerlink" title="1.本地初始电脑"></a>1.本地初始电脑</h1><p>1.初始化Git仓库</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> blog</span><br><span class="line">$ git init  <span class="comment"># 创建.git子目录</span></span><br></pre></td></tr></table></figure>
+    <title>Jetson刷机</title>
+    <url>/2024/11/14/Jetson%E5%88%B7%E6%9C%BA/</url>
+    <content><![CDATA[<h1 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h1><ul>
+<li>Ubuntu20.04系统的PC机</li>
+<li>USB-TypeC转接线</li>
+<li>Jetson</li>
+</ul>
 <span id="more"></span>
-<p>2.添加远程仓库</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git remote add origin git@github.com:yourname/yourname.github.io.git</span><br></pre></td></tr></table></figure>
+<h1 id="刷机系统"><a href="#刷机系统" class="headerlink" title="刷机系统"></a>刷机系统</h1><p>step1：准备Ubuntu20.04版本PC机<br>虚拟机也可以，但是要求分配的内存要<strong>大于120G</strong>，因为下载的jetpack安装包很大。<br>Ubuntu20.04版本对应jetpack 5.1.3版本</p>
+<p>step2：下载SDK manager<br><a href="https://developer.nvidia.com/sdk-manager">SDK manager</a>是官方提供的刷机软件</p>
+<p>step3：USB线连接Jetson和PC机</p>
+<p>step4：Jetson进入Recovery模式<br>方式一：Jetson关机状态时，长按SW3（REC按键）然后接通电源线，等待PC机上弹出连接成功，松开SW3<br>方式二：Jetson开机状态时，需要先长按住SW3（REC按键），然后按下SW2(Reset键)，先松开SW2(Reset键)，再松开SW3（REC按键）。</p>
+<p>step5：SDK manager选择刷机版本</p>
+<ul>
+<li>取消勾选Host Machine</li>
+<li>jetpack版本选择5.1.3</li>
+</ul>
+<p>step5：刷Jetson Linux<br>刷系统就可以了。组件可以先不刷，直接在Jetson上联网使用apt安装</p>
+<h1 id="安装组件"><a href="#安装组件" class="headerlink" title="安装组件"></a>安装组件</h1><p>step1：安装官方组件</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> apt update </span><br><span class="line">$ <span class="built_in">sudo</span> apt install nvidia-jetpack</span><br></pre></td></tr></table></figure>
 
-<p>3.拉取远端仓库所有内容及分支</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git fetch origin</span><br></pre></td></tr></table></figure>
+<p>step2：补全环境</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> apt update</span><br><span class="line">$ <span class="built_in">sudo</span> apt install python3</span><br><span class="line">$ <span class="built_in">sudo</span> apt install python3-pip</span><br></pre></td></tr></table></figure>
 
-<p>5.新建分支</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git checkout -b master</span><br></pre></td></tr></table></figure>
+<p>step3：安装jtop</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> pip3 install -U pip</span><br><span class="line">$ <span class="built_in">sudo</span> pip3 install jetson-stats</span><br></pre></td></tr></table></figure>
+<p>可以使用jtop查看组件版本。</p>
+<h1 id="安装cuda-11-4"><a href="#安装cuda-11-4" class="headerlink" title="安装cuda 11.4"></a>安装cuda 11.4</h1><p>step1：浏览器搜索“cuda 11.4”找到官网<a href="https://developer.nvidia.com/cuda-11-4-0-download-archive">CUDA Toolkit 11.4 Downloads - NVIDIA Developer</a><br>step2：Linux-&gt;arm64-sbsa-&gt;Native-&gt;Ubuntu-&gt;20.04-&gt;deb(network)<br>step3：运行官网提供的对应命令行<br>step4：添加cuda的环境变量</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> vim ~/.bashrc</span><br></pre></td></tr></table></figure>
+<p>在其中添加环境路径</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">export</span> PATH=/usr/local/cuda-11.4/bin:<span class="variable">$PATH</span></span><br></pre></td></tr></table></figure>
+<p>重新加载.bashrc文件，以便立即生效</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
+<p>查看CUDA版本信息：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ nvcc --version</span><br></pre></td></tr></table></figure>
 
-<p>4.在<code>./source/_post/</code>中添加.md博客并生成</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo clean</span><br><span class="line">$ hexo g</span><br><span class="line">$ hexo d</span><br></pre></td></tr></table></figure>
-
-<p>5.将本地仓库推送至远端</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git push origin master</span><br></pre></td></tr></table></figure>
-
-<h1 id="2-其他电脑"><a href="#2-其他电脑" class="headerlink" title="2.其他电脑"></a>2.其他电脑</h1><p>1.安装Node.js</p>
-<p>2.拉取远端仓库并进入文件夹</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span> git@github.com:yourname/yourname.github.io.git blogname</span><br><span class="line">$ <span class="built_in">cd</span> blogname</span><br></pre></td></tr></table></figure>
-
-<p>3.拉取远端仓库分支并切换至master分支（默认分支是main，master分支是自己建的）</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git fetch origin</span><br><span class="line">$ git checkout master</span><br></pre></td></tr></table></figure>
-
-<p>4.安装Hexo及相关依赖</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm install hexo	<span class="comment"># 安装hexo</span></span><br><span class="line">$ npm install hexo-cli -g <span class="comment"># 重新安装(如果上述安装不起作用）</span></span><br><span class="line">$ npm install	<span class="comment"># 安装依赖</span></span><br></pre></td></tr></table></figure>
-
-<p>5.安装<code>deploy-git</code></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
-
-<p>6.在<code>./source/_post/</code>中添加.md博客并生成</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo clean</span><br><span class="line">$ hexo g</span><br><span class="line">$ hexo d</span><br></pre></td></tr></table></figure>
-
-<p>8.将本地仓库推送至远端</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git push origin master</span><br></pre></td></tr></table></figure>
-
-<h1 id="3-更换主题"><a href="#3-更换主题" class="headerlink" title="3.更换主题"></a>3.更换主题</h1><p>1.进入<code>./themes</code>文件夹</p>
-<p>2.github上clone喜欢的主题</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span> git@github.com:xxx/xxx.git file-name</span><br></pre></td></tr></table></figure>
-
-<p>3.进入<code>file-name</code>文件夹</p>
-<p>4.删除.git文件夹</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">rm</span> -r .git</span><br></pre></td></tr></table></figure>
-
-<p>5.修改最外层目录下的<code>_config.yml</code>文件<br>theme: file-name</p>
-<p>6.修改.gitignore文件（或者把里面内容删掉也行）</p>
-<p>7.将本地仓库推送至远端</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git add .</span><br><span class="line">$ git commit -m &quot;add theme&quot;</span><br><span class="line">$ git push origin master</span><br></pre></td></tr></table></figure>
-
-<p>ps.修改好主题之后，主题配置在<code>file-name</code>文件夹中的<code>_config.yml</code>中进行配置。</p>
-<h1 id="4-说明"><a href="#4-说明" class="headerlink" title="4.说明"></a>4.说明</h1><p><code>main</code>分支用来部署博客：当执行<code>hexo d</code>的时候，博客部署在<code>main</code>分支，不需要执行<code>git push origin main</code>，因为<code>hexo d</code>指令已经将相应的<code>html</code>文件推送到远端服务器的<code>main</code>分支上了。<br><code>master</code>分支用来存储文件：比如<code>.md</code>文件，存放在<code>./source/_post</code>文件夹中，最后需要手动执行<code>git push origin master</code>。</p>
+<h1 id="question"><a href="#question" class="headerlink" title="question"></a>question</h1><p><strong>什么是native compiler？什么是cross compiler？</strong></p>
+<ul>
+<li>build - 编译GCC的平台</li>
+<li>host - 运行GCC的平台</li>
+<li>target - GCC编译产生的应用程序的运行平台</li>
+</ul>
+<ol>
+<li>三者全部相同（build &#x3D; host &#x3D; target）的就是native compiler，例如我们在PC上装的Ubuntu或者Fedora里面带的GCC，就是native compiler。</li>
+<li>如果build &#x3D; host，但是target跟前两者不同，就是cross compiler。比如开发手机应用程序的编译器，通常运行在PC或Mac上，但是编译出来的程序无法直接在PC或Mac上执行。</li>
+<li>三者都不同的话，叫做Canadian cross。</li>
+</ol>
 ]]></content>
       <categories>
-        <category>个人博客</category>
+        <category>Jetson</category>
       </categories>
   </entry>
   <entry>
-    <title>Hexo搭建个人博客</title>
-    <url>/2024/09/02/Hexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
-    <content><![CDATA[<h1 id="1-前置条件"><a href="#1-前置条件" class="headerlink" title="1.前置条件"></a>1.前置条件</h1><ul>
-<li><a href="https://nodejs.org/en/download/package-manager/current">Node.js</a></li>
-<li><a href="https://git-scm.com/">git</a></li>
-<li>Github Pages<span id="more"></span></li>
-</ul>
-<h1 id="2-安装Node-js"><a href="#2-安装Node-js" class="headerlink" title="2.安装Node.js"></a>2.安装Node.js</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># installs nvm (Node Version Manager)</span></span><br><span class="line">$ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash</span><br><span class="line"></span><br><span class="line"><span class="comment"># download and install Node.js (you may need to restart the terminal)</span></span><br><span class="line">$ nvm install 22</span><br><span class="line"></span><br><span class="line"><span class="comment"># verifies the right Node.js version is in the environment</span></span><br><span class="line">$ node -v <span class="comment"># should print `v22.6.0`</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># verifies the right npm version is in the environment</span></span><br><span class="line">$ npm -v <span class="comment"># should print `10.8.2`</span></span><br></pre></td></tr></table></figure>
+    <title>Ubuntu24.04 install opencv</title>
+    <url>/2024/11/17/Ubuntu24.04%20install%20opencv/</url>
+    <content><![CDATA[<ol>
+<li><a href="https://opencv.org/releases/">opencv</a>官网下载opencv-4.10.0的source文件并解压</li>
+<li>下载<a href="">opencv_contrib</a>并解压，将opencv_contrib移动到opencv的文件夹中</li>
+<li>安装依赖项</li>
+</ol>
+<span id="more"></span>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt-get install build-essential</span><br><span class="line"><span class="built_in">sudo</span> apt-get install cmake git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev</span><br><span class="line"><span class="built_in">sudo</span> apt-get install python-dev python-numpy libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libjasper-dev libdc1394-22-dev</span><br></pre></td></tr></table></figure>
+<p>4.编译并安装</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local -D WITH_TBB=ON -D BUILD_SHARED_LIBS=OFF -D WITH_OPENMP=ON -D ENABLE_PRECOMPILED_HEADERS=OFF ..</span><br><span class="line"></span><br><span class="line">$ make -j8</span><br><span class="line">$ <span class="built_in">sudo</span> make install</span><br></pre></td></tr></table></figure>
+<p>5.测试代码<br>编写测试代码</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;opencv2/opencv.hpp&gt;</span></span></span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc,<span class="type">char</span> **argv)</span></span>&#123;</span><br><span class="line">    <span class="function">cv::Mat <span class="title">src</span><span class="params">(<span class="number">300</span>,<span class="number">500</span>,CV_8UC3,cv::Scalar::all(<span class="number">255</span>))</span></span>;</span><br><span class="line">    cv::<span class="built_in">imshow</span>(<span class="string">&quot;hello-opencv&quot;</span>,src);</span><br><span class="line">    cv::<span class="built_in">waitKey</span>(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h1 id="3-本地运行Hexo"><a href="#3-本地运行Hexo" class="headerlink" title="3.本地运行Hexo"></a>3.本地运行Hexo</h1><h2 id="安装Hexo"><a href="#安装Hexo" class="headerlink" title="安装Hexo"></a>安装Hexo</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">mkdir</span> blog</span><br><span class="line">$ <span class="built_in">cd</span> blog</span><br><span class="line">$ npm install -g hexo-cli   <span class="comment"># 安装hexo</span></span><br><span class="line">$ hexo init                 <span class="comment"># 初始化hexo</span></span><br><span class="line">$ hexo install              <span class="comment"># 安装需要的包</span></span><br></pre></td></tr></table></figure>
-<p>初始化完成后项目文件夹如下所示：<br>.<br>├── _config.yml<br>├── package.json<br>├── scaffolds<br>├── source<br>|   ├── _drafts<br>|   └── _posts<br>└── themes          </p>
-<h2 id="Hexo的用法"><a href="#Hexo的用法" class="headerlink" title="Hexo的用法"></a>Hexo的用法</h2><ul>
-<li>启动内置预览服务（默认端口4000）  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo s    <span class="comment"># hexo serve</span></span><br></pre></td></tr></table></figure></li>
-<li>生成网站  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo g    <span class="comment"># hexo generate</span></span><br></pre></td></tr></table></figure></li>
-<li>部署到Github Pages上（部署之前需要配置）  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo d    <span class="comment"># hexo deploy</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成并部署，省去hexo g</span></span><br><span class="line">$ hexo d -g</span><br></pre></td></tr></table></figure></li>
-<li>#清除缓存文件db.json和已生成的静态文件 public  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo c    <span class="comment"># hexo clean</span></span><br></pre></td></tr></table></figure></li>
-<li>创建博客  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 创建完成后博客的.md文件存储在`./source/_post/`中</span></span><br><span class="line">$ hexo new <span class="string">&quot;blog name&quot;</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-<h1 id="3-配置"><a href="#3-配置" class="headerlink" title="3.配置"></a>3.配置</h1><p>_config.yml</p>
-<ul>
-<li>title : 网站标题</li>
-<li>subtitle : 副标题</li>
-<li>description : 网站描述</li>
-<li>keywords : 网站关键词</li>
-<li>author : 作者</li>
-<li>language : 语言</li>
-<li>timezone : 时区</li>
-</ul>
-<p>以上设置会出现在meta里。</p>
-<ul>
-<li>url : 网址</li>
-<li>root : 网站根目录</li>
-<li>permalink : 永久链接格式，比如year&#x2F;:month&#x2F;:day&#x2F;:title&#x2F;</li>
-<li>source_dir : 源文件夹，默认source</li>
-<li>public_dir : 生成的网站文件夹</li>
-<li>theme : 主题</li>
-</ul>
-<p>官网关于配置的描述：<a href="https://hexo.io/zh-cn/docs/configuration">https://hexo.io/zh-cn/docs/configuration</a></p>
-<h1 id="4-部署到Github-Pages"><a href="#4-部署到Github-Pages" class="headerlink" title="4.部署到Github Pages"></a>4.部署到Github Pages</h1><p>0.配置github的SSH<br>1.创建repo:git@github:yourname&#x2F;yourname.github.io.git<br>2.修改配置文件<code>_config.yml</code></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repo: git@github.com:yourname/yourname.github.io.git</span><br><span class="line">  branch: main</span><br></pre></td></tr></table></figure>
-<p>4.安装<code>deploy-git</code></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm  install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
-
-<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ul>
-<li><a href="https://hexo.io/docs/">Hexo官网</a></li>
-<li><a href="https://www.luogu.com.cn/article/vglpq15p">从零搭建 Hexo + Github 博客</a></li>
-<li><a href="https://note.tonycrane.cc/cs/tools/hexo/">Hexo 使用记录</a></li>
-<li><a href="https://hexo.io/zh-cn/docs/writing">Hexo写作</a></li>
-<li><a href="https://github.com/ppoffice/hexo-theme-icarus">主题</a></li>
-</ul>
-]]></content>
+<p>编写CMakeLists.txt文件</p>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">cmake_minimum_required</span>(VERSION <span class="number">3.0</span>)</span><br><span class="line"><span class="keyword">project</span>(Sample)</span><br><span class="line"><span class="keyword">set</span>(CMAKE_CXX_STANDARD <span class="number">11</span>)</span><br><span class="line"><span class="keyword">set</span>(CMAKE_RUNTIME_OUTPUT_DIRECTORY <span class="variable">$&#123;CMAKE_SOURCE_DIR&#125;</span>)</span><br><span class="line"> </span><br><span class="line"><span class="keyword">find_package</span>(OpenCV REQUIRED)</span><br><span class="line"><span class="keyword">set</span>(OpenCV_LIB_DIR <span class="variable">$&#123;OpenCV_INSTALL_PATH&#125;</span>/lib)</span><br><span class="line"><span class="keyword">message</span>(STATUS <span class="string">&quot;OpenCV版本: $&#123;OpenCV_VERSION&#125;&quot;</span>)</span><br><span class="line"><span class="keyword">message</span>(STATUS <span class="string">&quot;    头文件目录：$&#123;OpenCV_INCLUDE_DIRS&#125;&quot;</span>)</span><br><span class="line"><span class="keyword">message</span>(STATUS <span class="string">&quot;    库文件目录：$&#123;OpenCV_LIB_DIR&#125;&quot;</span>)</span><br><span class="line"><span class="keyword">message</span>(STATUS <span class="string">&quot;    库文件列表：$&#123;OpenCV_LIBS&#125;&quot;</span>)</span><br><span class="line"><span class="keyword">include_directories</span>(<span class="variable">$&#123;OpenCV_INCLUDE_DIRS&#125;</span>)</span><br><span class="line"><span class="keyword">link_directories</span>(<span class="variable">$&#123;OpenCV_LIB_DIR&#125;</span>)</span><br><span class="line"><span class="keyword">add_executable</span>(main main.cpp)</span><br><span class="line"><span class="keyword">target_link_libraries</span>(main <span class="variable">$&#123;OpenCV_LIBS&#125;</span>)</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
-        <category>个人博客</category>
+        <category>project</category>
       </categories>
   </entry>
   <entry>
@@ -647,6 +703,24 @@
 ]]></content>
       <categories>
         <category>Linux</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Github的SSH配置</title>
+    <url>/2024/09/02/Github%E7%9A%84SSH%E9%85%8D%E7%BD%AE/</url>
+    <content><![CDATA[<h1 id="1-创建公私密钥"><a href="#1-创建公私密钥" class="headerlink" title="1.创建公私密钥"></a>1.创建公私密钥</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ ssh-keygen -t rsa -C <span class="string">&quot;Github注册的邮箱地址&quot;</span></span><br><span class="line">$ <span class="built_in">cat</span> ～/.ssh/id_rsa.pub</span><br><span class="line"><span class="comment"># ps.在windows系统中.ssh文件在C:\Users\你的用户名\.ssh目录下</span></span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
+<h1 id="2-配置公钥"><a href="#2-配置公钥" class="headerlink" title="2.配置公钥"></a>2.配置公钥</h1><p>1.github -&gt; 个人头像 -&gt; setting -&gt; SSH and GPG keys -&gt; New SSH key<br>2.复制id_rsa.pub的内容到Key中<br>3.Title的内容自定义</p>
+<h1 id="3-验证是否设置成功"><a href="#3-验证是否设置成功" class="headerlink" title="3.验证是否设置成功"></a>3.验证是否设置成功</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ ssh -T git@github.com</span><br><span class="line">Hi portkas! You<span class="string">&#x27;ve successfully authenticated, but GitHub does not provide shell access.</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="4-Q-A"><a href="#4-Q-A" class="headerlink" title="4.Q&amp;A"></a>4.Q&amp;A</h1><p>SSH登录安全性由非对称加密保证，产生密钥时，一次产生两个密钥，一个公钥，一个私钥，在git中一般命名为id_rsa.pub, id_rsa。</p>
+<h2 id="如何使用生成的一个私钥一个公钥进行验证呢？"><a href="#如何使用生成的一个私钥一个公钥进行验证呢？" class="headerlink" title="如何使用生成的一个私钥一个公钥进行验证呢？"></a>如何使用生成的一个私钥一个公钥进行验证呢？</h2><p>本地生成一个密钥对，其中公钥放到远程主机，私钥保存在本地，当本地主机需要登录远程主机时，本地主机向远程主机发送一个登录请求，远程收到消息后，随机生成一个字符串并用公钥加密，发回给本地。本地拿到该字符串，用存放在本地的私钥进行解密，再次发送到远程，远程比对该解密后的字符串与源字符串是否等同，如果等同则认证成功。</p>
+<h2 id="每使用一台主机都要配？"><a href="#每使用一台主机都要配？" class="headerlink" title="每使用一台主机都要配？"></a>每使用一台主机都要配？</h2><p>每使用一台新主机进行git远程操作，想要实现无密，都需要配置。并不是说每个账号配一次就够了，而是每一台主机都需要配。</p>
+<h2 id="配了为什么就不用密码了？"><a href="#配了为什么就不用密码了？" class="headerlink" title="配了为什么就不用密码了？"></a>配了为什么就不用密码了？</h2><p>因为配置的时候是把当前主机的公钥放到了你的github账号下，相当于当前主机和你的账号做了一个关联，你在这台主机上已经登录了你的账号，此时此刻github认为是该账号主人在操作这台主机，在配置ssh后就信任该主机了。所以下次在使用git的时候即使没有登录github，也能直接从本地push代码到远程了。</p>
+]]></content>
+      <categories>
+        <category>Git</category>
       </categories>
   </entry>
   <entry>
@@ -1024,70 +1098,6 @@
       </categories>
   </entry>
   <entry>
-    <title>apt换源</title>
-    <url>/2024/09/20/apt%E6%8D%A2%E6%BA%90/</url>
-    <content><![CDATA[<p>Ubuntu24.04换源</p>
-<blockquote>
-<p>Ubuntu24.04源文件地址已经更换为<code>etc/apt/source.list.d/ubuntu.sources</code></p>
-</blockquote>
-<span id="more"></span>
-<p>1.备份当前源列表</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">sudo</span> <span class="built_in">cp</span> /etc/apt/sources.list.d/ubuntu.sources  /etc/apt/sources.list.d/ubuntu.sources.bak</span><br></pre></td></tr></table></figure>
-
-<p>2.添加阿里云源</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> vim /etc/apt/sources.list.d/ubuntu.source</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在文本编辑器中粘贴以下内容</span></span><br><span class="line"><span class="comment"># 阿里云</span></span><br><span class="line">Types: deb</span><br><span class="line">URIs: http://mirrors.aliyun.com/ubuntu/</span><br><span class="line">Suites: noble noble-updates noble-security</span><br><span class="line">Components: main restricted universe multiverse</span><br><span class="line">Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg</span><br></pre></td></tr></table></figure>
-
-<h1 id="更新源列表和系统软件包"><a href="#更新源列表和系统软件包" class="headerlink" title="更新源列表和系统软件包"></a>更新源列表和系统软件包</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> apt-get update</span><br><span class="line">$ <span class="built_in">sudo</span> apt-get upgrade</span><br></pre></td></tr></table></figure>
-
-<h1 id="清华源"><a href="#清华源" class="headerlink" title="清华源"></a>清华源</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Types: deb</span><br><span class="line">URIs: http://mirrors.tuna.tsinghua.edu.cn/ubuntu/</span><br><span class="line">Suites: noble noble-updates noble-security</span><br><span class="line">Components: main restricted universe multiverse</span><br><span class="line">Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg</span><br></pre></td></tr></table></figure>
-
-<h1 id="中科大源"><a href="#中科大源" class="headerlink" title="中科大源"></a>中科大源</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Types: deb</span><br><span class="line">URIs: http://mirrors.ustc.edu.cn/ubuntu/</span><br><span class="line">Suites: noble noble-updates noble-security</span><br><span class="line">Components: main restricted universe multiverse</span><br><span class="line">Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>PC</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>argv[]参数转int型</title>
-    <url>/2024/09/20/argv%5B%5D%E5%8F%82%E6%95%B0%E8%BD%ACint%E5%9E%8B/</url>
-    <content><![CDATA[<p>在C&#x2F;C++中，argv[]是一个字符数组（char*），保存了从命令行传递该程序的阐述。</p>
-<span id="more"></span>
-<h1 id="使用atoi-函数"><a href="#使用atoi-函数" class="headerlink" title="使用atoi()函数"></a>使用<code>atoi()</code>函数</h1><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span>  <span class="comment">// 包含 strtol 函数</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> *argv[])</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (argc &gt; <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="type">char</span> *end;</span><br><span class="line">        <span class="type">long</span> num = strtol(argv[<span class="number">1</span>], &amp;end, <span class="number">10</span>);  <span class="comment">// 将 argv[1] 转换为 long 类型，基数为10</span></span><br><span class="line">        <span class="keyword">if</span> (*end == <span class="string">&#x27;\0&#x27;</span>) &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;输入的数字是: %ld\n&quot;</span>, num);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;输入的参数不是有效的数字！\n&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;请提供一个数字参数！\n&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h1 id="使用strtol-函数"><a href="#使用strtol-函数" class="headerlink" title="使用strtol()函数"></a>使用strtol()函数</h1><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span>  <span class="comment">// 包含 strtol 函数</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> *argv[])</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (argc &gt; <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="type">long</span> num = strtol(argv[<span class="number">1</span>], <span class="literal">NULL</span>, <span class="number">10</span>);  <span class="comment">// 将 argv[1] 转换为 long 类型，基数为10</span></span><br><span class="line">        <span class="keyword">if</span> (*end == <span class="string">&#x27;\0&#x27;</span>) &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;输入的数字是: %ld\n&quot;</span>, num);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;输入的参数不是有效的数字！\n&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;请提供一个数字参数！\n&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h1 id="使用sscanf-函数"><a href="#使用sscanf-函数" class="headerlink" title="使用sscanf()函数"></a>使用sscanf()函数</h1><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> *argv[])</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (argc &gt; <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="type">int</span> num;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">sscanf</span>(argv[<span class="number">1</span>], <span class="string">&quot;%d&quot;</span>, &amp;num) == <span class="number">1</span>) &#123;  <span class="comment">// 将 argv[1] 转换为 int 类型</span></span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;输入的数字是: %d\n&quot;</span>, num);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;输入的参数不是有效的数字！\n&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;请提供一个数字参数！\n&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h1 id="三种方法对比"><a href="#三种方法对比" class="headerlink" title="三种方法对比"></a>三种方法对比</h1><p>atoi()：简单快捷，但无法检测错误输入，使用时需要确保输入是有效的数字，否则返回 0。<br>strtol()：推荐用于更加健壮的转换，它允许处理错误输入并支持不同进制数。<br>sscanf()：灵活性较高，可以处理多种格式，适用于需要从字符串中解析多个值的场景。</p>
-]]></content>
-      <categories>
-        <category>C</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>.bashrc</title>
-    <url>/2024/09/20/bashrc/</url>
-    <content><![CDATA[<p>.bashrc是一个用于配置Bash Shell的脚本文件。位于<code>~/.bashrc</code>，当打开一个新的Bash终端会话时，Bash会自动执行这个文件中的命令，这个文件通常用于：设置环境变量，定义别名，配置Shell选项。</p>
-<span id="more"></span>
-<h1 id="设置环境变量"><a href="#设置环境变量" class="headerlink" title="设置环境变量"></a>设置环境变量</h1><h2 id="设置PATH环境变量"><a href="#设置PATH环境变量" class="headerlink" title="设置PATH环境变量"></a>设置PATH环境变量</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">export PATH=/usr/local/bin:$PATH</span><br></pre></td></tr></table></figure>
-<p>将&#x2F;usr&#x2F;local&#x2F;lib目录添加到PATH环境变量的前面，当在命令行中输入命令时，系统首先会在&#x2F;usr&#x2F;local&#x2F;lib目录先查找。</p>
-<h2 id="设置一个新的环境变量"><a href="#设置一个新的环境变量" class="headerlink" title="设置一个新的环境变量"></a>设置一个新的环境变量</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">export VAR = &quot;Hello,World!&quot;</span><br></pre></td></tr></table></figure>
-<p>创建一个名为VAR的新环境变量，并将它的值设置为<code>Hello,World!</code></p>
-<h2 id="为特定应用设置环境变量"><a href="#为特定应用设置环境变量" class="headerlink" title="为特定应用设置环境变量"></a>为特定应用设置环境变量</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64</span><br><span class="line">export PATH=$JAVA_HOME/bin:$PATH</span><br></pre></td></tr></table></figure>
-<p>设置了JAVA_HOME环境变量，指向java的安装命令，并将bin目录添加到PATH中，之后就可以直接在命令中使用java命令。</p>
-<h2 id="设置库目录"><a href="#设置库目录" class="headerlink" title="设置库目录"></a>设置库目录</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH</span><br></pre></td></tr></table></figure>
-<p>将<code>/usr/local/lib</code>目录添加到<code>LD_LIBRARY_PATH</code>环境变量中。</p>
-<h2 id="条件性设置环境变量"><a href="#条件性设置环境变量" class="headerlink" title="条件性设置环境变量"></a>条件性设置环境变量</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">if [ -d /opt/myapp ]; then</span><br><span class="line">    export MYAPP_HOME=/opt/myapp</span><br><span class="line">    export PATH=$MYAPP_HOME/bin:$PATH</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
-<p>检查&#x2F;opt&#x2F;myapp目录是否存在，如果存在则设置MY_HOME环境变量，并将bin目录添加到PATH中。</p>
-<h1 id="设置别名"><a href="#设置别名" class="headerlink" title="设置别名"></a>设置别名</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 为 ls 和其他命令启用颜色支持，并添加有用的别名</span><br><span class="line">if [ -x /usr/bin/dircolors ]; then</span><br><span class="line">    test -r ~/.dircolors &amp;&amp; eval &quot;$(dircolors -b ~/.dircolors)&quot; || eval &quot;$(dircolors -b)&quot;</span><br><span class="line">    alias ls=&#x27;ls --color=auto&#x27;</span><br><span class="line">    #alias dir=&#x27;dir --color=auto&#x27;</span><br><span class="line">    #alias vdir=&#x27;vdir --color=auto&#x27;</span><br><span class="line"></span><br><span class="line">    alias grep=&#x27;grep --color=auto&#x27;</span><br><span class="line">    alias fgrep=&#x27;fgrep --color=auto&#x27;</span><br><span class="line">    alias egrep=&#x27;egrep --color=auto&#x27;</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
-<p><code>if [ -x /usr/bin/dircolors ]; </code>:检查 &#x2F;usr&#x2F;bin&#x2F;dircolors 文件是否存在并且具有可执行权限，从而决定是否要执行后续命令。</p>
-<p><code>test -r ~/.dircolors &amp;&amp; eval &quot;$(dircolors -b ~/.dircolors)&quot; || eval &quot;$(dircolors -b)&quot;</code>:检查 ~&#x2F;.dircolors 文件是否存在并且可读。如果文件存在且可读，使用 dircolors 命令和该文件的设置来配置颜色。如果文件不存在或不可读，使用 dircolors 命令的默认设置来配置颜色。目的是确保 LS_COLORS 环境变量被设置，以便 ls 命令能够根据这些设置显示颜色。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 其他别名</span><br><span class="line">alias ll=&#x27;ls -alF&#x27;</span><br><span class="line">alias la=&#x27;ls -A&#x27;</span><br><span class="line">alias l=&#x27;ls -CF&#x27;</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-  </entry>
-  <entry>
     <title>CMake</title>
     <url>/2024/09/20/cmake/</url>
     <content><![CDATA[<h1 id="1-CMake概述"><a href="#1-CMake概述" class="headerlink" title="1.CMake概述"></a>1.CMake概述</h1><p>CMake是一个项目构建工具，是跨平台的。CMake可以自动生成Makefile文件，管理项目更加简单。</p>
@@ -1266,6 +1276,30 @@
       </categories>
   </entry>
   <entry>
+    <title>apt换源</title>
+    <url>/2024/09/20/apt%E6%8D%A2%E6%BA%90/</url>
+    <content><![CDATA[<p>Ubuntu24.04换源</p>
+<blockquote>
+<p>Ubuntu24.04源文件地址已经更换为<code>etc/apt/source.list.d/ubuntu.sources</code></p>
+</blockquote>
+<span id="more"></span>
+<p>1.备份当前源列表</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">sudo</span> <span class="built_in">cp</span> /etc/apt/sources.list.d/ubuntu.sources  /etc/apt/sources.list.d/ubuntu.sources.bak</span><br></pre></td></tr></table></figure>
+
+<p>2.添加阿里云源</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> vim /etc/apt/sources.list.d/ubuntu.source</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在文本编辑器中粘贴以下内容</span></span><br><span class="line"><span class="comment"># 阿里云</span></span><br><span class="line">Types: deb</span><br><span class="line">URIs: http://mirrors.aliyun.com/ubuntu/</span><br><span class="line">Suites: noble noble-updates noble-security</span><br><span class="line">Components: main restricted universe multiverse</span><br><span class="line">Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg</span><br></pre></td></tr></table></figure>
+
+<h1 id="更新源列表和系统软件包"><a href="#更新源列表和系统软件包" class="headerlink" title="更新源列表和系统软件包"></a>更新源列表和系统软件包</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> apt-get update</span><br><span class="line">$ <span class="built_in">sudo</span> apt-get upgrade</span><br></pre></td></tr></table></figure>
+
+<h1 id="清华源"><a href="#清华源" class="headerlink" title="清华源"></a>清华源</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Types: deb</span><br><span class="line">URIs: http://mirrors.tuna.tsinghua.edu.cn/ubuntu/</span><br><span class="line">Suites: noble noble-updates noble-security</span><br><span class="line">Components: main restricted universe multiverse</span><br><span class="line">Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg</span><br></pre></td></tr></table></figure>
+
+<h1 id="中科大源"><a href="#中科大源" class="headerlink" title="中科大源"></a>中科大源</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Types: deb</span><br><span class="line">URIs: http://mirrors.ustc.edu.cn/ubuntu/</span><br><span class="line">Suites: noble noble-updates noble-security</span><br><span class="line">Components: main restricted universe multiverse</span><br><span class="line">Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>PC</category>
+      </categories>
+  </entry>
+  <entry>
     <title>gcc</title>
     <url>/2024/09/20/gcc/</url>
     <content><![CDATA[<h1 id="gcc编译流程"><a href="#gcc编译流程" class="headerlink" title="gcc编译流程"></a>gcc编译流程</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 1.预处理</span></span><br><span class="line">$ gcc -E main.c -o main.i</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2.编译</span></span><br><span class="line">$ gcc -S main.i -o main.s</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3.汇编</span></span><br><span class="line">$ gcc -c main.s -o main.o</span><br><span class="line"></span><br><span class="line"><span class="comment"># 4.链接</span></span><br><span class="line">$ gcc main.o -o main</span><br></pre></td></tr></table></figure>
@@ -1290,32 +1324,6 @@
 ]]></content>
       <categories>
         <category>Linux</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>hosts</title>
-    <url>/2024/09/20/hosts/</url>
-    <content><![CDATA[<p>在Ubuntu上安装nvm遇到：curl: (28) Failed to connect to raw.githubusercontent.com port 443: Connection timed out [closed]<br>1.打开<code>/etc/hosts</code></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> vim /etc/hosts</span><br></pre></td></tr></table></figure>
-<span id="more"></span>
-<p>2.查询可用IP<br>使用<a href="https://www.ipaddress.com/website/">ipaddress</a>网站查询<code>github.com</code>,<code>ssh.github.com</code>,<code>raw.githubusercontent.com</code>网站的可用IP</p>
-<p>3.在末尾添加以下IP地址</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">140.82.114.3  github.com</span><br><span class="line">140.82.113.36  ssh.github.com</span><br><span class="line">199.232.68.133 raw.githubusercontent.com</span><br></pre></td></tr></table></figure>
-
-<p>4.保存文件并退出</p>
-<p>5.可以使用ping查看域名是否有received</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ ping 199.232.68.133</span><br><span class="line">PING 199.232.68.133 (199.232.68.133) 56(84) bytes of data.</span><br><span class="line">64 bytes from 199.232.68.133: icmp_seq=1 ttl=43 time=234 ms</span><br><span class="line">64 bytes from 199.232.68.133: icmp_seq=2 ttl=43 time=234 ms</span><br><span class="line">64 bytes from 199.232.68.133: icmp_seq=3 ttl=43 time=234 ms</span><br><span class="line">64 bytes from 199.232.68.133: icmp_seq=4 ttl=43 time=233 ms</span><br><span class="line">^C</span><br><span class="line">--- 199.232.68.133 ping statistics ---</span><br><span class="line">4 packets transmitted, 4 received, 0% packet loss, time 3004ms</span><br><span class="line">rtt min/avg/max/mdev = 233.337/233.849/234.302/0.421 ms</span><br></pre></td></tr></table></figure>
-
-<p><strong>ps.为什么要这样做呢??? hosts是什么配置文件呢???</strong><br><strong>hosts文件是什么？</strong><br>在Linux系统中，<code>/etc/hosts</code>文件是一个本地的DNS解析文件，用于将IP地址和主机名映射起来。当你访问某个域名时，系统会首先检查这个文件，如果在这里找到了对应的IP地址，就会直接使用，而不再通过外部DNS服务器查询。<br><strong>为什么要这么做？</strong><br>这是将GitHub相关的域名（如 github.com、ssh.github.com 和 raw.githubusercontent.com）手动映射到指定的IP地址。这么做的目的通常有以下几种可能：</p>
-<ul>
-<li>解决访问问题：有时候由于DNS解析缓慢或者网络封锁，GitHub相关服务的域名可能会无法访问，通过手动在&#x2F;etc&#x2F;hosts中添加这些映射，可以直接访问指定的IP，绕过DNS解析。</li>
-<li>加快访问速度：如果你已经知道某个域名的IP地址，手动添加可以减少系统查询外部DNS的时间，从而提升访问速度。</li>
-<li>绕过DNS劫持：在某些情况下，网络服务提供商或某些恶意软件可能会劫持DNS请求，将你引导到错误的网站，通过手动配置IP可以避免这种情况。</li>
-</ul>
-<p>IP地址可能会随着时间变化，所以如果GitHub更新了服务器的IP地址，而你还在使用旧的配置，可能会导致访问失败。</p>
-]]></content>
-      <categories>
-        <category>PC</category>
       </categories>
   </entry>
   <entry>
@@ -1430,145 +1438,64 @@
       </categories>
   </entry>
   <entry>
-    <title>makefile</title>
-    <url>/2024/09/20/makefile/</url>
-    <content><![CDATA[<h1 id="规则"><a href="#规则" class="headerlink" title="规则"></a>规则</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">target:depend</span><br><span class="line">    commend</span><br></pre></td></tr></table></figure>
-<p>每条规则由三部分组成：目标（target），依赖（depend），命令（comment）</p>
-<ul>
-<li>目标：目标可以有多个</li>
-<li>依赖：依赖可有可无</li>
-<li>命令：前面要有Tab缩进，shell命令</li>
-</ul>
+    <title>argv[]参数转int型</title>
+    <url>/2024/09/20/argv%5B%5D%E5%8F%82%E6%95%B0%E8%BD%ACint%E5%9E%8B/</url>
+    <content><![CDATA[<p>在C&#x2F;C++中，argv[]是一个字符数组（char*），保存了从命令行传递该程序的阐述。</p>
 <span id="more"></span>
-<h1 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h1><p>make命令执行的时候根据时间戳判定是否执行makefile文件中相关规则的命令。</p>
-<ul>
-<li>目标是通过依赖生成的，目标时间戳&gt;所有依赖时间戳，则不会执行规则中的命令</li>
-<li>目标时间戳&lt;某些依赖的时间戳，则执行规则中的命令</li>
-<li>目标文件不存在，执行规则中的命令</li>
-</ul>
-<h1 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h1><h2 id="自定义变量"><a href="#自定义变量" class="headerlink" title="自定义变量"></a>自定义变量</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 定义变量（必须要同时赋值）</span><br><span class="line">变量名=变量值</span><br><span class="line"></span><br><span class="line"># 取变量值</span><br><span class="line">$(变量名)</span><br></pre></td></tr></table></figure>
+<h1 id="使用atoi-函数"><a href="#使用atoi-函数" class="headerlink" title="使用atoi()函数"></a>使用<code>atoi()</code>函数</h1><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span>  <span class="comment">// 包含 strtol 函数</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> *argv[])</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (argc &gt; <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="type">char</span> *end;</span><br><span class="line">        <span class="type">long</span> num = strtol(argv[<span class="number">1</span>], &amp;end, <span class="number">10</span>);  <span class="comment">// 将 argv[1] 转换为 long 类型，基数为10</span></span><br><span class="line">        <span class="keyword">if</span> (*end == <span class="string">&#x27;\0&#x27;</span>) &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;输入的数字是: %ld\n&quot;</span>, num);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;输入的参数不是有效的数字！\n&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;请提供一个数字参数！\n&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h2 id="预定义变量"><a href="#预定义变量" class="headerlink" title="预定义变量"></a>预定义变量</h2><table>
-<thead>
-<tr>
-<th align="center">变量名</th>
-<th align="center">含义</th>
-<th align="center">默认值</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">AR</td>
-<td align="center">生成静态库程序</td>
-<td align="center">ar</td>
-</tr>
-<tr>
-<td align="center">AS</td>
-<td align="center">汇编编译器</td>
-<td align="center">as</td>
-</tr>
-<tr>
-<td align="center">CC</td>
-<td align="center">C语言编译器</td>
-<td align="center">cc</td>
-</tr>
-<tr>
-<td align="center">CPP</td>
-<td align="center">C语言预编译器</td>
-<td align="center">$(CC) -E</td>
-</tr>
-<tr>
-<td align="center">CXX</td>
-<td align="center">C++编译器</td>
-<td align="center">g++</td>
-</tr>
-<tr>
-<td align="center">RM</td>
-<td align="center">删除文件程序</td>
-<td align="center">rm -f</td>
-</tr>
-<tr>
-<td align="center">ARFLAGS</td>
-<td align="center">生成静态库程序的选项</td>
-<td align="center">无</td>
-</tr>
-<tr>
-<td align="center">ASFLAGS</td>
-<td align="center">汇编语言编译器编译选项</td>
-<td align="center">无</td>
-</tr>
-<tr>
-<td align="center">CFLAGS</td>
-<td align="center">C语言编译器的编译选项</td>
-<td align="center">无</td>
-</tr>
-<tr>
-<td align="center">CPPFLAGS</td>
-<td align="center">C语言预编译器的编译选项</td>
-<td align="center">无</td>
-</tr>
-<tr>
-<td align="center">CXXFLAGS</td>
-<td align="center">C++编译器的编译选项</td>
-<td align="center">无</td>
-</tr>
-</tbody></table>
-<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 示例：</span></span><br><span class="line">obj=main.o sub.o add.o</span><br><span class="line">target=calc</span><br><span class="line">CFLAGS=-O3</span><br><span class="line"><span class="variable">$(target)</span>:<span class="variable">$(obj)</span></span><br><span class="line">    <span class="variable">$(CC)</span> <span class="variable">$(obj)</span> -o <span class="variable">$(target)</span> <span class="variable">$(CFLAGS)</span></span><br></pre></td></tr></table></figure>
+<h1 id="使用strtol-函数"><a href="#使用strtol-函数" class="headerlink" title="使用strtol()函数"></a>使用strtol()函数</h1><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span>  <span class="comment">// 包含 strtol 函数</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> *argv[])</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (argc &gt; <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="type">long</span> num = strtol(argv[<span class="number">1</span>], <span class="literal">NULL</span>, <span class="number">10</span>);  <span class="comment">// 将 argv[1] 转换为 long 类型，基数为10</span></span><br><span class="line">        <span class="keyword">if</span> (*end == <span class="string">&#x27;\0&#x27;</span>) &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;输入的数字是: %ld\n&quot;</span>, num);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;输入的参数不是有效的数字！\n&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;请提供一个数字参数！\n&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h2 id="自动变量"><a href="#自动变量" class="headerlink" title="自动变量"></a>自动变量</h2><table>
-<thead>
-<tr>
-<th align="center">变量</th>
-<th align="center">含义</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">$@</td>
-<td align="center">目标文件(target)的完整名称</td>
-</tr>
-<tr>
-<td align="center">$&lt;</td>
-<td align="center">第一个依赖文件的名称</td>
-</tr>
-<tr>
-<td align="center">$^</td>
-<td align="center">所有依赖文件的名称，以空格分开，不包含重复依赖</td>
-</tr>
-<tr>
-<td align="center">$*</td>
-<td align="center">目标文件的名称，不包含扩展名</td>
-</tr>
-<tr>
-<td align="center">$?</td>
-<td align="center">依赖项中，所有比目标文件时间戳晚的依赖文件，以空格分开</td>
-</tr>
-</tbody></table>
-<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 示例：</span></span><br><span class="line"><span class="variable">$(target)</span>:<span class="variable">$(obj)</span></span><br><span class="line">    gcc <span class="variable">$^</span> -o <span class="variable">$@</span></span><br></pre></td></tr></table></figure>
+<h1 id="使用sscanf-函数"><a href="#使用sscanf-函数" class="headerlink" title="使用sscanf()函数"></a>使用sscanf()函数</h1><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> *argv[])</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (argc &gt; <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="type">int</span> num;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">sscanf</span>(argv[<span class="number">1</span>], <span class="string">&quot;%d&quot;</span>, &amp;num) == <span class="number">1</span>) &#123;  <span class="comment">// 将 argv[1] 转换为 int 类型</span></span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;输入的数字是: %d\n&quot;</span>, num);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;输入的参数不是有效的数字！\n&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;请提供一个数字参数！\n&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h1 id="模式匹配"><a href="#模式匹配" class="headerlink" title="模式匹配"></a>模式匹配</h1><p>使用模式匹配前：</p>
-<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="section">calc:add.o  div.o  main.o  mult.o  sub.o</span></span><br><span class="line">        gcc  add.o  div.o  main.o  mult.o  sub.o -o calc</span><br><span class="line"></span><br><span class="line"><span class="section">add.o:add.c</span></span><br><span class="line">        gcc add.c -c</span><br><span class="line"></span><br><span class="line"><span class="section">div.o:div.c</span></span><br><span class="line">        gcc div.c -c</span><br><span class="line"></span><br><span class="line"><span class="section">main.o:main.c</span></span><br><span class="line">        gcc main.c -c</span><br><span class="line"></span><br><span class="line"><span class="section">sub.o:sub.c</span></span><br><span class="line">        gcc sub.c -c</span><br><span class="line"></span><br><span class="line"><span class="section">mult.o:mult.c</span></span><br><span class="line">        gcc mult.c -c</span><br></pre></td></tr></table></figure>
-
-<p>使用模式匹配后：</p>
-<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="section">calc:add.o  div.o  main.o  mult.o  sub.o</span></span><br><span class="line">        gcc  add.o  div.o  main.o  mult.o  sub.o -o calc</span><br><span class="line"></span><br><span class="line"><span class="section">%.o:%.c</span></span><br><span class="line">	gcc <span class="variable">$&lt;</span> -c</span><br></pre></td></tr></table></figure>
-
-<h1 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h1><h2 id="wildcard"><a href="#wildcard" class="headerlink" title="wildcard"></a>wildcard</h2><p>函数功能:获取指定目录下指定类型的文件名，其返回值是以空格分割的指定目录下符合条件的文件名列表。<br>.<br>├── include<br>│   └── head.h<br>├── main.c<br>├── Makefile<br>└── src<br>    ├── add.c<br>    ├── div.c<br>    ├── mult.c<br>    └── sub.c</p>
-<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 语法：</span></span><br><span class="line"><span class="variable">$(<span class="built_in">wildcard</span> 目录列表)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 示例：</span></span><br><span class="line">src=<span class="variable">$(<span class="built_in">wildcard</span> *.c ./src/*.c)</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="patsubst"><a href="#patsubst" class="headerlink" title="patsubst"></a>patsubst</h2><figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 语法：</span></span><br><span class="line"><span class="variable">$(<span class="built_in">patsubst</span> &lt;pattern&gt;, &lt;replacement&gt;, &lt;text&gt;)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 示例：将变量src中的所有文件名的后缀替换成.o</span></span><br><span class="line">obj=<span class="variable">$(<span class="built_in">patsubst</span> %.c, %.o, <span class="variable">$(src)</span>)</span></span><br></pre></td></tr></table></figure>
-
-<h1 id="makefile示例"><a href="#makefile示例" class="headerlink" title="makefile示例"></a>makefile示例</h1><p>.<br>├── include<br>│   └── head.h<br>├── main.c<br>├── Makefile<br>└── src<br>    ├── add.c<br>    ├── div.c<br>    ├── mult.c<br>    └── sub.c</p>
-<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 定义变量</span></span><br><span class="line">target=main</span><br><span class="line">include=./<span class="keyword">include</span></span><br><span class="line">CFLAGS=-O3 -g -Wall</span><br><span class="line"></span><br><span class="line"><span class="comment"># 搜索源文件</span></span><br><span class="line">src=<span class="variable">$(<span class="built_in">wildcard</span> *.c ./src/*.c)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 替换成.o结尾</span></span><br><span class="line">obj=<span class="variable">$(<span class="built_in">patsubst</span> %.c, %.o, <span class="variable">$(src)</span>)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 对汇编文件进行链接</span></span><br><span class="line"><span class="variable">$(target)</span>:<span class="variable">$(obj)</span></span><br><span class="line">   gcc <span class="variable">$^</span> -o <span class="variable">$@</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 对源文件进行逐个汇编</span></span><br><span class="line"><span class="section">%.o:%.c</span></span><br><span class="line">   gcc <span class="variable">$&lt;</span> -c -I<span class="variable">$(include)</span> -o <span class="variable">$@</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># clean</span></span><br><span class="line"><span class="meta"><span class="keyword">.PHONY</span>: clean</span></span><br><span class="line"><span class="section">clean:</span></span><br><span class="line">   rm <span class="variable">$(obj)</span> <span class="variable">$(target)</span> -f</span><br></pre></td></tr></table></figure>
-
-<h1 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h1><h2 id="递归扩展变量（-）"><a href="#递归扩展变量（-）" class="headerlink" title="递归扩展变量（&#x3D;）"></a>递归扩展变量（&#x3D;）</h2><figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="meta"><span class="keyword">.PHONY</span>: all</span></span><br><span class="line">foo = <span class="variable">$(bar)</span></span><br><span class="line">bar = <span class="variable">$(hello)</span></span><br><span class="line">hello = world</span><br><span class="line"></span><br><span class="line"><span class="section">all:</span></span><br><span class="line">    @echo <span class="variable">$(foo)</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ make</span><br><span class="line">world</span><br></pre></td></tr></table></figure>
-
-<h2 id="简单扩展变量（-）"><a href="#简单扩展变量（-）" class="headerlink" title="简单扩展变量（:&#x3D;）"></a>简单扩展变量（:&#x3D;）</h2><p>对于这种变量，make只对其进行一次扫描和扩展。</p>
-<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="meta"><span class="keyword">.PHONY</span>: all</span></span><br><span class="line">x = foo</span><br><span class="line">y = <span class="variable">$(x)</span> b</span><br><span class="line">x = later</span><br><span class="line"></span><br><span class="line">xx := foo</span><br><span class="line">yy := <span class="variable">$(xx)</span> b</span><br><span class="line">xx := later</span><br><span class="line"></span><br><span class="line"><span class="section">all:</span></span><br><span class="line">    $echo <span class="string">&quot;x = <span class="variable">$(y)</span>, xx = <span class="variable">$(yy)</span>&quot;</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ make</span><br><span class="line">x = later b, xx = foo b</span><br></pre></td></tr></table></figure>
-
-<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><p><a href="https://subingwen.cn/linux/makefile/">爱编程的大丙</a><br><a href="https://www.cnblogs.com/paul-617/p/15501875.html">makefile详解</a></p>
+<h1 id="三种方法对比"><a href="#三种方法对比" class="headerlink" title="三种方法对比"></a>三种方法对比</h1><p>atoi()：简单快捷，但无法检测错误输入，使用时需要确保输入是有效的数字，否则返回 0。<br>strtol()：推荐用于更加健壮的转换，它允许处理错误输入并支持不同进制数。<br>sscanf()：灵活性较高，可以处理多种格式，适用于需要从字符串中解析多个值的场景。</p>
 ]]></content>
       <categories>
-        <category>Linux</category>
+        <category>C</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>is-a</title>
+    <url>/2024/11/17/is-a/</url>
+    <content><![CDATA[<ol>
+<li>is-a</li>
+<li>has-a</li>
+<li>uses-a</li>
+<li>is-implemented-as-a</li>
+</ol>
+<span id="more"></span>
+<h2 id="什么是is-a"><a href="#什么是is-a" class="headerlink" title="什么是is-a"></a>什么是is-a</h2><p>is-a表面意思就是“是”，例如“B is an A”表示“B是一个A”，在C++中它描述的是不同类之间的关系。它描述的是一种继承关系，B is-a A有两层含义：</p>
+<ul>
+<li>B是A的一种</li>
+<li>反过来，A并不是B</li>
+</ul>
+<p>举一个例子就是，香蕉is-a水果，香蕉是水果，但是不能说水果是香蕉。他们之间的关系是一种继承关系，香蕉继承了水果的所有性质，但是香蕉又有它自己独特的性质。</p>
+<p>has-a表面意思是“有”，例如“B has an A”表示“B中有A”，他表示的是一种组合关系，他们自己之间是一种组合关系，B中有A表示的是一种包含和被包含的关系，所以B掌控着A的生死，在has-a这种关系中，A其实是依托于B才得以存在的，这么说可能会有点抽象，因为A本身也是一个独立的存在，为什么说A依托B才得以存在？举个例子，午饭中有水果。</p>
+<ul>
+<li>要先有午饭，才会有午饭中有水果</li>
+</ul>
+<p>uses-a表面意思是“用”，“用”不需要拥有，比如文档需要借助打印机来打印，并不是说这个文档就拥有打印机，打印机并不是文档的一部分，我们提交一份文档也并不是连着打印机一起提交。下面是uses-a的示例代码（为了突出uses-a，把其中一个类的对象定义为了全局变量）：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 打印机类</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Printer</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">print</span><span class="params">(<span class="type">const</span> std::string&amp; content)</span> </span>&#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;Printing: &quot;</span> &lt;&lt; content &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 全局打印机对象，Document uses-a Printer</span></span><br><span class="line">Printer printer;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 文档类</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Document</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">printDocument</span><span class="params">(<span class="type">const</span> std::string&amp; content)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 使用全局打印机对象printer打印内容</span></span><br><span class="line">        printer.<span class="built_in">print</span>(content);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Document doc;</span><br><span class="line">    doc.<span class="built_in">printDocument</span>(<span class="string">&quot;Hello, World!&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="以下是ChatGPT的回答"><a href="#以下是ChatGPT的回答" class="headerlink" title="以下是ChatGPT的回答"></a>以下是ChatGPT的回答</h2><h3 id="1-is-a-关系（继承关系）"><a href="#1-is-a-关系（继承关系）" class="headerlink" title="1. is-a 关系（继承关系）"></a>1. <code>is-a</code> 关系（继承关系）</h3><p><code>is-a</code>关系表示一种继承关系，即一个类是另一个类的特化。在面向对象编程中，这种关系通常通过类继承来实现。如果类A是类B的特化，那么A的每个实例都可以被视为B的实例，即A具有B的所有属性和行为。</p>
+<p><strong>示例代码</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Animal</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">eat</span><span class="params">()</span> </span>&#123; <span class="comment">/* ... */</span> &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Dog</span> : <span class="keyword">public</span> Animal &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">bark</span><span class="params">()</span> </span>&#123; <span class="comment">/* ... */</span> &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Dog是Animal的特化，所以Dog具有Animal的行为</span></span><br></pre></td></tr></table></figure>
+<p><strong>注意</strong>：<code>is-a</code>关系是多态性的基础，允许代码通过基类指针或引用来操作派生类对象，实现动态绑定。</p>
+<h3 id="2-has-a-关系（组合关系）"><a href="#2-has-a-关系（组合关系）" class="headerlink" title="2. has-a 关系（组合关系）"></a>2. <code>has-a</code> 关系（组合关系）</h3><p><code>has-a</code>关系表示一个类包含另一个类的实例作为其成员，即一个类的对象拥有另一个类的对象。这种关系通过对象的组合来实现，不涉及继承。</p>
+<p><strong>示例代码</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Engine</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">start</span><span class="params">()</span> </span>&#123; <span class="comment">/* ... */</span> &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Car</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    Engine engine;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">drive</span><span class="params">()</span> </span>&#123; <span class="comment">/* 使用engine对象 ... */</span> &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Car有一个Engine对象，所以Car has-a Engine</span></span><br></pre></td></tr></table></figure>
+<p><strong>注意</strong>：<code>has-a</code>关系强调的是对象之间的组合关系，而不是继承关系。</p>
+<h3 id="3-uses-a-关系（依赖关系）"><a href="#3-uses-a-关系（依赖关系）" class="headerlink" title="3. uses-a 关系（依赖关系）"></a>3. <code>uses-a</code> 关系（依赖关系）</h3><p><code>uses-a</code>关系表示一个类在其方法中使用另一个类的对象，但并不包含另一个类的对象作为其成员。这种关系是一种弱耦合关系，通常通过方法参数或局部变量来实现。</p>
+<p><strong>示例代码</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Logger</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">log</span><span class="params">(<span class="type">const</span> std::string&amp; message)</span> </span>&#123; <span class="comment">/* ... */</span> &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Application</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Logger logger;</span><br><span class="line">        logger.<span class="built_in">log</span>(<span class="string">&quot;Application is running&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Application在其方法中使用Logger，所以Application uses-a Logger</span></span><br></pre></td></tr></table></figure>
+<p><strong>注意</strong>：<code>uses-a</code>关系强调的是类之间的依赖关系，一个类的方法可能依赖于另一个类的功能。</p>
+<h3 id="4-is-implemented-as-a-关系（实现关系）"><a href="#4-is-implemented-as-a-关系（实现关系）" class="headerlink" title="4. is-implemented-as-a 关系（实现关系）"></a>4. <code>is-implemented-as-a</code> 关系（实现关系）</h3><p><code>is-implemented-as-a</code>关系表示一个类或接口是通过另一个类或接口来实现的。这种关系通常用于接口实现，其中一个类实现了一个或多个接口。</p>
+<p><strong>示例代码</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">IDrawable</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">draw</span><span class="params">()</span> </span>= <span class="number">0</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Circle</span> : <span class="keyword">public</span> IDrawable &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">draw</span><span class="params">()</span> <span class="keyword">override</span> </span>&#123; <span class="comment">/* ... */</span> &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Circle实现了IDrawable接口，所以Circle is-implemented-as-a IDrawable</span></span><br></pre></td></tr></table></figure>
+<p><strong>注意</strong>：<code>is-implemented-as-a</code>关系强调的是实现细节，一个类实现了接口或抽象类的具体功能。</p>
+]]></content>
+      <categories>
+        <category>C++</category>
       </categories>
   </entry>
   <entry>
@@ -1678,172 +1605,52 @@
       </categories>
   </entry>
   <entry>
-    <title>压缩解压</title>
-    <url>/2024/09/20/%E5%8E%8B%E7%BC%A9_%E8%A7%A3%E5%8E%8B/</url>
-    <content><![CDATA[<ul>
-<li>.tar.gz</li>
-<li>.tgz</li>
-<li>.tar.bz2</li>
-<li>.zip</li>
-<li>.rar</li>
-<li>.tar.xz</li>
-</ul>
+    <title>.bashrc</title>
+    <url>/2024/09/20/bashrc/</url>
+    <content><![CDATA[<p>.bashrc是一个用于配置Bash Shell的脚本文件。位于<code>~/.bashrc</code>，当打开一个新的Bash终端会话时，Bash会自动执行这个文件中的命令，这个文件通常用于：设置环境变量，定义别名，配置Shell选项。</p>
 <span id="more"></span>
-<h1 id="tar"><a href="#tar" class="headerlink" title="tar"></a>tar</h1><p>Linux默认情况下，自带两个压缩工具<code>gzip</code>,<code>bzip2</code>和一个打包工具<code>tar</code>。打包工具只能进行打包，不能压缩，压缩工具只能进行压缩，不能进行打包。</p>
-<h2 id="1-压缩（-tar-gz-tar-bz2-tgz）"><a href="#1-压缩（-tar-gz-tar-bz2-tgz）" class="headerlink" title="1.压缩（.tar.gz|.tar.bz2|.tgz）"></a>1.压缩（.tar.gz|.tar.bz2|.tgz）</h2><ul>
-<li>c：创建压缩文件</li>
-<li>z：使用<code>gzip</code>的方式进行压缩</li>
-<li>j：使用<code>bzip2</code>的方式进行压缩</li>
-<li>v：压缩过程中显示压缩过程</li>
-<li>f：指定压缩包的名字</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 使用 gzip 的方式压缩:</span></span><br><span class="line">$ tar zcvf name.tar.gz file1 file2</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用 bzip2 的方式压缩：</span></span><br><span class="line">$ tar jcvf name.tar.bz2 file1 file2</span><br></pre></td></tr></table></figure>
-
-<h2 id="2-解压缩（-tar-gz-tar-bz2-tgz）"><a href="#2-解压缩（-tar-gz-tar-bz2-tgz）" class="headerlink" title="2.解压缩（.tar.gz|.tar.bz2|.tgz）"></a>2.解压缩（.tar.gz|.tar.bz2|.tgz）</h2><ul>
-<li>x：释放压缩文件内容</li>
-<li>z：使用<code>gzip</code>的方式进行压缩</li>
-<li>j：使用<code>bzip2</code>的方式进行压缩</li>
-<li>v：压缩过程中显示压缩过程</li>
-<li>f：指定压缩包的名字</li>
-</ul>
-<blockquote>
-<p>如果需要解压到指定目录，需要指定参数<code>-C</code>，一般认为<code>.tgz</code>文件等同于<code>.tar.gz</code>文件，解压方式相同。</p>
-</blockquote>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 使用`gzip`的方式进行解压缩</span></span><br><span class="line">$ tar zxvf name.tar.gz -C &lt;dir-name&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用`bzip2`的方式进行解压缩</span></span><br><span class="line">$ tar jxvf name.tar.bz2 -C &lt;dir-name&gt;</span><br></pre></td></tr></table></figure>
-
-<h1 id="zip"><a href="#zip" class="headerlink" title="zip"></a>zip</h1><h2 id="1-安装"><a href="#1-安装" class="headerlink" title="1.安装"></a>1.安装</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> apt install zip</span><br><span class="line">$ <span class="built_in">sudo</span> apt install unzip</span><br></pre></td></tr></table></figure>
-
-<h2 id="2-压缩和解压缩（-zip）"><a href="#2-压缩和解压缩（-zip）" class="headerlink" title="2.压缩和解压缩（.zip）"></a>2.压缩和解压缩（.zip）</h2><p>使用<code>zip</code>压缩目录的时候，需要添加参数<code>-r</code>，才能将子目录中的文件一并压缩。压缩文件会自动生成后缀，因此不需要额外指定。解压缩时，如果需要指定解压目录需要添加参数<code>-d</code></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 压缩</span></span><br><span class="line">$ zip zipname file1 file2 dir1 -r</span><br><span class="line"></span><br><span class="line"><span class="comment"># 解压缩</span></span><br><span class="line">$ unzip zipname -d &lt;dir-name&gt;</span><br></pre></td></tr></table></figure>
-
-<h1 id="rar"><a href="#rar" class="headerlink" title="rar"></a>rar</h1><h2 id="1-安装-1"><a href="#1-安装-1" class="headerlink" title="1.安装"></a>1.安装</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> apt install rar</span><br></pre></td></tr></table></figure>
-
-<h2 id="2-压缩和解压缩（-rar）"><a href="#2-压缩和解压缩（-rar）" class="headerlink" title="2.压缩和解压缩（.rar）"></a>2.压缩和解压缩（.rar）</h2><p>如果压缩的文件带有目录，需要指定参数<code>-r</code>，压缩时需要使用参数<code>a（archive）</code>压缩归档的意思。压缩包也会自动添加后缀。解压缩时可以使用<code>rar</code>，也可以使用<code>unrar</code>，解压缩时需要指定参数<code>x</code></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 压缩</span></span><br><span class="line">$ rar a rarname file1 file2 dir1 -r</span><br><span class="line"></span><br><span class="line"><span class="comment"># 解压缩</span></span><br><span class="line">$ rar x rarname &lt;dir-name&gt;</span><br></pre></td></tr></table></figure>
-
-<h1 id="xz"><a href="#xz" class="headerlink" title="xz"></a>xz</h1><h2 id="1-压缩"><a href="#1-压缩" class="headerlink" title="1.压缩"></a>1.压缩</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 第一步：打包文件</span></span><br><span class="line">$ tar cvf name.tar file1 file2</span><br><span class="line"></span><br><span class="line"><span class="comment"># 第二步：使用xz压缩文件(生成文件带后缀xxx.tar.xz)</span></span><br><span class="line">$ xz -z name.tar</span><br></pre></td></tr></table></figure>
-
-<h2 id="解压缩"><a href="#解压缩" class="headerlink" title="解压缩"></a>解压缩</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 使用xz解压缩得到xxx.tar</span></span><br><span class="line">$ xz -d xxx.tar.gz</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将xxx.tar中的文件释放到当前目录</span></span><br><span class="line">$ tar xvf xxx.tar</span><br></pre></td></tr></table></figure>
-]]></content>
+<h1 id="设置环境变量"><a href="#设置环境变量" class="headerlink" title="设置环境变量"></a>设置环境变量</h1><h2 id="设置PATH环境变量"><a href="#设置PATH环境变量" class="headerlink" title="设置PATH环境变量"></a>设置PATH环境变量</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">export PATH=/usr/local/bin:$PATH</span><br></pre></td></tr></table></figure>
+<p>将&#x2F;usr&#x2F;local&#x2F;lib目录添加到PATH环境变量的前面，当在命令行中输入命令时，系统首先会在&#x2F;usr&#x2F;local&#x2F;lib目录先查找。</p>
+<h2 id="设置一个新的环境变量"><a href="#设置一个新的环境变量" class="headerlink" title="设置一个新的环境变量"></a>设置一个新的环境变量</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">export VAR = &quot;Hello,World!&quot;</span><br></pre></td></tr></table></figure>
+<p>创建一个名为VAR的新环境变量，并将它的值设置为<code>Hello,World!</code></p>
+<h2 id="为特定应用设置环境变量"><a href="#为特定应用设置环境变量" class="headerlink" title="为特定应用设置环境变量"></a>为特定应用设置环境变量</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64</span><br><span class="line">export PATH=$JAVA_HOME/bin:$PATH</span><br></pre></td></tr></table></figure>
+<p>设置了JAVA_HOME环境变量，指向java的安装命令，并将bin目录添加到PATH中，之后就可以直接在命令中使用java命令。</p>
+<h2 id="设置库目录"><a href="#设置库目录" class="headerlink" title="设置库目录"></a>设置库目录</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH</span><br></pre></td></tr></table></figure>
+<p>将<code>/usr/local/lib</code>目录添加到<code>LD_LIBRARY_PATH</code>环境变量中。</p>
+<h2 id="条件性设置环境变量"><a href="#条件性设置环境变量" class="headerlink" title="条件性设置环境变量"></a>条件性设置环境变量</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">if [ -d /opt/myapp ]; then</span><br><span class="line">    export MYAPP_HOME=/opt/myapp</span><br><span class="line">    export PATH=$MYAPP_HOME/bin:$PATH</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
+<p>检查&#x2F;opt&#x2F;myapp目录是否存在，如果存在则设置MY_HOME环境变量，并将bin目录添加到PATH中。</p>
+<h1 id="设置别名"><a href="#设置别名" class="headerlink" title="设置别名"></a>设置别名</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 为 ls 和其他命令启用颜色支持，并添加有用的别名</span><br><span class="line">if [ -x /usr/bin/dircolors ]; then</span><br><span class="line">    test -r ~/.dircolors &amp;&amp; eval &quot;$(dircolors -b ~/.dircolors)&quot; || eval &quot;$(dircolors -b)&quot;</span><br><span class="line">    alias ls=&#x27;ls --color=auto&#x27;</span><br><span class="line">    #alias dir=&#x27;dir --color=auto&#x27;</span><br><span class="line">    #alias vdir=&#x27;vdir --color=auto&#x27;</span><br><span class="line"></span><br><span class="line">    alias grep=&#x27;grep --color=auto&#x27;</span><br><span class="line">    alias fgrep=&#x27;fgrep --color=auto&#x27;</span><br><span class="line">    alias egrep=&#x27;egrep --color=auto&#x27;</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
+<p><code>if [ -x /usr/bin/dircolors ]; </code>:检查 &#x2F;usr&#x2F;bin&#x2F;dircolors 文件是否存在并且具有可执行权限，从而决定是否要执行后续命令。</p>
+<p><code>test -r ~/.dircolors &amp;&amp; eval &quot;$(dircolors -b ~/.dircolors)&quot; || eval &quot;$(dircolors -b)&quot;</code>:检查 ~&#x2F;.dircolors 文件是否存在并且可读。如果文件存在且可读，使用 dircolors 命令和该文件的设置来配置颜色。如果文件不存在或不可读，使用 dircolors 命令的默认设置来配置颜色。目的是确保 LS_COLORS 环境变量被设置，以便 ls 命令能够根据这些设置显示颜色。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 其他别名</span><br><span class="line">alias ll=&#x27;ls -alF&#x27;</span><br><span class="line">alias la=&#x27;ls -A&#x27;</span><br><span class="line">alias l=&#x27;ls -CF&#x27;</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>Linux</category>
       </categories>
   </entry>
   <entry>
-    <title>多线程基础</title>
-    <url>/2024/11/07/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%9F%BA%E7%A1%80/</url>
-    <content><![CDATA[<p>并发</p>
-<ol>
-<li>多线程</li>
-<li>多进程</li>
-</ol>
-<h1 id="基础概念"><a href="#基础概念" class="headerlink" title="基础概念"></a>基础概念</h1><p>线程是轻量级的进程，在Linux环境下，线程的本质仍然是进程。操作系统会以进程为单位，分配系统资源。进程是资源分配的最小单位，线程是操作系统调度执行的最小单位。</p>
+    <title>hosts</title>
+    <url>/2024/09/20/hosts/</url>
+    <content><![CDATA[<p>在Ubuntu上安装nvm遇到：curl: (28) Failed to connect to raw.githubusercontent.com port 443: Connection timed out [closed]<br>1.打开<code>/etc/hosts</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> vim /etc/hosts</span><br></pre></td></tr></table></figure>
 <span id="more"></span>
-<p>线程和进程的区别：</p>
-<ol>
-<li>进程有自己独立的地址空间，多个线程公用同一个地址空间<ul>
-<li>在一个地址空间中多个线程共享资源有：代码段，堆区，全局数据区，打开的文件（文件描述符）</li>
-<li>在一个地址空间中多个线程独享资源有：栈区，寄存器</li>
-</ul>
-</li>
-<li>线程是程序的最小执行单位，进程是操作系统中资源分配的最小单位<ul>
-<li>每个进程对应一个虚拟地址空间，一个进程只能抢一个CPU时间片</li>
-<li>一个地址空间中可以划分出多个线程，可以抢占更多的时间片</li>
-</ul>
-</li>
-<li>CPU的调度和切换：线程的上下文切换比进程快的多<ul>
-<li>上下文切换：进程和线程分时复用CPU时间片，在切换之前会将上一个任务的状态进行保存，下次切换回这个任务的时候，加载这个状态继续运行任务从保存到再次加载这个过程就是一次上下文切换。</li>
-<li>线程更加廉价，启动速度更快，退出也快，对系统资源的冲击小</li>
-</ul>
-</li>
-</ol>
-<p>在处理多任务程序的时候，使用多线程比使用多进程更有优势，但是线程并不是越多越好：</p>
-<ol>
-<li>文件IO操作：文件IO对CPU使用率不高，线程数 &#x3D; 2 * CPU核心数</li>
-<li>处理复杂算法：线程数 &#x3D; CPU核心数</li>
-</ol>
-<p>什么时候用多进程？</p>
+<p>2.查询可用IP<br>使用<a href="https://www.ipaddress.com/website/">ipaddress</a>网站查询<code>github.com</code>,<code>ssh.github.com</code>,<code>raw.githubusercontent.com</code>网站的可用IP</p>
+<p>3.在末尾添加以下IP地址</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">140.82.114.3  github.com</span><br><span class="line">140.82.113.36  ssh.github.com</span><br><span class="line">199.232.68.133 raw.githubusercontent.com</span><br></pre></td></tr></table></figure>
+
+<p>4.保存文件并退出</p>
+<p>5.可以使用ping查看域名是否有received</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ ping 199.232.68.133</span><br><span class="line">PING 199.232.68.133 (199.232.68.133) 56(84) bytes of data.</span><br><span class="line">64 bytes from 199.232.68.133: icmp_seq=1 ttl=43 time=234 ms</span><br><span class="line">64 bytes from 199.232.68.133: icmp_seq=2 ttl=43 time=234 ms</span><br><span class="line">64 bytes from 199.232.68.133: icmp_seq=3 ttl=43 time=234 ms</span><br><span class="line">64 bytes from 199.232.68.133: icmp_seq=4 ttl=43 time=233 ms</span><br><span class="line">^C</span><br><span class="line">--- 199.232.68.133 ping statistics ---</span><br><span class="line">4 packets transmitted, 4 received, 0% packet loss, time 3004ms</span><br><span class="line">rtt min/avg/max/mdev = 233.337/233.849/234.302/0.421 ms</span><br></pre></td></tr></table></figure>
+
+<p><strong>ps.为什么要这样做呢??? hosts是什么配置文件呢???</strong><br><strong>hosts文件是什么？</strong><br>在Linux系统中，<code>/etc/hosts</code>文件是一个本地的DNS解析文件，用于将IP地址和主机名映射起来。当你访问某个域名时，系统会首先检查这个文件，如果在这里找到了对应的IP地址，就会直接使用，而不再通过外部DNS服务器查询。<br><strong>为什么要这么做？</strong><br>这是将GitHub相关的域名（如 github.com、ssh.github.com 和 raw.githubusercontent.com）手动映射到指定的IP地址。这么做的目的通常有以下几种可能：</p>
 <ul>
-<li>在处理一个程序的时候，需要去启动另一个程序的时候，使用多进程。</li>
+<li>解决访问问题：有时候由于DNS解析缓慢或者网络封锁，GitHub相关服务的域名可能会无法访问，通过手动在&#x2F;etc&#x2F;hosts中添加这些映射，可以直接访问指定的IP，绕过DNS解析。</li>
+<li>加快访问速度：如果你已经知道某个域名的IP地址，手动添加可以减少系统查询外部DNS的时间，从而提升访问速度。</li>
+<li>绕过DNS劫持：在某些情况下，网络服务提供商或某些恶意软件可能会劫持DNS请求，将你引导到错误的网站，通过手动配置IP可以避免这种情况。</li>
 </ul>
-<p>并发的话，优先考虑多线程。</p>
-<h1 id="线程函数"><a href="#线程函数" class="headerlink" title="线程函数"></a>线程函数</h1><p>头文件 &lt;pthread.h&gt;</p>
-<h2 id="线程ID"><a href="#线程ID" class="headerlink" title="线程ID"></a>线程ID</h2><p>每个线程都有一个唯一的线程ID</p>
-<ul>
-<li>类型：pthread_t</li>
-<li>无符号长整形</li>
-</ul>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 返回当前线程的ID</span></span><br><span class="line"><span class="type">pthread_t</span> <span class="title function_">pthread_self</span><span class="params">(<span class="type">void</span>)</span>;</span><br></pre></td></tr></table></figure>
-
-<h2 id="创建线程"><a href="#创建线程" class="headerlink" title="创建线程"></a>创建线程</h2><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">pthread_create</span><span class="params">(<span class="type">pthread_t</span> *thread, <span class="type">const</span> <span class="type">pthread_attr_t</span> *attr, <span class="type">void</span>*(*start_routine)(<span class="type">void</span>*), <span class="type">void</span> *arg)</span>;</span><br></pre></td></tr></table></figure>
-<ol>
-<li>参数<ul>
-<li>thread：传出参数，线程创建成功，会将线程ID写入到这个指针指向的内存中</li>
-<li>attr：线程属性，一般使用默认属性，写NULL</li>
-<li>start_routine：函数指针，子线程的处理动作</li>
-<li>arg：作为实参传递到start_routine指向的函数内部</li>
-</ul>
-</li>
-<li>返回值：线程创建成功返回0，创建失败返回对应的错误号</li>
-</ol>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span>* <span class="title function_">myPrintf</span><span class="params">(<span class="type">void</span> *arg)</span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;子线程id:%ld\n&quot;</span>, pthread_self());</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++)&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;子线程中i = %d\n&quot;</span>, i);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="type">int</span> pRet = <span class="number">0</span>;</span><br><span class="line">    <span class="type">pthread_t</span> tid;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++)&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;主线程中i = %d\n&quot;</span>, i);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;father_pthread_id:%ld\n&quot;</span>, pthread_self());</span><br><span class="line">    pRet = pthread_create(&amp;tid, <span class="literal">NULL</span>, myPrintf, <span class="literal">NULL</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;son_pthread_id:%ld\n&quot;</span>, tid);</span><br><span class="line">    sleep(<span class="number">1</span>);   <span class="comment">// 延迟一秒（CPU挂起）</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>子线程被创建出来之后需要抢cpu时间片,抢不到就不能运行，如果主线程退出了,虚拟地址空间就被释放了,子线程就一并被销毁了。但是如果某一个子线程退出了,主线程仍在运行,虚拟地址空间依旧存在。在没有人为干预的情况下，虚拟地址空间的生命周期和主线程是一样的，与子线程无关。</p>
-<h2 id="线程退出"><a href="#线程退出" class="headerlink" title="线程退出"></a>线程退出</h2><p>调用该函数，当前线程马上退出，并且不会影响到其他线程的正常运行，不管是子线程还是主线程中都可以使用。</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">pthread_exit</span><span class="params">(<span class="type">void</span> *retval)</span></span><br></pre></td></tr></table></figure>
-<p>参数：</p>
-<ul>
-<li>线程退出的时候携带的数据，当前子线程的主线程会得到该数据，如果不需要指定为NULL即可。</li>
-</ul>
-<h2 id="线程回收"><a href="#线程回收" class="headerlink" title="线程回收"></a>线程回收</h2><p>子线程退出的时候，其内核资源由主线程进行回收（非内核资源例如栈，代码区资源会在子线程退出的时候，自动释放）。</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">pthread_join</span><span class="params">(<span class="type">pthread_t</span> thread, <span class="type">void</span> **retval)</span>;</span><br></pre></td></tr></table></figure>
-<ol>
-<li>阻塞函数<ul>
-<li>如果还有子线程在运行，调用该函数就会阻塞，子线程退出函数解除阻塞进行资源回收，函数被调用一次，只能回收一个子线程，如果有多个子线程则需要循环进行回收。</li>
-</ul>
-</li>
-<li>参数：<ul>
-<li>thread：要回收的子线程的线程ID</li>
-<li>retval：二级指针，指向一级指针的地址，是一个传出参数，这个地址中存储了pthread_exit()传递出的数据，如果不需要这个参数，可以指定为NULL</li>
-</ul>
-</li>
-<li>返回值：<ul>
-<li>线程回收成功返回0，回收失败返回错误码</li>
-</ul>
-</li>
-<li>用法：<ul>
-<li>在子线程退出的时候使用pthread_exit(void* retval)的参数将数据传出，在回收这个子线程的时候通过pthread_join(pthread_t thread, void **retval)的第二个参数来接收子线程传递出的数据。</li>
-<li>需要注意的是，在进行数据回收的时候，不能回收子线程栈上的数据，因为如果多个线程共用同一个虚拟地址空间，每个线程在栈区都有一块属于自己的内存，相当于栈区被这几个线程平分了，当线程退出，线程在栈区的内存也就被回收了，因此随着子线程的退出，写入到栈区的数据也就被释放了。</li>
-<li>可以使用全局变量</li>
-<li>也可以使用主线程栈</li>
-</ul>
-</li>
-</ol>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Person</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="type">int</span> old;</span><br><span class="line">    <span class="type">char</span>* name;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="type">void</span>* <span class="title function_">callback</span><span class="params">(<span class="type">void</span> *arg)</span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;子线程id:%ld\n&quot;</span>, pthread_self());</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++)&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;子线程中i = %d\n&quot;</span>, i);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">Person</span>* <span class="title">p</span> =</span> (<span class="keyword">struct</span> Person*)arg;</span><br><span class="line">    p -&gt; old = <span class="number">10</span>;</span><br><span class="line">    p -&gt; name = <span class="string">&quot;zhang&quot;</span>;</span><br><span class="line">    pthread_exit(arg);</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++)&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;主线程中i = %d\n&quot;</span>, i);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;father_pthread_id:%ld\n&quot;</span>, pthread_self());</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> pRet = <span class="number">0</span>;</span><br><span class="line">    <span class="type">pthread_t</span> tid;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">Person</span> <span class="title">p1</span>;</span>   <span class="comment">// 主线程栈</span></span><br><span class="line">    <span class="type">void</span>* ptr = <span class="literal">NULL</span>;   <span class="comment">// 传回参数</span></span><br><span class="line">    pRet = pthread_create(&amp;tid, <span class="literal">NULL</span>, callback, &amp;p1);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;son_pthread_id:%ld\n&quot;</span>, tid);</span><br><span class="line">    pthread_join(tid, &amp;ptr);</span><br><span class="line">    <span class="comment">// 因为ptr是一个void*类型，如果不想这么写，也可以通过类型转换，将ptr转成Person指针</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;name:%s\n&quot;</span>, p1.name);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;old:%d\n&quot;</span>, p1.old);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="线程分离"><a href="#线程分离" class="headerlink" title="线程分离"></a>线程分离</h2><p>线程分离之后，子线程退出的时候，其占用的内核资源就会被系统的其他进程接管并回收。优势在于，不需要在主线程进行阻塞，等待子线程结束，由主线程回收子线程资源。搭配pthread_exit()函数，可以实现主线程退出，子线程依然有其他线程进行资源的回收。<br>在某些情况下，程序中的主线程也有自己的业务流程，如果想让主线程负责子线程的资源回收，调用pthread_join()函数，子要子线程不退出，主线程就会一直被阻塞，主线程的任务也不能推进。</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">pthread_detach</span><span class="params">(<span class="type">pthread_t</span> thread)</span>;</span><br></pre></td></tr></table></figure>
-<p>参数：<br>    - thread：要分离的子线程ID</p>
-<p>示例代码：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;pthread.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 子线程的处理代码</span></span><br><span class="line"><span class="type">void</span>* <span class="title function_">working</span><span class="params">(<span class="type">void</span>* arg)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;我是子线程, 线程ID: %ld\n&quot;</span>, pthread_self());</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>; i&lt;<span class="number">9</span>; ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;child == i: = %d\n&quot;</span>, i);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 1. 创建一个子线程</span></span><br><span class="line">    <span class="type">pthread_t</span> tid;</span><br><span class="line">    pthread_create(&amp;tid, <span class="literal">NULL</span>, working, <span class="literal">NULL</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;子线程创建成功, 线程ID: %ld\n&quot;</span>, tid);</span><br><span class="line">    <span class="comment">// 2. 子线程不会执行下边的代码, 主线程执行</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;我是主线程, 线程ID: %ld\n&quot;</span>, pthread_self());</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>; i&lt;<span class="number">3</span>; ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;i = %d\n&quot;</span>, i);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 设置子线程和主线程分离</span></span><br><span class="line">    pthread_detach(tid);</span><br><span class="line">    <span class="comment">// 让主线程自己退出即可</span></span><br><span class="line">    pthread_exit(<span class="literal">NULL</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="线程取消"><a href="#线程取消" class="headerlink" title="线程取消"></a>线程取消</h2><p>在某些情况下，在一个线程中杀死另一个线程：<br>step1：在线程A中调用pthread_cancel(pthreadB_ID)函数，指定杀死线程B，这个时候线程B并不会直接被杀死<br>step2：在线程B中若执行一次系统调用（从用户区切换到内核区），线程B自动被杀死，否则线程B可以一直运行下去</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">int pthread_cancel(pthread_t thread);</span><br></pre></td></tr></table></figure>
-<ol>
-<li>参数：要杀死的线程的线程ID</li>
-<li>返回值：函数调用成功返回0，调用失败返回错误码</li>
-</ol>
-<p>示例代码：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;pthread.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 子线程的处理代码</span></span><br><span class="line"><span class="type">void</span>* <span class="title function_">working</span><span class="params">(<span class="type">void</span>* arg)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> j=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>; i&lt;<span class="number">9</span>; ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        j++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 这个函数会调用系统函数, 因此这是个间接的系统调用</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;我是子线程, 线程ID: %ld\n&quot;</span>, pthread_self());</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>; i&lt;<span class="number">9</span>; ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot; child i: %d\n&quot;</span>, i);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 1. 创建一个子线程</span></span><br><span class="line">    <span class="type">pthread_t</span> tid;</span><br><span class="line">    pthread_create(&amp;tid, <span class="literal">NULL</span>, working, <span class="literal">NULL</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;子线程创建成功, 线程ID: %ld\n&quot;</span>, tid);</span><br><span class="line">    <span class="comment">// 2. 子线程不会执行下边的代码, 主线程执行</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;我是主线程, 线程ID: %ld\n&quot;</span>, pthread_self());</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>; i&lt;<span class="number">3</span>; ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;i = %d\n&quot;</span>, i);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 杀死子线程, 如果子线程中做系统调用, 子线程就结束了</span></span><br><span class="line">    pthread_cancel(tid);</span><br><span class="line">    <span class="comment">// 让主线程自己退出即可</span></span><br><span class="line">    pthread_exit(<span class="literal">NULL</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="线程ID比较"><a href="#线程ID比较" class="headerlink" title="线程ID比较"></a>线程ID比较</h2><p>在Linux中线程ID本质是一个无符号长整型，因此可以直接使用比较操作符比较这两个线程的ID，但是线程库是可以跨平台使用的，在某些平台上pthread_t可能不是一个单纯的整型，这种情况下比较两个线程的ID就要使用线程比较函数。</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">pthread_equal</span><span class="params">(<span class="type">pthread_t</span> t1, <span class="type">pthread_t</span> t2)</span>;</span><br></pre></td></tr></table></figure>
-<ol>
-<li>参数：t1和t2是要比较的线程的线程ID</li>
-<li>返回值：如果两个线程ID相等返回非0值，否则返回0</li>
-</ol>
+<p>IP地址可能会随着时间变化，所以如果GitHub更新了服务器的IP地址，而你还在使用旧的配置，可能会导致访问失败。</p>
 ]]></content>
       <categories>
-        <category>操作系统</category>
+        <category>PC</category>
       </categories>
   </entry>
   <entry>
@@ -1982,46 +1789,6 @@
 ]]></content>
       <categories>
         <category>C</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>双系统</title>
-    <url>/2024/09/02/%E9%87%8D%E8%A3%85%E7%B3%BB%E7%BB%9F/</url>
-    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>1.重装了Windows10专业版系统<br>2.增加了Ubuntu24.04双系统</p>
-<span id="more"></span>
-
-<h1 id="重装系统-Windows"><a href="#重装系统-Windows" class="headerlink" title="重装系统-Windows"></a>重装系统-Windows</h1><h2 id="1-准备工作"><a href="#1-准备工作" class="headerlink" title="1.准备工作"></a>1.准备工作</h2><ul>
-<li><a href="https://www.wepe.com.cn/">制作系统盘</a></li>
-<li><a href="https://msdn.itellyou.cn/">下载Windows10光盘映像 consumer editions</a></li>
-</ul>
-<h2 id="2-主板型号"><a href="#2-主板型号" class="headerlink" title="2.主板型号"></a>2.主板型号</h2><p>根据主板型号，搜索对应品牌进入BIOS方法。获取主板型号的方法：<br>1.进入Windows PowerShell<br>2.运行指令：msinfo32</p>
-<h2 id="3-分区格式"><a href="#3-分区格式" class="headerlink" title="3.分区格式"></a>3.分区格式</h2><p>可以通过<code>硬件管理</code>查看目前磁盘的分区格式。<br>1.进入<code>磁盘管理</code><br>2.右键<code>磁盘0</code>或<code>磁盘1</code> -&gt; 属性 -&gt; 卷<br>3.磁盘分区形式</p>
-<table>
-<thead>
-<tr>
-<th align="center">分区表格式</th>
-<th align="center">启动项</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">MBR</td>
-<td align="center">UEFI</td>
-</tr>
-<tr>
-<td align="center">GPT</td>
-<td align="center">Legacy</td>
-</tr>
-</tbody></table>
-<h2 id="4-进入BOIS"><a href="#4-进入BOIS" class="headerlink" title="4.进入BOIS"></a>4.进入BOIS</h2><p>设置<code>Boot Priority</code>，UEFI:U盘拖到第1优先级</p>
-<h2 id="5-硬盘分区"><a href="#5-硬盘分区" class="headerlink" title="5.硬盘分区"></a>5.硬盘分区</h2><p>电脑有两个以上硬盘，且每个硬盘都作了分区，装系统的时候可能会出错，显示无法创建新的分区。解决方案：<br><strong>方案一</strong>：在分区容量大小的时候，系统盘选择主分区，其他盘取消主分区。<br><strong>方案二</strong>：系统盘分区，另外一个盘不进行分区。等系统安装完成之后再手动分区。</p>
-<h2 id="6-安装驱动"><a href="#6-安装驱动" class="headerlink" title="6.安装驱动"></a>6.安装驱动</h2><p>有些电脑装系统之后，系统自带的集成驱动没有网卡驱动，所以上不了网，比如我这台微星。这个时候就需要借助其他电脑，到微星官网。搜索对应的主板型号，找到技术支持里的驱动安装。选择网卡驱动，下载并保存到U盘里，拷贝到新装系统的电脑上，并解压。<br>设备管理器 -&gt; 其他设备&#x2F;网络适配器 -&gt; 鼠标右键更新驱动 -&gt; 浏览计算机查找驱动软件 -&gt; 找到解压文件夹</p>
-<h2 id="7-NVIDIA显卡驱动"><a href="#7-NVIDIA显卡驱动" class="headerlink" title="7.NVIDIA显卡驱动"></a>7.NVIDIA显卡驱动</h2><p>终端窗口输入命令：nvidia-smi<br>1.<a href="https://www.nvidia.cn/">英伟达官网</a><br>2.Geforce驱动<br>3.选择对应型号无脑安装</p>
-<h1 id="双系统-Ubuntu"><a href="#双系统-Ubuntu" class="headerlink" title="双系统-Ubuntu"></a>双系统-Ubuntu</h1><h2 id="1-Windows系统上创建分区"><a href="#1-Windows系统上创建分区" class="headerlink" title="1.Windows系统上创建分区"></a>1.Windows系统上创建分区</h2><p>磁盘管理 -&gt; 找一个空间比较大的分区（比如新加卷D:）-&gt; 右键 压缩卷（不进行分区，我压缩了512G）</p>
-<h2 id="2-下载Ubuntu光盘映像，制作Ubuntu安装盘"><a href="#2-下载Ubuntu光盘映像，制作Ubuntu安装盘" class="headerlink" title="2.下载Ubuntu光盘映像，制作Ubuntu安装盘"></a>2.下载Ubuntu光盘映像，制作Ubuntu安装盘</h2><p>制作安装盘使用的是UtralOS<br>1.启动 -&gt; 写入硬盘映像 -&gt; 软件自动识别U盘<br>2.格式化U盘<br>3.写入方式：USB-HDD+<br>4.写入</p>
-<h2 id="3-磁盘分区"><a href="#3-磁盘分区" class="headerlink" title="3.磁盘分区"></a>3.磁盘分区</h2><p>1.VFAT（efi）：512MB<br>2.swap：10G<br>3.Ext4（&#x2F;）：20G（我分了100G）<br>4.Ext4（&#x2F;Home）：30G（剩下的都给它）</p>
-]]></content>
-      <categories>
-        <category>PC</category>
       </categories>
   </entry>
   <entry>
@@ -2247,6 +2014,240 @@
       </categories>
   </entry>
   <entry>
+    <title>双系统</title>
+    <url>/2024/09/02/%E9%87%8D%E8%A3%85%E7%B3%BB%E7%BB%9F/</url>
+    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>1.重装了Windows10专业版系统<br>2.增加了Ubuntu24.04双系统</p>
+<span id="more"></span>
+
+<h1 id="重装系统-Windows"><a href="#重装系统-Windows" class="headerlink" title="重装系统-Windows"></a>重装系统-Windows</h1><h2 id="1-准备工作"><a href="#1-准备工作" class="headerlink" title="1.准备工作"></a>1.准备工作</h2><ul>
+<li><a href="https://www.wepe.com.cn/">制作系统盘</a></li>
+<li><a href="https://msdn.itellyou.cn/">下载Windows10光盘映像 consumer editions</a></li>
+</ul>
+<h2 id="2-主板型号"><a href="#2-主板型号" class="headerlink" title="2.主板型号"></a>2.主板型号</h2><p>根据主板型号，搜索对应品牌进入BIOS方法。获取主板型号的方法：<br>1.进入Windows PowerShell<br>2.运行指令：msinfo32</p>
+<h2 id="3-分区格式"><a href="#3-分区格式" class="headerlink" title="3.分区格式"></a>3.分区格式</h2><p>可以通过<code>硬件管理</code>查看目前磁盘的分区格式。<br>1.进入<code>磁盘管理</code><br>2.右键<code>磁盘0</code>或<code>磁盘1</code> -&gt; 属性 -&gt; 卷<br>3.磁盘分区形式</p>
+<table>
+<thead>
+<tr>
+<th align="center">分区表格式</th>
+<th align="center">启动项</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">MBR</td>
+<td align="center">UEFI</td>
+</tr>
+<tr>
+<td align="center">GPT</td>
+<td align="center">Legacy</td>
+</tr>
+</tbody></table>
+<h2 id="4-进入BOIS"><a href="#4-进入BOIS" class="headerlink" title="4.进入BOIS"></a>4.进入BOIS</h2><p>设置<code>Boot Priority</code>，UEFI:U盘拖到第1优先级</p>
+<h2 id="5-硬盘分区"><a href="#5-硬盘分区" class="headerlink" title="5.硬盘分区"></a>5.硬盘分区</h2><p>电脑有两个以上硬盘，且每个硬盘都作了分区，装系统的时候可能会出错，显示无法创建新的分区。解决方案：<br><strong>方案一</strong>：在分区容量大小的时候，系统盘选择主分区，其他盘取消主分区。<br><strong>方案二</strong>：系统盘分区，另外一个盘不进行分区。等系统安装完成之后再手动分区。</p>
+<h2 id="6-安装驱动"><a href="#6-安装驱动" class="headerlink" title="6.安装驱动"></a>6.安装驱动</h2><p>有些电脑装系统之后，系统自带的集成驱动没有网卡驱动，所以上不了网，比如我这台微星。这个时候就需要借助其他电脑，到微星官网。搜索对应的主板型号，找到技术支持里的驱动安装。选择网卡驱动，下载并保存到U盘里，拷贝到新装系统的电脑上，并解压。<br>设备管理器 -&gt; 其他设备&#x2F;网络适配器 -&gt; 鼠标右键更新驱动 -&gt; 浏览计算机查找驱动软件 -&gt; 找到解压文件夹</p>
+<h2 id="7-NVIDIA显卡驱动"><a href="#7-NVIDIA显卡驱动" class="headerlink" title="7.NVIDIA显卡驱动"></a>7.NVIDIA显卡驱动</h2><p>终端窗口输入命令：nvidia-smi<br>1.<a href="https://www.nvidia.cn/">英伟达官网</a><br>2.Geforce驱动<br>3.选择对应型号无脑安装</p>
+<h1 id="双系统-Ubuntu"><a href="#双系统-Ubuntu" class="headerlink" title="双系统-Ubuntu"></a>双系统-Ubuntu</h1><h2 id="1-Windows系统上创建分区"><a href="#1-Windows系统上创建分区" class="headerlink" title="1.Windows系统上创建分区"></a>1.Windows系统上创建分区</h2><p>磁盘管理 -&gt; 找一个空间比较大的分区（比如新加卷D:）-&gt; 右键 压缩卷（不进行分区，我压缩了512G）</p>
+<h2 id="2-下载Ubuntu光盘映像，制作Ubuntu安装盘"><a href="#2-下载Ubuntu光盘映像，制作Ubuntu安装盘" class="headerlink" title="2.下载Ubuntu光盘映像，制作Ubuntu安装盘"></a>2.下载Ubuntu光盘映像，制作Ubuntu安装盘</h2><p>制作安装盘使用的是UtralOS<br>1.启动 -&gt; 写入硬盘映像 -&gt; 软件自动识别U盘<br>2.格式化U盘<br>3.写入方式：USB-HDD+<br>4.写入</p>
+<h2 id="3-磁盘分区"><a href="#3-磁盘分区" class="headerlink" title="3.磁盘分区"></a>3.磁盘分区</h2><p>1.VFAT（efi）：512MB<br>2.swap：10G<br>3.Ext4（&#x2F;）：20G（我分了100G）<br>4.Ext4（&#x2F;Home）：30G（剩下的都给它）</p>
+]]></content>
+      <categories>
+        <category>PC</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>makefile</title>
+    <url>/2024/09/20/makefile/</url>
+    <content><![CDATA[<h1 id="规则"><a href="#规则" class="headerlink" title="规则"></a>规则</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">target:depend</span><br><span class="line">    commend</span><br></pre></td></tr></table></figure>
+<p>每条规则由三部分组成：目标（target），依赖（depend），命令（comment）</p>
+<ul>
+<li>目标：目标可以有多个</li>
+<li>依赖：依赖可有可无</li>
+<li>命令：前面要有Tab缩进，shell命令</li>
+</ul>
+<span id="more"></span>
+<h1 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h1><p>make命令执行的时候根据时间戳判定是否执行makefile文件中相关规则的命令。</p>
+<ul>
+<li>目标是通过依赖生成的，目标时间戳&gt;所有依赖时间戳，则不会执行规则中的命令</li>
+<li>目标时间戳&lt;某些依赖的时间戳，则执行规则中的命令</li>
+<li>目标文件不存在，执行规则中的命令</li>
+</ul>
+<h1 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h1><h2 id="自定义变量"><a href="#自定义变量" class="headerlink" title="自定义变量"></a>自定义变量</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 定义变量（必须要同时赋值）</span><br><span class="line">变量名=变量值</span><br><span class="line"></span><br><span class="line"># 取变量值</span><br><span class="line">$(变量名)</span><br></pre></td></tr></table></figure>
+
+<h2 id="预定义变量"><a href="#预定义变量" class="headerlink" title="预定义变量"></a>预定义变量</h2><table>
+<thead>
+<tr>
+<th align="center">变量名</th>
+<th align="center">含义</th>
+<th align="center">默认值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">AR</td>
+<td align="center">生成静态库程序</td>
+<td align="center">ar</td>
+</tr>
+<tr>
+<td align="center">AS</td>
+<td align="center">汇编编译器</td>
+<td align="center">as</td>
+</tr>
+<tr>
+<td align="center">CC</td>
+<td align="center">C语言编译器</td>
+<td align="center">cc</td>
+</tr>
+<tr>
+<td align="center">CPP</td>
+<td align="center">C语言预编译器</td>
+<td align="center">$(CC) -E</td>
+</tr>
+<tr>
+<td align="center">CXX</td>
+<td align="center">C++编译器</td>
+<td align="center">g++</td>
+</tr>
+<tr>
+<td align="center">RM</td>
+<td align="center">删除文件程序</td>
+<td align="center">rm -f</td>
+</tr>
+<tr>
+<td align="center">ARFLAGS</td>
+<td align="center">生成静态库程序的选项</td>
+<td align="center">无</td>
+</tr>
+<tr>
+<td align="center">ASFLAGS</td>
+<td align="center">汇编语言编译器编译选项</td>
+<td align="center">无</td>
+</tr>
+<tr>
+<td align="center">CFLAGS</td>
+<td align="center">C语言编译器的编译选项</td>
+<td align="center">无</td>
+</tr>
+<tr>
+<td align="center">CPPFLAGS</td>
+<td align="center">C语言预编译器的编译选项</td>
+<td align="center">无</td>
+</tr>
+<tr>
+<td align="center">CXXFLAGS</td>
+<td align="center">C++编译器的编译选项</td>
+<td align="center">无</td>
+</tr>
+</tbody></table>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 示例：</span></span><br><span class="line">obj=main.o sub.o add.o</span><br><span class="line">target=calc</span><br><span class="line">CFLAGS=-O3</span><br><span class="line"><span class="variable">$(target)</span>:<span class="variable">$(obj)</span></span><br><span class="line">    <span class="variable">$(CC)</span> <span class="variable">$(obj)</span> -o <span class="variable">$(target)</span> <span class="variable">$(CFLAGS)</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="自动变量"><a href="#自动变量" class="headerlink" title="自动变量"></a>自动变量</h2><table>
+<thead>
+<tr>
+<th align="center">变量</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">$@</td>
+<td align="center">目标文件(target)的完整名称</td>
+</tr>
+<tr>
+<td align="center">$&lt;</td>
+<td align="center">第一个依赖文件的名称</td>
+</tr>
+<tr>
+<td align="center">$^</td>
+<td align="center">所有依赖文件的名称，以空格分开，不包含重复依赖</td>
+</tr>
+<tr>
+<td align="center">$*</td>
+<td align="center">目标文件的名称，不包含扩展名</td>
+</tr>
+<tr>
+<td align="center">$?</td>
+<td align="center">依赖项中，所有比目标文件时间戳晚的依赖文件，以空格分开</td>
+</tr>
+</tbody></table>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 示例：</span></span><br><span class="line"><span class="variable">$(target)</span>:<span class="variable">$(obj)</span></span><br><span class="line">    gcc <span class="variable">$^</span> -o <span class="variable">$@</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="模式匹配"><a href="#模式匹配" class="headerlink" title="模式匹配"></a>模式匹配</h1><p>使用模式匹配前：</p>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="section">calc:add.o  div.o  main.o  mult.o  sub.o</span></span><br><span class="line">        gcc  add.o  div.o  main.o  mult.o  sub.o -o calc</span><br><span class="line"></span><br><span class="line"><span class="section">add.o:add.c</span></span><br><span class="line">        gcc add.c -c</span><br><span class="line"></span><br><span class="line"><span class="section">div.o:div.c</span></span><br><span class="line">        gcc div.c -c</span><br><span class="line"></span><br><span class="line"><span class="section">main.o:main.c</span></span><br><span class="line">        gcc main.c -c</span><br><span class="line"></span><br><span class="line"><span class="section">sub.o:sub.c</span></span><br><span class="line">        gcc sub.c -c</span><br><span class="line"></span><br><span class="line"><span class="section">mult.o:mult.c</span></span><br><span class="line">        gcc mult.c -c</span><br></pre></td></tr></table></figure>
+
+<p>使用模式匹配后：</p>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="section">calc:add.o  div.o  main.o  mult.o  sub.o</span></span><br><span class="line">        gcc  add.o  div.o  main.o  mult.o  sub.o -o calc</span><br><span class="line"></span><br><span class="line"><span class="section">%.o:%.c</span></span><br><span class="line">	gcc <span class="variable">$&lt;</span> -c</span><br></pre></td></tr></table></figure>
+
+<h1 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h1><h2 id="wildcard"><a href="#wildcard" class="headerlink" title="wildcard"></a>wildcard</h2><p>函数功能:获取指定目录下指定类型的文件名，其返回值是以空格分割的指定目录下符合条件的文件名列表。<br>.<br>├── include<br>│   └── head.h<br>├── main.c<br>├── Makefile<br>└── src<br>    ├── add.c<br>    ├── div.c<br>    ├── mult.c<br>    └── sub.c</p>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 语法：</span></span><br><span class="line"><span class="variable">$(<span class="built_in">wildcard</span> 目录列表)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 示例：</span></span><br><span class="line">src=<span class="variable">$(<span class="built_in">wildcard</span> *.c ./src/*.c)</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="patsubst"><a href="#patsubst" class="headerlink" title="patsubst"></a>patsubst</h2><figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 语法：</span></span><br><span class="line"><span class="variable">$(<span class="built_in">patsubst</span> &lt;pattern&gt;, &lt;replacement&gt;, &lt;text&gt;)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 示例：将变量src中的所有文件名的后缀替换成.o</span></span><br><span class="line">obj=<span class="variable">$(<span class="built_in">patsubst</span> %.c, %.o, <span class="variable">$(src)</span>)</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="makefile示例"><a href="#makefile示例" class="headerlink" title="makefile示例"></a>makefile示例</h1><p>.<br>├── include<br>│   └── head.h<br>├── main.c<br>├── Makefile<br>└── src<br>    ├── add.c<br>    ├── div.c<br>    ├── mult.c<br>    └── sub.c</p>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 定义变量</span></span><br><span class="line">target=main</span><br><span class="line">include=./<span class="keyword">include</span></span><br><span class="line">CFLAGS=-O3 -g -Wall</span><br><span class="line"></span><br><span class="line"><span class="comment"># 搜索源文件</span></span><br><span class="line">src=<span class="variable">$(<span class="built_in">wildcard</span> *.c ./src/*.c)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 替换成.o结尾</span></span><br><span class="line">obj=<span class="variable">$(<span class="built_in">patsubst</span> %.c, %.o, <span class="variable">$(src)</span>)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 对汇编文件进行链接</span></span><br><span class="line"><span class="variable">$(target)</span>:<span class="variable">$(obj)</span></span><br><span class="line">   gcc <span class="variable">$^</span> -o <span class="variable">$@</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 对源文件进行逐个汇编</span></span><br><span class="line"><span class="section">%.o:%.c</span></span><br><span class="line">   gcc <span class="variable">$&lt;</span> -c -I<span class="variable">$(include)</span> -o <span class="variable">$@</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># clean</span></span><br><span class="line"><span class="meta"><span class="keyword">.PHONY</span>: clean</span></span><br><span class="line"><span class="section">clean:</span></span><br><span class="line">   rm <span class="variable">$(obj)</span> <span class="variable">$(target)</span> -f</span><br></pre></td></tr></table></figure>
+
+<h1 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h1><h2 id="递归扩展变量（-）"><a href="#递归扩展变量（-）" class="headerlink" title="递归扩展变量（&#x3D;）"></a>递归扩展变量（&#x3D;）</h2><figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="meta"><span class="keyword">.PHONY</span>: all</span></span><br><span class="line">foo = <span class="variable">$(bar)</span></span><br><span class="line">bar = <span class="variable">$(hello)</span></span><br><span class="line">hello = world</span><br><span class="line"></span><br><span class="line"><span class="section">all:</span></span><br><span class="line">    @echo <span class="variable">$(foo)</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ make</span><br><span class="line">world</span><br></pre></td></tr></table></figure>
+
+<h2 id="简单扩展变量（-）"><a href="#简单扩展变量（-）" class="headerlink" title="简单扩展变量（:&#x3D;）"></a>简单扩展变量（:&#x3D;）</h2><p>对于这种变量，make只对其进行一次扫描和扩展。</p>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="meta"><span class="keyword">.PHONY</span>: all</span></span><br><span class="line">x = foo</span><br><span class="line">y = <span class="variable">$(x)</span> b</span><br><span class="line">x = later</span><br><span class="line"></span><br><span class="line">xx := foo</span><br><span class="line">yy := <span class="variable">$(xx)</span> b</span><br><span class="line">xx := later</span><br><span class="line"></span><br><span class="line"><span class="section">all:</span></span><br><span class="line">    $echo <span class="string">&quot;x = <span class="variable">$(y)</span>, xx = <span class="variable">$(yy)</span>&quot;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ make</span><br><span class="line">x = later b, xx = foo b</span><br></pre></td></tr></table></figure>
+
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><p><a href="https://subingwen.cn/linux/makefile/">爱编程的大丙</a><br><a href="https://www.cnblogs.com/paul-617/p/15501875.html">makefile详解</a></p>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>压缩解压</title>
+    <url>/2024/09/20/%E5%8E%8B%E7%BC%A9_%E8%A7%A3%E5%8E%8B/</url>
+    <content><![CDATA[<ul>
+<li>.tar.gz</li>
+<li>.tgz</li>
+<li>.tar.bz2</li>
+<li>.zip</li>
+<li>.rar</li>
+<li>.tar.xz</li>
+</ul>
+<span id="more"></span>
+<h1 id="tar"><a href="#tar" class="headerlink" title="tar"></a>tar</h1><p>Linux默认情况下，自带两个压缩工具<code>gzip</code>,<code>bzip2</code>和一个打包工具<code>tar</code>。打包工具只能进行打包，不能压缩，压缩工具只能进行压缩，不能进行打包。</p>
+<h2 id="1-压缩（-tar-gz-tar-bz2-tgz）"><a href="#1-压缩（-tar-gz-tar-bz2-tgz）" class="headerlink" title="1.压缩（.tar.gz|.tar.bz2|.tgz）"></a>1.压缩（.tar.gz|.tar.bz2|.tgz）</h2><ul>
+<li>c：创建压缩文件</li>
+<li>z：使用<code>gzip</code>的方式进行压缩</li>
+<li>j：使用<code>bzip2</code>的方式进行压缩</li>
+<li>v：压缩过程中显示压缩过程</li>
+<li>f：指定压缩包的名字</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 使用 gzip 的方式压缩:</span></span><br><span class="line">$ tar zcvf name.tar.gz file1 file2</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用 bzip2 的方式压缩：</span></span><br><span class="line">$ tar jcvf name.tar.bz2 file1 file2</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-解压缩（-tar-gz-tar-bz2-tgz）"><a href="#2-解压缩（-tar-gz-tar-bz2-tgz）" class="headerlink" title="2.解压缩（.tar.gz|.tar.bz2|.tgz）"></a>2.解压缩（.tar.gz|.tar.bz2|.tgz）</h2><ul>
+<li>x：释放压缩文件内容</li>
+<li>z：使用<code>gzip</code>的方式进行压缩</li>
+<li>j：使用<code>bzip2</code>的方式进行压缩</li>
+<li>v：压缩过程中显示压缩过程</li>
+<li>f：指定压缩包的名字</li>
+</ul>
+<blockquote>
+<p>如果需要解压到指定目录，需要指定参数<code>-C</code>，一般认为<code>.tgz</code>文件等同于<code>.tar.gz</code>文件，解压方式相同。</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 使用`gzip`的方式进行解压缩</span></span><br><span class="line">$ tar zxvf name.tar.gz -C &lt;dir-name&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用`bzip2`的方式进行解压缩</span></span><br><span class="line">$ tar jxvf name.tar.bz2 -C &lt;dir-name&gt;</span><br></pre></td></tr></table></figure>
+
+<h1 id="zip"><a href="#zip" class="headerlink" title="zip"></a>zip</h1><h2 id="1-安装"><a href="#1-安装" class="headerlink" title="1.安装"></a>1.安装</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> apt install zip</span><br><span class="line">$ <span class="built_in">sudo</span> apt install unzip</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-压缩和解压缩（-zip）"><a href="#2-压缩和解压缩（-zip）" class="headerlink" title="2.压缩和解压缩（.zip）"></a>2.压缩和解压缩（.zip）</h2><p>使用<code>zip</code>压缩目录的时候，需要添加参数<code>-r</code>，才能将子目录中的文件一并压缩。压缩文件会自动生成后缀，因此不需要额外指定。解压缩时，如果需要指定解压目录需要添加参数<code>-d</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 压缩</span></span><br><span class="line">$ zip zipname file1 file2 dir1 -r</span><br><span class="line"></span><br><span class="line"><span class="comment"># 解压缩</span></span><br><span class="line">$ unzip zipname -d &lt;dir-name&gt;</span><br></pre></td></tr></table></figure>
+
+<h1 id="rar"><a href="#rar" class="headerlink" title="rar"></a>rar</h1><h2 id="1-安装-1"><a href="#1-安装-1" class="headerlink" title="1.安装"></a>1.安装</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> apt install rar</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-压缩和解压缩（-rar）"><a href="#2-压缩和解压缩（-rar）" class="headerlink" title="2.压缩和解压缩（.rar）"></a>2.压缩和解压缩（.rar）</h2><p>如果压缩的文件带有目录，需要指定参数<code>-r</code>，压缩时需要使用参数<code>a（archive）</code>压缩归档的意思。压缩包也会自动添加后缀。解压缩时可以使用<code>rar</code>，也可以使用<code>unrar</code>，解压缩时需要指定参数<code>x</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 压缩</span></span><br><span class="line">$ rar a rarname file1 file2 dir1 -r</span><br><span class="line"></span><br><span class="line"><span class="comment"># 解压缩</span></span><br><span class="line">$ rar x rarname &lt;dir-name&gt;</span><br></pre></td></tr></table></figure>
+
+<h1 id="xz"><a href="#xz" class="headerlink" title="xz"></a>xz</h1><h2 id="1-压缩"><a href="#1-压缩" class="headerlink" title="1.压缩"></a>1.压缩</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 第一步：打包文件</span></span><br><span class="line">$ tar cvf name.tar file1 file2</span><br><span class="line"></span><br><span class="line"><span class="comment"># 第二步：使用xz压缩文件(生成文件带后缀xxx.tar.xz)</span></span><br><span class="line">$ xz -z name.tar</span><br></pre></td></tr></table></figure>
+
+<h2 id="解压缩"><a href="#解压缩" class="headerlink" title="解压缩"></a>解压缩</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 使用xz解压缩得到xxx.tar</span></span><br><span class="line">$ xz -d xxx.tar.gz</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将xxx.tar中的文件释放到当前目录</span></span><br><span class="line">$ tar xvf xxx.tar</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+  </entry>
+  <entry>
     <title>静态库和动态库</title>
     <url>/2024/09/20/%E9%9D%99%E6%80%81%E5%BA%93%E5%92%8C%E5%8A%A8%E6%80%81%E5%BA%93/</url>
     <content><![CDATA[<h1 id="静态库"><a href="#静态库" class="headerlink" title="静态库"></a>静态库</h1><p>Linux中静态库以<code>lib</code>作为前缀，<code>.a</code>作为后缀，中间是库的名字。即<code>libxxx.a</code><br>Windows中静态库以<code>lib</code>作为前缀，<code>.lib</code>作为后缀，中间是库的名字。即<code>libxxx.lib</code></p>
@@ -2303,6 +2304,123 @@
 ]]></content>
       <categories>
         <category>Linux</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>多线程基础</title>
+    <url>/2024/11/07/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%9F%BA%E7%A1%80/</url>
+    <content><![CDATA[<p>并发</p>
+<ol>
+<li>多线程</li>
+<li>多进程</li>
+</ol>
+<h1 id="基础概念"><a href="#基础概念" class="headerlink" title="基础概念"></a>基础概念</h1><p>线程是轻量级的进程，在Linux环境下，线程的本质仍然是进程。操作系统会以进程为单位，分配系统资源。进程是资源分配的最小单位，线程是操作系统调度执行的最小单位。</p>
+<span id="more"></span>
+<p>线程和进程的区别：</p>
+<ol>
+<li>进程有自己独立的地址空间，多个线程公用同一个地址空间<ul>
+<li>在一个地址空间中多个线程共享资源有：代码段，堆区，全局数据区，打开的文件（文件描述符）</li>
+<li>在一个地址空间中多个线程独享资源有：栈区，寄存器</li>
+</ul>
+</li>
+<li>线程是程序的最小执行单位，进程是操作系统中资源分配的最小单位<ul>
+<li>每个进程对应一个虚拟地址空间，一个进程只能抢一个CPU时间片</li>
+<li>一个地址空间中可以划分出多个线程，可以抢占更多的时间片</li>
+</ul>
+</li>
+<li>CPU的调度和切换：线程的上下文切换比进程快的多<ul>
+<li>上下文切换：进程和线程分时复用CPU时间片，在切换之前会将上一个任务的状态进行保存，下次切换回这个任务的时候，加载这个状态继续运行任务从保存到再次加载这个过程就是一次上下文切换。</li>
+<li>线程更加廉价，启动速度更快，退出也快，对系统资源的冲击小</li>
+</ul>
+</li>
+</ol>
+<p>在处理多任务程序的时候，使用多线程比使用多进程更有优势，但是线程并不是越多越好：</p>
+<ol>
+<li>文件IO操作：文件IO对CPU使用率不高，线程数 &#x3D; 2 * CPU核心数</li>
+<li>处理复杂算法：线程数 &#x3D; CPU核心数</li>
+</ol>
+<p>什么时候用多进程？</p>
+<ul>
+<li>在处理一个程序的时候，需要去启动另一个程序的时候，使用多进程。</li>
+</ul>
+<p>并发的话，优先考虑多线程。</p>
+<h1 id="线程函数"><a href="#线程函数" class="headerlink" title="线程函数"></a>线程函数</h1><p>头文件 &lt;pthread.h&gt;</p>
+<h2 id="线程ID"><a href="#线程ID" class="headerlink" title="线程ID"></a>线程ID</h2><p>每个线程都有一个唯一的线程ID</p>
+<ul>
+<li>类型：pthread_t</li>
+<li>无符号长整形</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 返回当前线程的ID</span></span><br><span class="line"><span class="type">pthread_t</span> <span class="title function_">pthread_self</span><span class="params">(<span class="type">void</span>)</span>;</span><br></pre></td></tr></table></figure>
+
+<h2 id="创建线程"><a href="#创建线程" class="headerlink" title="创建线程"></a>创建线程</h2><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">pthread_create</span><span class="params">(<span class="type">pthread_t</span> *thread, <span class="type">const</span> <span class="type">pthread_attr_t</span> *attr, <span class="type">void</span>*(*start_routine)(<span class="type">void</span>*), <span class="type">void</span> *arg)</span>;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>参数<ul>
+<li>thread：传出参数，线程创建成功，会将线程ID写入到这个指针指向的内存中</li>
+<li>attr：线程属性，一般使用默认属性，写NULL</li>
+<li>start_routine：函数指针，子线程的处理动作</li>
+<li>arg：作为实参传递到start_routine指向的函数内部</li>
+</ul>
+</li>
+<li>返回值：线程创建成功返回0，创建失败返回对应的错误号</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span>* <span class="title function_">myPrintf</span><span class="params">(<span class="type">void</span> *arg)</span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;子线程id:%ld\n&quot;</span>, pthread_self());</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++)&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;子线程中i = %d\n&quot;</span>, i);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="type">int</span> pRet = <span class="number">0</span>;</span><br><span class="line">    <span class="type">pthread_t</span> tid;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++)&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;主线程中i = %d\n&quot;</span>, i);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;father_pthread_id:%ld\n&quot;</span>, pthread_self());</span><br><span class="line">    pRet = pthread_create(&amp;tid, <span class="literal">NULL</span>, myPrintf, <span class="literal">NULL</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;son_pthread_id:%ld\n&quot;</span>, tid);</span><br><span class="line">    sleep(<span class="number">1</span>);   <span class="comment">// 延迟一秒（CPU挂起）</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>子线程被创建出来之后需要抢cpu时间片,抢不到就不能运行，如果主线程退出了,虚拟地址空间就被释放了,子线程就一并被销毁了。但是如果某一个子线程退出了,主线程仍在运行,虚拟地址空间依旧存在。在没有人为干预的情况下，虚拟地址空间的生命周期和主线程是一样的，与子线程无关。</p>
+<h2 id="线程退出"><a href="#线程退出" class="headerlink" title="线程退出"></a>线程退出</h2><p>调用该函数，当前线程马上退出，并且不会影响到其他线程的正常运行，不管是子线程还是主线程中都可以使用。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">pthread_exit</span><span class="params">(<span class="type">void</span> *retval)</span></span><br></pre></td></tr></table></figure>
+<p>参数：</p>
+<ul>
+<li>线程退出的时候携带的数据，当前子线程的主线程会得到该数据，如果不需要指定为NULL即可。</li>
+</ul>
+<h2 id="线程回收"><a href="#线程回收" class="headerlink" title="线程回收"></a>线程回收</h2><p>子线程退出的时候，其内核资源由主线程进行回收（非内核资源例如栈，代码区资源会在子线程退出的时候，自动释放）。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">pthread_join</span><span class="params">(<span class="type">pthread_t</span> thread, <span class="type">void</span> **retval)</span>;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>阻塞函数<ul>
+<li>如果还有子线程在运行，调用该函数就会阻塞，子线程退出函数解除阻塞进行资源回收，函数被调用一次，只能回收一个子线程，如果有多个子线程则需要循环进行回收。</li>
+</ul>
+</li>
+<li>参数：<ul>
+<li>thread：要回收的子线程的线程ID</li>
+<li>retval：二级指针，指向一级指针的地址，是一个传出参数，这个地址中存储了pthread_exit()传递出的数据，如果不需要这个参数，可以指定为NULL</li>
+</ul>
+</li>
+<li>返回值：<ul>
+<li>线程回收成功返回0，回收失败返回错误码</li>
+</ul>
+</li>
+<li>用法：<ul>
+<li>在子线程退出的时候使用pthread_exit(void* retval)的参数将数据传出，在回收这个子线程的时候通过pthread_join(pthread_t thread, void **retval)的第二个参数来接收子线程传递出的数据。</li>
+<li>需要注意的是，在进行数据回收的时候，不能回收子线程栈上的数据，因为如果多个线程共用同一个虚拟地址空间，每个线程在栈区都有一块属于自己的内存，相当于栈区被这几个线程平分了，当线程退出，线程在栈区的内存也就被回收了，因此随着子线程的退出，写入到栈区的数据也就被释放了。</li>
+<li>可以使用全局变量</li>
+<li>也可以使用主线程栈</li>
+</ul>
+</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Person</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="type">int</span> old;</span><br><span class="line">    <span class="type">char</span>* name;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="type">void</span>* <span class="title function_">callback</span><span class="params">(<span class="type">void</span> *arg)</span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;子线程id:%ld\n&quot;</span>, pthread_self());</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++)&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;子线程中i = %d\n&quot;</span>, i);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">Person</span>* <span class="title">p</span> =</span> (<span class="keyword">struct</span> Person*)arg;</span><br><span class="line">    p -&gt; old = <span class="number">10</span>;</span><br><span class="line">    p -&gt; name = <span class="string">&quot;zhang&quot;</span>;</span><br><span class="line">    pthread_exit(arg);</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++)&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;主线程中i = %d\n&quot;</span>, i);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;father_pthread_id:%ld\n&quot;</span>, pthread_self());</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> pRet = <span class="number">0</span>;</span><br><span class="line">    <span class="type">pthread_t</span> tid;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">Person</span> <span class="title">p1</span>;</span>   <span class="comment">// 主线程栈</span></span><br><span class="line">    <span class="type">void</span>* ptr = <span class="literal">NULL</span>;   <span class="comment">// 传回参数</span></span><br><span class="line">    pRet = pthread_create(&amp;tid, <span class="literal">NULL</span>, callback, &amp;p1);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;son_pthread_id:%ld\n&quot;</span>, tid);</span><br><span class="line">    pthread_join(tid, &amp;ptr);</span><br><span class="line">    <span class="comment">// 因为ptr是一个void*类型，如果不想这么写，也可以通过类型转换，将ptr转成Person指针</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;name:%s\n&quot;</span>, p1.name);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;old:%d\n&quot;</span>, p1.old);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="线程分离"><a href="#线程分离" class="headerlink" title="线程分离"></a>线程分离</h2><p>线程分离之后，子线程退出的时候，其占用的内核资源就会被系统的其他进程接管并回收。优势在于，不需要在主线程进行阻塞，等待子线程结束，由主线程回收子线程资源。搭配pthread_exit()函数，可以实现主线程退出，子线程依然有其他线程进行资源的回收。<br>在某些情况下，程序中的主线程也有自己的业务流程，如果想让主线程负责子线程的资源回收，调用pthread_join()函数，子要子线程不退出，主线程就会一直被阻塞，主线程的任务也不能推进。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">pthread_detach</span><span class="params">(<span class="type">pthread_t</span> thread)</span>;</span><br></pre></td></tr></table></figure>
+<p>参数：<br>    - thread：要分离的子线程ID</p>
+<p>示例代码：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;pthread.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 子线程的处理代码</span></span><br><span class="line"><span class="type">void</span>* <span class="title function_">working</span><span class="params">(<span class="type">void</span>* arg)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;我是子线程, 线程ID: %ld\n&quot;</span>, pthread_self());</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>; i&lt;<span class="number">9</span>; ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;child == i: = %d\n&quot;</span>, i);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 1. 创建一个子线程</span></span><br><span class="line">    <span class="type">pthread_t</span> tid;</span><br><span class="line">    pthread_create(&amp;tid, <span class="literal">NULL</span>, working, <span class="literal">NULL</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;子线程创建成功, 线程ID: %ld\n&quot;</span>, tid);</span><br><span class="line">    <span class="comment">// 2. 子线程不会执行下边的代码, 主线程执行</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;我是主线程, 线程ID: %ld\n&quot;</span>, pthread_self());</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>; i&lt;<span class="number">3</span>; ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;i = %d\n&quot;</span>, i);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 设置子线程和主线程分离</span></span><br><span class="line">    pthread_detach(tid);</span><br><span class="line">    <span class="comment">// 让主线程自己退出即可</span></span><br><span class="line">    pthread_exit(<span class="literal">NULL</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="线程取消"><a href="#线程取消" class="headerlink" title="线程取消"></a>线程取消</h2><p>在某些情况下，在一个线程中杀死另一个线程：<br>step1：在线程A中调用pthread_cancel(pthreadB_ID)函数，指定杀死线程B，这个时候线程B并不会直接被杀死<br>step2：在线程B中若执行一次系统调用（从用户区切换到内核区），线程B自动被杀死，否则线程B可以一直运行下去</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">int pthread_cancel(pthread_t thread);</span><br></pre></td></tr></table></figure>
+<ol>
+<li>参数：要杀死的线程的线程ID</li>
+<li>返回值：函数调用成功返回0，调用失败返回错误码</li>
+</ol>
+<p>示例代码：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;pthread.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 子线程的处理代码</span></span><br><span class="line"><span class="type">void</span>* <span class="title function_">working</span><span class="params">(<span class="type">void</span>* arg)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> j=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>; i&lt;<span class="number">9</span>; ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        j++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 这个函数会调用系统函数, 因此这是个间接的系统调用</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;我是子线程, 线程ID: %ld\n&quot;</span>, pthread_self());</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>; i&lt;<span class="number">9</span>; ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot; child i: %d\n&quot;</span>, i);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 1. 创建一个子线程</span></span><br><span class="line">    <span class="type">pthread_t</span> tid;</span><br><span class="line">    pthread_create(&amp;tid, <span class="literal">NULL</span>, working, <span class="literal">NULL</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;子线程创建成功, 线程ID: %ld\n&quot;</span>, tid);</span><br><span class="line">    <span class="comment">// 2. 子线程不会执行下边的代码, 主线程执行</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;我是主线程, 线程ID: %ld\n&quot;</span>, pthread_self());</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>; i&lt;<span class="number">3</span>; ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;i = %d\n&quot;</span>, i);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 杀死子线程, 如果子线程中做系统调用, 子线程就结束了</span></span><br><span class="line">    pthread_cancel(tid);</span><br><span class="line">    <span class="comment">// 让主线程自己退出即可</span></span><br><span class="line">    pthread_exit(<span class="literal">NULL</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="线程ID比较"><a href="#线程ID比较" class="headerlink" title="线程ID比较"></a>线程ID比较</h2><p>在Linux中线程ID本质是一个无符号长整型，因此可以直接使用比较操作符比较这两个线程的ID，但是线程库是可以跨平台使用的，在某些平台上pthread_t可能不是一个单纯的整型，这种情况下比较两个线程的ID就要使用线程比较函数。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">pthread_equal</span><span class="params">(<span class="type">pthread_t</span> t1, <span class="type">pthread_t</span> t2)</span>;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>参数：t1和t2是要比较的线程的线程ID</li>
+<li>返回值：如果两个线程ID相等返回非0值，否则返回0</li>
+</ol>
+]]></content>
+      <categories>
+        <category>操作系统</category>
       </categories>
   </entry>
 </search>
