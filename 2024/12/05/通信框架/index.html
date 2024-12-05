@@ -20,30 +20,32 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="张航铭（ZhangHangming）的笔记本">
-<meta property="og:type" content="website">
-<meta property="og:title" content="勿以浮沙筑高台">
-<meta property="og:url" content="http://example.com/index.html">
+  <meta name="description" content="功能光机 装载投影条纹 格雷码条纹 相移条纹   读取led电流值 设置led电流值 读取投影仪分辨率 开始投影 单次投影 连续投影    相机 读取曝光时间 读取相机分辨率 读取相机帧率 设置曝光时间 设置相机帧率 设置触发方式 预览模式（如何预览从而用于调整曝光）  其他 图像转存 点云转存 点云平滑程度选择（强，中，弱，无） Z轴区间选择 点云的伪彩色可视化 不同画幅的选择 预置不同画幅的标">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Jetson-Windows通信框架代码">
+<meta property="og:url" content="http://example.com/2024/12/05/%E9%80%9A%E4%BF%A1%E6%A1%86%E6%9E%B6/index.html">
 <meta property="og:site_name" content="勿以浮沙筑高台">
-<meta property="og:description" content="张航铭（ZhangHangming）的笔记本">
+<meta property="og:description" content="功能光机 装载投影条纹 格雷码条纹 相移条纹   读取led电流值 设置led电流值 读取投影仪分辨率 开始投影 单次投影 连续投影    相机 读取曝光时间 读取相机分辨率 读取相机帧率 设置曝光时间 设置相机帧率 设置触发方式 预览模式（如何预览从而用于调整曝光）  其他 图像转存 点云转存 点云平滑程度选择（强，中，弱，无） Z轴区间选择 点云的伪彩色可视化 不同画幅的选择 预置不同画幅的标">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-12-05T13:13:05.688Z">
+<meta property="article:modified_time" content="2024-12-05T13:59:51.956Z">
 <meta property="article:author" content="ZhangHangming">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://example.com/">
+<link rel="canonical" href="http://example.com/2024/12/05/%E9%80%9A%E4%BF%A1%E6%A1%86%E6%9E%B6/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>勿以浮沙筑高台</title>
+  <title>Jetson-Windows通信框架代码 | 勿以浮沙筑高台</title>
   
 
 
@@ -175,53 +177,10 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-  <div class="tag-cloud">
-	  <div class="tag-cloud-tags" id="tags">
-		
-	  </div>
-	</div>
-	<br>
-	
-	<script type="text/javascript">
-     var alltags = document.getElementsByClassName('tag-cloud-tags');
-     var tags = alltags[0].getElementsByTagName('a');
-     for (var i = tags.length - 1; i >= 0; i--) {
-       var r=Math.floor(Math.random()*75+130);
-       var g=Math.floor(Math.random()*75+100);
-       var b=Math.floor(Math.random()*75+80);
-       tags[i].style.background = "rgb("+r+","+g+","+b+")";
-     }
-</script>
 
-<style>
-  .tag-cloud-tags{
-    /*font-family: Helvetica, Tahoma, Arial;*/
-    /*font-weight: 100;*/
-    text-align: center;
-    counter-reset: tags;
-  }
-  .tag-cloud-tags a{
-    border-radius: 6px;
-    padding-right: 5px;
-    padding-left: 5px;
-    margin: 8px 5px 0px 0px;
-  }
-  .tag-cloud-tags a:before{
-    content: "?";
-  }
-
-  .tag-cloud-tags a:hover{
-     box-shadow: 0px 5px 15px 0px rgba(0,0,0,.4);
-     transform: scale(1.1);
-     /*box-shadow: 10px 10px 15px 2px rgba(0,0,0,.12), 0 0 6px 0 rgba(104, 104, 105, 0.1);*/
-     transition-duration: 0.15s;
-  }
-</style>
-
-
-      
+    
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
@@ -237,10 +196,9 @@
       <meta itemprop="name" content="勿以浮沙筑高台">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/12/05/%E9%80%9A%E4%BF%A1%E6%A1%86%E6%9E%B6/" class="post-title-link" itemprop="url">Jetson-Windows通信框架代码</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          Jetson-Windows通信框架代码
+        </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -273,7 +231,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="功能"><a href="#功能" class="headerlink" title="功能"></a>功能</h1><h2 id="光机"><a href="#光机" class="headerlink" title="光机"></a>光机</h2><ol>
+        <h1 id="功能"><a href="#功能" class="headerlink" title="功能"></a>功能</h1><h2 id="光机"><a href="#光机" class="headerlink" title="光机"></a>光机</h2><ol>
 <li>装载投影条纹<ul>
 <li>格雷码条纹</li>
 <li>相移条纹</li>
@@ -365,734 +323,31 @@
 <li><code>&gt;&gt;</code>不包含空白字符在内，因此不适合读取包含空格的整行文本。当只需要读取单个单词或者值的时候使用 <code>&gt;&gt;</code>。</li>
 </ul>
 
-      
     </div>
 
     
     
     
+
       <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/12/04/socket_Win/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="ZhangHangming">
-      <meta itemprop="description" content="张航铭（ZhangHangming）的笔记本">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="勿以浮沙筑高台">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/12/04/socket_Win/" class="post-title-link" itemprop="url">socket-Windows</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2024-12-04 14:34:25 / 修改时间：21:22:55" itemprop="dateCreated datePublished" datetime="2024-12-04T14:34:25+08:00">2024-12-04</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="通信流程"><a href="#通信流程" class="headerlink" title="通信流程"></a>通信流程</h1><h2 id="服务器"><a href="#服务器" class="headerlink" title="服务器"></a>服务器</h2><ol>
-<li>初始化Winsock</li>
-<li>创建套接字</li>
-<li>绑定套接字</li>
-<li>侦听客户端的套接字</li>
-<li>接收来自客户端的连接</li>
-<li>接收和发送数据</li>
-<li>断开连接</li>
-</ol>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2024/12/04/socket_Win/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
         
-      
-    </div>
 
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/12/03/socket_Linux/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="ZhangHangming">
-      <meta itemprop="description" content="张航铭（ZhangHangming）的笔记本">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="勿以浮沙筑高台">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/12/03/socket_Linux/" class="post-title-link" itemprop="url">socket</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-12-03 17:22:18" itemprop="dateCreated datePublished" datetime="2024-12-03T17:22:18+08:00">2024-12-03</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-12-04 14:52:28" itemprop="dateModified" datetime="2024-12-04T14:52:28+08:00">2024-12-04</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%BD%91%E7%BB%9C%E9%80%9A%E4%BF%A1/" itemprop="url" rel="index"><span itemprop="name">网络通信</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="多客户端通讯问题"><a href="#多客户端通讯问题" class="headerlink" title="多客户端通讯问题"></a>多客户端通讯问题</h1><ul>
-<li>多线程</li>
-<li>多进程</li>
-<li>IO转接+多线程</li>
-<li>libevent</li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2024/12/03/socket_Linux/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
         
-      
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/12/04/socket_Win/" rel="prev" title="socket-Windows">
+      <i class="fa fa-chevron-left"></i> socket-Windows
+    </a></div>
+      <div class="post-nav-item"></div>
     </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
       </footer>
+    
   </article>
   
   
   
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/11/17/Ubuntu24.04%20install%20opencv/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="ZhangHangming">
-      <meta itemprop="description" content="张航铭（ZhangHangming）的笔记本">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="勿以浮沙筑高台">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/11/17/Ubuntu24.04%20install%20opencv/" class="post-title-link" itemprop="url">Ubuntu24.04 install opencv</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-11-17 20:42:02" itemprop="dateCreated datePublished" datetime="2024-11-17T20:42:02+08:00">2024-11-17</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/project/" itemprop="url" rel="index"><span itemprop="name">project</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <ol>
-<li><a target="_blank" rel="noopener" href="https://opencv.org/releases/">opencv</a>官网下载opencv-4.10.0的source文件并解压</li>
-<li>下载<a href="">opencv_contrib</a>并解压，将opencv_contrib移动到opencv的文件夹中</li>
-<li>安装依赖项</li>
-</ol>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2024/11/17/Ubuntu24.04%20install%20opencv/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/11/17/is-a/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="ZhangHangming">
-      <meta itemprop="description" content="张航铭（ZhangHangming）的笔记本">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="勿以浮沙筑高台">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/11/17/is-a/" class="post-title-link" itemprop="url">is-a</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-11-17 20:41:11" itemprop="dateCreated datePublished" datetime="2024-11-17T20:41:11+08:00">2024-11-17</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <ol>
-<li>is-a</li>
-<li>has-a</li>
-<li>uses-a</li>
-<li>is-implemented-as-a</li>
-</ol>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2024/11/17/is-a/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/11/14/Jetson%E5%88%B7%E6%9C%BA/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="ZhangHangming">
-      <meta itemprop="description" content="张航铭（ZhangHangming）的笔记本">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="勿以浮沙筑高台">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/11/14/Jetson%E5%88%B7%E6%9C%BA/" class="post-title-link" itemprop="url">Jetson刷机</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-11-14 14:55:17" itemprop="dateCreated datePublished" datetime="2024-11-14T14:55:17+08:00">2024-11-14</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Jetson/" itemprop="url" rel="index"><span itemprop="name">Jetson</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h1><ul>
-<li>Ubuntu20.04系统的PC机</li>
-<li>USB-TypeC转接线</li>
-<li>Jetson</li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2024/11/14/Jetson%E5%88%B7%E6%9C%BA/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/11/08/%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="ZhangHangming">
-      <meta itemprop="description" content="张航铭（ZhangHangming）的笔记本">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="勿以浮沙筑高台">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/11/08/%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5/" class="post-title-link" itemprop="url">线程同步</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-11-08 22:56:45" itemprop="dateCreated datePublished" datetime="2024-11-08T22:56:45+08:00">2024-11-08</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-11-09 15:31:27" itemprop="dateModified" datetime="2024-11-09T15:31:27+08:00">2024-11-09</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">操作系统</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="基础概念"><a href="#基础概念" class="headerlink" title="基础概念"></a>基础概念</h1><p>避免多个线程同时访问并修改同一块内存，造成数据冲突。线程同步的结果是，如果多个线程都要访问并修改同一块内存时，依次只让一个进程进行访问，其余进程阻塞，直到所有进程执行完毕。<br>阻塞：意味着失去CPU时间片</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2024/11/08/%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/11/07/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%9F%BA%E7%A1%80/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="ZhangHangming">
-      <meta itemprop="description" content="张航铭（ZhangHangming）的笔记本">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="勿以浮沙筑高台">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/11/07/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%9F%BA%E7%A1%80/" class="post-title-link" itemprop="url">多线程基础</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-11-07 17:34:20" itemprop="dateCreated datePublished" datetime="2024-11-07T17:34:20+08:00">2024-11-07</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">操作系统</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>并发</p>
-<ol>
-<li>多线程</li>
-<li>多进程</li>
-</ol>
-<h1 id="基础概念"><a href="#基础概念" class="headerlink" title="基础概念"></a>基础概念</h1><p>线程是轻量级的进程，在Linux环境下，线程的本质仍然是进程。操作系统会以进程为单位，分配系统资源。进程是资源分配的最小单位，线程是操作系统调度执行的最小单位。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2024/11/07/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%9F%BA%E7%A1%80/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/10/31/Anaconda/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="ZhangHangming">
-      <meta itemprop="description" content="张航铭（ZhangHangming）的笔记本">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="勿以浮沙筑高台">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/10/31/Anaconda/" class="post-title-link" itemprop="url">Anaconda</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2024-10-31 20:32:37 / 修改时间：20:37:04" itemprop="dateCreated datePublished" datetime="2024-10-31T20:32:37+08:00">2024-10-31</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <span id="more"></span>
-<h1 id="常用指令"><a href="#常用指令" class="headerlink" title="常用指令"></a>常用指令</h1><h2 id="命令行窗口"><a href="#命令行窗口" class="headerlink" title="命令行窗口"></a>命令行窗口</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"># 查看版本号</span><br><span class="line">&gt; conda --version</span><br><span class="line"></span><br><span class="line"># 查看目前的镜像</span><br><span class="line">&gt; conda config </span><br><span class="line"></span><br><span class="line"># 添加路径</span><br><span class="line">&gt; conda config --add channels http://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/</span><br><span class="line">&gt; conda config –-add channels http://mirrors.ustc.edu.cn/anaconda/pkgs/free/</span><br><span class="line">&gt; conda config --add channels http://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/conda-forge/</span><br><span class="line">&gt; conda config --set show_channel_urls yes</span><br><span class="line"></span><br><span class="line"># 升级工具包</span><br><span class="line">&gt; conda upgrade --all</span><br></pre></td></tr></table></figure>
-
-<h2 id="Anaconda-Prompt"><a href="#Anaconda-Prompt" class="headerlink" title="Anaconda Prompt"></a>Anaconda Prompt</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"># 创建虚拟环境</span><br><span class="line">&gt; conda create -n &lt;env-name&gt; python=3.6</span><br><span class="line"></span><br><span class="line"># 列出所有可用的conda环境</span><br><span class="line">&gt; conda info --envs</span><br><span class="line"></span><br><span class="line"># 进入虚拟环境</span><br><span class="line">&gt; activate &lt;env-name&gt;</span><br><span class="line"></span><br><span class="line"># 退出虚拟环境</span><br><span class="line">&gt; deactivate</span><br><span class="line"></span><br><span class="line"># 安装package</span><br><span class="line">&gt; conda install &lt;package-name&gt;</span><br><span class="line"></span><br><span class="line"># 查看当前环境下安装的packages</span><br><span class="line">&gt; conda list</span><br><span class="line"></span><br><span class="line"># 安装package</span><br><span class="line">&gt; pip install -i http://pypi.tuna.tsinghua.edu.cn/simple --trusted-host pypi.tuna.tsinghua.edu.cn  matplotlib</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h2 id="ps"><a href="#ps" class="headerlink" title="ps"></a>ps</h2><p>Anaconda Prompt可以看作是命令行窗口（CMD）的增强版，专门为Anaconda用户设计，以支持Python开发和数据科学工作。</p>
-<ul>
-<li>Anaconda Prompt完全兼容CMD中的所有命令。</li>
-<li>Anaconda Prompt提供了conda命令，用于管理Anaconda环境和包。</li>
-<li>Anaconda Prompt预装了许多数据科学和机器学习相关的库</li>
-<li>Anaconda Prompt允许用户创建、激活和删除不同的Python环境（称为conda环境）</li>
-</ul>
-<h1 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h1><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/Inochigohan/article/details/120400990">anaconda安装</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_39220334/article/details/121961742">清华镜像源</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/lab-zj/p/16975410.html">conda常用命令</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/JineD/article/details/124774570">pip安装package</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/10/31/%E5%85%89%E6%9C%BA-%E6%8E%A5%E5%8F%A3%E6%B5%8B%E8%AF%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="ZhangHangming">
-      <meta itemprop="description" content="张航铭（ZhangHangming）的笔记本">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="勿以浮沙筑高台">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/10/31/%E5%85%89%E6%9C%BA-%E6%8E%A5%E5%8F%A3%E6%B5%8B%E8%AF%95/" class="post-title-link" itemprop="url">光机接口测试</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-10-31 20:32:11" itemprop="dateCreated datePublished" datetime="2024-10-31T20:32:11+08:00">2024-10-31</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%BB%93%E6%9E%84%E5%85%89%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E9%A1%B9%E7%9B%AE/" itemprop="url" rel="index"><span itemprop="name">嵌入式结构光三维重建项目</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>DLPC-API-1.10给的API比较杂，有很多也用不上，需要自己另外定义接口，官方给的有一个示例程序，程序里封装了一部分接口，先测试这些接口能不能用，然后在这个基础上增加需要的接口，实例程序中的包括：</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2024/10/31/%E5%85%89%E6%9C%BA-%E6%8E%A5%E5%8F%A3%E6%B5%8B%E8%AF%95/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-
-  
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
-  </nav>
 
 
 
@@ -1144,6 +399,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8A%9F%E8%83%BD"><span class="nav-number">1.</span> <span class="nav-text">功能</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%89%E6%9C%BA"><span class="nav-number">1.1.</span> <span class="nav-text">光机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B8%E6%9C%BA"><span class="nav-number">1.2.</span> <span class="nav-text">相机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E4%BB%96"><span class="nav-number">1.3.</span> <span class="nav-text">其他</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Jetson%E7%AB%AF"><span class="nav-number">2.</span> <span class="nav-text">Jetson端</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Windows%E7%AB%AF"><span class="nav-number">3.</span> <span class="nav-text">Windows端</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A1%86%E6%9E%B6%E4%BB%A3%E7%A0%81"><span class="nav-number">4.</span> <span class="nav-text">框架代码</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Jestson%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-number">4.1.</span> <span class="nav-text">Jestson服务器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Windows%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="nav-number">4.2.</span> <span class="nav-text">Windows客户端</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E7%94%A8%E6%B3%95"><span class="nav-number">5.</span> <span class="nav-text">函数用法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%AF%94%E8%BE%83"><span class="nav-number">5.1.</span> <span class="nav-text">字符串比较</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#strtok"><span class="nav-number">5.2.</span> <span class="nav-text">strtok()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#getline"><span class="nav-number">5.3.</span> <span class="nav-text">getline()</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
