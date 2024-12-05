@@ -15,6 +15,8 @@ ccategories:
 6. 接收和发送数据
 7. 断开连接
 
+<!-- more -->
+
 ## 客户端
 
 1. 初始化Winsock
