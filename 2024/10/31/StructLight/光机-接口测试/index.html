@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="DLPC-API-1.10给的API比较杂，有很多也用不上，需要自己另外定义接口，官方给的有一个示例程序，程序里封装了一部分接口，先测试这些接口能不能用，然后在这个基础上增加需要的接口，实例程序中的包括：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="光机接口测试">
+<meta property="og:url" content="http://example.com/2024/10/31/StructLight/%E5%85%89%E6%9C%BA-%E6%8E%A5%E5%8F%A3%E6%B5%8B%E8%AF%95/index.html">
+<meta property="og:site_name" content="勿以浮沙筑高台">
+<meta property="og:description" content="DLPC-API-1.10给的API比较杂，有很多也用不上，需要自己另外定义接口，官方给的有一个示例程序，程序里封装了一部分接口，先测试这些接口能不能用，然后在这个基础上增加需要的接口，实例程序中的包括：">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-10-31T12:32:11.130Z">
+<meta property="article:modified_time" content="2024-10-31T12:32:11.130Z">
+<meta property="article:author" content="ZhangHangming">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2024/10/31/StructLight/%E5%85%89%E6%9C%BA-%E6%8E%A5%E5%8F%A3%E6%B5%8B%E8%AF%95/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>光机接口测试 | 勿以浮沙筑高台</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">勿以浮沙筑高台</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">张航铭的笔记本</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/10/31/StructLight/%E5%85%89%E6%9C%BA-%E6%8E%A5%E5%8F%A3%E6%B5%8B%E8%AF%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="ZhangHangming">
+      <meta itemprop="description" content="张航铭（ZhangHangming）的笔记本">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="勿以浮沙筑高台">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          光机接口测试
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-10-31 20:32:11" itemprop="dateCreated datePublished" datetime="2024-10-31T20:32:11+08:00">2024-10-31</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%BB%93%E6%9E%84%E5%85%89%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E9%A1%B9%E7%9B%AE/" itemprop="url" rel="index"><span itemprop="name">嵌入式结构光三维重建项目</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>DLPC-API-1.10给的API比较杂，有很多也用不上，需要自己另外定义接口，官方给的有一个示例程序，程序里封装了一部分接口，先测试这些接口能不能用，然后在这个基础上增加需要的接口，实例程序中的包括：</p>
+<span id="more"></span>
+<ul>
+<li>I2C 写入</li>
+<li>I2C 读取</li>
+<li>初始化命令层</li>
+<li>以秒为单位等待指定的时间</li>
+<li>生成一个1位（二维）图案</li>
+<li>生成一个8位（灰度）图案</li>
+<li>填充数组<code>s_PatternSets 中的 DLPC34XX_INT_PAT_PatternSet_s</code>结构</li>
+<li>填充数组<code>s_PatternOrderTable 中的 DLPC34XX_INT_PAT_PatternOrderTableEntry_s</code>结构</li>
+<li>将数据复制到 Flash 编程缓冲区以便后续写入</li>
+<li>将缓冲区数据编程到 Flash 中</li>
+<li>将数据写入文件</li>
+<li>生成图案数据并写入到文件</li>
+<li>缓存图案数据并编程到 Flash 中</li>
+<li>生成和编程图案数据到 Flash 中</li>
+<li>从 Flash 中加载图案顺序表条目</li>
+<li>加载特定的图案顺序表条目</li>
+<li>写入测试图案网格线</li>
+<li>写入测试图案色条</li>
+<li>写入选定视图外观（Look）</li>
+<li>加载预构建的模式数据</li>
+<li>写入 LABB 和 CAIC 设置</li>
+<li>加载固件</li>
+</ul>
+<h1 id="过程记录"><a href="#过程记录" class="headerlink" title="过程记录"></a>过程记录</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">unsigned int WriteI2C(uint16_t WriteDataLength, uint8_t *WriteData, DLPC_COMMON_CommandProtocolData_s *ProtocolData) &#123;</span><br><span class="line">    // 实现写入 I2C 设备的逻辑</span><br><span class="line">    // ...</span><br><span class="line">    return SUCCESS; // 或者在出错时返回错误代码</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 假设您有一个函数接受一个回调函数指针</span><br><span class="line">void ExecuteWriteOperation(DLPC_COMMON_WriteCommandCallback callback) &#123;</span><br><span class="line">    // ...</span><br><span class="line">    unsigned int result = callback(WriteDataLength, WriteData, &amp;ProtocolData);</span><br><span class="line">    // ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 在调用 ExecuteWriteOperation 时，您可以传递 WriteI2C 函数</span><br><span class="line">ExecuteWriteOperation(WriteI2C);</span><br></pre></td></tr></table></figure>
+<p>在这个例子中，ExecuteWriteOperation 函数接受一个类型为 DLPC_COMMON_WriteCommandCallback 的回调函数，并在内部调用它。这样，您可以将不同的写入操作作为回调传递给 ExecuteWriteOperation，而不需要修改其内部实现。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(gdb) ptype DLPC_COMMON_WriteCommandCallback</span><br><span class="line">type = unsigned int (*)(uint16_t, uint8_t *, DLPC_COMMON_CommandProtocolData_s *)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>函数指针：定义回调函数，可以在不同的上下文中被调用。抽象特定的行为，使得代码更加模块化和可重用。</li>
+<li>返回类型：unsigned int</li>
+<li>参数列表：<ul>
+<li>uint16_t：无符号的16位整数</li>
+<li>uint8_t *：指向无符号8位的整数的指针参数，数据缓冲区</li>
+<li>DLPC_COMMON_CommandProtocolData_s *：指向结构体的指针，协议相关</li>
+</ul>
+</li>
+</ul>
+<p>当光机接入或者没有接入USB的时候均出现：Status &#x3D; CY_ERROR_REQUEST_FAILED, NumDevices &#x3D; 0 ‘\000’</p>
+<ul>
+<li>CY_ERROR_REQUEST_FAILED：发送到 USB Serial 设备的请求失败</li>
+<li>表明函数 CyGetListofDevices 没有成功地找到任何连接的设备</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">zhm@Ubuntu:~/Jetson/StructLight/CyUSBSerial_SDK_Linux/linux/library$ lsusb</span><br><span class="line">Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub</span><br><span class="line">Bus 001 Device 002: ID 0bda:8771 Realtek Semiconductor Corp. Bluetooth Radio</span><br><span class="line">Bus 001 Device 003: ID 0000:3825   USB OPTICAL MOUSE</span><br><span class="line">Bus 001 Device 004: ID 1c4f:0026 SiGma Micro Keyboard</span><br><span class="line">Bus 001 Device 005: ID 05e3:0608 Genesys Logic, Inc. Hub</span><br><span class="line">Bus 001 Device 018: ID 04b4:000a Cypress Semiconductor Corp. USB-Serial (Dual Channel)</span><br><span class="line">Bus 002 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub</span><br></pre></td></tr></table></figure>
+<p>说明Cypress USB-Serial设备已经被系统识别，并且分配了设备ID 04b4:000a</p>
+<p>驱动程序：libusb-1.0库（需要测试它能不能用）<br>经过测试，是可以用的。</p>
+<p>使用sudo apt-get install <package>的时候，出现无法命中等问题，换源之后问题依然没有解决，可以尝试使用下面的方法。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">1. sudo vim /etc/resolv.conf # 添加如下内容</span><br><span class="line">nameserver 8.8.8.8</span><br><span class="line">nameserver 8.8.4.4</span><br><span class="line">nameserver 127.0.0.1</span><br><span class="line"></span><br><span class="line">2. 输入Esc，:wq，保存并退出</span><br></pre></td></tr></table></figure>
+
+<h1 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h1><p><code>InitConnectionAndCommandLayer();</code>出现错误，函数内部为：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 初始化命令层，设置读/写缓冲区和回调函数。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">InitConnectionAndCommandLayer</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 初始化命令库，设置读/写缓冲区和对应的 I2C 读写函数</span></span><br><span class="line">    DLPC_COMMON_InitCommandLibrary(s_WriteBuffer,</span><br><span class="line">                                   <span class="keyword">sizeof</span>(s_WriteBuffer),</span><br><span class="line">                                   s_ReadBuffer,</span><br><span class="line">                                   <span class="keyword">sizeof</span>(s_ReadBuffer),</span><br><span class="line">                                   WriteI2C,</span><br><span class="line">                                   ReadI2C);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 连接到 Cypress I2C</span></span><br><span class="line">    CYPRESS_I2C_ConnectToCyI2C();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>CYPRESS_I2C_ConnectToCyI2C();</code>函数内部为，添加<code>printf</code>定位问题出现位置：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">bool</span> <span class="title function_">CYPRESS_I2C_ConnectToCyI2C</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    CY_RETURN_STATUS Status;	</span><br><span class="line">    CY_I2C_CONFIG I2CConfig;</span><br><span class="line">    <span class="keyword">if</span> (GetCyI2CHandle(&amp;s_Handle) == <span class="literal">false</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Get CyI2C Handle Failed!!! \n&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    I2CConfig.frequency      = I2C_CLOCK_FREQUENCY_HZ;</span><br><span class="line">    I2CConfig.slaveAddress   = <span class="number">0x30</span>;</span><br><span class="line">    I2CConfig.isMaster       = <span class="literal">true</span>;</span><br><span class="line">    I2CConfig.isClockStretch = <span class="literal">false</span>;</span><br><span class="line">    </span><br><span class="line">    Status = CySetI2cConfig(s_Handle, &amp;I2CConfig);</span><br><span class="line">    <span class="keyword">if</span> (Status != CY_SUCCESS)</span><br><span class="line">    &#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;Connect to I2C Error %d!!! \n&quot;</span>, Status);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    s_DataConfig.isNakBit     = <span class="literal">true</span>;</span><br><span class="line">    s_DataConfig.isStopBit    = <span class="literal">true</span>;</span><br><span class="line">    s_DataConfig.slaveAddress = DLP_I2C_SLAVE_ADDRESS;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>GetCyI2CHandle(&amp;s_Handle)</code>这里出现错误，添加<code>printf</code>定位问题，函数内部为：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Gets the handle of the connected Cypress USB-Serial bridge controller */</span></span><br><span class="line"><span class="type">bool</span> <span class="title function_">GetCyI2CHandle</span><span class="params">(CY_HANDLE* Handle)</span></span><br><span class="line">&#123;</span><br><span class="line">    CY_RETURN_STATUS Status;</span><br><span class="line">    CY_DEVICE_INFO   DeviceInfo;</span><br><span class="line">    <span class="type">uint8_t</span>          NumDevices = <span class="number">0</span>;</span><br><span class="line">    <span class="type">uint8_t</span>          DeviceIdx;</span><br><span class="line">    <span class="type">uint8_t</span>          InterfaceIdx;</span><br><span class="line"></span><br><span class="line">    Status = CyGetListofDevices(&amp;NumDevices);</span><br><span class="line">    <span class="keyword">if</span> ((Status != CY_SUCCESS) || (NumDevices == <span class="number">0</span>))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Status: %d\n&quot;</span>, Status);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;NumDevices: %d\n&quot;</span>, NumDevices);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;无设备连接成功,没有设备连接!!!\n&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (DeviceIdx = <span class="number">0</span>; DeviceIdx &lt; NumDevices; DeviceIdx++)</span><br><span class="line">    &#123;</span><br><span class="line">        Status = CyGetDeviceInfo(DeviceIdx, &amp;DeviceInfo);</span><br><span class="line">        <span class="keyword">if</span> (Status != CY_SUCCESS)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (InterfaceIdx = <span class="number">0</span>; InterfaceIdx &lt; DeviceInfo.numInterfaces; InterfaceIdx++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (DeviceInfo.deviceType[InterfaceIdx] == CY_TYPE_I2C)</span><br><span class="line">            &#123;</span><br><span class="line">                Status = CyOpen(DeviceIdx, InterfaceIdx, Handle);</span><br><span class="line">                <span class="keyword">if</span> (Status == CY_SUCCESS)</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;Get I2C Handle Error %d!!! \n&quot;</span>, Status);</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用gdb定位到<code>Status = CyGetListofDevices(&amp;NumDevices);</code>，Status输出为<code>CY_ERROR_REQUEST_FAILED</code>，定位到<code>CyGetListofDevices(&amp;NumDevices);</code>：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">   Summary</span></span><br><span class="line"><span class="comment">   This API retrieves number of USB devices connected to the host.</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">   Description</span></span><br><span class="line"><span class="comment">   This API retrieves the number of devices connected to the host.</span></span><br><span class="line"><span class="comment">   In Windows family of operating systems the API retrieves only the number of devices that are attached</span></span><br><span class="line"><span class="comment">   to CyUSB3.SYS driver. For other operating systems, it retrieves the total number of USB devices present</span></span><br><span class="line"><span class="comment">   on the bus. It includes both USB Serial device as well as other devices.</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">   Note: In case of Linux and Mac apart from providing number of devices connected, it builds the</span></span><br><span class="line"><span class="comment">   device list which is used for opening the device and obtaining device handle. Thus the API should be</span></span><br><span class="line"><span class="comment">   called during device discovery in the application.</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">   Return Value</span></span><br><span class="line"><span class="comment">   * CY_SUCCESS on success </span></span><br><span class="line"><span class="comment">   * CY_ERROR_DEVICE_NOT_FOUND if there are no devices attached.</span></span><br><span class="line"><span class="comment">   * CY_ERROR_REQUEST_FAILED if library was not initialized.</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">   See Also</span></span><br><span class="line"><span class="comment">   * CyGetDeviceInfo</span></span><br><span class="line"><span class="comment">   * CyGetDeviceInfoVidPid</span></span><br><span class="line"><span class="comment">   * CyOpen</span></span><br><span class="line"><span class="comment">   * CyClose</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">CYWINEXPORT CY_RETURN_STATUS <span class="title function_">CyGetListofDevices</span> <span class="params">(</span></span><br><span class="line"><span class="params">    UINT8* numDevices                            <span class="comment">/*Number of Devices connected*/</span></span></span><br><span class="line"><span class="params">    )</span>;</span><br></pre></td></tr></table></figure>
+<p>定位到这里<code>CY_ERROR_REQUEST_FAILED if library was not initialized.</code>出现的原因是，因为library没有初始化。修改<code>GetCyI2CHandle(CY_HANDLE* Handle)</code>代码，添加初始化函数：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">bool</span> <span class="title function_">GetCyI2CHandle</span><span class="params">(CY_HANDLE* Handle)</span></span><br><span class="line">&#123;</span><br><span class="line">    CY_RETURN_STATUS Status;</span><br><span class="line">    CY_DEVICE_INFO   DeviceInfo;</span><br><span class="line">    <span class="type">uint8_t</span>          NumDevices = <span class="number">0</span>;</span><br><span class="line">    <span class="type">uint8_t</span>          DeviceIdx;</span><br><span class="line">    <span class="type">uint8_t</span>          InterfaceIdx;</span><br><span class="line"></span><br><span class="line">    Status = CyLibraryInit();</span><br><span class="line">    <span class="keyword">if</span> (Status != CY_SUCCESS) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%d 设备初始化失败!!!\n&quot;</span>, Status);</span><br><span class="line">    &#125;</span><br><span class="line">    Status = CyGetListofDevices(&amp;NumDevices);</span><br><span class="line">    <span class="keyword">if</span> ((Status != CY_SUCCESS) || (NumDevices == <span class="number">0</span>))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Status: %d\n&quot;</span>, Status);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;NumDevices: %d\n&quot;</span>, NumDevices);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;无设备连接成功,没有设备连接!!!\n&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (DeviceIdx = <span class="number">0</span>; DeviceIdx &lt; NumDevices; DeviceIdx++)</span><br><span class="line">    &#123;</span><br><span class="line">        Status = CyGetDeviceInfo(DeviceIdx, &amp;DeviceInfo);</span><br><span class="line">        <span class="keyword">if</span> (Status != CY_SUCCESS)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (InterfaceIdx = <span class="number">0</span>; InterfaceIdx &lt; DeviceInfo.numInterfaces; InterfaceIdx++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (DeviceInfo.deviceType[InterfaceIdx] == CY_TYPE_I2C)</span><br><span class="line">            &#123;</span><br><span class="line">                Status = CyOpen(DeviceIdx, InterfaceIdx, Handle);</span><br><span class="line">                <span class="keyword">if</span> (Status == CY_SUCCESS)</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;Get I2C Handle Error %d!!! \n&quot;</span>, Status);</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>问题解决。</p>
+<p>总结：<br>1、首先是单独测试USB驱动程序能不能用，写了一个单独测试USB的程序，可以正常运行。<br>2、检查PC机有没有连接到光机设备，可以使用<code>lsusb</code>指令。光机是连接到PC机上的。<br>3、检查程序有没有问题。<code>printf</code>和<code>gdb</code>定位问题。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/10/31/MissingSemester/CMake%E5%B5%8C%E5%A5%97%E5%86%99%E6%B3%95/" rel="prev" title="CMake嵌套写法">
+      <i class="fa fa-chevron-left"></i> CMake嵌套写法
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/10/31/Other/Anaconda/" rel="next" title="Anaconda">
+      Anaconda <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%87%E7%A8%8B%E8%AE%B0%E5%BD%95"><span class="nav-number">1.</span> <span class="nav-text">过程记录</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">解决方法</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">ZhangHangming</p>
+  <div class="site-description" itemprop="description">张航铭（ZhangHangming）的笔记本</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">34</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ZhangHangming</span>
+</div>
+
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+-->
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+</html>
