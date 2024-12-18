@@ -2569,39 +2569,6 @@
 ]]></content>
   </entry>
   <entry>
-    <title>进程抽象</title>
-    <url>/2024/09/02/OS/unit4-%E8%BF%9B%E7%A8%8B%E6%8A%BD%E8%B1%A1/</url>
-    <content><![CDATA[<h1 id="unit4-进程抽象"><a href="#unit4-进程抽象" class="headerlink" title="unit4:进程抽象"></a>unit4:进程抽象</h1><h2 id="1-进程API内容"><a href="#1-进程API内容" class="headerlink" title="1.进程API内容"></a>1.进程API内容</h2><ul>
-<li>创建（create）</li>
-<li>销毁（destroy）</li>
-<li>等待（wait）</li>
-<li>其他控制（miscellaneous control）</li>
-<li>状态（statu）<span id="more"></span></li>
-</ul>
-<h2 id="2-进程创建"><a href="#2-进程创建" class="headerlink" title="2.进程创建"></a>2.进程创建</h2><p>1.操作系统运行程序的<strong>第一件事</strong>是将代码和所有的静态数据加载（load）到内存中，加载到进程的地址空间中。<br>2.为程序的运行时栈，分配一些内存。C程序使用栈存放局部变量，函数参数，返回值。操作系统分配这些内存，并提供给进程。<br>3.操作系统也可能为程序的堆分配一些内存。<br>4.操作系统还将执行一些其他初始化任务，比如输入\输出相关的任务。</p>
-<h2 id="3-进程的状态"><a href="#3-进程的状态" class="headerlink" title="3.进程的状态"></a>3.进程的状态</h2><ul>
-<li>运行：该进程正在执行指令<br> 1.运行态不会一直持续，进程的CPU时间片用完之后，再次失去CPU，从运行态转为就绪态。</li>
-<li>就绪：进程准备好运行，但是操作系统在运行其他进程<br> 1.进程被创建出来了，有运行的资格，但是还没有运行，需要抢占CPU时间片；<br> 2.得到CPU时间片，进程开始运行，从就绪态转换为运行态；<br> 3.进程的CPU时间片用完之后，再次失去CPU，从运行态转为就绪态。</li>
-<li>阻塞：进程被强制放弃CPU，并且没有抢占CPU时间片的资格<br> 1.比如当进程向磁盘发起I&#x2F;O请求<br> 2.当阻塞任务完成，进程从阻塞态转换为就绪态</li>
-</ul>
-<h2 id="4-进程API"><a href="#4-进程API" class="headerlink" title="4.进程API"></a>4.进程API</h2><p>1.fork()系统调用</p>
-<blockquote>
-<p>用于创建新进程，创建出来的进程被称为子进程，子进程与父进程几乎一样。子进程不会从main函数开始执行，而是直接从fork系统调用中返回。<br>子进程拥有自己的地址空间（即私有内存），寄存器，程序计数器等，但是它从fork返回的值是不同的。父进程获得的返回值是新创建子进程的PID，子进程获得的返回值是0.</p>
-</blockquote>
-<p>子进程和父进程的<strong>相同点</strong>：<br>1.拷贝完成后，两个地址空间的用户区数据是相同的。用户数据主要包括：</p>
-<ul>
-<li>代码区</li>
-<li>全局数据区</li>
-<li>堆区</li>
-<li>动态库加载区（内存映射区）</li>
-<li>栈区</li>
-<li>环境变量</li>
-<li>文件描述符：父进程中被分配的文件描述符都会被拷贝到子进程中，在子进程中可以使用他们打开对应的文件。</li>
-</ul>
-<p>子进程和父进程的<strong>区别</strong>：<br>1.父子进程各自的虚拟地址是相互独立的，不会互相影响和干扰。<br>2.父子进程的代码区虽然相同，但是执行的代码逻辑可能是不同的。一些情况下会用if判断父子进程，分别执行不同的代码块。<br>3.内核区存储的父子进程ID是不同的。<br>4.fork调用成功之后，会返回两个值，父子进程的返回值是不同的。</p>
-]]></content>
-  </entry>
-  <entry>
     <title>Jetson-Windows通信框架代码</title>
     <url>/2024/12/05/NetworkCommunications/%E9%80%9A%E4%BF%A1%E6%A1%86%E6%9E%B6/</url>
     <content><![CDATA[<h1 id="功能"><a href="#功能" class="headerlink" title="功能"></a>功能</h1><h2 id="光机"><a href="#光机" class="headerlink" title="光机"></a>光机</h2><ol>
@@ -2703,8 +2670,414 @@
       </categories>
   </entry>
   <entry>
+    <title>光机接口测试</title>
+    <url>/2024/10/31/StructLight/%E5%85%89%E6%9C%BA-%E6%8E%A5%E5%8F%A3%E6%B5%8B%E8%AF%95/</url>
+    <content><![CDATA[<p>DLPC-API-1.10给的API比较杂，有很多也用不上，需要自己另外定义接口，官方给的有一个示例程序，程序里封装了一部分接口，先测试这些接口能不能用，然后在这个基础上增加需要的接口，实例程序中的包括：</p>
+<span id="more"></span>
+<ul>
+<li>I2C 写入</li>
+<li>I2C 读取</li>
+<li>初始化命令层</li>
+<li>以秒为单位等待指定的时间</li>
+<li>生成一个1位（二维）图案</li>
+<li>生成一个8位（灰度）图案</li>
+<li>填充数组<code>s_PatternSets 中的 DLPC34XX_INT_PAT_PatternSet_s</code>结构</li>
+<li>填充数组<code>s_PatternOrderTable 中的 DLPC34XX_INT_PAT_PatternOrderTableEntry_s</code>结构</li>
+<li>将数据复制到 Flash 编程缓冲区以便后续写入</li>
+<li>将缓冲区数据编程到 Flash 中</li>
+<li>将数据写入文件</li>
+<li>生成图案数据并写入到文件</li>
+<li>缓存图案数据并编程到 Flash 中</li>
+<li>生成和编程图案数据到 Flash 中</li>
+<li>从 Flash 中加载图案顺序表条目</li>
+<li>加载特定的图案顺序表条目</li>
+<li>写入测试图案网格线</li>
+<li>写入测试图案色条</li>
+<li>写入选定视图外观（Look）</li>
+<li>加载预构建的模式数据</li>
+<li>写入 LABB 和 CAIC 设置</li>
+<li>加载固件</li>
+</ul>
+<h1 id="过程记录"><a href="#过程记录" class="headerlink" title="过程记录"></a>过程记录</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">unsigned int WriteI2C(uint16_t WriteDataLength, uint8_t *WriteData, DLPC_COMMON_CommandProtocolData_s *ProtocolData) &#123;</span><br><span class="line">    // 实现写入 I2C 设备的逻辑</span><br><span class="line">    // ...</span><br><span class="line">    return SUCCESS; // 或者在出错时返回错误代码</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 假设您有一个函数接受一个回调函数指针</span><br><span class="line">void ExecuteWriteOperation(DLPC_COMMON_WriteCommandCallback callback) &#123;</span><br><span class="line">    // ...</span><br><span class="line">    unsigned int result = callback(WriteDataLength, WriteData, &amp;ProtocolData);</span><br><span class="line">    // ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 在调用 ExecuteWriteOperation 时，您可以传递 WriteI2C 函数</span><br><span class="line">ExecuteWriteOperation(WriteI2C);</span><br></pre></td></tr></table></figure>
+<p>在这个例子中，ExecuteWriteOperation 函数接受一个类型为 DLPC_COMMON_WriteCommandCallback 的回调函数，并在内部调用它。这样，您可以将不同的写入操作作为回调传递给 ExecuteWriteOperation，而不需要修改其内部实现。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(gdb) ptype DLPC_COMMON_WriteCommandCallback</span><br><span class="line">type = unsigned int (*)(uint16_t, uint8_t *, DLPC_COMMON_CommandProtocolData_s *)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>函数指针：定义回调函数，可以在不同的上下文中被调用。抽象特定的行为，使得代码更加模块化和可重用。</li>
+<li>返回类型：unsigned int</li>
+<li>参数列表：<ul>
+<li>uint16_t：无符号的16位整数</li>
+<li>uint8_t *：指向无符号8位的整数的指针参数，数据缓冲区</li>
+<li>DLPC_COMMON_CommandProtocolData_s *：指向结构体的指针，协议相关</li>
+</ul>
+</li>
+</ul>
+<p>当光机接入或者没有接入USB的时候均出现：Status &#x3D; CY_ERROR_REQUEST_FAILED, NumDevices &#x3D; 0 ‘\000’</p>
+<ul>
+<li>CY_ERROR_REQUEST_FAILED：发送到 USB Serial 设备的请求失败</li>
+<li>表明函数 CyGetListofDevices 没有成功地找到任何连接的设备</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">zhm@Ubuntu:~/Jetson/StructLight/CyUSBSerial_SDK_Linux/linux/library$ lsusb</span><br><span class="line">Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub</span><br><span class="line">Bus 001 Device 002: ID 0bda:8771 Realtek Semiconductor Corp. Bluetooth Radio</span><br><span class="line">Bus 001 Device 003: ID 0000:3825   USB OPTICAL MOUSE</span><br><span class="line">Bus 001 Device 004: ID 1c4f:0026 SiGma Micro Keyboard</span><br><span class="line">Bus 001 Device 005: ID 05e3:0608 Genesys Logic, Inc. Hub</span><br><span class="line">Bus 001 Device 018: ID 04b4:000a Cypress Semiconductor Corp. USB-Serial (Dual Channel)</span><br><span class="line">Bus 002 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub</span><br></pre></td></tr></table></figure>
+<p>说明Cypress USB-Serial设备已经被系统识别，并且分配了设备ID 04b4:000a</p>
+<p>驱动程序：libusb-1.0库（需要测试它能不能用）<br>经过测试，是可以用的。</p>
+<p>使用sudo apt-get install <package>的时候，出现无法命中等问题，换源之后问题依然没有解决，可以尝试使用下面的方法。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1. sudo vim /etc/resolv.conf # 添加如下内容</span><br><span class="line">nameserver 8.8.8.8</span><br><span class="line">nameserver 8.8.4.4</span><br><span class="line">nameserver 127.0.0.1</span><br><span class="line"></span><br><span class="line">2. 输入Esc，:wq，保存并退出</span><br></pre></td></tr></table></figure>
+
+<h1 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h1><p><code>InitConnectionAndCommandLayer();</code>出现错误，函数内部为：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 初始化命令层，设置读/写缓冲区和回调函数。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">InitConnectionAndCommandLayer</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 初始化命令库，设置读/写缓冲区和对应的 I2C 读写函数</span></span><br><span class="line">    DLPC_COMMON_InitCommandLibrary(s_WriteBuffer,</span><br><span class="line">                                   <span class="keyword">sizeof</span>(s_WriteBuffer),</span><br><span class="line">                                   s_ReadBuffer,</span><br><span class="line">                                   <span class="keyword">sizeof</span>(s_ReadBuffer),</span><br><span class="line">                                   WriteI2C,</span><br><span class="line">                                   ReadI2C);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 连接到 Cypress I2C</span></span><br><span class="line">    CYPRESS_I2C_ConnectToCyI2C();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>CYPRESS_I2C_ConnectToCyI2C();</code>函数内部为，添加<code>printf</code>定位问题出现位置：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">bool</span> <span class="title function_">CYPRESS_I2C_ConnectToCyI2C</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    CY_RETURN_STATUS Status;	</span><br><span class="line">    CY_I2C_CONFIG I2CConfig;</span><br><span class="line">    <span class="keyword">if</span> (GetCyI2CHandle(&amp;s_Handle) == <span class="literal">false</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Get CyI2C Handle Failed!!! \n&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    I2CConfig.frequency      = I2C_CLOCK_FREQUENCY_HZ;</span><br><span class="line">    I2CConfig.slaveAddress   = <span class="number">0x30</span>;</span><br><span class="line">    I2CConfig.isMaster       = <span class="literal">true</span>;</span><br><span class="line">    I2CConfig.isClockStretch = <span class="literal">false</span>;</span><br><span class="line">    </span><br><span class="line">    Status = CySetI2cConfig(s_Handle, &amp;I2CConfig);</span><br><span class="line">    <span class="keyword">if</span> (Status != CY_SUCCESS)</span><br><span class="line">    &#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;Connect to I2C Error %d!!! \n&quot;</span>, Status);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    s_DataConfig.isNakBit     = <span class="literal">true</span>;</span><br><span class="line">    s_DataConfig.isStopBit    = <span class="literal">true</span>;</span><br><span class="line">    s_DataConfig.slaveAddress = DLP_I2C_SLAVE_ADDRESS;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>GetCyI2CHandle(&amp;s_Handle)</code>这里出现错误，添加<code>printf</code>定位问题，函数内部为：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* Gets the handle of the connected Cypress USB-Serial bridge controller */</span></span><br><span class="line"><span class="type">bool</span> <span class="title function_">GetCyI2CHandle</span><span class="params">(CY_HANDLE* Handle)</span></span><br><span class="line">&#123;</span><br><span class="line">    CY_RETURN_STATUS Status;</span><br><span class="line">    CY_DEVICE_INFO   DeviceInfo;</span><br><span class="line">    <span class="type">uint8_t</span>          NumDevices = <span class="number">0</span>;</span><br><span class="line">    <span class="type">uint8_t</span>          DeviceIdx;</span><br><span class="line">    <span class="type">uint8_t</span>          InterfaceIdx;</span><br><span class="line"></span><br><span class="line">    Status = CyGetListofDevices(&amp;NumDevices);</span><br><span class="line">    <span class="keyword">if</span> ((Status != CY_SUCCESS) || (NumDevices == <span class="number">0</span>))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Status: %d\n&quot;</span>, Status);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;NumDevices: %d\n&quot;</span>, NumDevices);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;无设备连接成功,没有设备连接!!!\n&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (DeviceIdx = <span class="number">0</span>; DeviceIdx &lt; NumDevices; DeviceIdx++)</span><br><span class="line">    &#123;</span><br><span class="line">        Status = CyGetDeviceInfo(DeviceIdx, &amp;DeviceInfo);</span><br><span class="line">        <span class="keyword">if</span> (Status != CY_SUCCESS)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (InterfaceIdx = <span class="number">0</span>; InterfaceIdx &lt; DeviceInfo.numInterfaces; InterfaceIdx++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (DeviceInfo.deviceType[InterfaceIdx] == CY_TYPE_I2C)</span><br><span class="line">            &#123;</span><br><span class="line">                Status = CyOpen(DeviceIdx, InterfaceIdx, Handle);</span><br><span class="line">                <span class="keyword">if</span> (Status == CY_SUCCESS)</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;Get I2C Handle Error %d!!! \n&quot;</span>, Status);</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用gdb定位到<code>Status = CyGetListofDevices(&amp;NumDevices);</code>，Status输出为<code>CY_ERROR_REQUEST_FAILED</code>，定位到<code>CyGetListofDevices(&amp;NumDevices);</code>：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">   Summary</span></span><br><span class="line"><span class="comment">   This API retrieves number of USB devices connected to the host.</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">   Description</span></span><br><span class="line"><span class="comment">   This API retrieves the number of devices connected to the host.</span></span><br><span class="line"><span class="comment">   In Windows family of operating systems the API retrieves only the number of devices that are attached</span></span><br><span class="line"><span class="comment">   to CyUSB3.SYS driver. For other operating systems, it retrieves the total number of USB devices present</span></span><br><span class="line"><span class="comment">   on the bus. It includes both USB Serial device as well as other devices.</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">   Note: In case of Linux and Mac apart from providing number of devices connected, it builds the</span></span><br><span class="line"><span class="comment">   device list which is used for opening the device and obtaining device handle. Thus the API should be</span></span><br><span class="line"><span class="comment">   called during device discovery in the application.</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">   Return Value</span></span><br><span class="line"><span class="comment">   * CY_SUCCESS on success </span></span><br><span class="line"><span class="comment">   * CY_ERROR_DEVICE_NOT_FOUND if there are no devices attached.</span></span><br><span class="line"><span class="comment">   * CY_ERROR_REQUEST_FAILED if library was not initialized.</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">   See Also</span></span><br><span class="line"><span class="comment">   * CyGetDeviceInfo</span></span><br><span class="line"><span class="comment">   * CyGetDeviceInfoVidPid</span></span><br><span class="line"><span class="comment">   * CyOpen</span></span><br><span class="line"><span class="comment">   * CyClose</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">CYWINEXPORT CY_RETURN_STATUS <span class="title function_">CyGetListofDevices</span> <span class="params">(</span></span><br><span class="line"><span class="params">    UINT8* numDevices                            <span class="comment">/*Number of Devices connected*/</span></span></span><br><span class="line"><span class="params">    )</span>;</span><br></pre></td></tr></table></figure>
+<p>定位到这里<code>CY_ERROR_REQUEST_FAILED if library was not initialized.</code>出现的原因是，因为library没有初始化。修改<code>GetCyI2CHandle(CY_HANDLE* Handle)</code>代码，添加初始化函数：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">bool</span> <span class="title function_">GetCyI2CHandle</span><span class="params">(CY_HANDLE* Handle)</span></span><br><span class="line">&#123;</span><br><span class="line">    CY_RETURN_STATUS Status;</span><br><span class="line">    CY_DEVICE_INFO   DeviceInfo;</span><br><span class="line">    <span class="type">uint8_t</span>          NumDevices = <span class="number">0</span>;</span><br><span class="line">    <span class="type">uint8_t</span>          DeviceIdx;</span><br><span class="line">    <span class="type">uint8_t</span>          InterfaceIdx;</span><br><span class="line"></span><br><span class="line">    Status = CyLibraryInit();</span><br><span class="line">    <span class="keyword">if</span> (Status != CY_SUCCESS) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%d 设备初始化失败!!!\n&quot;</span>, Status);</span><br><span class="line">    &#125;</span><br><span class="line">    Status = CyGetListofDevices(&amp;NumDevices);</span><br><span class="line">    <span class="keyword">if</span> ((Status != CY_SUCCESS) || (NumDevices == <span class="number">0</span>))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Status: %d\n&quot;</span>, Status);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;NumDevices: %d\n&quot;</span>, NumDevices);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;无设备连接成功,没有设备连接!!!\n&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (DeviceIdx = <span class="number">0</span>; DeviceIdx &lt; NumDevices; DeviceIdx++)</span><br><span class="line">    &#123;</span><br><span class="line">        Status = CyGetDeviceInfo(DeviceIdx, &amp;DeviceInfo);</span><br><span class="line">        <span class="keyword">if</span> (Status != CY_SUCCESS)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (InterfaceIdx = <span class="number">0</span>; InterfaceIdx &lt; DeviceInfo.numInterfaces; InterfaceIdx++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (DeviceInfo.deviceType[InterfaceIdx] == CY_TYPE_I2C)</span><br><span class="line">            &#123;</span><br><span class="line">                Status = CyOpen(DeviceIdx, InterfaceIdx, Handle);</span><br><span class="line">                <span class="keyword">if</span> (Status == CY_SUCCESS)</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;Get I2C Handle Error %d!!! \n&quot;</span>, Status);</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>问题解决。</p>
+<p>总结：<br>1、首先是单独测试USB驱动程序能不能用，写了一个单独测试USB的程序，可以正常运行。<br>2、检查PC机有没有连接到光机设备，可以使用<code>lsusb</code>指令。光机是连接到PC机上的。<br>3、检查程序有没有问题。<code>printf</code>和<code>gdb</code>定位问题。</p>
+]]></content>
+      <categories>
+        <category>嵌入式结构光三维重建项目</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Ubuntu24.04 install opencv</title>
+    <url>/2024/11/17/StructLight/Ubuntu24.04%20install%20opencv/</url>
+    <content><![CDATA[<ol>
+<li><a href="https://opencv.org/releases/">opencv</a>官网下载opencv-4.10.0的source文件并解压</li>
+<li>下载<a href="">opencv_contrib</a>并解压，将opencv_contrib移动到opencv的文件夹中</li>
+<li>安装依赖项</li>
+</ol>
+<span id="more"></span>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt-get install build-essential</span><br><span class="line"><span class="built_in">sudo</span> apt-get install cmake git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev</span><br><span class="line"><span class="built_in">sudo</span> apt-get install python-dev python-numpy libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libjasper-dev libdc1394-22-dev</span><br></pre></td></tr></table></figure>
+<p>4.编译并安装</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local -D WITH_TBB=ON -D BUILD_SHARED_LIBS=OFF -D WITH_OPENMP=ON -D ENABLE_PRECOMPILED_HEADERS=OFF ..</span><br><span class="line"></span><br><span class="line">$ make -j8</span><br><span class="line">$ <span class="built_in">sudo</span> make install</span><br></pre></td></tr></table></figure>
+<p>5.测试代码<br>编写测试代码</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;opencv2/opencv.hpp&gt;</span></span></span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc,<span class="type">char</span> **argv)</span></span>&#123;</span><br><span class="line">    <span class="function">cv::Mat <span class="title">src</span><span class="params">(<span class="number">300</span>,<span class="number">500</span>,CV_8UC3,cv::Scalar::all(<span class="number">255</span>))</span></span>;</span><br><span class="line">    cv::<span class="built_in">imshow</span>(<span class="string">&quot;hello-opencv&quot;</span>,src);</span><br><span class="line">    cv::<span class="built_in">waitKey</span>(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>编写CMakeLists.txt文件</p>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">cmake_minimum_required</span>(VERSION <span class="number">3.0</span>)</span><br><span class="line"><span class="keyword">project</span>(Sample)</span><br><span class="line"><span class="keyword">set</span>(CMAKE_CXX_STANDARD <span class="number">11</span>)</span><br><span class="line"><span class="keyword">set</span>(CMAKE_RUNTIME_OUTPUT_DIRECTORY <span class="variable">$&#123;CMAKE_SOURCE_DIR&#125;</span>)</span><br><span class="line"> </span><br><span class="line"><span class="keyword">find_package</span>(OpenCV REQUIRED)</span><br><span class="line"><span class="keyword">set</span>(OpenCV_LIB_DIR <span class="variable">$&#123;OpenCV_INSTALL_PATH&#125;</span>/lib)</span><br><span class="line"><span class="keyword">message</span>(STATUS <span class="string">&quot;OpenCV版本: $&#123;OpenCV_VERSION&#125;&quot;</span>)</span><br><span class="line"><span class="keyword">message</span>(STATUS <span class="string">&quot;    头文件目录：$&#123;OpenCV_INCLUDE_DIRS&#125;&quot;</span>)</span><br><span class="line"><span class="keyword">message</span>(STATUS <span class="string">&quot;    库文件目录：$&#123;OpenCV_LIB_DIR&#125;&quot;</span>)</span><br><span class="line"><span class="keyword">message</span>(STATUS <span class="string">&quot;    库文件列表：$&#123;OpenCV_LIBS&#125;&quot;</span>)</span><br><span class="line"><span class="keyword">include_directories</span>(<span class="variable">$&#123;OpenCV_INCLUDE_DIRS&#125;</span>)</span><br><span class="line"><span class="keyword">link_directories</span>(<span class="variable">$&#123;OpenCV_LIB_DIR&#125;</span>)</span><br><span class="line"><span class="keyword">add_executable</span>(main main.cpp)</span><br><span class="line"><span class="keyword">target_link_libraries</span>(main <span class="variable">$&#123;OpenCV_LIBS&#125;</span>)</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>project</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Git分支管理Hexo</title>
+    <url>/2024/09/02/blog/Git%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86Hexo/</url>
+    <content><![CDATA[<h1 id="1-本地初始电脑"><a href="#1-本地初始电脑" class="headerlink" title="1.本地初始电脑"></a>1.本地初始电脑</h1><p>1.初始化Git仓库</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> blog</span><br><span class="line">$ git init  <span class="comment"># 创建.git子目录</span></span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+<p>2.添加远程仓库</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git remote add origin git@github.com:yourname/yourname.github.io.git</span><br></pre></td></tr></table></figure>
+
+<p>3.拉取远端仓库所有内容及分支</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git fetch origin</span><br></pre></td></tr></table></figure>
+
+<p>5.新建分支</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git checkout -b master</span><br></pre></td></tr></table></figure>
+
+<p>4.在<code>./source/_post/</code>中添加.md博客并生成</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo clean</span><br><span class="line">$ hexo g</span><br><span class="line">$ hexo d</span><br></pre></td></tr></table></figure>
+
+<p>5.将本地仓库推送至远端</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git push origin master</span><br></pre></td></tr></table></figure>
+
+<h1 id="2-其他电脑"><a href="#2-其他电脑" class="headerlink" title="2.其他电脑"></a>2.其他电脑</h1><p>1.安装Node.js</p>
+<p>2.拉取远端仓库并进入文件夹</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span> git@github.com:yourname/yourname.github.io.git blogname</span><br><span class="line">$ <span class="built_in">cd</span> blogname</span><br></pre></td></tr></table></figure>
+
+<p>3.拉取远端仓库分支并切换至master分支（默认分支是main，master分支是自己建的）</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git fetch origin</span><br><span class="line">$ git checkout master</span><br></pre></td></tr></table></figure>
+
+<p>4.安装Hexo及相关依赖</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm install hexo	<span class="comment"># 安装hexo</span></span><br><span class="line">$ npm install hexo-cli -g <span class="comment"># 重新安装(如果上述安装不起作用）</span></span><br><span class="line">$ npm install	<span class="comment"># 安装依赖</span></span><br></pre></td></tr></table></figure>
+
+<p>5.安装<code>deploy-git</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
+
+<p>6.在<code>./source/_post/</code>中添加.md博客并生成</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo clean</span><br><span class="line">$ hexo g</span><br><span class="line">$ hexo d</span><br></pre></td></tr></table></figure>
+
+<p>8.将本地仓库推送至远端</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git push origin master</span><br></pre></td></tr></table></figure>
+
+<h1 id="3-更换主题"><a href="#3-更换主题" class="headerlink" title="3.更换主题"></a>3.更换主题</h1><p>1.进入<code>./themes</code>文件夹</p>
+<p>2.github上clone喜欢的主题</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span> git@github.com:xxx/xxx.git file-name</span><br></pre></td></tr></table></figure>
+
+<p>3.进入<code>file-name</code>文件夹</p>
+<p>4.删除.git文件夹</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">rm</span> -r .git</span><br></pre></td></tr></table></figure>
+
+<p>5.修改最外层目录下的<code>_config.yml</code>文件<br>theme: file-name</p>
+<p>6.修改.gitignore文件（或者把里面内容删掉也行）</p>
+<p>7.将本地仓库推送至远端</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git add .</span><br><span class="line">$ git commit -m &quot;add theme&quot;</span><br><span class="line">$ git push origin master</span><br></pre></td></tr></table></figure>
+
+<p>ps.修改好主题之后，主题配置在<code>file-name</code>文件夹中的<code>_config.yml</code>中进行配置。</p>
+<h1 id="4-说明"><a href="#4-说明" class="headerlink" title="4.说明"></a>4.说明</h1><p><code>main</code>分支用来部署博客：当执行<code>hexo d</code>的时候，博客部署在<code>main</code>分支，不需要执行<code>git push origin main</code>，因为<code>hexo d</code>指令已经将相应的<code>html</code>文件推送到远端服务器的<code>main</code>分支上了。<br><code>master</code>分支用来存储文件：比如<code>.md</code>文件，存放在<code>./source/_post</code>文件夹中，最后需要手动执行<code>git push origin master</code>。</p>
+]]></content>
+      <categories>
+        <category>个人博客</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Hexo搭建个人博客</title>
+    <url>/2024/09/02/blog/Hexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
+    <content><![CDATA[<h1 id="1-前置条件"><a href="#1-前置条件" class="headerlink" title="1.前置条件"></a>1.前置条件</h1><ul>
+<li><a href="https://nodejs.org/en/download/package-manager/current">Node.js</a></li>
+<li><a href="https://git-scm.com/">git</a></li>
+<li>Github Pages<span id="more"></span></li>
+</ul>
+<h1 id="2-安装Node-js"><a href="#2-安装Node-js" class="headerlink" title="2.安装Node.js"></a>2.安装Node.js</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># installs nvm (Node Version Manager)</span></span><br><span class="line">$ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash</span><br><span class="line"></span><br><span class="line"><span class="comment"># download and install Node.js (you may need to restart the terminal)</span></span><br><span class="line">$ nvm install 22</span><br><span class="line"></span><br><span class="line"><span class="comment"># verifies the right Node.js version is in the environment</span></span><br><span class="line">$ node -v <span class="comment"># should print `v22.6.0`</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># verifies the right npm version is in the environment</span></span><br><span class="line">$ npm -v <span class="comment"># should print `10.8.2`</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="3-本地运行Hexo"><a href="#3-本地运行Hexo" class="headerlink" title="3.本地运行Hexo"></a>3.本地运行Hexo</h1><h2 id="安装Hexo"><a href="#安装Hexo" class="headerlink" title="安装Hexo"></a>安装Hexo</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">mkdir</span> blog</span><br><span class="line">$ <span class="built_in">cd</span> blog</span><br><span class="line">$ npm install -g hexo-cli   <span class="comment"># 安装hexo</span></span><br><span class="line">$ hexo init                 <span class="comment"># 初始化hexo</span></span><br><span class="line">$ hexo install              <span class="comment"># 安装需要的包</span></span><br></pre></td></tr></table></figure>
+<p>初始化完成后项目文件夹如下所示：<br>.<br>├── _config.yml<br>├── package.json<br>├── scaffolds<br>├── source<br>|   ├── _drafts<br>|   └── _posts<br>└── themes          </p>
+<h2 id="Hexo的用法"><a href="#Hexo的用法" class="headerlink" title="Hexo的用法"></a>Hexo的用法</h2><ul>
+<li>启动内置预览服务（默认端口4000）  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo s    <span class="comment"># hexo serve</span></span><br></pre></td></tr></table></figure></li>
+<li>生成网站  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo g    <span class="comment"># hexo generate</span></span><br></pre></td></tr></table></figure></li>
+<li>部署到Github Pages上（部署之前需要配置）  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo d    <span class="comment"># hexo deploy</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成并部署，省去hexo g</span></span><br><span class="line">$ hexo d -g</span><br></pre></td></tr></table></figure></li>
+<li>#清除缓存文件db.json和已生成的静态文件 public  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo c    <span class="comment"># hexo clean</span></span><br></pre></td></tr></table></figure></li>
+<li>创建博客  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 创建完成后博客的.md文件存储在`./source/_post/`中</span></span><br><span class="line">$ hexo new <span class="string">&quot;blog name&quot;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="3-配置"><a href="#3-配置" class="headerlink" title="3.配置"></a>3.配置</h1><p>_config.yml</p>
+<ul>
+<li>title : 网站标题</li>
+<li>subtitle : 副标题</li>
+<li>description : 网站描述</li>
+<li>keywords : 网站关键词</li>
+<li>author : 作者</li>
+<li>language : 语言</li>
+<li>timezone : 时区</li>
+</ul>
+<p>以上设置会出现在meta里。</p>
+<ul>
+<li>url : 网址</li>
+<li>root : 网站根目录</li>
+<li>permalink : 永久链接格式，比如year&#x2F;:month&#x2F;:day&#x2F;:title&#x2F;</li>
+<li>source_dir : 源文件夹，默认source</li>
+<li>public_dir : 生成的网站文件夹</li>
+<li>theme : 主题</li>
+</ul>
+<p>官网关于配置的描述：<a href="https://hexo.io/zh-cn/docs/configuration">https://hexo.io/zh-cn/docs/configuration</a></p>
+<h1 id="4-部署到Github-Pages"><a href="#4-部署到Github-Pages" class="headerlink" title="4.部署到Github Pages"></a>4.部署到Github Pages</h1><p>0.配置github的SSH<br>1.创建repo:git@github:yourname&#x2F;yourname.github.io.git<br>2.修改配置文件<code>_config.yml</code></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repo: git@github.com:yourname/yourname.github.io.git</span><br><span class="line">  branch: main</span><br></pre></td></tr></table></figure>
+<p>4.安装<code>deploy-git</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm  install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
+
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ul>
+<li><a href="https://hexo.io/docs/">Hexo官网</a></li>
+<li><a href="https://www.luogu.com.cn/article/vglpq15p">从零搭建 Hexo + Github 博客</a></li>
+<li><a href="https://note.tonycrane.cc/cs/tools/hexo/">Hexo 使用记录</a></li>
+<li><a href="https://hexo.io/zh-cn/docs/writing">Hexo写作</a></li>
+<li><a href="https://github.com/ppoffice/hexo-theme-icarus">主题</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>个人博客</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Anaconda</title>
+    <url>/2024/10/31/Other/Anaconda/</url>
+    <content><![CDATA[<span id="more"></span>
+<h1 id="常用指令"><a href="#常用指令" class="headerlink" title="常用指令"></a>常用指令</h1><h2 id="命令行窗口"><a href="#命令行窗口" class="headerlink" title="命令行窗口"></a>命令行窗口</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 查看版本号</span><br><span class="line">&gt; conda --version</span><br><span class="line"></span><br><span class="line"># 查看目前的镜像</span><br><span class="line">&gt; conda config </span><br><span class="line"></span><br><span class="line"># 添加路径</span><br><span class="line">&gt; conda config --add channels http://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/</span><br><span class="line">&gt; conda config –-add channels http://mirrors.ustc.edu.cn/anaconda/pkgs/free/</span><br><span class="line">&gt; conda config --add channels http://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/conda-forge/</span><br><span class="line">&gt; conda config --set show_channel_urls yes</span><br><span class="line"></span><br><span class="line"># 升级工具包</span><br><span class="line">&gt; conda upgrade --all</span><br></pre></td></tr></table></figure>
+
+<h2 id="Anaconda-Prompt"><a href="#Anaconda-Prompt" class="headerlink" title="Anaconda Prompt"></a>Anaconda Prompt</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 创建虚拟环境</span><br><span class="line">&gt; conda create -n &lt;env-name&gt; python=3.6</span><br><span class="line"></span><br><span class="line"># 列出所有可用的conda环境</span><br><span class="line">&gt; conda info --envs</span><br><span class="line"></span><br><span class="line"># 进入虚拟环境</span><br><span class="line">&gt; activate &lt;env-name&gt;</span><br><span class="line"></span><br><span class="line"># 退出虚拟环境</span><br><span class="line">&gt; deactivate</span><br><span class="line"></span><br><span class="line"># 安装package</span><br><span class="line">&gt; conda install &lt;package-name&gt;</span><br><span class="line"></span><br><span class="line"># 查看当前环境下安装的packages</span><br><span class="line">&gt; conda list</span><br><span class="line"></span><br><span class="line"># 安装package</span><br><span class="line">&gt; pip install -i http://pypi.tuna.tsinghua.edu.cn/simple --trusted-host pypi.tuna.tsinghua.edu.cn  matplotlib</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="ps"><a href="#ps" class="headerlink" title="ps"></a>ps</h2><p>Anaconda Prompt可以看作是命令行窗口（CMD）的增强版，专门为Anaconda用户设计，以支持Python开发和数据科学工作。</p>
+<ul>
+<li>Anaconda Prompt完全兼容CMD中的所有命令。</li>
+<li>Anaconda Prompt提供了conda命令，用于管理Anaconda环境和包。</li>
+<li>Anaconda Prompt预装了许多数据科学和机器学习相关的库</li>
+<li>Anaconda Prompt允许用户创建、激活和删除不同的Python环境（称为conda环境）</li>
+</ul>
+<h1 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h1><p><a href="https://blog.csdn.net/Inochigohan/article/details/120400990">anaconda安装</a><br><a href="https://blog.csdn.net/qq_39220334/article/details/121961742">清华镜像源</a><br><a href="https://www.cnblogs.com/lab-zj/p/16975410.html">conda常用命令</a><br><a href="https://blog.csdn.net/JineD/article/details/124774570">pip安装package</a></p>
+]]></content>
+      <categories>
+        <category>机器学习</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>hosts</title>
+    <url>/2024/09/20/Other/hosts/</url>
+    <content><![CDATA[<p>在Ubuntu上安装nvm遇到：curl: (28) Failed to connect to raw.githubusercontent.com port 443: Connection timed out [closed]<br>1.打开<code>/etc/hosts</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> vim /etc/hosts</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+<p>2.查询可用IP<br>使用<a href="https://www.ipaddress.com/website/">ipaddress</a>网站查询<code>github.com</code>,<code>ssh.github.com</code>,<code>raw.githubusercontent.com</code>网站的可用IP</p>
+<p>3.在末尾添加以下IP地址</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">140.82.114.3  github.com</span><br><span class="line">140.82.113.36  ssh.github.com</span><br><span class="line">199.232.68.133 raw.githubusercontent.com</span><br></pre></td></tr></table></figure>
+
+<p>4.保存文件并退出</p>
+<p>5.可以使用ping查看域名是否有received</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ ping 199.232.68.133</span><br><span class="line">PING 199.232.68.133 (199.232.68.133) 56(84) bytes of data.</span><br><span class="line">64 bytes from 199.232.68.133: icmp_seq=1 ttl=43 time=234 ms</span><br><span class="line">64 bytes from 199.232.68.133: icmp_seq=2 ttl=43 time=234 ms</span><br><span class="line">64 bytes from 199.232.68.133: icmp_seq=3 ttl=43 time=234 ms</span><br><span class="line">64 bytes from 199.232.68.133: icmp_seq=4 ttl=43 time=233 ms</span><br><span class="line">^C</span><br><span class="line">--- 199.232.68.133 ping statistics ---</span><br><span class="line">4 packets transmitted, 4 received, 0% packet loss, time 3004ms</span><br><span class="line">rtt min/avg/max/mdev = 233.337/233.849/234.302/0.421 ms</span><br></pre></td></tr></table></figure>
+
+<p><strong>ps.为什么要这样做呢??? hosts是什么配置文件呢???</strong><br><strong>hosts文件是什么？</strong><br>在Linux系统中，<code>/etc/hosts</code>文件是一个本地的DNS解析文件，用于将IP地址和主机名映射起来。当你访问某个域名时，系统会首先检查这个文件，如果在这里找到了对应的IP地址，就会直接使用，而不再通过外部DNS服务器查询。<br><strong>为什么要这么做？</strong><br>这是将GitHub相关的域名（如 github.com、ssh.github.com 和 raw.githubusercontent.com）手动映射到指定的IP地址。这么做的目的通常有以下几种可能：</p>
+<ul>
+<li>解决访问问题：有时候由于DNS解析缓慢或者网络封锁，GitHub相关服务的域名可能会无法访问，通过手动在&#x2F;etc&#x2F;hosts中添加这些映射，可以直接访问指定的IP，绕过DNS解析。</li>
+<li>加快访问速度：如果你已经知道某个域名的IP地址，手动添加可以减少系统查询外部DNS的时间，从而提升访问速度。</li>
+<li>绕过DNS劫持：在某些情况下，网络服务提供商或某些恶意软件可能会劫持DNS请求，将你引导到错误的网站，通过手动配置IP可以避免这种情况。</li>
+</ul>
+<p>IP地址可能会随着时间变化，所以如果GitHub更新了服务器的IP地址，而你还在使用旧的配置，可能会导致访问失败。</p>
+]]></content>
+      <categories>
+        <category>PC</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>双系统</title>
+    <url>/2024/09/02/Other/%E9%87%8D%E8%A3%85%E7%B3%BB%E7%BB%9F/</url>
+    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>1.重装了Windows10专业版系统<br>2.增加了Ubuntu24.04双系统</p>
+<span id="more"></span>
+
+<h1 id="重装系统-Windows"><a href="#重装系统-Windows" class="headerlink" title="重装系统-Windows"></a>重装系统-Windows</h1><h2 id="1-准备工作"><a href="#1-准备工作" class="headerlink" title="1.准备工作"></a>1.准备工作</h2><ul>
+<li><a href="https://www.wepe.com.cn/">制作系统盘</a></li>
+<li><a href="https://msdn.itellyou.cn/">下载Windows10光盘映像 consumer editions</a></li>
+</ul>
+<h2 id="2-主板型号"><a href="#2-主板型号" class="headerlink" title="2.主板型号"></a>2.主板型号</h2><p>根据主板型号，搜索对应品牌进入BIOS方法。获取主板型号的方法：<br>1.进入Windows PowerShell<br>2.运行指令：msinfo32</p>
+<h2 id="3-分区格式"><a href="#3-分区格式" class="headerlink" title="3.分区格式"></a>3.分区格式</h2><p>可以通过<code>硬件管理</code>查看目前磁盘的分区格式。<br>1.进入<code>磁盘管理</code><br>2.右键<code>磁盘0</code>或<code>磁盘1</code> -&gt; 属性 -&gt; 卷<br>3.磁盘分区形式</p>
+<table>
+<thead>
+<tr>
+<th align="center">分区表格式</th>
+<th align="center">启动项</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">MBR</td>
+<td align="center">UEFI</td>
+</tr>
+<tr>
+<td align="center">GPT</td>
+<td align="center">Legacy</td>
+</tr>
+</tbody></table>
+<h2 id="4-进入BOIS"><a href="#4-进入BOIS" class="headerlink" title="4.进入BOIS"></a>4.进入BOIS</h2><p>设置<code>Boot Priority</code>，UEFI:U盘拖到第1优先级</p>
+<h2 id="5-硬盘分区"><a href="#5-硬盘分区" class="headerlink" title="5.硬盘分区"></a>5.硬盘分区</h2><p>电脑有两个以上硬盘，且每个硬盘都作了分区，装系统的时候可能会出错，显示无法创建新的分区。解决方案：<br><strong>方案一</strong>：在分区容量大小的时候，系统盘选择主分区，其他盘取消主分区。<br><strong>方案二</strong>：系统盘分区，另外一个盘不进行分区。等系统安装完成之后再手动分区。</p>
+<h2 id="6-安装驱动"><a href="#6-安装驱动" class="headerlink" title="6.安装驱动"></a>6.安装驱动</h2><p>有些电脑装系统之后，系统自带的集成驱动没有网卡驱动，所以上不了网，比如我这台微星。这个时候就需要借助其他电脑，到微星官网。搜索对应的主板型号，找到技术支持里的驱动安装。选择网卡驱动，下载并保存到U盘里，拷贝到新装系统的电脑上，并解压。<br>设备管理器 -&gt; 其他设备&#x2F;网络适配器 -&gt; 鼠标右键更新驱动 -&gt; 浏览计算机查找驱动软件 -&gt; 找到解压文件夹</p>
+<h2 id="7-NVIDIA显卡驱动"><a href="#7-NVIDIA显卡驱动" class="headerlink" title="7.NVIDIA显卡驱动"></a>7.NVIDIA显卡驱动</h2><p>终端窗口输入命令：nvidia-smi<br>1.<a href="https://www.nvidia.cn/">英伟达官网</a><br>2.Geforce驱动<br>3.选择对应型号无脑安装</p>
+<h1 id="双系统-Ubuntu"><a href="#双系统-Ubuntu" class="headerlink" title="双系统-Ubuntu"></a>双系统-Ubuntu</h1><h2 id="1-Windows系统上创建分区"><a href="#1-Windows系统上创建分区" class="headerlink" title="1.Windows系统上创建分区"></a>1.Windows系统上创建分区</h2><p>磁盘管理 -&gt; 找一个空间比较大的分区（比如新加卷D:）-&gt; 右键 压缩卷（不进行分区，我压缩了512G）</p>
+<h2 id="2-下载Ubuntu光盘映像，制作Ubuntu安装盘"><a href="#2-下载Ubuntu光盘映像，制作Ubuntu安装盘" class="headerlink" title="2.下载Ubuntu光盘映像，制作Ubuntu安装盘"></a>2.下载Ubuntu光盘映像，制作Ubuntu安装盘</h2><p>制作安装盘使用的是UtralOS<br>1.启动 -&gt; 写入硬盘映像 -&gt; 软件自动识别U盘<br>2.格式化U盘<br>3.写入方式：USB-HDD+<br>4.写入</p>
+<h2 id="3-磁盘分区"><a href="#3-磁盘分区" class="headerlink" title="3.磁盘分区"></a>3.磁盘分区</h2><p>1.VFAT（efi）：512MB<br>2.swap：10G<br>3.Ext4（&#x2F;）：20G（我分了100G）<br>4.Ext4（&#x2F;Home）：30G（剩下的都给它）</p>
+]]></content>
+      <categories>
+        <category>PC</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>类</title>
+    <url>/2024/12/18/Cpp/class/</url>
+    <content><![CDATA[<h1 id="explicit"><a href="#explicit" class="headerlink" title="explicit"></a>explicit</h1><p>explicit关键字是一个类修饰符，用于修饰构造函数或转换操作符，以防止类的构造函数或转换操作符进行隐式类型转换。</p>
+<span id="more"></span>
+
+<h2 id="修饰构造函数"><a href="#修饰构造函数" class="headerlink" title="修饰构造函数"></a>修饰构造函数</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MyClass</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">explicit</span> <span class="title">MyClass</span><span class="params">(<span class="type">int</span> value)</span> : value_(value) &#123;</span>&#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="type">int</span> value_;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    MyClass myObject = <span class="number">5</span>; <span class="comment">// 错误：隐式转换</span></span><br><span class="line">    <span class="function">MyClass <span class="title">myObject2</span><span class="params">(<span class="number">5</span>)</span></span>; <span class="comment">// 正确：显式构造</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="修饰转换操作符"><a href="#修饰转换操作符" class="headerlink" title="修饰转换操作符"></a>修饰转换操作符</h2><ol>
+<li>类可以定义自己的转换操作符，并使用explicit关键字防止</li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MyClass</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">explicit</span> <span class="keyword">operator</span> <span class="title">int</span><span class="params">()</span> <span class="type">const</span> </span>&#123; <span class="keyword">return</span> value_; &#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="type">int</span> value_;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    MyClass myObject;</span><br><span class="line">    <span class="type">int</span> value = myObject; <span class="comment">// 错误：隐式转换</span></span><br><span class="line">    <span class="type">int</span> value2 = <span class="built_in">static_cast</span>&lt;<span class="type">int</span>&gt;(myObject); <span class="comment">// 正确：显式转换</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>MyClass定义了一个转换为int的转换操作符，并将其声明为explicit，因此只能通过显示类型转换来获取int类型的值。</p>
+<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><ol>
+<li>explicit关键字只能用于单个参数的构造函数或转换操作符；</li>
+<li>如果构造函数或转换操作符只有一个参数，并且该参数是类类型或引用类型，则explicit关键字是不必要的，因为这种情况下编译器不会进行隐式类型转换。</li>
+</ol>
+]]></content>
+      <categories>
+        <category>cpp</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>进程抽象</title>
+    <url>/2024/09/02/OperatingSystem/unit4-%E8%BF%9B%E7%A8%8B%E6%8A%BD%E8%B1%A1/</url>
+    <content><![CDATA[<h1 id="unit4-进程抽象"><a href="#unit4-进程抽象" class="headerlink" title="unit4:进程抽象"></a>unit4:进程抽象</h1><h2 id="1-进程API内容"><a href="#1-进程API内容" class="headerlink" title="1.进程API内容"></a>1.进程API内容</h2><ul>
+<li>创建（create）</li>
+<li>销毁（destroy）</li>
+<li>等待（wait）</li>
+<li>其他控制（miscellaneous control）</li>
+<li>状态（statu）<span id="more"></span></li>
+</ul>
+<h2 id="2-进程创建"><a href="#2-进程创建" class="headerlink" title="2.进程创建"></a>2.进程创建</h2><p>1.操作系统运行程序的<strong>第一件事</strong>是将代码和所有的静态数据加载（load）到内存中，加载到进程的地址空间中。<br>2.为程序的运行时栈，分配一些内存。C程序使用栈存放局部变量，函数参数，返回值。操作系统分配这些内存，并提供给进程。<br>3.操作系统也可能为程序的堆分配一些内存。<br>4.操作系统还将执行一些其他初始化任务，比如输入\输出相关的任务。</p>
+<h2 id="3-进程的状态"><a href="#3-进程的状态" class="headerlink" title="3.进程的状态"></a>3.进程的状态</h2><ul>
+<li>运行：该进程正在执行指令<br> 1.运行态不会一直持续，进程的CPU时间片用完之后，再次失去CPU，从运行态转为就绪态。</li>
+<li>就绪：进程准备好运行，但是操作系统在运行其他进程<br> 1.进程被创建出来了，有运行的资格，但是还没有运行，需要抢占CPU时间片；<br> 2.得到CPU时间片，进程开始运行，从就绪态转换为运行态；<br> 3.进程的CPU时间片用完之后，再次失去CPU，从运行态转为就绪态。</li>
+<li>阻塞：进程被强制放弃CPU，并且没有抢占CPU时间片的资格<br> 1.比如当进程向磁盘发起I&#x2F;O请求<br> 2.当阻塞任务完成，进程从阻塞态转换为就绪态</li>
+</ul>
+<h2 id="4-进程API"><a href="#4-进程API" class="headerlink" title="4.进程API"></a>4.进程API</h2><p>1.fork()系统调用</p>
+<blockquote>
+<p>用于创建新进程，创建出来的进程被称为子进程，子进程与父进程几乎一样。子进程不会从main函数开始执行，而是直接从fork系统调用中返回。<br>子进程拥有自己的地址空间（即私有内存），寄存器，程序计数器等，但是它从fork返回的值是不同的。父进程获得的返回值是新创建子进程的PID，子进程获得的返回值是0.</p>
+</blockquote>
+<p>子进程和父进程的<strong>相同点</strong>：<br>1.拷贝完成后，两个地址空间的用户区数据是相同的。用户数据主要包括：</p>
+<ul>
+<li>代码区</li>
+<li>全局数据区</li>
+<li>堆区</li>
+<li>动态库加载区（内存映射区）</li>
+<li>栈区</li>
+<li>环境变量</li>
+<li>文件描述符：父进程中被分配的文件描述符都会被拷贝到子进程中，在子进程中可以使用他们打开对应的文件。</li>
+</ul>
+<p>子进程和父进程的<strong>区别</strong>：<br>1.父子进程各自的虚拟地址是相互独立的，不会互相影响和干扰。<br>2.父子进程的代码区虽然相同，但是执行的代码逻辑可能是不同的。一些情况下会用if判断父子进程，分别执行不同的代码块。<br>3.内核区存储的父子进程ID是不同的。<br>4.fork调用成功之后，会返回两个值，父子进程的返回值是不同的。</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>FTP</title>
+    <url>/2024/12/13/NetworkCommunications/FTP/</url>
+    <content><![CDATA[<h1 id="计算机网络的分类"><a href="#计算机网络的分类" class="headerlink" title="计算机网络的分类"></a>计算机网络的分类</h1><ol>
+<li>根据网络作用分类：<ul>
+<li>广域网WAN</li>
+<li>城域网MAN</li>
+<li>局域网LAN</li>
+<li>个人局域网PAN</li>
+</ul>
+</li>
+<li>根据网络使用者分类：<ul>
+<li>公用网</li>
+<li>专用网</li>
+</ul>
+</li>
+</ol>
+<span id="more"></span>
+
+<h1 id="计算机网络的性能"><a href="#计算机网络的性能" class="headerlink" title="计算机网络的性能"></a>计算机网络的性能</h1><ol>
+<li>速率：网络中两台主机之间的数据传输速率，又称比特率或数据率；</li>
+<li>带宽：通信线路传输数据的能力；</li>
+<li>吞吐量：单位时间通过某个网络的数据总量；</li>
+<li>时延：报文从一个网络的一个节点传送到另一个节点所需要的时间；</li>
+<li>时延带宽积：信道中正在传输的数据总量；</li>
+<li>往返时间(Round-Trip Time)：发送端发送数据到其接收到确认反馈的时间；</li>
+<li>信道利用率：某个信道有数据通过的时间百分比；</li>
+<li>网络利用率：整个网络中信道利用率的加权平均值。</li>
+</ol>
+<h1 id="FTP模型"><a href="#FTP模型" class="headerlink" title="FTP模型"></a>FTP模型</h1><p>FTP文件传输协议，位于应用层，基于C&#x2F;S架构。</p>
+<p>FTP系统和其他C&#x2F;S系统的区别在于，客户端和服务器同时建立了两条连接：</p>
+<ul>
+<li>一条用于控制信号的传输</li>
+<li>一条用于数据的传输</li>
+</ul>
+<p>控制连接一般用21号端口。</p>
+<h1 id="FTP传输方式"><a href="#FTP传输方式" class="headerlink" title="FTP传输方式"></a>FTP传输方式</h1><h2 id="主动传输"><a href="#主动传输" class="headerlink" title="主动传输"></a>主动传输</h2><ol>
+<li>客户端与服务器的21号端口建立TCP控制连接；</li>
+<li>用户在控制通道中使用 <code>PORT</code>命令向服务器发送本地IP和端口（数据传输）；</li>
+<li>服务器<strong>主动</strong>连接客户端发送来的指定端口，建立数据连接。</li>
+</ol>
+<h2 id="被动传输"><a href="#被动传输" class="headerlink" title="被动传输"></a>被动传输</h2><ol>
+<li>客户端与服务器的21号端口建立TCP控制连接；</li>
+<li>用户在控制通道中发送 <code>PASV</code>命令请求服务器开启一个用于数据传输的端口；</li>
+<li>服务器收到命令之后，开启一个大于1024的端口，并将其IP和端口发送给客户端；</li>
+<li>客户端收到IP和端口后，主动连接到服务器的该端口，建立数据连接。</li>
+</ol>
+]]></content>
+      <categories>
+        <category>网络通信</category>
+      </categories>
+  </entry>
+  <entry>
     <title>线程同步</title>
-    <url>/2024/11/08/OS/%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5/</url>
+    <url>/2024/11/08/OperatingSystem/%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5/</url>
     <content><![CDATA[<h1 id="基础概念"><a href="#基础概念" class="headerlink" title="基础概念"></a>基础概念</h1><p>避免多个线程同时访问并修改同一块内存，造成数据冲突。线程同步的结果是，如果多个线程都要访问并修改同一块内存时，依次只让一个进程进行访问，其余进程阻塞，直到所有进程执行完毕。<br>阻塞：意味着失去CPU时间片</p>
 <span id="more"></span>
 
@@ -2925,102 +3298,8 @@
       </categories>
   </entry>
   <entry>
-    <title>光机接口测试</title>
-    <url>/2024/10/31/StructLight/%E5%85%89%E6%9C%BA-%E6%8E%A5%E5%8F%A3%E6%B5%8B%E8%AF%95/</url>
-    <content><![CDATA[<p>DLPC-API-1.10给的API比较杂，有很多也用不上，需要自己另外定义接口，官方给的有一个示例程序，程序里封装了一部分接口，先测试这些接口能不能用，然后在这个基础上增加需要的接口，实例程序中的包括：</p>
-<span id="more"></span>
-<ul>
-<li>I2C 写入</li>
-<li>I2C 读取</li>
-<li>初始化命令层</li>
-<li>以秒为单位等待指定的时间</li>
-<li>生成一个1位（二维）图案</li>
-<li>生成一个8位（灰度）图案</li>
-<li>填充数组<code>s_PatternSets 中的 DLPC34XX_INT_PAT_PatternSet_s</code>结构</li>
-<li>填充数组<code>s_PatternOrderTable 中的 DLPC34XX_INT_PAT_PatternOrderTableEntry_s</code>结构</li>
-<li>将数据复制到 Flash 编程缓冲区以便后续写入</li>
-<li>将缓冲区数据编程到 Flash 中</li>
-<li>将数据写入文件</li>
-<li>生成图案数据并写入到文件</li>
-<li>缓存图案数据并编程到 Flash 中</li>
-<li>生成和编程图案数据到 Flash 中</li>
-<li>从 Flash 中加载图案顺序表条目</li>
-<li>加载特定的图案顺序表条目</li>
-<li>写入测试图案网格线</li>
-<li>写入测试图案色条</li>
-<li>写入选定视图外观（Look）</li>
-<li>加载预构建的模式数据</li>
-<li>写入 LABB 和 CAIC 设置</li>
-<li>加载固件</li>
-</ul>
-<h1 id="过程记录"><a href="#过程记录" class="headerlink" title="过程记录"></a>过程记录</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">unsigned int WriteI2C(uint16_t WriteDataLength, uint8_t *WriteData, DLPC_COMMON_CommandProtocolData_s *ProtocolData) &#123;</span><br><span class="line">    // 实现写入 I2C 设备的逻辑</span><br><span class="line">    // ...</span><br><span class="line">    return SUCCESS; // 或者在出错时返回错误代码</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 假设您有一个函数接受一个回调函数指针</span><br><span class="line">void ExecuteWriteOperation(DLPC_COMMON_WriteCommandCallback callback) &#123;</span><br><span class="line">    // ...</span><br><span class="line">    unsigned int result = callback(WriteDataLength, WriteData, &amp;ProtocolData);</span><br><span class="line">    // ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 在调用 ExecuteWriteOperation 时，您可以传递 WriteI2C 函数</span><br><span class="line">ExecuteWriteOperation(WriteI2C);</span><br></pre></td></tr></table></figure>
-<p>在这个例子中，ExecuteWriteOperation 函数接受一个类型为 DLPC_COMMON_WriteCommandCallback 的回调函数，并在内部调用它。这样，您可以将不同的写入操作作为回调传递给 ExecuteWriteOperation，而不需要修改其内部实现。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(gdb) ptype DLPC_COMMON_WriteCommandCallback</span><br><span class="line">type = unsigned int (*)(uint16_t, uint8_t *, DLPC_COMMON_CommandProtocolData_s *)</span><br></pre></td></tr></table></figure>
-<ul>
-<li>函数指针：定义回调函数，可以在不同的上下文中被调用。抽象特定的行为，使得代码更加模块化和可重用。</li>
-<li>返回类型：unsigned int</li>
-<li>参数列表：<ul>
-<li>uint16_t：无符号的16位整数</li>
-<li>uint8_t *：指向无符号8位的整数的指针参数，数据缓冲区</li>
-<li>DLPC_COMMON_CommandProtocolData_s *：指向结构体的指针，协议相关</li>
-</ul>
-</li>
-</ul>
-<p>当光机接入或者没有接入USB的时候均出现：Status &#x3D; CY_ERROR_REQUEST_FAILED, NumDevices &#x3D; 0 ‘\000’</p>
-<ul>
-<li>CY_ERROR_REQUEST_FAILED：发送到 USB Serial 设备的请求失败</li>
-<li>表明函数 CyGetListofDevices 没有成功地找到任何连接的设备</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">zhm@Ubuntu:~/Jetson/StructLight/CyUSBSerial_SDK_Linux/linux/library$ lsusb</span><br><span class="line">Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub</span><br><span class="line">Bus 001 Device 002: ID 0bda:8771 Realtek Semiconductor Corp. Bluetooth Radio</span><br><span class="line">Bus 001 Device 003: ID 0000:3825   USB OPTICAL MOUSE</span><br><span class="line">Bus 001 Device 004: ID 1c4f:0026 SiGma Micro Keyboard</span><br><span class="line">Bus 001 Device 005: ID 05e3:0608 Genesys Logic, Inc. Hub</span><br><span class="line">Bus 001 Device 018: ID 04b4:000a Cypress Semiconductor Corp. USB-Serial (Dual Channel)</span><br><span class="line">Bus 002 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub</span><br></pre></td></tr></table></figure>
-<p>说明Cypress USB-Serial设备已经被系统识别，并且分配了设备ID 04b4:000a</p>
-<p>驱动程序：libusb-1.0库（需要测试它能不能用）<br>经过测试，是可以用的。</p>
-<p>使用sudo apt-get install <package>的时候，出现无法命中等问题，换源之后问题依然没有解决，可以尝试使用下面的方法。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1. sudo vim /etc/resolv.conf # 添加如下内容</span><br><span class="line">nameserver 8.8.8.8</span><br><span class="line">nameserver 8.8.4.4</span><br><span class="line">nameserver 127.0.0.1</span><br><span class="line"></span><br><span class="line">2. 输入Esc，:wq，保存并退出</span><br></pre></td></tr></table></figure>
-
-<h1 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h1><p><code>InitConnectionAndCommandLayer();</code>出现错误，函数内部为：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 初始化命令层，设置读/写缓冲区和回调函数。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">InitConnectionAndCommandLayer</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 初始化命令库，设置读/写缓冲区和对应的 I2C 读写函数</span></span><br><span class="line">    DLPC_COMMON_InitCommandLibrary(s_WriteBuffer,</span><br><span class="line">                                   <span class="keyword">sizeof</span>(s_WriteBuffer),</span><br><span class="line">                                   s_ReadBuffer,</span><br><span class="line">                                   <span class="keyword">sizeof</span>(s_ReadBuffer),</span><br><span class="line">                                   WriteI2C,</span><br><span class="line">                                   ReadI2C);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 连接到 Cypress I2C</span></span><br><span class="line">    CYPRESS_I2C_ConnectToCyI2C();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><code>CYPRESS_I2C_ConnectToCyI2C();</code>函数内部为，添加<code>printf</code>定位问题出现位置：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">bool</span> <span class="title function_">CYPRESS_I2C_ConnectToCyI2C</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    CY_RETURN_STATUS Status;	</span><br><span class="line">    CY_I2C_CONFIG I2CConfig;</span><br><span class="line">    <span class="keyword">if</span> (GetCyI2CHandle(&amp;s_Handle) == <span class="literal">false</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Get CyI2C Handle Failed!!! \n&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    I2CConfig.frequency      = I2C_CLOCK_FREQUENCY_HZ;</span><br><span class="line">    I2CConfig.slaveAddress   = <span class="number">0x30</span>;</span><br><span class="line">    I2CConfig.isMaster       = <span class="literal">true</span>;</span><br><span class="line">    I2CConfig.isClockStretch = <span class="literal">false</span>;</span><br><span class="line">    </span><br><span class="line">    Status = CySetI2cConfig(s_Handle, &amp;I2CConfig);</span><br><span class="line">    <span class="keyword">if</span> (Status != CY_SUCCESS)</span><br><span class="line">    &#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;Connect to I2C Error %d!!! \n&quot;</span>, Status);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    s_DataConfig.isNakBit     = <span class="literal">true</span>;</span><br><span class="line">    s_DataConfig.isStopBit    = <span class="literal">true</span>;</span><br><span class="line">    s_DataConfig.slaveAddress = DLP_I2C_SLAVE_ADDRESS;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><code>GetCyI2CHandle(&amp;s_Handle)</code>这里出现错误，添加<code>printf</code>定位问题，函数内部为：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* Gets the handle of the connected Cypress USB-Serial bridge controller */</span></span><br><span class="line"><span class="type">bool</span> <span class="title function_">GetCyI2CHandle</span><span class="params">(CY_HANDLE* Handle)</span></span><br><span class="line">&#123;</span><br><span class="line">    CY_RETURN_STATUS Status;</span><br><span class="line">    CY_DEVICE_INFO   DeviceInfo;</span><br><span class="line">    <span class="type">uint8_t</span>          NumDevices = <span class="number">0</span>;</span><br><span class="line">    <span class="type">uint8_t</span>          DeviceIdx;</span><br><span class="line">    <span class="type">uint8_t</span>          InterfaceIdx;</span><br><span class="line"></span><br><span class="line">    Status = CyGetListofDevices(&amp;NumDevices);</span><br><span class="line">    <span class="keyword">if</span> ((Status != CY_SUCCESS) || (NumDevices == <span class="number">0</span>))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Status: %d\n&quot;</span>, Status);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;NumDevices: %d\n&quot;</span>, NumDevices);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;无设备连接成功,没有设备连接!!!\n&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (DeviceIdx = <span class="number">0</span>; DeviceIdx &lt; NumDevices; DeviceIdx++)</span><br><span class="line">    &#123;</span><br><span class="line">        Status = CyGetDeviceInfo(DeviceIdx, &amp;DeviceInfo);</span><br><span class="line">        <span class="keyword">if</span> (Status != CY_SUCCESS)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (InterfaceIdx = <span class="number">0</span>; InterfaceIdx &lt; DeviceInfo.numInterfaces; InterfaceIdx++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (DeviceInfo.deviceType[InterfaceIdx] == CY_TYPE_I2C)</span><br><span class="line">            &#123;</span><br><span class="line">                Status = CyOpen(DeviceIdx, InterfaceIdx, Handle);</span><br><span class="line">                <span class="keyword">if</span> (Status == CY_SUCCESS)</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;Get I2C Handle Error %d!!! \n&quot;</span>, Status);</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>使用gdb定位到<code>Status = CyGetListofDevices(&amp;NumDevices);</code>，Status输出为<code>CY_ERROR_REQUEST_FAILED</code>，定位到<code>CyGetListofDevices(&amp;NumDevices);</code>：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">   Summary</span></span><br><span class="line"><span class="comment">   This API retrieves number of USB devices connected to the host.</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">   Description</span></span><br><span class="line"><span class="comment">   This API retrieves the number of devices connected to the host.</span></span><br><span class="line"><span class="comment">   In Windows family of operating systems the API retrieves only the number of devices that are attached</span></span><br><span class="line"><span class="comment">   to CyUSB3.SYS driver. For other operating systems, it retrieves the total number of USB devices present</span></span><br><span class="line"><span class="comment">   on the bus. It includes both USB Serial device as well as other devices.</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">   Note: In case of Linux and Mac apart from providing number of devices connected, it builds the</span></span><br><span class="line"><span class="comment">   device list which is used for opening the device and obtaining device handle. Thus the API should be</span></span><br><span class="line"><span class="comment">   called during device discovery in the application.</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">   Return Value</span></span><br><span class="line"><span class="comment">   * CY_SUCCESS on success </span></span><br><span class="line"><span class="comment">   * CY_ERROR_DEVICE_NOT_FOUND if there are no devices attached.</span></span><br><span class="line"><span class="comment">   * CY_ERROR_REQUEST_FAILED if library was not initialized.</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">   See Also</span></span><br><span class="line"><span class="comment">   * CyGetDeviceInfo</span></span><br><span class="line"><span class="comment">   * CyGetDeviceInfoVidPid</span></span><br><span class="line"><span class="comment">   * CyOpen</span></span><br><span class="line"><span class="comment">   * CyClose</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">CYWINEXPORT CY_RETURN_STATUS <span class="title function_">CyGetListofDevices</span> <span class="params">(</span></span><br><span class="line"><span class="params">    UINT8* numDevices                            <span class="comment">/*Number of Devices connected*/</span></span></span><br><span class="line"><span class="params">    )</span>;</span><br></pre></td></tr></table></figure>
-<p>定位到这里<code>CY_ERROR_REQUEST_FAILED if library was not initialized.</code>出现的原因是，因为library没有初始化。修改<code>GetCyI2CHandle(CY_HANDLE* Handle)</code>代码，添加初始化函数：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">bool</span> <span class="title function_">GetCyI2CHandle</span><span class="params">(CY_HANDLE* Handle)</span></span><br><span class="line">&#123;</span><br><span class="line">    CY_RETURN_STATUS Status;</span><br><span class="line">    CY_DEVICE_INFO   DeviceInfo;</span><br><span class="line">    <span class="type">uint8_t</span>          NumDevices = <span class="number">0</span>;</span><br><span class="line">    <span class="type">uint8_t</span>          DeviceIdx;</span><br><span class="line">    <span class="type">uint8_t</span>          InterfaceIdx;</span><br><span class="line"></span><br><span class="line">    Status = CyLibraryInit();</span><br><span class="line">    <span class="keyword">if</span> (Status != CY_SUCCESS) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%d 设备初始化失败!!!\n&quot;</span>, Status);</span><br><span class="line">    &#125;</span><br><span class="line">    Status = CyGetListofDevices(&amp;NumDevices);</span><br><span class="line">    <span class="keyword">if</span> ((Status != CY_SUCCESS) || (NumDevices == <span class="number">0</span>))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Status: %d\n&quot;</span>, Status);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;NumDevices: %d\n&quot;</span>, NumDevices);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;无设备连接成功,没有设备连接!!!\n&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (DeviceIdx = <span class="number">0</span>; DeviceIdx &lt; NumDevices; DeviceIdx++)</span><br><span class="line">    &#123;</span><br><span class="line">        Status = CyGetDeviceInfo(DeviceIdx, &amp;DeviceInfo);</span><br><span class="line">        <span class="keyword">if</span> (Status != CY_SUCCESS)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (InterfaceIdx = <span class="number">0</span>; InterfaceIdx &lt; DeviceInfo.numInterfaces; InterfaceIdx++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (DeviceInfo.deviceType[InterfaceIdx] == CY_TYPE_I2C)</span><br><span class="line">            &#123;</span><br><span class="line">                Status = CyOpen(DeviceIdx, InterfaceIdx, Handle);</span><br><span class="line">                <span class="keyword">if</span> (Status == CY_SUCCESS)</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;Get I2C Handle Error %d!!! \n&quot;</span>, Status);</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>问题解决。</p>
-<p>总结：<br>1、首先是单独测试USB驱动程序能不能用，写了一个单独测试USB的程序，可以正常运行。<br>2、检查PC机有没有连接到光机设备，可以使用<code>lsusb</code>指令。光机是连接到PC机上的。<br>3、检查程序有没有问题。<code>printf</code>和<code>gdb</code>定位问题。</p>
-]]></content>
-      <categories>
-        <category>嵌入式结构光三维重建项目</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Ubuntu24.04 install opencv</title>
-    <url>/2024/11/17/StructLight/Ubuntu24.04%20install%20opencv/</url>
-    <content><![CDATA[<ol>
-<li><a href="https://opencv.org/releases/">opencv</a>官网下载opencv-4.10.0的source文件并解压</li>
-<li>下载<a href="">opencv_contrib</a>并解压，将opencv_contrib移动到opencv的文件夹中</li>
-<li>安装依赖项</li>
-</ol>
-<span id="more"></span>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt-get install build-essential</span><br><span class="line"><span class="built_in">sudo</span> apt-get install cmake git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev</span><br><span class="line"><span class="built_in">sudo</span> apt-get install python-dev python-numpy libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libjasper-dev libdc1394-22-dev</span><br></pre></td></tr></table></figure>
-<p>4.编译并安装</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local -D WITH_TBB=ON -D BUILD_SHARED_LIBS=OFF -D WITH_OPENMP=ON -D ENABLE_PRECOMPILED_HEADERS=OFF ..</span><br><span class="line"></span><br><span class="line">$ make -j8</span><br><span class="line">$ <span class="built_in">sudo</span> make install</span><br></pre></td></tr></table></figure>
-<p>5.测试代码<br>编写测试代码</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;opencv2/opencv.hpp&gt;</span></span></span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc,<span class="type">char</span> **argv)</span></span>&#123;</span><br><span class="line">    <span class="function">cv::Mat <span class="title">src</span><span class="params">(<span class="number">300</span>,<span class="number">500</span>,CV_8UC3,cv::Scalar::all(<span class="number">255</span>))</span></span>;</span><br><span class="line">    cv::<span class="built_in">imshow</span>(<span class="string">&quot;hello-opencv&quot;</span>,src);</span><br><span class="line">    cv::<span class="built_in">waitKey</span>(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>编写CMakeLists.txt文件</p>
-<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">cmake_minimum_required</span>(VERSION <span class="number">3.0</span>)</span><br><span class="line"><span class="keyword">project</span>(Sample)</span><br><span class="line"><span class="keyword">set</span>(CMAKE_CXX_STANDARD <span class="number">11</span>)</span><br><span class="line"><span class="keyword">set</span>(CMAKE_RUNTIME_OUTPUT_DIRECTORY <span class="variable">$&#123;CMAKE_SOURCE_DIR&#125;</span>)</span><br><span class="line"> </span><br><span class="line"><span class="keyword">find_package</span>(OpenCV REQUIRED)</span><br><span class="line"><span class="keyword">set</span>(OpenCV_LIB_DIR <span class="variable">$&#123;OpenCV_INSTALL_PATH&#125;</span>/lib)</span><br><span class="line"><span class="keyword">message</span>(STATUS <span class="string">&quot;OpenCV版本: $&#123;OpenCV_VERSION&#125;&quot;</span>)</span><br><span class="line"><span class="keyword">message</span>(STATUS <span class="string">&quot;    头文件目录：$&#123;OpenCV_INCLUDE_DIRS&#125;&quot;</span>)</span><br><span class="line"><span class="keyword">message</span>(STATUS <span class="string">&quot;    库文件目录：$&#123;OpenCV_LIB_DIR&#125;&quot;</span>)</span><br><span class="line"><span class="keyword">message</span>(STATUS <span class="string">&quot;    库文件列表：$&#123;OpenCV_LIBS&#125;&quot;</span>)</span><br><span class="line"><span class="keyword">include_directories</span>(<span class="variable">$&#123;OpenCV_INCLUDE_DIRS&#125;</span>)</span><br><span class="line"><span class="keyword">link_directories</span>(<span class="variable">$&#123;OpenCV_LIB_DIR&#125;</span>)</span><br><span class="line"><span class="keyword">add_executable</span>(main main.cpp)</span><br><span class="line"><span class="keyword">target_link_libraries</span>(main <span class="variable">$&#123;OpenCV_LIBS&#125;</span>)</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>project</category>
-      </categories>
-  </entry>
-  <entry>
     <title>多线程基础</title>
-    <url>/2024/11/07/OS/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%9F%BA%E7%A1%80/</url>
+    <url>/2024/11/07/OperatingSystem/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%9F%BA%E7%A1%80/</url>
     <content><![CDATA[<p>并发</p>
 <ol>
 <li>多线程</li>
@@ -3136,206 +3415,67 @@
       </categories>
   </entry>
   <entry>
-    <title>Git分支管理Hexo</title>
-    <url>/2024/09/02/blog/Git%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86Hexo/</url>
-    <content><![CDATA[<h1 id="1-本地初始电脑"><a href="#1-本地初始电脑" class="headerlink" title="1.本地初始电脑"></a>1.本地初始电脑</h1><p>1.初始化Git仓库</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> blog</span><br><span class="line">$ git init  <span class="comment"># 创建.git子目录</span></span><br></pre></td></tr></table></figure>
-<span id="more"></span>
-<p>2.添加远程仓库</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git remote add origin git@github.com:yourname/yourname.github.io.git</span><br></pre></td></tr></table></figure>
+    <title>google benchmark 1</title>
+    <url>/2024/12/17/benchmark/googleBM1/</url>
+    <content><![CDATA[<h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> apt install g++ cmake</span><br><span class="line">git <span class="built_in">clone</span> https://github.com/google/benchmark.git</span><br><span class="line">git <span class="built_in">clone</span> https://github.com/google/googletest.git benchmark/googletest</span><br><span class="line"><span class="built_in">mkdir</span> build &amp;&amp; <span class="built_in">cd</span> build</span><br><span class="line">cmake -DCMAKE_BUILD_TYPE=RELEASE ../benchmark</span><br><span class="line">make -j4</span><br><span class="line"><span class="built_in">sudo</span> make install</span><br></pre></td></tr></table></figure>
 
-<p>3.拉取远端仓库所有内容及分支</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git fetch origin</span><br></pre></td></tr></table></figure>
-
-<p>5.新建分支</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git checkout -b master</span><br></pre></td></tr></table></figure>
-
-<p>4.在<code>./source/_post/</code>中添加.md博客并生成</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo clean</span><br><span class="line">$ hexo g</span><br><span class="line">$ hexo d</span><br></pre></td></tr></table></figure>
-
-<p>5.将本地仓库推送至远端</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git push origin master</span><br></pre></td></tr></table></figure>
-
-<h1 id="2-其他电脑"><a href="#2-其他电脑" class="headerlink" title="2.其他电脑"></a>2.其他电脑</h1><p>1.安装Node.js</p>
-<p>2.拉取远端仓库并进入文件夹</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span> git@github.com:yourname/yourname.github.io.git blogname</span><br><span class="line">$ <span class="built_in">cd</span> blogname</span><br></pre></td></tr></table></figure>
-
-<p>3.拉取远端仓库分支并切换至master分支（默认分支是main，master分支是自己建的）</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git fetch origin</span><br><span class="line">$ git checkout master</span><br></pre></td></tr></table></figure>
-
-<p>4.安装Hexo及相关依赖</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm install hexo	<span class="comment"># 安装hexo</span></span><br><span class="line">$ npm install hexo-cli -g <span class="comment"># 重新安装(如果上述安装不起作用）</span></span><br><span class="line">$ npm install	<span class="comment"># 安装依赖</span></span><br></pre></td></tr></table></figure>
-
-<p>5.安装<code>deploy-git</code></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
-
-<p>6.在<code>./source/_post/</code>中添加.md博客并生成</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo clean</span><br><span class="line">$ hexo g</span><br><span class="line">$ hexo d</span><br></pre></td></tr></table></figure>
-
-<p>8.将本地仓库推送至远端</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git push origin master</span><br></pre></td></tr></table></figure>
-
-<h1 id="3-更换主题"><a href="#3-更换主题" class="headerlink" title="3.更换主题"></a>3.更换主题</h1><p>1.进入<code>./themes</code>文件夹</p>
-<p>2.github上clone喜欢的主题</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span> git@github.com:xxx/xxx.git file-name</span><br></pre></td></tr></table></figure>
-
-<p>3.进入<code>file-name</code>文件夹</p>
-<p>4.删除.git文件夹</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">rm</span> -r .git</span><br></pre></td></tr></table></figure>
-
-<p>5.修改最外层目录下的<code>_config.yml</code>文件<br>theme: file-name</p>
-<p>6.修改.gitignore文件（或者把里面内容删掉也行）</p>
-<p>7.将本地仓库推送至远端</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git add .</span><br><span class="line">$ git commit -m &quot;add theme&quot;</span><br><span class="line">$ git push origin master</span><br></pre></td></tr></table></figure>
-
-<p>ps.修改好主题之后，主题配置在<code>file-name</code>文件夹中的<code>_config.yml</code>中进行配置。</p>
-<h1 id="4-说明"><a href="#4-说明" class="headerlink" title="4.说明"></a>4.说明</h1><p><code>main</code>分支用来部署博客：当执行<code>hexo d</code>的时候，博客部署在<code>main</code>分支，不需要执行<code>git push origin main</code>，因为<code>hexo d</code>指令已经将相应的<code>html</code>文件推送到远端服务器的<code>main</code>分支上了。<br><code>master</code>分支用来存储文件：比如<code>.md</code>文件，存放在<code>./source/_post</code>文件夹中，最后需要手动执行<code>git push origin master</code>。</p>
-]]></content>
-      <categories>
-        <category>个人博客</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Hexo搭建个人博客</title>
-    <url>/2024/09/02/blog/Hexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
-    <content><![CDATA[<h1 id="1-前置条件"><a href="#1-前置条件" class="headerlink" title="1.前置条件"></a>1.前置条件</h1><ul>
-<li><a href="https://nodejs.org/en/download/package-manager/current">Node.js</a></li>
-<li><a href="https://git-scm.com/">git</a></li>
-<li>Github Pages<span id="more"></span></li>
-</ul>
-<h1 id="2-安装Node-js"><a href="#2-安装Node-js" class="headerlink" title="2.安装Node.js"></a>2.安装Node.js</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># installs nvm (Node Version Manager)</span></span><br><span class="line">$ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash</span><br><span class="line"></span><br><span class="line"><span class="comment"># download and install Node.js (you may need to restart the terminal)</span></span><br><span class="line">$ nvm install 22</span><br><span class="line"></span><br><span class="line"><span class="comment"># verifies the right Node.js version is in the environment</span></span><br><span class="line">$ node -v <span class="comment"># should print `v22.6.0`</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># verifies the right npm version is in the environment</span></span><br><span class="line">$ npm -v <span class="comment"># should print `10.8.2`</span></span><br></pre></td></tr></table></figure>
-
-<h1 id="3-本地运行Hexo"><a href="#3-本地运行Hexo" class="headerlink" title="3.本地运行Hexo"></a>3.本地运行Hexo</h1><h2 id="安装Hexo"><a href="#安装Hexo" class="headerlink" title="安装Hexo"></a>安装Hexo</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">mkdir</span> blog</span><br><span class="line">$ <span class="built_in">cd</span> blog</span><br><span class="line">$ npm install -g hexo-cli   <span class="comment"># 安装hexo</span></span><br><span class="line">$ hexo init                 <span class="comment"># 初始化hexo</span></span><br><span class="line">$ hexo install              <span class="comment"># 安装需要的包</span></span><br></pre></td></tr></table></figure>
-<p>初始化完成后项目文件夹如下所示：<br>.<br>├── _config.yml<br>├── package.json<br>├── scaffolds<br>├── source<br>|   ├── _drafts<br>|   └── _posts<br>└── themes          </p>
-<h2 id="Hexo的用法"><a href="#Hexo的用法" class="headerlink" title="Hexo的用法"></a>Hexo的用法</h2><ul>
-<li>启动内置预览服务（默认端口4000）  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo s    <span class="comment"># hexo serve</span></span><br></pre></td></tr></table></figure></li>
-<li>生成网站  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo g    <span class="comment"># hexo generate</span></span><br></pre></td></tr></table></figure></li>
-<li>部署到Github Pages上（部署之前需要配置）  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo d    <span class="comment"># hexo deploy</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成并部署，省去hexo g</span></span><br><span class="line">$ hexo d -g</span><br></pre></td></tr></table></figure></li>
-<li>#清除缓存文件db.json和已生成的静态文件 public  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo c    <span class="comment"># hexo clean</span></span><br></pre></td></tr></table></figure></li>
-<li>创建博客  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 创建完成后博客的.md文件存储在`./source/_post/`中</span></span><br><span class="line">$ hexo new <span class="string">&quot;blog name&quot;</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-<h1 id="3-配置"><a href="#3-配置" class="headerlink" title="3.配置"></a>3.配置</h1><p>_config.yml</p>
-<ul>
-<li>title : 网站标题</li>
-<li>subtitle : 副标题</li>
-<li>description : 网站描述</li>
-<li>keywords : 网站关键词</li>
-<li>author : 作者</li>
-<li>language : 语言</li>
-<li>timezone : 时区</li>
-</ul>
-<p>以上设置会出现在meta里。</p>
-<ul>
-<li>url : 网址</li>
-<li>root : 网站根目录</li>
-<li>permalink : 永久链接格式，比如year&#x2F;:month&#x2F;:day&#x2F;:title&#x2F;</li>
-<li>source_dir : 源文件夹，默认source</li>
-<li>public_dir : 生成的网站文件夹</li>
-<li>theme : 主题</li>
-</ul>
-<p>官网关于配置的描述：<a href="https://hexo.io/zh-cn/docs/configuration">https://hexo.io/zh-cn/docs/configuration</a></p>
-<h1 id="4-部署到Github-Pages"><a href="#4-部署到Github-Pages" class="headerlink" title="4.部署到Github Pages"></a>4.部署到Github Pages</h1><p>0.配置github的SSH<br>1.创建repo:git@github:yourname&#x2F;yourname.github.io.git<br>2.修改配置文件<code>_config.yml</code></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repo: git@github.com:yourname/yourname.github.io.git</span><br><span class="line">  branch: main</span><br></pre></td></tr></table></figure>
-<p>4.安装<code>deploy-git</code></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm  install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
-
-<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ul>
-<li><a href="https://hexo.io/docs/">Hexo官网</a></li>
-<li><a href="https://www.luogu.com.cn/article/vglpq15p">从零搭建 Hexo + Github 博客</a></li>
-<li><a href="https://note.tonycrane.cc/cs/tools/hexo/">Hexo 使用记录</a></li>
-<li><a href="https://hexo.io/zh-cn/docs/writing">Hexo写作</a></li>
-<li><a href="https://github.com/ppoffice/hexo-theme-icarus">主题</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>个人博客</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Anaconda</title>
-    <url>/2024/10/31/Other/Anaconda/</url>
-    <content><![CDATA[<span id="more"></span>
-<h1 id="常用指令"><a href="#常用指令" class="headerlink" title="常用指令"></a>常用指令</h1><h2 id="命令行窗口"><a href="#命令行窗口" class="headerlink" title="命令行窗口"></a>命令行窗口</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 查看版本号</span><br><span class="line">&gt; conda --version</span><br><span class="line"></span><br><span class="line"># 查看目前的镜像</span><br><span class="line">&gt; conda config </span><br><span class="line"></span><br><span class="line"># 添加路径</span><br><span class="line">&gt; conda config --add channels http://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/</span><br><span class="line">&gt; conda config –-add channels http://mirrors.ustc.edu.cn/anaconda/pkgs/free/</span><br><span class="line">&gt; conda config --add channels http://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/conda-forge/</span><br><span class="line">&gt; conda config --set show_channel_urls yes</span><br><span class="line"></span><br><span class="line"># 升级工具包</span><br><span class="line">&gt; conda upgrade --all</span><br></pre></td></tr></table></figure>
-
-<h2 id="Anaconda-Prompt"><a href="#Anaconda-Prompt" class="headerlink" title="Anaconda Prompt"></a>Anaconda Prompt</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 创建虚拟环境</span><br><span class="line">&gt; conda create -n &lt;env-name&gt; python=3.6</span><br><span class="line"></span><br><span class="line"># 列出所有可用的conda环境</span><br><span class="line">&gt; conda info --envs</span><br><span class="line"></span><br><span class="line"># 进入虚拟环境</span><br><span class="line">&gt; activate &lt;env-name&gt;</span><br><span class="line"></span><br><span class="line"># 退出虚拟环境</span><br><span class="line">&gt; deactivate</span><br><span class="line"></span><br><span class="line"># 安装package</span><br><span class="line">&gt; conda install &lt;package-name&gt;</span><br><span class="line"></span><br><span class="line"># 查看当前环境下安装的packages</span><br><span class="line">&gt; conda list</span><br><span class="line"></span><br><span class="line"># 安装package</span><br><span class="line">&gt; pip install -i http://pypi.tuna.tsinghua.edu.cn/simple --trusted-host pypi.tuna.tsinghua.edu.cn  matplotlib</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h2 id="ps"><a href="#ps" class="headerlink" title="ps"></a>ps</h2><p>Anaconda Prompt可以看作是命令行窗口（CMD）的增强版，专门为Anaconda用户设计，以支持Python开发和数据科学工作。</p>
-<ul>
-<li>Anaconda Prompt完全兼容CMD中的所有命令。</li>
-<li>Anaconda Prompt提供了conda命令，用于管理Anaconda环境和包。</li>
-<li>Anaconda Prompt预装了许多数据科学和机器学习相关的库</li>
-<li>Anaconda Prompt允许用户创建、激活和删除不同的Python环境（称为conda环境）</li>
-</ul>
-<h1 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h1><p><a href="https://blog.csdn.net/Inochigohan/article/details/120400990">anaconda安装</a><br><a href="https://blog.csdn.net/qq_39220334/article/details/121961742">清华镜像源</a><br><a href="https://www.cnblogs.com/lab-zj/p/16975410.html">conda常用命令</a><br><a href="https://blog.csdn.net/JineD/article/details/124774570">pip安装package</a></p>
-]]></content>
-      <categories>
-        <category>机器学习</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>hosts</title>
-    <url>/2024/09/20/Other/hosts/</url>
-    <content><![CDATA[<p>在Ubuntu上安装nvm遇到：curl: (28) Failed to connect to raw.githubusercontent.com port 443: Connection timed out [closed]<br>1.打开<code>/etc/hosts</code></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> vim /etc/hosts</span><br></pre></td></tr></table></figure>
-<span id="more"></span>
-<p>2.查询可用IP<br>使用<a href="https://www.ipaddress.com/website/">ipaddress</a>网站查询<code>github.com</code>,<code>ssh.github.com</code>,<code>raw.githubusercontent.com</code>网站的可用IP</p>
-<p>3.在末尾添加以下IP地址</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">140.82.114.3  github.com</span><br><span class="line">140.82.113.36  ssh.github.com</span><br><span class="line">199.232.68.133 raw.githubusercontent.com</span><br></pre></td></tr></table></figure>
-
-<p>4.保存文件并退出</p>
-<p>5.可以使用ping查看域名是否有received</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ ping 199.232.68.133</span><br><span class="line">PING 199.232.68.133 (199.232.68.133) 56(84) bytes of data.</span><br><span class="line">64 bytes from 199.232.68.133: icmp_seq=1 ttl=43 time=234 ms</span><br><span class="line">64 bytes from 199.232.68.133: icmp_seq=2 ttl=43 time=234 ms</span><br><span class="line">64 bytes from 199.232.68.133: icmp_seq=3 ttl=43 time=234 ms</span><br><span class="line">64 bytes from 199.232.68.133: icmp_seq=4 ttl=43 time=233 ms</span><br><span class="line">^C</span><br><span class="line">--- 199.232.68.133 ping statistics ---</span><br><span class="line">4 packets transmitted, 4 received, 0% packet loss, time 3004ms</span><br><span class="line">rtt min/avg/max/mdev = 233.337/233.849/234.302/0.421 ms</span><br></pre></td></tr></table></figure>
-
-<p><strong>ps.为什么要这样做呢??? hosts是什么配置文件呢???</strong><br><strong>hosts文件是什么？</strong><br>在Linux系统中，<code>/etc/hosts</code>文件是一个本地的DNS解析文件，用于将IP地址和主机名映射起来。当你访问某个域名时，系统会首先检查这个文件，如果在这里找到了对应的IP地址，就会直接使用，而不再通过外部DNS服务器查询。<br><strong>为什么要这么做？</strong><br>这是将GitHub相关的域名（如 github.com、ssh.github.com 和 raw.githubusercontent.com）手动映射到指定的IP地址。这么做的目的通常有以下几种可能：</p>
-<ul>
-<li>解决访问问题：有时候由于DNS解析缓慢或者网络封锁，GitHub相关服务的域名可能会无法访问，通过手动在&#x2F;etc&#x2F;hosts中添加这些映射，可以直接访问指定的IP，绕过DNS解析。</li>
-<li>加快访问速度：如果你已经知道某个域名的IP地址，手动添加可以减少系统查询外部DNS的时间，从而提升访问速度。</li>
-<li>绕过DNS劫持：在某些情况下，网络服务提供商或某些恶意软件可能会劫持DNS请求，将你引导到错误的网站，通过手动配置IP可以避免这种情况。</li>
-</ul>
-<p>IP地址可能会随着时间变化，所以如果GitHub更新了服务器的IP地址，而你还在使用旧的配置，可能会导致访问失败。</p>
-]]></content>
-      <categories>
-        <category>PC</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>双系统</title>
-    <url>/2024/09/02/Other/%E9%87%8D%E8%A3%85%E7%B3%BB%E7%BB%9F/</url>
-    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>1.重装了Windows10专业版系统<br>2.增加了Ubuntu24.04双系统</p>
 <span id="more"></span>
 
-<h1 id="重装系统-Windows"><a href="#重装系统-Windows" class="headerlink" title="重装系统-Windows"></a>重装系统-Windows</h1><h2 id="1-准备工作"><a href="#1-准备工作" class="headerlink" title="1.准备工作"></a>1.准备工作</h2><ul>
-<li><a href="https://www.wepe.com.cn/">制作系统盘</a></li>
-<li><a href="https://msdn.itellyou.cn/">下载Windows10光盘映像 consumer editions</a></li>
+<h1 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h1><h2 id="测试代码"><a href="#测试代码" class="headerlink" title="测试代码"></a>测试代码</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;benchmark/benchmark.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;array&gt;</span></span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">constexpr</span> <span class="type">int</span> len = <span class="number">6</span>;</span><br><span class="line"> </span><br><span class="line"><span class="comment">// constexpr function具有inline属性，你应该把它放在头文件中</span></span><br><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="keyword">auto</span> <span class="title">my_pow</span><span class="params">(<span class="type">const</span> <span class="type">int</span> i)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> i * i;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="comment">// 使用operator[]读取元素，依次存入1-6的平方</span></span><br><span class="line"><span class="function"><span class="type">static</span> <span class="type">void</span> <span class="title">bench_array_operator</span><span class="params">(benchmark::State&amp; state)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    std::array&lt;<span class="type">int</span>, len&gt; arr;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">int</span> i = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> _: state) &#123;</span><br><span class="line">        arr[<span class="number">0</span>] = <span class="built_in">my_pow</span>(i);</span><br><span class="line">        arr[<span class="number">1</span>] = <span class="built_in">my_pow</span>(i<span class="number">+1</span>);</span><br><span class="line">        arr[<span class="number">2</span>] = <span class="built_in">my_pow</span>(i<span class="number">+2</span>);</span><br><span class="line">        arr[<span class="number">3</span>] = <span class="built_in">my_pow</span>(i<span class="number">+3</span>);</span><br><span class="line">        arr[<span class="number">4</span>] = <span class="built_in">my_pow</span>(i<span class="number">+4</span>);</span><br><span class="line">        arr[<span class="number">5</span>] = <span class="built_in">my_pow</span>(i<span class="number">+5</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">BENCHMARK</span>(bench_array_operator);</span><br><span class="line"> </span><br><span class="line"><span class="comment">// 使用at()读取元素，依次存入1-6的平方</span></span><br><span class="line"><span class="function"><span class="type">static</span> <span class="type">void</span> <span class="title">bench_array_at</span><span class="params">(benchmark::State&amp; state)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    std::array&lt;<span class="type">int</span>, len&gt; arr;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">int</span> i = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> _: state) &#123;</span><br><span class="line">        arr.<span class="built_in">at</span>(<span class="number">0</span>) = <span class="built_in">my_pow</span>(i);</span><br><span class="line">        arr.<span class="built_in">at</span>(<span class="number">1</span>) = <span class="built_in">my_pow</span>(i<span class="number">+1</span>);</span><br><span class="line">        arr.<span class="built_in">at</span>(<span class="number">2</span>) = <span class="built_in">my_pow</span>(i<span class="number">+2</span>);</span><br><span class="line">        arr.<span class="built_in">at</span>(<span class="number">3</span>) = <span class="built_in">my_pow</span>(i<span class="number">+3</span>);</span><br><span class="line">        arr.<span class="built_in">at</span>(<span class="number">4</span>) = <span class="built_in">my_pow</span>(i<span class="number">+4</span>);</span><br><span class="line">        arr.<span class="built_in">at</span>(<span class="number">5</span>) = <span class="built_in">my_pow</span>(i<span class="number">+5</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">BENCHMARK</span>(bench_array_at);</span><br><span class="line"> </span><br><span class="line"><span class="comment">// std::get&lt;&gt;(array)是一个constexpr function，它会返回容器内元素的引用，并在编译期检查数组的索引是否正确</span></span><br><span class="line"><span class="function"><span class="type">static</span> <span class="type">void</span> <span class="title">bench_array_get</span><span class="params">(benchmark::State&amp; state)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    std::array&lt;<span class="type">int</span>, len&gt; arr;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">int</span> i = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> _: state) &#123;</span><br><span class="line">        std::<span class="built_in">get</span>&lt;<span class="number">0</span>&gt;(arr) = <span class="built_in">my_pow</span>(i);</span><br><span class="line">        std::<span class="built_in">get</span>&lt;<span class="number">1</span>&gt;(arr) = <span class="built_in">my_pow</span>(i<span class="number">+1</span>);</span><br><span class="line">        std::<span class="built_in">get</span>&lt;<span class="number">2</span>&gt;(arr) = <span class="built_in">my_pow</span>(i<span class="number">+2</span>);</span><br><span class="line">        std::<span class="built_in">get</span>&lt;<span class="number">3</span>&gt;(arr) = <span class="built_in">my_pow</span>(i<span class="number">+3</span>);</span><br><span class="line">        std::<span class="built_in">get</span>&lt;<span class="number">4</span>&gt;(arr) = <span class="built_in">my_pow</span>(i<span class="number">+4</span>);</span><br><span class="line">        std::<span class="built_in">get</span>&lt;<span class="number">5</span>&gt;(arr) = <span class="built_in">my_pow</span>(i<span class="number">+5</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">BENCHMARK</span>(bench_array_get);</span><br><span class="line"> </span><br><span class="line"><span class="built_in">BENCHMARK_MAIN</span>();</span><br></pre></td></tr></table></figure>
+
+<p>上述代码使用Google Benchmark库对 C++ 中访问和更新 <code>std::array</code> 元素的不同方法进行性能测试。</p>
+<ol>
+<li>基准测试函数：<ul>
+<li><code>bench_array_operator</code>：使用operator[]访问和更新数组</li>
+<li><code>bench_array_at</code>：使用arr.at()方法访问和更新数组</li>
+<li><code>bench_array_get</code>：使用std::get&lt;&gt;模板函数访问和更新数组</li>
 </ul>
-<h2 id="2-主板型号"><a href="#2-主板型号" class="headerlink" title="2.主板型号"></a>2.主板型号</h2><p>根据主板型号，搜索对应品牌进入BIOS方法。获取主板型号的方法：<br>1.进入Windows PowerShell<br>2.运行指令：msinfo32</p>
-<h2 id="3-分区格式"><a href="#3-分区格式" class="headerlink" title="3.分区格式"></a>3.分区格式</h2><p>可以通过<code>硬件管理</code>查看目前磁盘的分区格式。<br>1.进入<code>磁盘管理</code><br>2.右键<code>磁盘0</code>或<code>磁盘1</code> -&gt; 属性 -&gt; 卷<br>3.磁盘分区形式</p>
-<table>
-<thead>
-<tr>
-<th align="center">分区表格式</th>
-<th align="center">启动项</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">MBR</td>
-<td align="center">UEFI</td>
-</tr>
-<tr>
-<td align="center">GPT</td>
-<td align="center">Legacy</td>
-</tr>
-</tbody></table>
-<h2 id="4-进入BOIS"><a href="#4-进入BOIS" class="headerlink" title="4.进入BOIS"></a>4.进入BOIS</h2><p>设置<code>Boot Priority</code>，UEFI:U盘拖到第1优先级</p>
-<h2 id="5-硬盘分区"><a href="#5-硬盘分区" class="headerlink" title="5.硬盘分区"></a>5.硬盘分区</h2><p>电脑有两个以上硬盘，且每个硬盘都作了分区，装系统的时候可能会出错，显示无法创建新的分区。解决方案：<br><strong>方案一</strong>：在分区容量大小的时候，系统盘选择主分区，其他盘取消主分区。<br><strong>方案二</strong>：系统盘分区，另外一个盘不进行分区。等系统安装完成之后再手动分区。</p>
-<h2 id="6-安装驱动"><a href="#6-安装驱动" class="headerlink" title="6.安装驱动"></a>6.安装驱动</h2><p>有些电脑装系统之后，系统自带的集成驱动没有网卡驱动，所以上不了网，比如我这台微星。这个时候就需要借助其他电脑，到微星官网。搜索对应的主板型号，找到技术支持里的驱动安装。选择网卡驱动，下载并保存到U盘里，拷贝到新装系统的电脑上，并解压。<br>设备管理器 -&gt; 其他设备&#x2F;网络适配器 -&gt; 鼠标右键更新驱动 -&gt; 浏览计算机查找驱动软件 -&gt; 找到解压文件夹</p>
-<h2 id="7-NVIDIA显卡驱动"><a href="#7-NVIDIA显卡驱动" class="headerlink" title="7.NVIDIA显卡驱动"></a>7.NVIDIA显卡驱动</h2><p>终端窗口输入命令：nvidia-smi<br>1.<a href="https://www.nvidia.cn/">英伟达官网</a><br>2.Geforce驱动<br>3.选择对应型号无脑安装</p>
-<h1 id="双系统-Ubuntu"><a href="#双系统-Ubuntu" class="headerlink" title="双系统-Ubuntu"></a>双系统-Ubuntu</h1><h2 id="1-Windows系统上创建分区"><a href="#1-Windows系统上创建分区" class="headerlink" title="1.Windows系统上创建分区"></a>1.Windows系统上创建分区</h2><p>磁盘管理 -&gt; 找一个空间比较大的分区（比如新加卷D:）-&gt; 右键 压缩卷（不进行分区，我压缩了512G）</p>
-<h2 id="2-下载Ubuntu光盘映像，制作Ubuntu安装盘"><a href="#2-下载Ubuntu光盘映像，制作Ubuntu安装盘" class="headerlink" title="2.下载Ubuntu光盘映像，制作Ubuntu安装盘"></a>2.下载Ubuntu光盘映像，制作Ubuntu安装盘</h2><p>制作安装盘使用的是UtralOS<br>1.启动 -&gt; 写入硬盘映像 -&gt; 软件自动识别U盘<br>2.格式化U盘<br>3.写入方式：USB-HDD+<br>4.写入</p>
-<h2 id="3-磁盘分区"><a href="#3-磁盘分区" class="headerlink" title="3.磁盘分区"></a>3.磁盘分区</h2><p>1.VFAT（efi）：512MB<br>2.swap：10G<br>3.Ext4（&#x2F;）：20G（我分了100G）<br>4.Ext4（&#x2F;Home）：30G（剩下的都给它）</p>
+</li>
+<li>基准测试注册：<ul>
+<li>使用 <code>BENCHMARK(bench_array_operator);</code>注册每个基准测试函数，从而Google Benchmark工具知道需要运行哪些测试。</li>
+</ul>
+</li>
+<li>程序入口函数：<ul>
+<li>使用 <code>BENCHMARK_MAIN()</code>定义程序入口函数，并初始化Google Benchmark库，它会自动运行被注册的所有基准测试。</li>
+</ul>
+</li>
+</ol>
+<h2 id="编译运行"><a href="#编译运行" class="headerlink" title="编译运行"></a>编译运行</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">$ g++ -Wall -std=c+<span class="number">+14</span> arrayTest.cpp -pthread -lbenchmark</span><br><span class="line">$ ./a.out</span><br><span class="line"><span class="number">2024</span><span class="number">-12</span><span class="number">-17</span>T13:<span class="number">04</span>:<span class="number">52</span><span class="number">+0</span>8:<span class="number">00</span></span><br><span class="line">Running ./a.out</span><br><span class="line">Run <span class="built_in">on</span> (<span class="number">12</span> X <span class="number">2995.2</span> MHz CPU s)</span><br><span class="line">CPU Caches:</span><br><span class="line">  L1 Data <span class="number">48</span> <span class="built_in">KiB</span> (x6)</span><br><span class="line">  L1 Instruction <span class="number">32</span> <span class="built_in">KiB</span> (x6)</span><br><span class="line">  L2 Unified <span class="number">1280</span> <span class="built_in">KiB</span> (x6)</span><br><span class="line">  L3 Unified <span class="number">20480</span> <span class="built_in">KiB</span> (x1)</span><br><span class="line">Load Average: <span class="number">0.31</span>, <span class="number">0.29</span>, <span class="number">0.14</span></span><br><span class="line">---------------------------------------------------------------</span><br><span class="line">Benchmark                     Time             CPU   Iterations</span><br><span class="line">---------------------------------------------------------------</span><br><span class="line">bench_array_operator       <span class="number">18.5</span> ns         <span class="number">18.5</span> ns     <span class="number">39134698</span></span><br><span class="line">bench_array_at             <span class="number">23.3</span> ns         <span class="number">23.3</span> ns     <span class="number">31354014</span></span><br><span class="line">bench_array_get            <span class="number">18.6</span> ns         <span class="number">18.6</span> ns     <span class="number">39320276</span></span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><p>执行日期和时间：</p>
+<ul>
+<li>“2024-12-17T13:04:52+08:00” 表示基准测试进行的时间以及时区。</li>
+</ul>
+</li>
+<li><p>系统信息：</p>
+<ul>
+<li>测试是在一个拥有12个逻辑CPU，每个运行在2995.2 MHz上的系统上进行的。CPU缓存层次结构如下：<ul>
+<li>L1数据缓存：每个核心48 KiB（共有6个核心）</li>
+<li>L1指令缓存：每个核心32 KiB（共有6个核心）</li>
+<li>L2统一缓存：每个核心1280 KiB（共有6个核心）</li>
+<li>L3统一缓存：共有20480 KiB（这通常是共享缓存）</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>系统负载：</p>
+<ul>
+<li>“Load Average: 0.31, 0.29, 0.14” 代表系统在过去1分钟、5分钟和15分钟的平均负载。</li>
+</ul>
+</li>
+<li><p>基准测试结果：</p>
+<ul>
+<li><code>bench_array_operator</code>， <code>bench_array_at</code> 和 <code>bench_array_get</code> 是测试的三个函数，用于访问数组元素。</li>
+<li><code>Time</code> 和 <code>CPU</code> 列显示了执行这些操作的时间。测量值通常为纳秒（ns）。</li>
+<li><code>Iterations</code> 列显示了在测试过程中运行的迭代次数。</li>
+</ul>
+</li>
+</ol>
+<p>从结果看，<code>bench_array_operator</code> 和 <code>bench_array_get</code> 的性能较好，执行时间较短，而 <code>bench_array_at</code> 的执行时间稍长。</p>
 ]]></content>
       <categories>
-        <category>PC</category>
+        <category>benchmark</category>
       </categories>
   </entry>
 </search>
