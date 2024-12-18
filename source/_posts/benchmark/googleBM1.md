@@ -1,5 +1,5 @@
 ---
-title: C++性能测试工具: google benchmark 1
+title: google benchmark 1
 categories:
 	- benchmark
 ---
