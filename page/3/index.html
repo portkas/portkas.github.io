@@ -225,7 +225,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/09/05/hosts/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/12/18/MissingSemester/cmake/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -239,7 +239,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2024/09/05/hosts/" class="post-title-link" itemprop="url">hosts</a>
+            <a href="/2024/12/18/MissingSemester/cmake/" class="post-title-link" itemprop="url">CMake</a>
         </h2>
 
         <div class="post-meta">
@@ -249,7 +249,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2024-09-05 17:35:44" itemprop="dateCreated datePublished" datetime="2024-09-05T17:35:44+08:00">2024-09-05</time>
+              <time title="创建时间：2024-12-18 20:17:18" itemprop="dateCreated datePublished" datetime="2024-12-18T20:17:18+08:00">2024-12-18</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -257,7 +257,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/PC/" itemprop="url" rel="index"><span itemprop="name">PC</span></a>
+                  <a href="/categories/cmake/" itemprop="url" rel="index"><span itemprop="name">cmake</span></a>
                 </span>
             </span>
 
@@ -272,11 +272,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>在Ubuntu上安装nvm遇到：curl: (28) Failed to connect to raw.githubusercontent.com port 443: Connection timed out [closed]<br>1.打开<code>/etc/hosts</code></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> vim /etc/hosts</span><br></pre></td></tr></table></figure>
+          <h1 id="1-CMake概述"><a href="#1-CMake概述" class="headerlink" title="1.CMake概述"></a>1.CMake概述</h1><p>CMake是一个项目构建工具，是跨平台的。CMake可以自动生成Makefile文件，管理项目更加简单。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2024/09/05/hosts/#more" rel="contents">
+              <a class="btn" href="/2024/12/18/MissingSemester/cmake/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -300,7 +299,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/09/05/Github%E7%9A%84SSH%E9%85%8D%E7%BD%AE/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/12/18/MissingSemester/gcc/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -314,7 +313,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2024/09/05/Github%E7%9A%84SSH%E9%85%8D%E7%BD%AE/" class="post-title-link" itemprop="url">Github的SSH配置</a>
+            <a href="/2024/12/18/MissingSemester/gcc/" class="post-title-link" itemprop="url">gcc</a>
         </h2>
 
         <div class="post-meta">
@@ -324,7 +323,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2024-09-05 15:44:08" itemprop="dateCreated datePublished" datetime="2024-09-05T15:44:08+08:00">2024-09-05</time>
+              <time title="创建时间：2024-12-18 20:17:18" itemprop="dateCreated datePublished" datetime="2024-12-18T20:17:18+08:00">2024-12-18</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -332,7 +331,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Git/" itemprop="url" rel="index"><span itemprop="name">Git</span></a>
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
                 </span>
             </span>
 
@@ -347,10 +346,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="1-创建公私密钥"><a href="#1-创建公私密钥" class="headerlink" title="1.创建公私密钥"></a>1.创建公私密钥</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ ssh-keygen -t rsa -C <span class="string">&quot;Github注册的邮箱地址&quot;</span></span><br><span class="line">$ <span class="built_in">cat</span> ～/.ssh/id_rsa.pub</span><br><span class="line"><span class="comment"># ps.在windows系统中.ssh文件在C:\Users\你的用户名\.ssh目录下</span></span><br></pre></td></tr></table></figure>
+          <h1 id="gcc编译流程"><a href="#gcc编译流程" class="headerlink" title="gcc编译流程"></a>gcc编译流程</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1.预处理</span></span><br><span class="line">$ gcc -E main.c -o main.i</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2.编译</span></span><br><span class="line">$ gcc -S main.i -o main.s</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3.汇编</span></span><br><span class="line">$ gcc -c main.s -o main.o</span><br><span class="line"></span><br><span class="line"><span class="comment"># 4.链接</span></span><br><span class="line">$ gcc main.o -o main</span><br></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2024/09/05/Github%E7%9A%84SSH%E9%85%8D%E7%BD%AE/#more" rel="contents">
+              <a class="btn" href="/2024/12/18/MissingSemester/gcc/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -374,7 +373,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/09/05/Git%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86Hexo/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/12/18/MissingSemester/coredump/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -388,7 +387,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2024/09/05/Git%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86Hexo/" class="post-title-link" itemprop="url">Git分支管理Hexo</a>
+            <a href="/2024/12/18/MissingSemester/coredump/" class="post-title-link" itemprop="url">coredump</a>
         </h2>
 
         <div class="post-meta">
@@ -398,7 +397,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2024-09-05 15:44:08" itemprop="dateCreated datePublished" datetime="2024-09-05T15:44:08+08:00">2024-09-05</time>
+              <time title="创建时间：2024-12-18 20:17:18" itemprop="dateCreated datePublished" datetime="2024-12-18T20:17:18+08:00">2024-12-18</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -406,7 +405,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/" itemprop="url" rel="index"><span itemprop="name">个人博客</span></a>
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
                 </span>
             </span>
 
@@ -421,11 +420,13 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="1-本地初始电脑"><a href="#1-本地初始电脑" class="headerlink" title="1.本地初始电脑"></a>1.本地初始电脑</h1><p>1.初始化Git仓库</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> blog</span><br><span class="line">$ git init  <span class="comment"># 创建.git子目录</span></span><br></pre></td></tr></table></figure>
+          <h1 id="什么是coredump"><a href="#什么是coredump" class="headerlink" title="什么是coredump"></a>什么是coredump</h1><p>coredump又叫核心转储，是程序崩溃时候的一个内存快照，存储了进程的内存，寄存器状态，运行堆栈等信息。</p>
+<p>是一个二进制文件，可以使用以下工具打开分析：</p>
+<p>Linux中可以使用：gdb，elfdump，objdump</p>
+<p>Windows中可以使用：windebug，solaris下的mdb</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2024/09/05/Git%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86Hexo/#more" rel="contents">
+              <a class="btn" href="/2024/12/18/MissingSemester/coredump/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -449,7 +450,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/09/05/Git/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/12/18/MissingSemester/gdb/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -463,7 +464,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2024/09/05/Git/" class="post-title-link" itemprop="url">Git</a>
+            <a href="/2024/12/18/MissingSemester/gdb/" class="post-title-link" itemprop="url">gdb</a>
         </h2>
 
         <div class="post-meta">
@@ -473,7 +474,545 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2024-09-05 15:44:08" itemprop="dateCreated datePublished" datetime="2024-09-05T15:44:08+08:00">2024-09-05</time>
+              <time title="创建时间：2024-12-18 20:17:18" itemprop="dateCreated datePublished" datetime="2024-12-18T20:17:18+08:00">2024-12-18</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h1><p>编译程序的时候：<br>1.打开编译选项（-g）<br>2.关掉编译器优化选项（-O0）<br>3.打开所有的warning（-Wall）</p>
+<!-- more -
+
+# g++编译重要参数
+
+- -g 编译带调试信息的可执行文件，选项告诉GCC产生能被GNU调试器——gdb使用的调试信息。
+- -O[n] 优化源代码，一般使用-O2。省略掉代码中未使用的变量，将表达式用结果值代替等等。
+- -l 和 -L 分别表示指定库文件，指定库路径。库名或者库路径要紧跟在这两个[option]后，中间无空格。
+- -I 指定头文件搜索目录
+- -Wall 打印警告信息
+- -w 关闭警告信息
+- -std=c++11 设置编译标准
+- -o 指定输出文件名
+- -D 定义宏
+
+# 概述
+
+- help [comend]     	查看命令帮助
+- run(r)            		重新开始运行文件
+- start        			单步运行程序
+- list(l)             		查看源代码，list-n从第n行开始查看，list [functionname]查看具体函数
+- set          			设置变量值
+- next(n)          		单步调试，逐过程
+- step(s)           		单步调试，逐语句
+- backtrace(bt)        	查看函数调用的栈帧和层级关系
+- frame(f)			切换函数栈帧
+- info(i)           		查看函数内部局部变量数值
+- finish            		结束当前函数，返回函数调用点
+- continus(c)    		继续运行
+- print(p)  			打印值或地址
+
+# 启动和退出gdb
+
+## 启动gdb
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 语法：gdb 可执行程序</span></span><br><span class="line">$ gdb main</span><br></pre></td></tr></table></figure>
+
+<h2 id="gdb中命令行传参（set-args）"><a href="#gdb中命令行传参（set-args）" class="headerlink" title="gdb中命令行传参（set args）"></a>gdb中命令行传参（set args）</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 启动gdb之后</span></span><br><span class="line"><span class="comment"># 语法：set args 参数1 参数2 ...</span></span><br><span class="line"><span class="comment"># 通过gdb给应用程序设置命令行参数</span></span><br><span class="line">(gdb) <span class="built_in">set</span> args 1 2 3</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看设置的命令行参数</span></span><br><span class="line">(gdb) show args</span><br></pre></td></tr></table></figure>
+
+<h2 id="gdb中启动程序（run-start）"><a href="#gdb中启动程序（run-start）" class="headerlink" title="gdb中启动程序（run&#x2F;start）"></a>gdb中启动程序（run&#x2F;start）</h2><ul>
+<li>run（r）：如果程序设置了断点，会停在断点的位置，如果没有设置断点，程序执行到结束。</li>
+<li>start：启动程序，程序运行到main函数的第一行。</li>
+</ul>
+<p>ps.<code>run</code>和 <code>start</code>在启动gdb之后只能执行其中一个，并只能执行一次。如果遇到断点需要继续执行，输入命令 <code>continue(c)</code></p>
+<h2 id="退出gdb（quit）"><a href="#退出gdb（quit）" class="headerlink" title="退出gdb（quit）"></a>退出gdb（quit）</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(gdb) quit</span><br><span class="line">or</span><br><span class="line">(gdb) q</span><br></pre></td></tr></table></figure>
+
+<h1 id="查看代码（list）"><a href="#查看代码（list）" class="headerlink" title="查看代码（list）"></a>查看代码（list）</h1><h2 id="在当前文件下查看代码"><a href="#在当前文件下查看代码" class="headerlink" title="在当前文件下查看代码"></a>在当前文件下查看代码</h2><p>通过list查看代码，每次只显示10行，如果需要继续查看后面的代码，直接按回车（即再次执行list指令）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 从第一行开始显示</span><br><span class="line">(gdb) list</span><br><span class="line"></span><br><span class="line"># 显示第n行的上下文</span><br><span class="line">(gdb) list n</span><br><span class="line"></span><br><span class="line"># 显示某个函数的上下文</span><br><span class="line">(gdb) list &lt;function-name&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="显示其他文件下的代码"><a href="#显示其他文件下的代码" class="headerlink" title="显示其他文件下的代码"></a>显示其他文件下的代码</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 切换到指定的文件，并列出第n行对应的上下文</span><br><span class="line">(gdb) list &lt;filename&gt;:n</span><br><span class="line"></span><br><span class="line"># 切换到指定的文件，并列出函数的上下文</span><br><span class="line">(gdb) list &lt;filename&gt;:&lt;function-name&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="设置显示的行数"><a href="#设置显示的行数" class="headerlink" title="设置显示的行数"></a>设置显示的行数</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 设置每次显示的行数</span><br><span class="line">(gdb) set listsize 行数</span><br><span class="line"></span><br><span class="line"># 查看当前list一次能显示的行数</span><br><span class="line">(gdb) show listsize</span><br></pre></td></tr></table></figure>
+
+<h1 id="断点"><a href="#断点" class="headerlink" title="断点"></a>断点</h1><h2 id="设置断点（break）"><a href="#设置断点（break）" class="headerlink" title="设置断点（break）"></a>设置断点（break）</h2><ul>
+<li>常规断点</li>
+<li>条件断点</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># 在当前文件下设置断点</span><br><span class="line">(gdb) b &lt;n&gt;</span><br><span class="line">(gdb) b &lt;function-name&gt;</span><br><span class="line"></span><br><span class="line"># 在其他文件上设置断点（比如当前在PC指针在main.c文件下，但是想在sub.c中设置断点）</span><br><span class="line">(gdb) b &lt;filename&gt;:n</span><br><span class="line">(gdb) b &lt;filename&gt;:&lt;function-name&gt;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 条件断点：只有满足某个条件后程序才会停在这个断点的位置上</span><br><span class="line">(gdb) b &lt;n&gt; if 变量名==某个值</span><br></pre></td></tr></table></figure>
+
+<h2 id="查看断点（info）"><a href="#查看断点（info）" class="headerlink" title="查看断点（info）"></a>查看断点（info）</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(gdb) info b</span><br><span class="line">Num     Type           Disp Enb Address            What</span><br><span class="line">1       breakpoint     keep y   0x0000000000400cb5 in main() at test.cpp:12</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Num：断点的编号</li>
+<li>Enb：断点的状态，y表示使能，n表示未使能</li>
+<li>What：断点所在文件，函数，行数</li>
+</ul>
+<h2 id="删除断点（delete）"><a href="#删除断点（delete）" class="headerlink" title="删除断点（delete）"></a>删除断点（delete）</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># 删除一个断点</span><br><span class="line">(gdb) d 断点编号</span><br><span class="line"></span><br><span class="line"># 删除断点1,2,3</span><br><span class="line">(gdb) d 1 2 3</span><br><span class="line"></span><br><span class="line"># 删除一个范围的断点</span><br><span class="line">(gdb) d 断点编号1-断点编号N</span><br><span class="line"></span><br><span class="line"># 删除编号1到编号5的所有断点</span><br><span class="line">(gdb) d 1-5</span><br></pre></td></tr></table></figure>
+
+<h2 id="设置断点状态（enable-disable）"><a href="#设置断点状态（enable-disable）" class="headerlink" title="设置断点状态（enable&#x2F;disable）"></a>设置断点状态（enable&#x2F;disable）</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 设置断点无效</span><br><span class="line">(gdb) disable 断点编号</span><br><span class="line"></span><br><span class="line"># 设置断点有效</span><br><span class="line">(gdb) enable 断点编号</span><br></pre></td></tr></table></figure>
+
+<h1 id="调试"><a href="#调试" class="headerlink" title="调试"></a>调试</h1><h2 id="继续运行（continue）"><a href="#继续运行（continue）" class="headerlink" title="继续运行（continue）"></a>继续运行（continue）</h2><p>遇到断点，程序停止，可以执行c指令继续向下运行，直到遇到下一个断点。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(gdb) continue</span><br></pre></td></tr></table></figure>
+
+<h2 id="手动打印信息"><a href="#手动打印信息" class="headerlink" title="手动打印信息"></a>手动打印信息</h2><h3 id="打印变量值（print）"><a href="#打印变量值（print）" class="headerlink" title="打印变量值（print）"></a>打印变量值（print）</h3><table>
+<thead>
+<tr>
+<th align="center">格式化字符</th>
+<th align="center">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">&#x2F;x</td>
+<td align="center">十六进制</td>
+</tr>
+<tr>
+<td align="center">&#x2F;d</td>
+<td align="center">有符号十进制</td>
+</tr>
+<tr>
+<td align="center">&#x2F;u</td>
+<td align="center">无符号十进制</td>
+</tr>
+<tr>
+<td align="center">&#x2F;o</td>
+<td align="center">八进制</td>
+</tr>
+<tr>
+<td align="center">&#x2F;t</td>
+<td align="center">二进制</td>
+</tr>
+<tr>
+<td align="center">&#x2F;f</td>
+<td align="center">浮点型</td>
+</tr>
+<tr>
+<td align="center">&#x2F;c</td>
+<td align="center">字符型</td>
+</tr>
+</tbody></table>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(gdb) p 变量名</span><br><span class="line"># 以16进制打印变量i</span><br><span class="line">(gdb) p/x i</span><br></pre></td></tr></table></figure>
+
+<h3 id="打印变量类型（ptype）"><a href="#打印变量类型（ptype）" class="headerlink" title="打印变量类型（ptype）"></a>打印变量类型（ptype）</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(gdb) ptype 变量名</span><br><span class="line"># 打印数组array的类型</span><br><span class="line">(gdb) ptype array</span><br><span class="line">type = int[12]</span><br></pre></td></tr></table></figure>
+
+<h2 id="查看内存（x）"><a href="#查看内存（x）" class="headerlink" title="查看内存（x）"></a>查看内存（x）</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">x &lt;addr&gt;</span><br><span class="line"></span><br><span class="line"># 查看函数fun的地址,以16进制输出</span><br><span class="line">(gdb) x/x fun</span><br></pre></td></tr></table></figure>
+
+<h2 id="自动打印信息"><a href="#自动打印信息" class="headerlink" title="自动打印信息"></a>自动打印信息</h2><h3 id="设置某些变量自动打印变量值-display"><a href="#设置某些变量自动打印变量值-display" class="headerlink" title="设置某些变量自动打印变量值(display)"></a>设置某些变量自动打印变量值(display)</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(gdb) display 变量名</span><br><span class="line"></span><br><span class="line"># 以16进制自动显示变量i的值</span><br><span class="line">(gdb) display/x i</span><br></pre></td></tr></table></figure>
+
+<h3 id="查看自动显示列表-info-display"><a href="#查看自动显示列表-info-display" class="headerlink" title="查看自动显示列表(info display)"></a>查看自动显示列表(info display)</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(gdb) info display</span><br><span class="line">Auto-display expressions now in effect:</span><br><span class="line">Num Enb Expression</span><br><span class="line">2:   y  array[i]</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Num：变量&#x2F;表达式的编号（唯一）。</li>
+<li>Enb：y表示激活状态，n表示禁用状态</li>
+<li>Expression：变量&#x2F;表达式的名字</li>
+</ul>
+<h3 id="取消自动显示-undisplay"><a href="#取消自动显示-undisplay" class="headerlink" title="取消自动显示(undisplay)"></a>取消自动显示(undisplay)</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 删除自动显示列表中的变量或表达式</span><br><span class="line">(gdb) undisplay 编号</span><br><span class="line"></span><br><span class="line"># 禁用某个变量自动显示</span><br><span class="line">(gdb) disable display 编号</span><br><span class="line"></span><br><span class="line"># 激活某个变量自动显示</span><br><span class="line">(gdb) enable display 编号</span><br></pre></td></tr></table></figure>
+
+<h2 id="单步调试"><a href="#单步调试" class="headerlink" title="单步调试"></a>单步调试</h2><h3 id="step（s）"><a href="#step（s）" class="headerlink" title="step（s）"></a>step（s）</h3><p>命令被执行一次，代码向下运行一行，如果有函数，则会进入函数体内部。</p>
+<h3 id="finish"><a href="#finish" class="headerlink" title="finish"></a>finish</h3><p>通过s单步调试进入函数体内部，如果想要跳出函数体，执行该命令。但是需要保证函数体内不能有有效断点，否则无法跳出。</p>
+<h3 id="next"><a href="#next" class="headerlink" title="next"></a>next</h3><p>命令被执行一次，代码向下运行一行，不会进入函数体内部。</p>
+<h3 id="until"><a href="#until" class="headerlink" title="until"></a>until</h3><p>通过until命令跳出循环体，需要满足以下条件：</p>
+<ul>
+<li>要跳出的函数体内部不能有有效的断点</li>
+<li>必须要在循环体的开始&#x2F;结束行执行该命令</li>
+</ul>
+<h2 id="设置变量值"><a href="#设置变量值" class="headerlink" title="设置变量值"></a>设置变量值</h2><p>在循环体中，如果循环比较久，可以直接设置变量到最后两次循环，然后单步运行查看运行结果。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(gdb) set var 变量名=值</span><br><span class="line"># 在100次的循环体中设置变量i为99</span><br><span class="line">(gdb) set var i=99</span><br></pre></td></tr></table></figure>
+
+<h1 id="基本命令"><a href="#基本命令" class="headerlink" title="基本命令"></a>基本命令</h1><h2 id="选择线程-t"><a href="#选择线程-t" class="headerlink" title="选择线程: t"></a>选择线程: t</h2><p><code>info thread</code>可以查看当前进程的所有线程。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(gdb) info threads</span><br><span class="line">  Id   Target Id            Frame </span><br><span class="line">* 1    process 1537 <span class="string">&quot;example&quot;</span> main () at main.cpp:15</span><br></pre></td></tr></table></figure>
+
+<p><code>thread/t</code>可以查看当前位于哪个线程：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(gdb) t</span><br><span class="line">[Current thread is 1 (process 3496)]</span><br></pre></td></tr></table></figure>
+
+<p>在多线程程序里，可以通过 <code>t &#123;id&#125;</code>切换线程，每个线程都有独立的调用栈。</p>
+<h2 id="查看堆栈-bt"><a href="#查看堆栈-bt" class="headerlink" title="查看堆栈: bt"></a>查看堆栈: bt</h2><p><code>backtrace/bt</code>可以查看调用栈，调用栈展示了从 <code>main()</code>入口到当前断点的所有函数调用路径：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(gdb) bt</span><br><span class="line"><span class="comment">#0  0x0 in (unknown) at :0</span></span><br><span class="line"><span class="comment">#1  0x1a796e7c in foo() at main.cpp:13</span></span><br><span class="line"><span class="comment">#2  0x6259058 in bar() at main.cpp:17</span></span><br><span class="line"><span class="comment">#3  0x6bb7580 in main() at main.cpp:83</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="选择栈帧-f"><a href="#选择栈帧-f" class="headerlink" title="选择栈帧: f"></a>选择栈帧: f</h2><p>每次函数调用，都会创建一个独立的栈帧，对应上面的 <code>#0</code>,<code>#1</code>…，默认在 <code>#0</code></p>
+<p><code>frame/f</code>可以跳转到指定栈帧：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(gdb) f 2</span><br><span class="line"><span class="comment">#2  bar() at main.cpp:17</span></span><br><span class="line">17        int a = foo();</span><br></pre></td></tr></table></figure>
+
+<p><code>up/down</code>可以向下层或上层跳转，对应编号的增大或减小。</p>
+<h2 id="打印变量-p"><a href="#打印变量-p" class="headerlink" title="打印变量: p"></a>打印变量: p</h2><h3 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h3><p><code>print/p</code>可以打印一个变量值：数字，字符串，结构体，指针等变量类型</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(gdb) p a // int a = 3;</span><br><span class="line"><span class="variable">$1</span> = 3</span><br></pre></td></tr></table></figure>
+
+<p>打印出来的值会存在名为 <code>$1</code>,<code>$2</code>…的变量里，后续可以直接复用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(gdb) p <span class="variable">$1</span> // 等价于 p a</span><br><span class="line"><span class="variable">$2</span> = 3</span><br></pre></td></tr></table></figure>
+
+<h3 id="打印指针"><a href="#打印指针" class="headerlink" title="打印指针"></a>打印指针</h3><p>p后面直接跟一个指针类型的变量，打印的是指针的值，即指针所指向的地址：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(gdb) p b // int* b = &amp;a;</span><br><span class="line"><span class="variable">$1</span> = (int *) 0x7ffd3dcfa27c</span><br></pre></td></tr></table></figure>
+
+<p>可以用解引用运算符，打印指针指向的值：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(gdb) p *b</span><br><span class="line"><span class="variable">$2</span> = 1</span><br></pre></td></tr></table></figure>
+
+<p>如果是字符串指针，p会同时输出指针指向的地址和字符串的内容：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">p str</span><br><span class="line"><span class="variable">$3</span> = (char*) 0x7ffc734ff250 <span class="string">&quot;hello,world&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>如果只希望打印指针，可以使用说明符 <code>/a</code>:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(gdb) p/a str	// /a表示address即把变量以地址的形式打印</span><br><span class="line"><span class="variable">$4</span> = 0x7ffc734ff250</span><br></pre></td></tr></table></figure>
+
+<h4 id="地址字面量"><a href="#地址字面量" class="headerlink" title="地址字面量"></a>地址字面量</h4><p>p默认会把十六进制的字面量看成是数字，输出一个十进制的整数：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(gdb) p 0x7ffd3dcfa27c</span><br><span class="line"><span class="variable">$1</span> = 140725640471164</span><br><span class="line">(gdb) p 140725640471164 == 0x7ffd3dcfa27c</span><br><span class="line"><span class="variable">$2</span> = <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<p>如果想把数字解释为地址，打印地址上的内容，需要先指定变量类型，然后解引用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(gdb) p *(int*)0x7ffd3dcfa27c</span><br><span class="line"><span class="variable">$3</span> = 1</span><br></pre></td></tr></table></figure>
+
+<p>更简单的语法是：<code>&#123;TYPE&#125; ADDRESS</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(gdb) p &#123;int&#125;0x7ffd3dcfa27c</span><br><span class="line"><span class="variable">$4</span> = 1</span><br></pre></td></tr></table></figure>
+
+<h4 id="转换指针类型"><a href="#转换指针类型" class="headerlink" title="转换指针类型"></a>转换指针类型</h4><p>指针的类型可以转换，以不同的方式解释其指向的内存区域：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// char* c = <span class="string">&quot;hello, world&quot;</span>;</span><br><span class="line">(gdb) p c</span><br><span class="line"><span class="variable">$1</span> = (char *) 0x7ffc734ff250 <span class="string">&quot;hello, world&quot;</span>;</span><br><span class="line">(gdb) p *(int*)c</span><br><span class="line"><span class="variable">$2</span> = 1819043176</span><br><span class="line">(gdb) p &#123;int&#125;c</span><br><span class="line"><span class="variable">$3</span> = 1819043176</span><br></pre></td></tr></table></figure>
+
+<p>打印内存可以发现，<code>1819043176</code>就是把hell四个字符解释成了一个整数：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(gdb) x/w 0x7ffc734ff250    // 以 word 形式打印，4 个字节</span><br><span class="line">0x7ffc734ff250:	1819043176  // 上述 4 个字符的 ASCII 码转成整数</span><br></pre></td></tr></table></figure>
+
+<p><code>1819043176</code> 对应的十六进制是 <code>0x6C6C6568</code>，恰好依次是 <code>l</code> , <code>l</code> , <code>e</code> 和 <code>h</code> 的 ASCII 码。</p>
+<h4 id="打印结构体字段"><a href="#打印结构体字段" class="headerlink" title="打印结构体字段"></a>打印结构体字段</h4><p>如果指针 <code>p</code> 指向某个结构体，可以用 <code>p ptr-&gt;field</code> 打印字段的值。</p>
+<p>在 GDB 里 <code>.</code> 和 <code>-&gt;</code> 是一样的，所以无论 <code>ptr</code> 是否是指针，都可以用 <code>p.field</code> 打印字段的值。</p>
+<h3 id="打印数组"><a href="#打印数组" class="headerlink" title="打印数组"></a>打印数组</h3><p>语法：<code>p ELEMENT@LEN</code>。从ELEMENT的地址开始向后解释LEN大小的内存单元</p>
+<h4 id="栈上数组"><a href="#栈上数组" class="headerlink" title="栈上数组"></a>栈上数组</h4><p>如果array是栈上数组，直接p array会打印数组的所有元素。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">// int array[] = &#123;1, 2, 3, 4&#125;;</span><br><span class="line">(gdb) p array</span><br><span class="line"><span class="variable">$1</span> = &#123;1, 2, 3, 4&#125;</span><br></pre></td></tr></table></figure>
+
+<p>也可以 <code>p array[INDEX]@LEN</code>，从某个下标开始打印指定的长度：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(gdb) p array[1]@3</span><br><span class="line"><span class="variable">$4</span> = &#123;2, 3, 4&#125;</span><br></pre></td></tr></table></figure>
+
+<p>但是不能 <code>p array@3</code>，因为栈上数组array的类型是int[4]而不是int：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(gdb) p array@3</span><br><span class="line"><span class="variable">$6</span> = &#123;&#123;1, 2, 3, 4&#125;, &#123;4096, 0, 89129472, 1043493597&#125;, &#123;1, 0, -136626800, 32767&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="堆上数组"><a href="#堆上数组" class="headerlink" title="堆上数组"></a>堆上数组</h4><p>如果array是堆上数组，可以使用：<code>p *array@LEN</code>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">// int* array = (int*)malloc(3 * sizeof(int));</span><br><span class="line">(gdb) p *array@3 // *array 是数组的第一个元素，类型是 int</span><br><span class="line"><span class="variable">$1</span> = &#123;1, 2, 3&#125;</span><br></pre></td></tr></table></figure>
+
+<p>或者 <code>p array[INDEX]@LEN</code>，从某个下标开始打印：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(gdb) p array[1]@3 // array[1] 的类型是 int</span><br><span class="line"><span class="variable">$2</span> = &#123;2, 3, 4&#125;</span><br></pre></td></tr></table></figure>
+
+<p>但是不能 <code>p array</code>，因为堆上数组array的类型是int*指针，值是一个地址：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(gdb) p array</span><br><span class="line"><span class="variable">$3</span> = 0x55669a743eb0</span><br></pre></td></tr></table></figure>
+
+<p>同理，<code>p array@LEN</code>会输出栈上相邻的内存地址（没有意义）：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(gdb) p array@3</span><br><span class="line">$4 = &#123;0x55669a743eb0, 0x55669a255330, 0x200000001&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果数组只有一个地址字面量，可以把它强制转换为指针类型，然后用同样的语法打印：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(gdb) p ((int*)<span class="number">0</span>x55669a743eb0))[2]</span><br><span class="line"><span class="variable">$5</span> = 3</span><br></pre></td></tr></table></figure>
+
+<h3 id="格式化输出"><a href="#格式化输出" class="headerlink" title="格式化输出"></a>格式化输出</h3><p>可以在p后面添加说明符，把一个变量解释为给定的类型：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(gdb) p foo // int foo = 98;</span><br><span class="line"><span class="variable">$1</span> = 98</span><br><span class="line">(gdb) p/c foo // 将 98 解释为字符</span><br><span class="line"><span class="variable">$2</span> = 98 <span class="string">&#x27;b&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>所有说明符：</p>
+<ul>
+<li>p&#x2F;a：将变量解释为指针address，使用十六进制打印</li>
+<li>p&#x2F;c：将变量解释为字符，打印为字符</li>
+<li>p&#x2F;o：使用八进制打印变量</li>
+<li>p&#x2F;x：使用十六进制打印变量</li>
+<li>p&#x2F;u：将变量解释为无符号整数unsigned，使用十进制打印</li>
+<li>p&#x2F;s：将变量解释为字符串打印输出</li>
+<li>help x：查看全部</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">o(octal), x(hex), d(decimal), u(unsigned decimal),</span><br><span class="line">t(binary), f(float), a(address), i(instruction), </span><br><span class="line">c(char), s(string) and z(hex, zero padded on the left)</span><br></pre></td></tr></table></figure>
+
+<h3 id="STL容器"><a href="#STL容器" class="headerlink" title="STL容器"></a>STL容器</h3><h4 id="std-shared-ptr"><a href="#std-shared-ptr" class="headerlink" title="std::shared_ptr"></a>std::shared_ptr</h4><p>直接打印：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// std::shared_ptr&lt;int&gt; ptr = std::make_shared&lt;int&gt;(1);</span><br><span class="line">(gdb) p ptr</span><br><span class="line"><span class="variable">$1</span> = std::shared_ptr&lt;int&gt; (use count 1, weak count 0) = &#123;</span><br><span class="line">  get() = 0x5596169122f0&#125;</span><br><span class="line">(gdb) p *ptr</span><br><span class="line"><span class="variable">$2</span> = 1</span><br></pre></td></tr></table></figure>
+
+<p>或者根据上面get()方法给出的地址打印：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(gdb) p &#123;int&#125;0x5596169122f0</span><br><span class="line"><span class="variable">$3</span> = 1</span><br></pre></td></tr></table></figure>
+
+<p>或者根据shared_ptr内部的私有变量 <code>_M_ptr</code>打印：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(gdb) p ptr._M_ptr</span><br><span class="line"><span class="variable">$4</span> = 0x5596169122f0</span><br><span class="line">(gdb) p *(ptr._M_ptr)</span><br><span class="line"><span class="variable">$5</span> = 1</span><br></pre></td></tr></table></figure>
+
+<h4 id="std-vector"><a href="#std-vector" class="headerlink" title="std::vector"></a>std::vector</h4><p>直接打印：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">// std::vector&lt;int&gt; vec = &#123;1, 2, 3, 4&#125;;</span><br><span class="line">(gdb) p vec</span><br><span class="line"><span class="variable">$1</span> = std::vector of length 4, capacity 4 = &#123;1, 2, 3, 4&#125;</span><br></pre></td></tr></table></figure>
+
+<p>vector也有私有变量，保存了数据的实际存储位置：</p>
+<ul>
+<li><code>_M_imp1._M_start</code>：数组起始地址</li>
+<li><code>_M_imp1._M_finish</code>：数组结束地址（数组最后一个元素的下一个）</li>
+</ul>
+<p>可以根据这个指针打印：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">(gdb) p &#123;int&#125;vec._M_impl._M_start</span><br><span class="line"><span class="variable">$2</span> = 1</span><br><span class="line">(gdb) p &#123;int&#125;vec._M_impl._M_start@3</span><br><span class="line"><span class="variable">$3</span> = &#123;1, 2, 3&#125;</span><br><span class="line">(gdb) p (&#123;int&#125;vec._M_impl._M_start)[2]</span><br><span class="line"><span class="variable">$4</span> = 3</span><br></pre></td></tr></table></figure>
+
+<h4 id="std-string"><a href="#std-string" class="headerlink" title="std::string"></a>std::string</h4><p>直接打印：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(gdb) p str</span><br><span class="line"><span class="variable">$1</span> = <span class="string">&quot;hello,world&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>或者根据私有变量 <code>_M_dataplus._M_p</code>打印，其类型是char*：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(gdb) p str._M_dataplus._M_p</span><br><span class="line"><span class="variable">$2</span> = (std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;::pointer) 0x7ffc734ff250 <span class="string">&quot;hello,world&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="使用STL-Views插件"><a href="#使用STL-Views插件" class="headerlink" title="使用STL-Views插件"></a>使用STL-Views插件</h4><p>使用gdb打印set，stack，map等STL容器比较困难。gdb支持使用python编写的printer，<a target="_blank" rel="noopener" href="https://sourceware.org/gdb/wiki/STLSupport">GDB官网</a>提供了STL容器的printer。</p>
+<ol>
+<li><a href="https://sourceware.org/gdb/wiki/STLSupport?action=AttachFile&do=view&target=stl-views-1.0.3.gdb">下载地址</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.yolinux.com/TUTORIALS/GDB-Commands.html#STLDEREF">官方教程</a></li>
+<li>把下载下来的文件放到home目录（wherever）</li>
+<li>进入gdb</li>
+<li>加载插件：source ~&#x2F;std-views-1.0.3.gdb</li>
+</ol>
+<p>进入gdb，加载插件，查看帮助：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(gdb) <span class="built_in">source</span> ~/stl-views-1.0.3.gdb</span><br><span class="line">(gdb) <span class="built_in">help</span> pset</span><br><span class="line">(gdb) <span class="built_in">help</span> pmap</span><br></pre></td></tr></table></figure>
+
+<p>使用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(gdb) pset s</span><br><span class="line">(gdb) pset s int</span><br><span class="line">(gdb) pset s int 20</span><br></pre></td></tr></table></figure>
+
+<h3 id="如果打印内容被省略"><a href="#如果打印内容被省略" class="headerlink" title="如果打印内容被省略"></a>如果打印内容被省略</h3><p>打印字符串的时候，如果有重复的字符，可能会被合并成一个：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(gdb) p <span class="string">&quot;aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&quot;</span></span><br><span class="line"><span class="variable">$1</span> = <span class="string">&#x27;a&#x27;</span> &lt;repeats 30 <span class="built_in">times</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<p>可以通过命令 <code>set print repeats 0</code>设置为不合并：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(gdb) <span class="built_in">set</span> <span class="built_in">print</span> repeats 0</span><br><span class="line">(gdb) p <span class="string">&quot;aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&quot;</span></span><br><span class="line"><span class="variable">$2</span> = <span class="string">&quot;aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>如果打印数组的时候元素过多，中间的元素会被省略，可以通过以下设置，设置为不省略：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> <span class="built_in">print</span> elements 0</span><br></pre></td></tr></table></figure>
+
+<h3 id="查看历史变量"><a href="#查看历史变量" class="headerlink" title="查看历史变量"></a>查看历史变量</h3><p>通过p打印出来的值，会被存在名为$1,$2,$3…的变量里（<a target="_blank" rel="noopener" href="https://sourceware.org/gdb/current/onlinedocs/gdb.html/Value-History.html#Value-History">value history</a>）后续可以直接复用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(gdb) p a</span><br><span class="line"><span class="variable">$1</span> = 123</span><br><span class="line">(gdb) p <span class="variable">$1</span> // 等价于 p a</span><br><span class="line"><span class="variable">$2</span> = 123</span><br></pre></td></tr></table></figure>
+
+<p>一些特殊的变量：</p>
+<ul>
+<li><code>$</code>：最近打印的变量</li>
+<li><code>$$</code>：<code>$</code>之前的变量，即倒数第二个</li>
+<li><code>$$n</code>：最后一个变量往前的第n个变量比如 <code>$$0</code>就是 <code>$</code></li>
+</ul>
+<p>可以批量打印历史变量：</p>
+<ul>
+<li><code>show value</code>：打印最后10个历史变量</li>
+<li><code>show value +</code>：这个命令是在 <code>show value</code>的基础上使用的，它会打印出紧随刚才 <code>show value</code>命令打印的10个历史变量之后的另外10个历史变量。这个命令用于当你想要查看更多历史变量时，而不仅仅是最近的10个。</li>
+</ul>
+<h2 id="打印内存-x"><a href="#打印内存-x" class="headerlink" title="打印内存: x"></a>打印内存: x</h2><p>x可以查看一个内存地址的值，以指定的格式打印。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(gdb) x/s 0x7ffc734ff250  // 以字符串形式打印</span><br><span class="line">0x7ffc734ff250:	<span class="string">&quot;hello,world&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>x支持的格式化说明符：</p>
+<ul>
+<li>x&#x2F;c：将地址解释为字符char，打印为字符</li>
+<li>x&#x2F;o：使用八进制打印变量</li>
+<li>x&#x2F;x：使用十六进制打印变量</li>
+<li>x&#x2F;u：将地址解释为无符号整数unsiged，使用十进制打印</li>
+<li>x&#x2F;s：将地址解释为字符串</li>
+<li>help x：查看全部</li>
+</ul>
+<p>x的完整语法：<code>x/FMT ADDRESS</code>，<code>F</code> &#x2F; <code>M</code> &#x2F; <code>T</code> 是可选的参数。</p>
+<ul>
+<li><code>F</code>：一个数字，表示输出几个内存单元，默认是 1</li>
+<li><code>M</code>：格式化说明符，<code>o</code> &#x2F; <code>x</code> &#x2F; <code>d</code> &#x2F; <code>u</code> &#x2F; <code>s</code> 等</li>
+<li><code>T</code>：一个内存单元的字节数，默认是 4 个字节，可选的是 b(byte), h(halfword), w(word), g(giant, 8 bytes)</li>
+<li><code>ADDRESS</code>：一个内存地址，可以是一个字面量，也可以是一个指针类型的变量</li>
+</ul>
+<blockquote>
+<p>例如，<code>x/3uh 0x1234</code> 表示从内存地址 0x1234 开始，以两字节为单位，输出 3 个无符号整数。</p>
+</blockquote>
+<h3 id="x和p的区别："><a href="#x和p的区别：" class="headerlink" title="x和p的区别："></a>x和p的区别：</h3><ol>
+<li><p>传入一个数字，p会当作一个数字字面量，输出原始值得十进制；而x会当作一个地址，输出对应内存区域得值：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">(gdb) p 0x10    // 字面量</span><br><span class="line"><span class="variable">$1</span> = 16  	      // 输出十进制值</span><br><span class="line">(gdb) p/x 0x10  // 以十六进制形式输出</span><br><span class="line"><span class="variable">$2</span> = 0x10</span><br><span class="line"></span><br><span class="line">(gdb) x/s 0x10  // 这个内存地址解释为字符串</span><br><span class="line">0x10 <span class="string">&quot;hello, world&quot;</span>  </span><br><span class="line">(gdb) x/c 0x10  // 把这个地址上的内容解释为单个字符</span><br><span class="line">0x10:	<span class="string">&#x27;h&#x27;</span></span><br><span class="line">(gdb) x/d 0x10  // 把这个地址上的内容解释为整数</span><br><span class="line">0x10:	104</span><br></pre></td></tr></table></figure></li>
+<li><p>传入一个指针，p会输出指针的值，即一个十六进制的地址；而x会输出指针指向的内存区域的值：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">（gdb) p str_pointer;</span><br><span class="line"><span class="variable">$1</span> = 0x7ffc</span><br><span class="line"></span><br><span class="line">(gdb) x/s 0x7ffc</span><br><span class="line">0x7ffc <span class="string">&quot;hello world&quot;</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="打印类型-ptype"><a href="#打印类型-ptype" class="headerlink" title="打印类型: ptype"></a>打印类型: ptype</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(gdb) ptype foo</span><br><span class="line"><span class="built_in">type</span> = int</span><br></pre></td></tr></table></figure>
+
+<h2 id="打印各种信息-i"><a href="#打印各种信息-i" class="headerlink" title="打印各种信息: i"></a>打印各种信息: i</h2><ul>
+<li><code>info locals</code>打印当前栈帧的局部变量</li>
+<li><code>info args</code>：打印所有函数参数</li>
+<li><code>info threads</code>：打印进程的线程信息</li>
+<li><code>info registers</code>：打印当前线程的寄存器信息</li>
+<li><code>info sharedlibrary</code>：打印当前加载的动态链接库</li>
+<li><code>info proc mappings</code>：打印地址空间中的内存map，用来确定某个地址的类型</li>
+<li><code>help info</code>：所有info支持的命令</li>
+</ul>
+<h2 id="存储变量-修改变量的值-set"><a href="#存储变量-修改变量的值-set" class="headerlink" title="存储变量&#x2F;修改变量的值: set"></a>存储变量&#x2F;修改变量的值: set</h2><p>set可以保存一个变量（<a target="_blank" rel="noopener" href="https://sourceware.org/gdb/current/onlinedocs/gdb.html/Convenience-Vars.html">Convenience Variables</a>）方便后续使用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">（gdb) <span class="built_in">set</span> <span class="variable">$foo</span> = *object_ptr</span><br></pre></td></tr></table></figure>
+
+<p>查看所有存储的变量：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(gdb) show convenience</span><br><span class="line">(gdb) show conv  // 简写形式</span><br></pre></td></tr></table></figure>
+
+<p>set命令可以用于在运行时修改某个变量的值：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(gdb) <span class="built_in">set</span> foo.bar = <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<p>修改变量值的使用场景：</p>
+<ul>
+<li>临时修复某个bug使程序可以继续运行</li>
+<li>给变量设置不同的值，测试不同的case</li>
+<li>循环中设置循环变量的值，直接快进到最后一轮查看结果</li>
+</ul>
+<h2 id="断点调试-b"><a href="#断点调试-b" class="headerlink" title="断点调试: b"></a>断点调试: b</h2><h3 id="设置断点"><a href="#设置断点" class="headerlink" title="设置断点"></a>设置断点</h3><p>设置断点的方式有多种（<a target="_blank" rel="noopener" href="https://ftp.gnu.org/old-gnu/Manuals/gdb/html_node/gdb_28.html">官方文档</a>）:</p>
+<ul>
+<li>在当前执行位置设置断点：<code>b</code></li>
+<li>函数名：<code>b function</code></li>
+<li>文件名+函数名：<code>b filename:function</code></li>
+<li>当前文件行号：<code>b linenum</code></li>
+<li>特定文件行号：<code>b filename:linenum</code></li>
+<li>偏移量：<code>b +offset</code>&#x2F;<code>b -offset</code>，在当前栈帧执行位置的前后设置断点</li>
+</ul>
+<h3 id="删除断点-clear"><a href="#删除断点-clear" class="headerlink" title="删除断点: clear"></a>删除断点: clear</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(gdb) clear foo.cpp:14</span><br></pre></td></tr></table></figure>
+
+<p>clear的语法和break相同，需要指定要删除的断点的位置：</p>
+<ul>
+<li>clear：删除当前指定位置上的所有断点</li>
+<li>clear function</li>
+<li>clear filename:function</li>
+<li>clear linenum</li>
+<li>clear filename:linenum</li>
+<li>delete：删除所有断点，简写d</li>
+</ul>
+<p>设置临时断点：tbreak，参数同break，命中一次后自动删除</p>
+<h3 id="启用-停用断点"><a href="#启用-停用断点" class="headerlink" title="启用&#x2F;停用断点"></a>启用&#x2F;停用断点</h3><p>停用断点：<code>disable</code></p>
+<p>启用断点：<code>enable</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">停用断点：<span class="built_in">disable</span></span><br><span class="line"></span><br><span class="line">(gdb) <span class="built_in">disable</span>      // 停用所有断点</span><br><span class="line">(gdb) <span class="built_in">disable</span> NUM  // 停用编号为 n 的断点</span><br></pre></td></tr></table></figure>
+
+<h3 id="继续运行-c"><a href="#继续运行-c" class="headerlink" title="继续运行: c"></a>继续运行: c</h3><p>命中断点之后程序会停止运行，此时可以通过 <code>continue</code>命令继续运行程序，简写 <code>c</code></p>
+<h3 id="查看所有断点-i-b"><a href="#查看所有断点-i-b" class="headerlink" title="查看所有断点: i b"></a>查看所有断点: i b</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(gdb) i b</span><br><span class="line">(gdb) info breakpoints</span><br></pre></td></tr></table></figure>
+
+<p>会以表格的形式展示断点编号，是否是临时断点，是否enable，断点位置等信息。</p>
+<h3 id="在函数返回前中断"><a href="#在函数返回前中断" class="headerlink" title="在函数返回前中断"></a>在函数返回前中断</h3><p>有时候希望在函数返回前中断，从而检查函数的返回值，或者检查函数是在哪一个 <code>return</code>语句返回的。</p>
+<ol>
+<li><p>方式一：先正向执行直到函数返回，然后再反向执行设置断点：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(gdb) record</span><br><span class="line">(gdb) fin</span><br><span class="line">(gdb) reverse-step</span><br></pre></td></tr></table></figure>
+
+<p>record：这个命令用于开启GDB的记录功能。当你执行 <code>record</code>命令后，GDB会开始记录程序的执行历史，包括函数调用、变量值的变化等。</p>
+<p>fin：这个命令用于结束当前的记录会话。在执行完 <code>record</code>命令并让程序运行到你想要检查的函数返回之后，使用 <code>fin</code>命令来停止记录。</p>
+<p>reverse-step：这个命令用于执行反向单步执行。在停止记录后，你可以使用 <code>reverse-step</code>命令来反向步进，检查函数返回前的状态。</p>
+</li>
+<li><p>方式二：所有函数无论有多少条return语句，在编译成汇编指令后，一定是只有一条 <code>retq</code>指令，因此可以在汇编指令中找到 <code>retq</code>所在位置打断点：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">int <span class="function"><span class="title">main</span></span>() &#123;</span><br><span class="line">  <span class="built_in">return</span> foo(0);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">(gdb) disas foo  // 查看汇编</span><br><span class="line">Dump of assembler code <span class="keyword">for</span> <span class="keyword">function</span> foo:</span><br><span class="line">   0x0000000000400448 &lt;+0&gt;: push   %rbp</span><br><span class="line">   0x0000000000400449 &lt;+1&gt;: mov    %rsp,%rbp</span><br><span class="line">   ...</span><br><span class="line">   0x0000000000400473 &lt;+43&gt;:    jmp    0x40047c &lt;foo+52&gt;</span><br><span class="line">   0x0000000000400480 &lt;+56&gt;:    retq   // 这里就是函数的返回指令</span><br><span class="line">End of assembler dump.</span><br><span class="line"></span><br><span class="line">(gdb) b *0x0000000000400480  // 在 retq 指令打断点</span><br><span class="line">Breakpoint 1 at 0x400480</span><br><span class="line"></span><br><span class="line">(gdb) r  // 运行程序，直到命中断点</span><br><span class="line">Breakpoint 1, 0x0000000000400480 <span class="keyword">in</span> foo ()</span><br><span class="line"></span><br><span class="line">(gdb) p var</span><br><span class="line"><span class="variable">$1</span> = 42</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="监控断点-watch"><a href="#监控断点-watch" class="headerlink" title="监控断点: watch"></a>监控断点: watch</h3><p>GDB可以监控一个变量，直到它被修改时才触发断点，<a target="_blank" rel="noopener" href="https://ftp.gnu.org/old-gnu/Manuals/gdb/html_node/gdb_29.html#SEC30">官方文档</a>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(gdb) watch foo</span><br><span class="line">(gdb) watch bar.var</span><br></pre></td></tr></table></figure>
+
+<p>如果想在变量被读取时中断，可以使用 <code>rwatch</code> 或 <code>awatch</code>：</p>
+<ul>
+<li>rwatch：仅当变量被读取时中断</li>
+<li>awatch：当变量被读取或写入时中断</li>
+</ul>
+<p>查看所有的watchpoints:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(gdb) info watchpoints</span><br></pre></td></tr></table></figure>
+
+<h3 id="条件断点-b…if"><a href="#条件断点-b…if" class="headerlink" title="条件断点: b…if"></a>条件断点: b…if</h3><p>常规断点（breakpoints）和监控断点（watchpoints）都可以绑定一个条件，只有在满足条件时才触发断点，<a target="_blank" rel="noopener" href="https://ftp.gnu.org/old-gnu/Manuals/gdb/html_node/gdb_33.html#SEC34">官方文档</a>：</p>
+<p>“条件”是一个布尔表达式：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(gdb) b foo.cpp:123 <span class="keyword">if</span> bar == 1</span><br><span class="line">(gdb) b foo.cpp:123 <span class="keyword">if</span> bar == 1 &amp;&amp; foo &lt; 2</span><br></pre></td></tr></table></figure>
+
+<p>如果要判断两个字符串是否相等，可以使用gdb的内置函数 <code>$_streu</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(gdb) b foo.cpp:123 <span class="keyword">if</span> <span class="variable">$_streq</span>(some_str, <span class="string">&quot;hello_world&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="断点命令列表-commands"><a href="#断点命令列表-commands" class="headerlink" title="断点命令列表: commands"></a>断点命令列表: commands</h3><p>可以通过commands命令给断点绑定一组自定义命令，当命中断点后会自动执行，打印变量的值，或者设置另一个断点。</p>
+<p>语法：先制定要绑定的断点的编号，然后输入自定义命令，最后以end结束：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">（gdb) commands 1</span><br><span class="line">（gdb) p foo</span><br><span class="line">（gdb) end</span><br></pre></td></tr></table></figure>
+
+<p>断点编号可以通过 <code>i b</code>或者 <code>i wat</code> 获取，如果不给commands传入任何编号，默认绑定到最近触发的断点上。</p>
+<p><code>commands</code>的应用场景之一是收集信息。比如在某行代码后面插入一行debug日志，打印变量或者调用栈。由于每次命中断点后，必须输入 <code>cont</code>命令才会继续运行程序，因此可以在 <code>end</code>前加一个 <code>cont</code>命令，这样程序就可以无需干预自动执行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(gdb) b foo.cpp:123</span><br><span class="line">(gdb) commands</span><br><span class="line">(gdb) p bar</span><br><span class="line">(gdb) cont</span><br><span class="line">(gdb) end</span><br></pre></td></tr></table></figure>
+
+<p><code>commands</code>的另一个应用场景是临时修复一个bug，以便让程序正常运行。比如在某一行错误代码后面，给变量设置正确的值。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">(gdb) b foo.cpp:123</span><br><span class="line">(gdb) commands</span><br><span class="line">(gdb) silent  // 这个命令后面的命令不会有任何输出</span><br><span class="line">(gdb) <span class="built_in">set</span> x = y + 4</span><br><span class="line">(gdb) cont</span><br><span class="line">(gdb) end</span><br></pre></td></tr></table></figure>
+
+<h2 id="运行程序-n-s-n-fin-u"><a href="#运行程序-n-s-n-fin-u" class="headerlink" title="运行程序: n&#x2F;s&#x2F;n&#x2F;fin&#x2F;u"></a>运行程序: n&#x2F;s&#x2F;n&#x2F;fin&#x2F;u</h2><ul>
+<li>run&#x2F;r：启动程序，直到遇到第一个断点或运行结束</li>
+<li>start：启动程序，临时停在main()的第一行</li>
+<li>next&#x2F;n：逐行执行，如果某一行是函数，不会进入函数内部，而是执行完整个函数</li>
+<li>step&#x2F;s：逐行执行，如果某一行是函数，则会进入函数的第一行</li>
+<li>continue&#x2F;c：从断点位置继续执行，直到遇到下一个断点或运行结束</li>
+<li>finish&#x2F;fin：执行到函数结束，停在return后的下一条语句</li>
+<li>until&#x2F;u<ul>
+<li>不加任何参数：执行直到当前语句结束，比如在for循环里，until会跳到for循环体的下一行，准备开始下一次迭代。这样，你可以逐个检查循环的每次迭代，而不需要每次都手动继续执行。</li>
+<li>加参数：执行直到指定位置，参数语法同break，等价于tbreak+continue</li>
+</ul>
+</li>
+<li>quit&#x2F;q：退出GDB</li>
+</ul>
+<p>直接回车会重复上一次执行的命令。</p>
+<h2 id="输出日志-set-logging"><a href="#输出日志-set-logging" class="headerlink" title="输出日志: set logging"></a>输出日志: set logging</h2><p>可以把所有输出打印到日志里，作进一步分析。</p>
+<p>需要执行以下两个命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(gdb) <span class="built_in">set</span> logging file gdb.txt</span><br><span class="line">(gdb) <span class="built_in">set</span> logging on</span><br><span class="line">copying output to gdb.txt</span><br></pre></td></tr></table></figure>
+
+<p>这样任何命令的输出便会写到 <code>gdb.txt</code>文件中，前提是shell拥有该文件的写入权限。</p>
+<p>配合以下命令，确保输出完整内容：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> <span class="built_in">print</span> repeats 0       // 否则相同的连续字符会被合并</span><br><span class="line"><span class="built_in">set</span> <span class="built_in">print</span> elements 0      // 否则过长的数组会被省略</span><br><span class="line"><span class="built_in">set</span> height 0              // 否则如果一页显示不完，会停下来要求 <span class="built_in">continue</span></span><br><span class="line"><span class="built_in">set</span> width 0  </span><br></pre></td></tr></table></figure>
+
+<h1 id="配置文件-gdbinit"><a href="#配置文件-gdbinit" class="headerlink" title="配置文件: ~&#x2F;.gdbinit"></a>配置文件: ~&#x2F;.gdbinit</h1><p>可以把一些常用的配置、插件、自定义命令放在 <code>~/.gdbinit</code></p>
+<p>Github 上有一些开箱即用的 <code>~/.gdbinit</code> 文件：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/gdbinit/Gdbinit/blob/master/gdbinit">https://github.com/gdbinit/Gdbinit/blob/master/gdbinit</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/cyrus-and/gdb-dashboard">gdb-dashboard</a>：可视化界面、丰富的功能</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/hugsy/gef">gef</a>：可视化界面、丰富的功能</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/pwndbg/pwndbg">pwndbg</a></li>
+</ul>
+<p>gdb-dashboard 使用笔记：</p>
+<ul>
+<li>使用 <code>-output</code> 命令将某些组件在其他终端显示，比如终端 A 执行 gdb 命令，终端 B 显示断点、变量值、调用栈。在终端输入 <code>tty</code> 命令就可以查看当前终端的序号。</li>
+<li>介绍文章：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/435918702">https://zhuanlan.zhihu.com/p/435918702</a></li>
+</ul>
+<h1 id="加载插件"><a href="#加载插件" class="headerlink" title="加载插件"></a>加载插件</h1><p>GDB 可以使用 <a target="_blank" rel="noopener" href="https://sourceware.org/gdb/onlinedocs/gdb/Python-API.html">Python API</a> 来实现自定义脚本。脚本可以直接写在 <code>~/.gdbinit</code>，或者写在一个单独的文件中，然后通过 <code>source</code> 命令加载。</p>
+<p>网上有很多可用的插件，比如 <a target="_blank" rel="noopener" href="https://sourceware.org/gdb/wiki/STLSupport">STL views</a> 提供了一些打印 STL 容器的命令。</p>
+<h1 id="术语"><a href="#术语" class="headerlink" title="术语"></a>术语</h1><h2 id="栈帧"><a href="#栈帧" class="headerlink" title="栈帧"></a>栈帧</h2><p>调用栈（call stack）被分成若干个栈帧（stack frame），每个栈帧包括一次函数调用相关的所有数据：函数的参数，函数的局部变量，函数的返回地址等。</p>
+<p>程序启动时只有一个栈帧即main函数，又称初始栈帧或最外层栈帧。每次函数调用都会创建一个新栈帧，每次函数返回时，一个栈帧也会被弹出。当前执行的函数所对应的栈帧又称最内层栈帧。</p>
+<p>GDB给每个栈帧分配了一个数字，最内层栈帧的编号为0，外层栈帧一次加1。可以通过 <code>bt</code>命令查看所有栈帧，通过 <code>f</code>命令加上编号进入到对应的栈帧。</p>
+<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><ul>
+<li><code>gdb -p 8043</code>启动gdb附加到进程ID(PID)为8043的进程上。附加成功后可以使用gdb提供的各种调试命令检查和控制该进程的执行。</li>
+<li><code>bt full</code>查看详细调用栈信息，会把frame中的入参和局部变量显示出来。</li>
+<li><code>./exec &amp;</code>后面的&amp;表示把程序放在后台运行，从而立即返回命令行，可以执行下一步操作，而不需要等待程序运行。</li>
+<li><code>ps -e</code>列出当前系统上所有的进程。<code>ps</code>显示系统上的进程状态，<code>-e</code>表示显示所有的进程列表不仅仅是当前用户的进程</li>
+</ul>
+<h1 id="学习资源"><a href="#学习资源" class="headerlink" title="学习资源"></a>学习资源</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://sourceware.org/gdb/">GDB官网</a></li>
+<li><a target="_blank" rel="noopener" href="https://sourceware.org/gdb/onlinedocs/gdb/">Debugging with GDB</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.brendangregg.com/blog/2016-08-09/gdb-example-ncurses.html">gdb debug full examples</a></li>
+<li><a target="_blank" rel="noopener" href="https://wizardforcel.gitbooks.io/100-gdb-tips/content/index.html">100个 GDB 小技巧</a></li>
+<li><a target="_blank" rel="noopener" href="https://pernos.co/">在线 GDB 平台</a></li>
+<li><a target="_blank" rel="noopener" href="https://imageslr.com/2023/gdb.html#coredump">GDB 入门</a></li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/12/18/MissingSemester/Git/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="ZhangHangming">
+      <meta itemprop="description" content="张航铭（ZhangHangming）的笔记本">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="勿以浮沙筑高台">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/12/18/MissingSemester/Git/" class="post-title-link" itemprop="url">Git</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-12-18 20:17:18" itemprop="dateCreated datePublished" datetime="2024-12-18T20:17:18+08:00">2024-12-18</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -503,7 +1042,7 @@
 <p>4.Git一般只添加数据<br>执行的Git操作，几乎只往Git数据库中添加数据，很难使用Git从数据库中删除数据，</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2024/09/05/Git/#more" rel="contents">
+              <a class="btn" href="/2024/12/18/MissingSemester/Git/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -527,7 +1066,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/09/05/Hexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/12/18/Linux/%E6%9F%A5%E6%89%BE%E5%91%BD%E4%BB%A4/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -541,7 +1080,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2024/09/05/Hexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/" class="post-title-link" itemprop="url">Hexo搭建个人博客</a>
+            <a href="/2024/12/18/Linux/%E6%9F%A5%E6%89%BE%E5%91%BD%E4%BB%A4/" class="post-title-link" itemprop="url">查找命令</a>
         </h2>
 
         <div class="post-meta">
@@ -551,7 +1090,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2024-09-05 15:44:08" itemprop="dateCreated datePublished" datetime="2024-09-05T15:44:08+08:00">2024-09-05</time>
+              <time title="创建时间：2024-12-18 20:17:18" itemprop="dateCreated datePublished" datetime="2024-12-18T20:17:18+08:00">2024-12-18</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -559,7 +1098,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/" itemprop="url" rel="index"><span itemprop="name">个人博客</span></a>
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
                 </span>
             </span>
 
@@ -574,13 +1113,14 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="1-前置条件"><a href="#1-前置条件" class="headerlink" title="1.前置条件"></a>1.前置条件</h1><ul>
-<li><a target="_blank" rel="noopener" href="https://nodejs.org/en/download/package-manager/current">Node.js</a></li>
-<li><a target="_blank" rel="noopener" href="https://git-scm.com/">git</a></li>
-<li>Github Pages
+          <ul>
+<li>find：用于搜索文件，通过属性搜索文件</li>
+<li>grep：用于搜索文件内容，正则表达式</li>
+<li>locate：根据文件名搜索本地的磁盘文件</li>
+</ul>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2024/09/05/Hexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/#more" rel="contents">
+              <a class="btn" href="/2024/12/18/Linux/%E6%9F%A5%E6%89%BE%E5%91%BD%E4%BB%A4/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -604,7 +1144,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/09/05/unit4-%E8%BF%9B%E7%A8%8B%E6%8A%BD%E8%B1%A1/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/12/18/MissingSemester/CMake%E5%B5%8C%E5%A5%97%E5%86%99%E6%B3%95/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -618,7 +1158,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2024/09/05/unit4-%E8%BF%9B%E7%A8%8B%E6%8A%BD%E8%B1%A1/" class="post-title-link" itemprop="url">进程抽象</a>
+            <a href="/2024/12/18/MissingSemester/CMake%E5%B5%8C%E5%A5%97%E5%86%99%E6%B3%95/" class="post-title-link" itemprop="url">CMake嵌套写法</a>
         </h2>
 
         <div class="post-meta">
@@ -628,77 +1168,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2024-09-05 15:44:08" itemprop="dateCreated datePublished" datetime="2024-09-05T15:44:08+08:00">2024-09-05</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="unit4-进程抽象"><a href="#unit4-进程抽象" class="headerlink" title="unit4:进程抽象"></a>unit4:进程抽象</h1><h2 id="1-进程API内容"><a href="#1-进程API内容" class="headerlink" title="1.进程API内容"></a>1.进程API内容</h2><ul>
-<li>创建（create）</li>
-<li>销毁（destroy）</li>
-<li>等待（wait）</li>
-<li>其他控制（miscellaneous control）</li>
-<li>状态（statu）
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2024/09/05/unit4-%E8%BF%9B%E7%A8%8B%E6%8A%BD%E8%B1%A1/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/09/05/%E6%A0%BC%E5%BC%8F%E5%AD%97%E7%AC%A6%E4%B8%B2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="ZhangHangming">
-      <meta itemprop="description" content="张航铭（ZhangHangming）的笔记本">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="勿以浮沙筑高台">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/09/05/%E6%A0%BC%E5%BC%8F%E5%AD%97%E7%AC%A6%E4%B8%B2/" class="post-title-link" itemprop="url">格式化字符串</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-09-05 15:44:08" itemprop="dateCreated datePublished" datetime="2024-09-05T15:44:08+08:00">2024-09-05</time>
+              <time title="创建时间：2024-12-18 20:17:18" itemprop="dateCreated datePublished" datetime="2024-12-18T20:17:18+08:00">2024-12-18</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -706,7 +1176,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C</span></a>
+                  <a href="/categories/CMake/" itemprop="url" rel="index"><span itemprop="name">CMake</span></a>
                 </span>
             </span>
 
@@ -721,10 +1191,11 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="格式字符串"><a href="#格式字符串" class="headerlink" title="格式字符串"></a>格式字符串</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">printf</span><span class="params">()</span>;</span><br><span class="line"><span class="type">int</span> <span class="title function_">scanf</span><span class="params">()</span>;</span><br></pre></td></tr></table></figure>
+          <p>[ ] CMake嵌套写法</p>
+<p>动态库：源文件非常多，生成的可执行文件比较小，发布的时候不仅需要发布可执行文件，还需要发布动态库。<br>静态库：源文件比较少，生成的可执行文件比较大，发布的时候只需要发布可执行文件就可以了。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2024/09/05/%E6%A0%BC%E5%BC%8F%E5%AD%97%E7%AC%A6%E4%B8%B2/#more" rel="contents">
+              <a class="btn" href="/2024/12/18/MissingSemester/CMake%E5%B5%8C%E5%A5%97%E5%86%99%E6%B3%95/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -748,7 +1219,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/09/05/%E9%87%8D%E8%A3%85%E7%B3%BB%E7%BB%9F/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/12/18/Linux/deb%E6%96%87%E4%BB%B6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -762,7 +1233,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2024/09/05/%E9%87%8D%E8%A3%85%E7%B3%BB%E7%BB%9F/" class="post-title-link" itemprop="url">双系统</a>
+            <a href="/2024/12/18/Linux/deb%E6%96%87%E4%BB%B6/" class="post-title-link" itemprop="url">.deb文件</a>
         </h2>
 
         <div class="post-meta">
@@ -772,7 +1243,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2024-09-05 15:44:08" itemprop="dateCreated datePublished" datetime="2024-09-05T15:44:08+08:00">2024-09-05</time>
+              <time title="创建时间：2024-12-18 20:17:18" itemprop="dateCreated datePublished" datetime="2024-12-18T20:17:18+08:00">2024-12-18</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -780,7 +1251,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/PC/" itemprop="url" rel="index"><span itemprop="name">PC</span></a>
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
                 </span>
             </span>
 
@@ -795,10 +1266,170 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>1.重装了Windows10专业版系统<br>2.增加了Ubuntu24.04双系统</p>
+          <p>dep文件是debian，Ubuntu等Linux发行版的软件安装包</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2024/09/05/%E9%87%8D%E8%A3%85%E7%B3%BB%E7%BB%9F/#more" rel="contents">
+              <a class="btn" href="/2024/12/18/Linux/deb%E6%96%87%E4%BB%B6/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/12/18/Linux/%E5%8E%8B%E7%BC%A9_%E8%A7%A3%E5%8E%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="ZhangHangming">
+      <meta itemprop="description" content="张航铭（ZhangHangming）的笔记本">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="勿以浮沙筑高台">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/12/18/Linux/%E5%8E%8B%E7%BC%A9_%E8%A7%A3%E5%8E%8B/" class="post-title-link" itemprop="url">压缩解压</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-12-18 20:17:18" itemprop="dateCreated datePublished" datetime="2024-12-18T20:17:18+08:00">2024-12-18</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <ul>
+<li>.tar.gz</li>
+<li>.tgz</li>
+<li>.tar.bz2</li>
+<li>.zip</li>
+<li>.rar</li>
+<li>.tar.xz</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/12/18/Linux/%E5%8E%8B%E7%BC%A9_%E8%A7%A3%E5%8E%8B/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/12/18/Cpp/is-a/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="ZhangHangming">
+      <meta itemprop="description" content="张航铭（ZhangHangming）的笔记本">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="勿以浮沙筑高台">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/12/18/Cpp/is-a/" class="post-title-link" itemprop="url">is-a</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-12-18 20:17:18" itemprop="dateCreated datePublished" datetime="2024-12-18T20:17:18+08:00">2024-12-18</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <ol>
+<li>is-a</li>
+<li>has-a</li>
+<li>uses-a</li>
+<li>is-implemented-as-a</li>
+</ol>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/12/18/Cpp/is-a/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -821,7 +1452,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -887,14 +1518,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">28</span>
+          <span class="site-state-item-count">38</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-count">17</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
   </nav>
