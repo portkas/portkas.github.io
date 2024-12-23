@@ -327,7 +327,6 @@ const int* const p;	// p is a const point to int const
 int const* const p;	// p is a const point to const int
 ```
 
-
 ### const默认修饰左边
 
 const默认修饰它左边的符号，如果左边没有，那么就修饰它右边的符号。
@@ -339,6 +338,52 @@ int* const p;		// 左边是*，所以指针是不能改变的；
 const int* const p;	// 第一个修饰int，第二个修饰*，所以指针和指针指向的值都不能改变；
 const int const *p;	// 两个修饰的都是int，重复修饰；
 ```
+
+### 常量指针和指针常量
+
+```cpp
+#include<iostream>
+using namespace std;
+
+void constValue(){
+    int x = 10;
+    int y = 20;
+    const int *p = &x;
+    cout<<"p: "<<p<<" : "<<*p<<endl;
+    x = 20;     // 正确
+    cout<<"p: "<<p<<" : "<<*p<<endl;
+    p = &y;     // 正确
+    cout<<"p: "<<p<<" : "<<*p<<endl;
+    // *p = 30; // 错误
+}
+
+void constPointer(){
+    int x = 10;
+    int y = 20;
+    int *const p = &x;
+    cout<<"p: "<<p<<" : "<<*p<<endl;
+    x = 20;     // 正确
+    cout<<"p: "<<p<<" : "<<*p<<endl;
+    *p = 30;    // 正确 
+    cout<<"p: "<<p<<" : "<<*p<<endl;
+    // p = &y;  // 错误
+}
+
+int main(){
+    constPointer();
+    return 0;
+}
+```
+
+1. 指针常量(指向常量的指针)：指针指向的是一个常量，不能通过指针来修改它所指向的值；
+   1. const int *p = &x;
+   2. 可以改变p使其指向不同的变量，因为p不是常量；
+   3. 可以改变x的值，因为x不是常量；
+2. 常量指针：指针本身是常量，不能指向不同的变量，但可以通过指针来修改它所指向的值；
+   1. int *const p = &x;
+   2. x=20; 合法；
+   3. *p = 20; 合法；
+   4. p = &y; 不合法；
 
 
 # volatile
@@ -355,12 +400,12 @@ const int const *p;	// 两个修饰的都是int，重复修饰；
 for(volatitle int i=0; i<1000; i++);	// 它会执行，不会被优化
 ```
 
-
 # std::move()
 
-std::move()是为了转移所有权，将快要销毁的对象转移给其他变量，这样可以继续使用这个对象，而不必再创建一个一样的对象，省去了创建一个一样新的对象，也提高了性能；
-
-引入std::move()主要是为了优化对象的声明周期，以及优化函数参数传递方式；
+1. std::move()是为了转移所有权，将快要销毁的对象转移给其他变量，这样可以继续使用这个对象，而不必再创建一个一样的对象，省去了创建一个一样新的对象，也提高了性能;
+2. 引入std::move()主要是为了优化对象的声明周期，以及优化函数参数传递方式；
+3. 在实际场景中，`右值引用`和 `std::move`被广泛用于在STL和自定义类中实现移动语义，避免拷贝从而提升程序性能；
+4. std::move()与std::forward()都仅仅做了类型转换(可理解为static_cast转换) 而已。真正的移动操作是在移动构造函数或者移动赋值操作符中发生的；
 
 ## 函数原型
 
@@ -370,25 +415,81 @@ std::move()是为了转移所有权，将快要销毁的对象转移给其他变
  *  @param  __t  A thing of arbitrary type.
  *  @return The parameter cast to an rvalue-reference to allow moving it.
 */
-template<typename _Tp>
-  constexpr typename std::remove_reference<_Tp>::type&&
-  move(_Tp&& __t) noexcept
-  { return static_cast<typename std::remove_reference<_Tp>::type&&>(__t); }
-
-
+template <typename _Tp>
+constexpr typename std::remove_reference<_Tp>::type &&move(_Tp &&__t) noexcept
+{
+    return static_cast<typename std::remove_reference<_Tp>::type &&>(__t);
+}
 
 // remove_reference
-template<typename _Tp>
-  struct remove_reference
-  { typedef _Tp   type; };
- 
-template<typename _Tp>
-  struct remove_reference<_Tp&>
-  { typedef _Tp   type; };
- 
-template<typename _Tp>
-  struct remove_reference<_Tp&&>
-  { typedef _Tp   type; };
+template <typename _Tp>
+struct remove_reference
+{
+    typedef _Tp type;
+};
+
+template <typename _Tp>
+struct remove_reference<_Tp &>
+{
+    typedef _Tp type;
+};
+
+template <typename _Tp>
+struct remove_reference<_Tp &&>
+{
+    typedef _Tp type;
+};
+```
+
+1. `remove_reference`的作用是去除 `T`中的引用部分，只获取其中的类型部分。无论 `T`是左值还是右值，最后只获取它的类型部分。
+2. constexpr表示这个函数可以在编译时计算结果；
+3. `typename std::remove_reference<_Tp>::type&&`表示先去除参数类型中的引用部分，然后再加上 `&&`表示右值引用；
+4. `move(_Tp&& __t) noexcept`函数接受一个右值引用参数__t，并声明为noexcept表示该函数不会抛出异常；
+5. `static_cast<typename std::remove_reference<_Tp>::type&&>(__t)`: 这行代码将参数 `__t`转换为右值引用。`static_cast`用于显式类型转换，将 `__t`转换为去除引用后的类型，并加上 `&&`来表示右值引用。
+6. 函数模板 `move`的作用是将一个左值或右值转换为右值引用。通过使用 `std::remove_reference`和 `&&`，它确保了返回类型是一个右值引用，从而允许对象被移动而不是被复制。
+
+## typename
+
+1. typename关键字用于告诉编译器某个依赖名称（依赖于模板参数的名称）是一个类型；
+2. 模板函数并不创建任何函数，而只是告诉编译器如何定义函数，当传入某个类型时，编译器按照模板模式再创建这样的函数；
+
+```cpp
+constexpr typename std::remove_reference<_Tp>::type&&
+```
+
+* `std::remove_reference<_Tp>::type` : 这是一个依赖名称，因为它依赖于模板参数 `_Tp`。
+* `typename`用于告诉编译器 `std::remove_reference<_Tp>::type`是一个类型。
+
+### 为什么需要typename：
+
+在模板编程中，编译器在解析模板代码时，需要知道某个名称是类型还是非类型。对于非依赖名称（不依赖于模板参数的名称），编译器可以很容易地确定其类型。但对于依赖名称（依赖于模板参数的名称），编译器需要显式地使用 `typename`来指示这是一个类型。
+
+* 非依赖名称：例如int*，编译器知道int*是一个类型；
+* 依赖名称：std::remove_reference<_Tp>::type，编译器需要typename来明确这是一个类型；
+
+```cpp
+class MyClass {
+    using ValueType = vector<int>::value_type;
+};
+```
+
+这里的 `vector<int>`为非依赖名称，ValueType会直接被解析为int，程序没有错误；
+
+```cpp
+template <typename T>
+class MyClass {
+    using ValueType = typename T::value_type;
+};
+```
+
+这里的 `T`为依赖名称，所以需要typename来告诉编译器 `T::value_type`是一个类型；如果不加typename编译器会报错：
+
+```bash
+$ g++ -o app main.cpp 
+main.cpp:6:23: error: need ‘typename’ before ‘T::value_type’ because ‘T’ is a dependent scope
+    6 |     using valueType = T::value_type;
+      |                       ^
+      |                       typename
 ```
 
 
@@ -435,7 +536,6 @@ After copy, str is "Hello"
 After move, str is ""
 The contents of the vector are "Hello", "Hello"
 ```
-
 
 ## 示例2
 
@@ -614,9 +714,6 @@ now object four = xxxxxxxxxx
 and object one = (object empty)
 ```
 
-
-
-
 # 左值引用
 
 ## 使用方法
@@ -673,7 +770,6 @@ $ ./app
 0x7ffc9171099c
 ```
 
-
 ## 注意事项
 
 返回引用时最重要的一点是，应避免返回<函数终止时不再存在的内存单元>例如：
@@ -700,13 +796,12 @@ int main(){
 1. 为了避免这种问题，最简单的方法是返回一个作为参数传递给函数的引用，作为参数的引用指向调用函数使用的数据，因此返回的引用也将指向这些数据；
 2. 另一种方法是使用new来分配新的存储空间；
 
-
-
 # 右值引用
 
-1. 左值是一个可以表示数据的表达式（变量名，解除引用的指针)，程序可以获取它的地址，右值则不能对其取地址；
-2. 但是，如果将右值关联到右值引用，将导致该右值被存储到特定的位置，且可以获取该位置的地址；
-   ```cpp
+1. 右值引用的声明符号为 `&&`，用以引用一个右值，可以延长右值的生命周期；
+2. 左值是一个可以表示数据的表达式（变量名，解除引用的指针)，程序可以获取它的地址，右值则不能对其取地址；
+3. 但是，如果将右值关联到右值引用，将导致该右值被存储到特定的位置，且可以获取该位置的地址；
+4. ```cpp
    #include <iostream>
 
    inline double f(double tf){return 5.0*(tf-32.0)/9.0;}
@@ -726,8 +821,7 @@ int main(){
    rd1 value and address: 7.07, 0x7fff68ec89d8
    rd2 value and address: -13.85, 0x7fff68ec89e0
    ```
-3. 引入右值引用的主要目的之一是实现移动语义；
-
+5. 引入右值引用的主要目的之一是实现移动语义；
 
 ## 移动语义
 
@@ -764,19 +858,11 @@ allcops()函数创建对象temp，该对象管理着2000000个字符，vector和
 
 要实现移动语义，需要采取某种方式让编译器知道什么时候需要复制，什么时候不需要复制。这就是右值引用发挥作用的地方。
 
-
-
-
-
-
 # 内联函数
 
 1. 内联函数的目的是为了提高程序的运行速度；
 2. 与常规函数的主要区别在于C++编译器如何将它们组合到程序中；
 3. 
-
-
-
 
 # 特殊的成员函数
 
@@ -809,7 +895,6 @@ public:
     someclass& operator=(const someclass &) = default;
 };
 ```
-
 
 此外，关键字 `delete`可用于禁止编译器使用特定方法，如果要禁止复制对象，可禁用复制构造函数和复制赋值运算符：
 
