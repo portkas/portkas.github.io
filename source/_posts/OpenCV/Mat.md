@@ -3,11 +3,11 @@ title: Mat
 categories:
 	- OpenCV
 ---
-<!-- more -->
-
 # Mat数据
 
 ## 构造函数
+
+<!-- more -->
 
 ```cpp
 include <iostream>
@@ -15,7 +15,7 @@ include <iostream>
 using namespace std;
 
 int main(){
-    cv::Mat a;     //默认构造函数                                         
+    cv::Mat a;     //默认构造函数                                       
     cv::Mat b = cv::Mat();  //默认构造函数
     cv::Mat c = cv::Mat(3, 3, CV_8UC1);  //指定类型的二维数组
     cv::Mat d = cv::Mat(cv::Size(3, 3),CV_8UC1); //指定类型的二维数组

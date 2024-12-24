@@ -5,9 +5,9 @@ categories:
 ---
 # gtest_main
 
-<!-- more -->
-
 ## 代码解析
+
+<!--more -->
 
 ```cpp
 #include <cstdio>
@@ -89,7 +89,6 @@ GTEST_API_ int main(int argc, char **argv) {
   return RUN_ALL_TESTS();
 }
 ```
-
 
 ## 进一步解析
 
