@@ -97,7 +97,6 @@ int select(int nfds, fd_set *readfds, fd_set *writefds, fd_set *exceptfds, struc
 * 等于-1：函数调用失败
 * 等于0：超时，没有检测到就绪的文件描述符
 
-
 ```cpp
 // 将文件描述符fd从set集合中删除，即将fd对应的标志位置设置为0
 void FD_CLR(int fd, fd_set *set);
@@ -111,6 +110,5 @@ int FD_SET(int fd, fd_set *set);
 // 将set集合中所有的文件描述符对应的标志为设置为0
 int FD_ZERO(fd_set *set);
 ```
-
 
 # poll
