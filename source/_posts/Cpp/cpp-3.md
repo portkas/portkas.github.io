@@ -466,6 +466,173 @@ Memory contents:
 - **效果**：在上述示例中，`std`命名空间中的所有名称都被引入到当前作用域中，可以在不加 `std::`前缀的情况下直接使用它们。
 - **适用场景**：当你需要频繁地使用某个命名空间中的多个名称时，使用 `using`编译指令可以减少代码的冗余。然而，过度使用可能会导致命名冲突和代码可读性降低。
 
-#### 注意事项
+#### 引用命名空间内的标识符
 
-1. using声明不能同时声明两次，但是使用using编译之后，依然可以使用作用域解析运算符；
+当引用的标识符不在当前命名空间或全局命名空间内时，有三种方式可以引用该标识符：
+
+```cpp
+// 方式一
+std::cout << "hello";
+
+// 方式二
+using std::cout;
+cout << "hello";
+
+// 方式三
+using namespace std;
+cout << "hello";
+```
+
+方式一只在必要的时候通过域运算符 `::`引用指定命令空间内的标识符，适用于当前编译单元引用std内的标识符不多，而且编译单元内使用这些标识符的次数也不多的情况。
+
+方式二只引入std::cout一个标识符，如果在当前编译单元内使用std::cout次数较多，而且不会与当前命名空间内的标识符冲突，建议使用这种方式。
+
+方式三是把std命名空间中的全部标识符都引入到当前命名空间中，此后std所有的标识符对于当前命名空间都是可见的，这会提高标识符冲突的危险。如果当前编译单元用到std命令空间内的标识符较多，而且不会出现标识符冲突的问题，可以使用这种方式，以减少字符的输入。
+
+
+### 命名空间的别名
+
+```cpp
+namespace mvft = my_very_favorite_thing;
+```
+
+### 匿名命名空间
+
+在匿名命名空间中声明的名称也将被编译器转换，与编译器为这个匿名命名空间生成的唯一内部名称(即这里的__UNIQUE_NAME_)绑定在一起。还有一点很重要，就是这些名称具有internal链接属性，这和声明为static的全局名称的链接属性是相同的，即名称的作用域被限制在当前文件中，无法通过在另外的文件中使用extern声明来进行链接。
+
+相对于C的static声明来说，可以在匿名的空间里面声明很多变量和函数,这样可以省去了对每个变量和函数添加static声明。实质上匿名空间的功能跟static声明是一样的。
+
+还有一个好处是，命名空间是可以嵌套的。
+
+### 示例代码
+
+```cpp
+// namesp.h
+#include <string>
+// create the pers and debts namespaces
+namespace pers
+{
+    struct Person
+    { 
+        std::string fname;
+        std::string lname;
+     };
+    void getPerson(Person &);
+    void showPerson(const Person &);
+}
+
+namespace debts
+{
+    using namespace pers;
+    struct Debt
+    {
+        Person name;
+        double amount;
+    };
+  
+    void getDebt(Debt &);
+    void showDebt(const Debt &);
+    double sumDebts(const Debt ar[], int n); 
+}
+```
+
+```cpp
+// namesp.cpp -- namespaces
+#include <iostream>
+#include "namesp.h"
+
+namespace pers
+{
+    using std::cout;
+    using std::cin;
+    void getPerson(Person & rp)
+    {
+        cout << "Enter first name: ";
+        cin >> rp.fname;
+        cout << "Enter last name: ";
+        cin >> rp.lname;
+    }
+  
+    void showPerson(const Person & rp)
+    {
+        std::cout << rp.lname << ", " << rp.fname;
+    }
+}
+
+namespace debts
+{
+    void getDebt(Debt & rd)
+    {
+        getPerson(rd.name);
+        std::cout << "Enter debt: ";
+        std::cin >> rd.amount;
+    }
+  
+    void showDebt(const Debt & rd)
+    {
+        showPerson(rd.name);
+        std::cout <<": $" << rd.amount << std::endl;
+    }
+  
+    double sumDebts(const Debt ar[], int n)
+    {
+        double total = 0;
+        for (int i = 0; i < n; i++)
+            total += ar[i].amount;
+        return total;
+    }
+}
+```
+
+在命名空间中声明的函数名作用于整个空间，因此定义和声明必须位于同一个名称空间中；
+
+```cpp
+// usenmsp.cpp -- using namespaces
+#include <iostream>
+#include "namesp.h"
+
+void other(void);
+void another(void);
+int main(void)
+{
+    using debts::Debt;
+	using debts::showDebt;
+    Debt golf = { {"Benny", "Goatsniff"}, 120.0 };
+    showDebt(golf);
+    other();
+    another(); 
+	// std::cin.get();
+	// std::cin.get();
+    return 0;
+}
+
+void other(void)
+{
+    using std::cout;
+    using std::endl;
+    using namespace debts;
+    Person dg = {"Doodles", "Glister"};
+    showPerson(dg);
+    cout << endl;
+    Debt zippy[3];
+    int i;
+  
+    for (i = 0; i < 3; i++)
+        getDebt(zippy[i]);
+
+    for (i = 0; i < 3; i++)
+        showDebt(zippy[i]);
+    cout << "Total debt: $" << sumDebts(zippy, 3) << endl;
+  
+    return;
+}
+
+void another(void)
+{
+    using pers::Person;;
+  
+    Person collector = { "Milo", "Rightshift" };
+    pers::showPerson(collector);
+    std::cout << std::endl; 
+}
+```
