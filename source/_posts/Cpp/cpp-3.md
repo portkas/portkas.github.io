@@ -282,3 +282,190 @@ veep的const限定符禁止程序修改veep的成员，但accesses成员的mutab
 在C++中，const限定符对默认存储类型有影响，即在默认情况下全局变量的链接性为外部的，但是const全局变量的链接性为内部的，即在C++看来，全局const定义就像使用了static说明符一样。
 
 这也解释了为什么，头文件中可以存放const常量。因为内部链接性意味着，每个文件都有自己的一组常量，而不是所有文件共享同一组常量，每个定义都是所属文件私有的，这就是能够将常量定义在头文件中的原因，这样，只要在两个源代码文件中包含同一个头文件，则他们将获得同一组常量；
+
+### 函数和链接性
+
+1. 和变量一样，函数也有链接性，C++中不允许在一个函数中定义另外一个函数，因此所有的函数的存储持续性都自动为静态即在整个程序执行期间都存在；
+2. 可以使用static关键字将函数的链接性设置为内部的，使之只能在一个文件中使用，必须同时在函数原型和函数定义在中使用该关键字；
+
+   ```cpp
+   static int private(double x);
+   static int private(double x){
+      ...
+   }
+   ```
+3. 这意味着该函数只能在这个文件中可见，还意味着可以在其他文件中定义同名的函数；
+4. 和变量一样，在定义静态函数的文件中，静态函数将覆盖外部定义；
+5. 內联函数不受单定义规则的约束，所以可以将內联函数的定义放到头文件中；
+
+# new
+
+### 注意点
+
+1. 动态内存由运算符new/delete控制，而不是由作用域和链接性规则控制；
+2. 但是作用域和链接性的规则适用于用来跟踪动态内存的自动和静态指针变量；
+
+   ```cpp
+   float *p_free = new float[20];
+   ```
+3. 由new分配的内存将一直保留在内存中，直到使用delete运算符将其释放；
+4. 但是当包含该声明的语句块执行完毕时，p_free指针将消失；
+5. 如果希望另一个函数能够使用new分配的内存中的内容，则必须将其地址传递或者返回给其他函数；
+6. 如果将p_free的链接性设置为外部的，则文件中位于该声明后面的所有函数都可以使用它，另外通过在另一个文件中使用 `extern float *p_free`的声明就可以使用该指针；
+
+### 使用new初始化
+
+1. 内置的标量类型
+
+   ```cpp
+   // 括号
+   int *pi = new int(6);		// *pi = 6
+   double *pd = new double(9.9);	// *pd = 9.9
+
+   // 初始化列表
+   int *pi = new int{6};		// *pi = 6
+   double *pd = new double{9.9};	// *pd = 9.9
+   ```
+2. 常规结构或数组
+
+   ```cpp
+   struct where {double x; double y; double z;};
+   where *one = new where{2.5, 5.3, 7.2};
+   int *ar = new int[4]{1,2,3,4};
+   ```
+
+运算符new和new[]分别对应delete和delete[];
+
+### 定位new运算符
+
+包含头文件：`#include <new>`
+
+通常，new负责在堆中找到一个足以满足要求的内存块；new还有另一种变体，被称为定位new运算符，用于指定要使用的位置；通过这种方式，可以在特定位置设置内存管理规程，处理需要通过特定地址进行访问的硬件或在特定位置创建对象；
+
+```cpp
+// newplace.cpp -- using placement new
+#include <iostream>
+#include <new> // for placement new
+const int BUF = 512;
+const int N = 5;
+char buffer[BUF];      // chunk of memory
+int main()
+{
+    using namespace std;
+
+    double *pd1, *pd2;
+    int i;
+    cout << "Calling new and placement new:\n";
+    pd1 = new double[N];           // use heap
+    pd2 = new (buffer) double[N];  // use buffer array
+    for (i = 0; i < N; i++)
+        pd2[i] = pd1[i] = 1000 + 20.0 * i;
+    cout << "Memory addresses:\n" << "  heap: " << pd1
+        << "  static: " <<  (void *) buffer  <<endl;
+    cout << "Memory contents:\n";
+    for (i = 0; i < N; i++)
+    {
+        cout << pd1[i] << " at " << &pd1[i] << "; ";
+        cout << pd2[i] << " at " << &pd2[i] << endl;
+    }
+
+    cout << "\nCalling new and placement new a second time:\n";
+    double *pd3, *pd4;
+    pd3= new double[N];            // find new address
+    pd4 = new (buffer) double[N];  // overwrite old data
+    for (i = 0; i < N; i++)
+        pd4[i] = pd3[i] = 1000 + 40.0 * i;
+    cout << "Memory contents:\n";
+    for (i = 0; i < N; i++)
+    {
+        cout << pd3[i] << " at " << &pd3[i] << "; ";
+        cout << pd4[i] << " at " << &pd4[i] << endl;
+    }
+
+    cout << "\nCalling new and placement new a third time:\n";
+    delete [] pd1;
+    pd1= new double[N];
+    pd2 = new (buffer + N * sizeof(double)) double[N]; 
+    for (i = 0; i < N; i++)
+        pd2[i] = pd1[i] = 1000 + 60.0 * i;
+    cout << "Memory contents:\n";
+    for (i = 0; i < N; i++)
+    {
+        cout << pd1[i] << " at " << &pd1[i] << "; ";
+        cout << pd2[i] << " at " << &pd2[i] << endl;
+    }
+    delete [] pd1;
+    delete [] pd3;
+    // cin.get();
+    return 0;
+}
+```
+
+输出结果：
+
+```bash
+$ ./app
+Calling new and placement new:
+Memory addresses:
+  heap: 0x5b00d966b6c0  static: 0x5b00d7fc0160
+Memory contents:
+1000 at 0x5b00d966b6c0; 1000 at 0x5b00d7fc0160
+1020 at 0x5b00d966b6c8; 1020 at 0x5b00d7fc0168
+1040 at 0x5b00d966b6d0; 1040 at 0x5b00d7fc0170
+1060 at 0x5b00d966b6d8; 1060 at 0x5b00d7fc0178
+1080 at 0x5b00d966b6e0; 1080 at 0x5b00d7fc0180
+
+Calling new and placement new a second time:
+Memory contents:
+1000 at 0x5b00d966b6f0; 1000 at 0x5b00d7fc0160
+1040 at 0x5b00d966b6f8; 1040 at 0x5b00d7fc0168
+1080 at 0x5b00d966b700; 1080 at 0x5b00d7fc0170
+1120 at 0x5b00d966b708; 1120 at 0x5b00d7fc0178
+1160 at 0x5b00d966b710; 1160 at 0x5b00d7fc0180
+
+Calling new and placement new a third time:
+Memory contents:
+1000 at 0x5b00d966b6c0; 1000 at 0x5b00d7fc0188
+1060 at 0x5b00d966b6c8; 1060 at 0x5b00d7fc0190
+1120 at 0x5b00d966b6d0; 1120 at 0x5b00d7fc0198
+1180 at 0x5b00d966b6d8; 1180 at 0x5b00d7fc01a0
+1240 at 0x5b00d966b6e0; 1240 at 0x5b00d7fc01a8
+```
+
+1. 定位new运算符把p2放在了数组buffer中，pd2和buffer的地址相同，但是他们两个类型不同，pd2是double指针，buffer是char指针，这也是为什么程序中使用(void*)对buffer进行强制转换；
+2. 当再次使用定位new运算符指向相同的内存时，它会覆盖上一次的数据，所以定位new运算符不跟踪哪些内存已被使用，也不查找未使用的内存块；
+3. 程序中没有使用delete来释放使用定位new运算符分配的内存，因为在这个示例代码中buffer指定的内存是静态内存，而delete只能作用于常规new运算符分配的堆内存；
+4. 如果buffer是使用常规的new运算符创建的，那么也可以使用常规delete运算符来释放整个内存块；
+
+# 名称空间
+
+名称可以是变量，函数，结构，枚举，类，类和结构的成员。例如，两个库可能都定义了a,b,c的类，但是定义的方式不兼容，用户可能希望使用一个库的a，另一个库的b，这种冲突被称为名称空间问题；
+
+### using声明和using编译
+
+#### using声明
+
+- **作用**：`using`声明用于将一个或多个特定的名称从命名空间中引入到当前作用域中。
+- **语法**：`using namespace_name::identifier;`
+- **示例**：
+  ```cpp
+  using std::cout;
+  using std::endl;
+  ```
+- **效果**：在上述示例中，`cout`和 `endl`被直接引入到当前作用域中，可以在不加 `std::`前缀的情况下直接使用它们。
+- **适用场景**：当你只需要从命名空间中使用少量的名称时，使用 `using`声明是更好的选择，因为它可以避免命名冲突。
+
+#### using编译指令
+
+- **作用**：`using`编译指令用于将整个命名空间中的所有名称引入到当前作用域中。
+- **语法**：`using namespace namespace_name;`
+- **示例**：
+  ```cpp
+  using namespace std;
+  ```
+- **效果**：在上述示例中，`std`命名空间中的所有名称都被引入到当前作用域中，可以在不加 `std::`前缀的情况下直接使用它们。
+- **适用场景**：当你需要频繁地使用某个命名空间中的多个名称时，使用 `using`编译指令可以减少代码的冗余。然而，过度使用可能会导致命名冲突和代码可读性降低。
+
+#### 注意事项
+
+1. using声明不能同时声明两次，但是使用using编译之后，依然可以使用作用域解析运算符；
