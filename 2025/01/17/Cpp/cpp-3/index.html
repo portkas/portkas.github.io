@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="单独编译 存储持续性，作用域和链接性 定位new运算符 名称空间">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cpp-3-内存模型">
+<meta property="og:url" content="http://example.com/2025/01/17/Cpp/cpp-3/index.html">
+<meta property="og:site_name" content="勿以浮沙筑高台">
+<meta property="og:description" content="单独编译 存储持续性，作用域和链接性 定位new运算符 名称空间">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-01-17T05:43:56.352Z">
+<meta property="article:modified_time" content="2025-01-17T05:43:56.352Z">
+<meta property="article:author" content="ZhangHangming">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2025/01/17/Cpp/cpp-3/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>cpp-3-内存模型 | 勿以浮沙筑高台</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">勿以浮沙筑高台</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">张航铭的笔记本</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/01/17/Cpp/cpp-3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="ZhangHangming">
+      <meta itemprop="description" content="张航铭（ZhangHangming）的笔记本">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="勿以浮沙筑高台">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          cpp-3-内存模型
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-01-17 13:43:56" itemprop="dateCreated datePublished" datetime="2025-01-17T13:43:56+08:00">2025-01-17</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/cpp/" itemprop="url" rel="index"><span itemprop="name">cpp</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <ul>
+<li>单独编译</li>
+<li>存储持续性，作用域和链接性</li>
+<li>定位new运算符</li>
+<li>名称空间</li>
+</ul>
+<span id="more"></span>
+
+<h1 id="单独编译"><a href="#单独编译" class="headerlink" title="单独编译"></a>单独编译</h1><ol>
+<li>通常大型程序由多个源代码文件组成，这些文件可能共享一些数据，这样的程序涉及到文件的单独编译。</li>
+</ol>
+<ul>
+<li>头文件：包含结构声明和使用这些结构的函数的原型；</li>
+<li>源代码文件：包含与结构有关的函数的代码；</li>
+<li>源代码文件：包含调用与结构有关的函数的代码；</li>
+</ul>
+<ol start="2">
+<li>禁止将函数定义或变量声明放到头文件中：如果在头文件包含一个函数定义，然后在其他两个文件中包含该头文件，则同一个程序中将包含同一个函数的两个定义，除非函数是内联的，否则会报错重复定义；</li>
+<li>头文件通常包含的内容：</li>
+</ol>
+<ul>
+<li>函数原型</li>
+<li>使用#define或const定义的符号常量</li>
+<li>结构声明</li>
+<li>类声明</li>
+<li>模板声明</li>
+<li>内联函数</li>
+</ul>
+<ol start="4">
+<li>将结构声明放在头文件中是可以的，因为它们不创建变量；</li>
+<li>在同一个文件中只能将同一个头文件包含一次；</li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">ifndef</span> HEAD_H_</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;head.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+
+<ol start="6">
+<li>多个库的链接：在链接编译模块的时候，确保所有对象文件或库是由同一个编译器生成的，避免链接错误。</li>
+</ol>
+<h1 id="存储持续性，作用域和链接性"><a href="#存储持续性，作用域和链接性" class="headerlink" title="存储持续性，作用域和链接性"></a>存储持续性，作用域和链接性</h1><p>C++使用三种（在C++11中是四种)不同的方案来存储数据，这些方案的区别在于数据保留在内存中的时间：</p>
+<ul>
+<li>自动存储持续性：在函数定义中声明的变量（包括函数参数)的存储持续性为自动的。它们在程序开始执行其所属的函数或代码块时被创建，在执行完函数或代码块时，他们使用的内存被释放；</li>
+<li>静态存储持续性：在函数定义外定义的变量和使用关键字static定义的变量的存储持续性为静态。它们在程序整个运行过程中都存在；</li>
+<li>线程存储持续性（C++11)：在多核处理器中很常见，如果变量是使用thread_local声明的，则其生命周期与所属的线程一样长；</li>
+<li>动态存储持续性：用new运算符分配的内存将一直存在，直到delete运算符将其释放或程序结束为止。这种内存的存储持续性为动态，有时被称为自由存储或堆；</li>
+</ul>
+<h3 id="作用域和链接"><a href="#作用域和链接" class="headerlink" title="作用域和链接"></a>作用域和链接</h3><p>链接性：描述了名称如何在不同单元间共享，链接性为外部的名称可以在文件间共享，链接性为内部的名称只能由一个文件中的函数共享，自动变量的名称没有链接性，因为他们不能共享；</p>
+<p>C++函数的作用于可以是整个类或整个名称空间，但不能是局部的（因为它们不能在代码块内定义函数)；</p>
+<h3 id="寄存器变量"><a href="#寄存器变量" class="headerlink" title="寄存器变量"></a>寄存器变量</h3><p>在C++中，<code>register</code>关键字用于建议编译器将变量存储在寄存器中，以提高变量访问的速度。然而，这只是对编译器的一个提示，编译器可以忽略这个关键字。使用 <code>register</code>关键字的变量通常用于频繁访问的变量，以减少内存访问的开销。</p>
+<p>使用示例：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">register</span> <span class="type">int</span> counter = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (counter = <span class="number">0</span>; counter &lt; <span class="number">10</span>; ++counter) &#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;Counter: &quot;</span> &lt;&lt; counter &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在这个例子中，<code>counter</code>变量被声明为寄存器变量，这意味着编译器会尝试将其存储在寄存器中，以便在循环中快速访问和修改.</p>
+<p>注意事项：</p>
+<ol>
+<li><strong>作用域限制</strong>：<code>register</code>变量必须是局部变量，不能是全局变量或静态变量.</li>
+<li><strong>存储限制</strong>：由于寄存器的数量有限，编译器可能会根据实际情况选择是否将变量存储在寄存器中.</li>
+<li><strong>C++11及以后</strong>：在C++11标准中，<code>register</code>关键字被标记为弃用（deprecated），但仍然可以使用。C++17标准中，<code>register</code>关键字被正式移除。因此，在现代C++代码中，建议避免使用 <code>register</code>关键字，而是依赖编译器的优化能力来决定变量的存储位置.</li>
+</ol>
+<p>现代编译器通常具有高度优化的能力，能够自动识别并优化频繁访问的变量，因此在大多数情况下，显式使用 <code>register</code>关键字并不会带来显著的性能提升。</p>
+<p>关键字register用于在声明中指示寄存器存储，而在C++11中，它只是显式地指出变量是自动的。</p>
+<h3 id="静态持续变量"><a href="#静态持续变量" class="headerlink" title="静态持续变量"></a>静态持续变量</h3><p>C++为静态存储持续性变量提供了三种链接性：</p>
+<ul>
+<li>外部链接性（可在其他文件中访问)</li>
+<li>内部链接性（只能在当前文件中访问)</li>
+<li>无链接性（只能在当前函数或代码块中访问)</li>
+</ul>
+<p>这三种链接性在整个程序执行期间都存在，与自动变量相比，他们的寿命更长。静态变量的数目在程序运行期间是不变的，编译器将分配固定的内存块来存储所有的静态变量；</p>
+<ul>
+<li>要创建链接性为外部的静态持续变量，必须在代码块的外面声明它；</li>
+<li>要创建链接性为内部的静态持续变量，必须在代码块的外面声明它，并使用static限定符；</li>
+<li>要创建没有链接性的静态持续变量，必须在代码块的内部声明它，并使用static限定符；</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 外部链接性静态持续变量</span></span><br><span class="line"><span class="type">int</span> global = <span class="number">1000</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 内部链接性静态持续变量</span></span><br><span class="line"><span class="type">static</span> <span class="type">int</span> one_file = <span class="number">50</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 无链接性静态持续变量</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">func</span><span class="params">()</span></span>&#123;</span><br><span class="line">   <span class="type">static</span> <span class="type">int</span> count = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>所有的静态持续变量在整个程序执行期间都存在。在func()中声明的变量count的作用于为局部，没有链接性，这意味着只能在func()函数中使用它，但是与自动变量不同的是，即使在func()函数没有被执行时，count也留在内存中，并且其只会被初始化一次，具有记忆性；</p>
+<p>globle和one_file变量的作用于都为整个文件，即从声明位置到文件结尾的范围内都可以被使用，由于one_file的链接性为内部，因此只能在包含该变量的单个文件中使用；由于global的链接性为外部，因此可以在程序的其他文件中使用它。</p>
+<h3 id="静态持续性，外部链接性"><a href="#静态持续性，外部链接性" class="headerlink" title="静态持续性，外部链接性"></a>静态持续性，外部链接性</h3><h4 id="单定义规则"><a href="#单定义规则" class="headerlink" title="单定义规则"></a>单定义规则</h4><p>一方面，在每个使用外部变量的文件中都必须声明它；另一方面，C++中有单定义原则，即变量只能有一次定义。为了满足这种需求，C++中有两种变量声明方式：</p>
+<ul>
+<li>定义声明：给变量分配存储空间</li>
+<li>引用声明（extern)：不给变量分配存储空间，引用已有的变量</li>
+</ul>
+<p>引用声明使用关键字extern且不进行初始化，如果初始化的话声明为定义，会导致分配空间；</p>
+<p>如果要在多个文件中使用外部变量，只需要在一个文件中包含该变量的定义（单定义规则)，但在使用该变量的其他所有文件中，都必须使用关键字extern声明它；</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// external.cpp -- external variable</span></span><br><span class="line"><span class="comment">// compile with support.cpp</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="comment">// external variable</span></span><br><span class="line"><span class="keyword">extern</span> <span class="type">double</span> warming = <span class="number">0.3</span>;       <span class="comment">// warming defined</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// function prototypes</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">update</span><span class="params">(<span class="type">double</span> dt)</span></span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">local</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span>                  <span class="comment">// uses global variable</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;Global warming is &quot;</span> &lt;&lt; warming &lt;&lt; <span class="string">&quot; degrees.\n&quot;</span>;</span><br><span class="line">    <span class="built_in">update</span>(<span class="number">0.1</span>);            <span class="comment">// call function to change warming</span></span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;Global warming is &quot;</span> &lt;&lt; warming &lt;&lt; <span class="string">&quot; degrees.\n&quot;</span>;</span><br><span class="line">    <span class="built_in">local</span>();                <span class="comment">// call function with local warming</span></span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;Global warming is &quot;</span> &lt;&lt; warming &lt;&lt; <span class="string">&quot; degrees.\n&quot;</span>;</span><br><span class="line">    <span class="comment">// cin.get();</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里在定义声明的时候使用了extern关键字（错误的行为)，编译器会给出警告：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[ 33%] Building CXX object CMakeFiles/app.dir/external.cpp.o</span><br><span class="line">/home/zhm/Desktop/test/extern/external.cpp:5:15: warning: ‘warming’ initialized and declared ‘extern’</span><br><span class="line">    5 | extern double warming = 0.3;       // warming defined</span><br><span class="line">      |               ^~~~~~~</span><br><span class="line">[ 66%] Building CXX object CMakeFiles/app.dir/support.cpp.o</span><br><span class="line">[100%] Linking CXX executable /home/zhm/Desktop/test/extern/bin/app</span><br><span class="line">[100%] Built target app</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// support.cpp -- use external variable</span></span><br><span class="line"><span class="comment">// compile with external.cpp</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">extern</span> <span class="type">double</span> warming;  <span class="comment">// use warming from another file</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// function prototypes</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">update</span><span class="params">(<span class="type">double</span> dt)</span></span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">local</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> std::cout;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">update</span><span class="params">(<span class="type">double</span> dt)</span>      <span class="comment">// modifies global variable</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">extern</span> <span class="type">double</span> warming;  <span class="comment">// optional redeclaration</span></span><br><span class="line">    warming += dt;          <span class="comment">// uses global warming</span></span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;Updating global warming to &quot;</span> &lt;&lt; warming;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot; degrees.\n&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">local</span><span class="params">()</span>                <span class="comment">// uses local variable</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">double</span> warming = <span class="number">0.8</span>;   <span class="comment">// new variable hides external one</span></span><br><span class="line"></span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;Local warming = &quot;</span> &lt;&lt; warming &lt;&lt; <span class="string">&quot; degrees.\n&quot;</span>;</span><br><span class="line">        <span class="comment">// Access global variable with the</span></span><br><span class="line">        <span class="comment">// scope resolution operator</span></span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;But global warming = &quot;</span> &lt;&lt; ::warming;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot; degrees.\n&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="作用域解析运算符"><a href="#作用域解析运算符" class="headerlink" title="作用域解析运算符"></a>作用域解析运算符</h4><p>在C++中，<code>::</code>是作用域解析运算符（scope resolution operator），用于访问全局作用域中的变量或函数，即使在局部作用域中存在同名的变量或函数时也能明确地指定要访问的是全局作用域中的那个.</p>
+<p>在你提供的代码中，<code>::warming</code>表示访问的是全局作用域中的 <code>warming</code>变量，而不是局部作用域中可能存在的同名变量.例如，在 <code>local()</code>函数中，虽然有一个局部变量 <code>warming</code>，但通过 <code>::warming</code>可以访问到全局作用域中的 <code>warming</code>变量。</p>
+<p>作用域解析运算符的用途：</p>
+<ol>
+<li><strong>访问全局变量</strong>：当局部作用域中有与全局变量同名的变量时，使用 <code>::</code>可以明确地访问全局变量.</li>
+<li><strong>访问类的静态成员</strong>：用于访问类的静态成员变量或静态成员函数.</li>
+<li><strong>访问命名空间中的成员</strong>：用于访问命名空间中的变量或函数，尤其是在命名空间中存在同名的局部变量时.</li>
+</ol>
+<p>例如，假设有一个全局变量 <code>int x = 10;</code>，在某个函数中有一个局部变量 <code>int x = 20;</code>，那么在该函数中使用 <code>x</code>会访问局部变量，而使用 <code>::x</code>则会访问全局变量.</p>
+<h3 id="静态持续性，内部链接性"><a href="#静态持续性，内部链接性" class="headerlink" title="静态持续性，内部链接性"></a>静态持续性，内部链接性</h3><p>将static限定符用于作用域为整个文件的变量时，该变量的链接性为内部的。</p>
+<p>链接性为内部的变量执行在其所属的文件中使用；但是常规外部变量都具有外部链接性，即可以在其他文件中使用；</p>
+<p>static有一个非常重要的作用是，可以避免在其他文件中有相同的名称时，出现重复定义：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// file1</span></span><br><span class="line"><span class="type">int</span> errors = <span class="number">20</span>;</span><br><span class="line">...</span><br><span class="line">------------------</span><br><span class="line"><span class="comment">// file2</span></span><br><span class="line"><span class="type">int</span> errors = <span class="number">20</span>;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>这种情况下，程序将报错，因为违反了单定义规则，file2中的定义也创建了外部变量，因此程序将包含两个errors的两个定义。</p>
+<p>但是如果文件定义了一个静态外部变量，其名称与另一个文件中声明的常规外部变量相同，则在该文件中，静态变量将隐藏常规外部变量：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// file1</span></span><br><span class="line"><span class="type">int</span> errors = <span class="number">20</span>;</span><br><span class="line">...</span><br><span class="line">-----------------</span><br><span class="line"><span class="comment">// file2</span></span><br><span class="line"><span class="type">static</span> <span class="type">int</span> errors = <span class="number">20</span>;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>这样就不会违反单定义规则，因为static关键字指出标识符errors的链接性为内部。</p>
+<h3 id="限定符和说明符"><a href="#限定符和说明符" class="headerlink" title="限定符和说明符"></a>限定符和说明符</h3><p>存储说明符：</p>
+<ul>
+<li>auto：C++11中不再是说明符；</li>
+<li>register：用于在声明中指示寄存器存储，而在C++11中，它只是显式地指出变量是自动的；</li>
+<li>static：一方面用来声明为内部链接性，另一方面用来声明为无链接性；</li>
+<li>extern：表明为引用声明，即声明引用在其他地方定义的变量；</li>
+<li>thread_local：用于指出变量的持续性与其所属线程的持续性相同；</li>
+<li>mutable：用于指出，即使结构或类变量为const，其某个成员也是可以被修改的；</li>
+</ul>
+<h4 id="cv-限定符"><a href="#cv-限定符" class="headerlink" title="cv-限定符"></a>cv-限定符</h4><ul>
+<li>const：表明内存被初始化后，程序不能在对它进行修改；</li>
+<li>volatile：表明即使程序代码没有对内存单元进行修改，其值也可能发生改变（某些情况下，硬件可能修改其中的内容)</li>
+</ul>
+<h4 id="mutable"><a href="#mutable" class="headerlink" title="mutable"></a>mutable</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">data</span></span><br><span class="line">&#123;</span><br><span class="line">   <span class="type">char</span> name[<span class="number">30</span>];</span><br><span class="line">   <span class="keyword">mutable</span> <span class="type">int</span> accesses;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">const</span> data veep = &#123;<span class="string">&quot;Candy&quot;</span>, <span class="number">0</span>&#125;;</span><br><span class="line"><span class="built_in">strcpy</span>(veep.name, <span class="string">&quot;Joye&quot;</span>);	<span class="comment">// 错误的，不被允许</span></span><br><span class="line">veep.accesses++;	<span class="comment">// 正确的，允许发生 </span></span><br></pre></td></tr></table></figure>
+
+<p>veep的const限定符禁止程序修改veep的成员，但accesses成员的mutable说明符，使其不受这种限制。</p>
+<h4 id="const"><a href="#const" class="headerlink" title="const"></a>const</h4><p>在C++中，const限定符对默认存储类型有影响，即在默认情况下全局变量的链接性为外部的，但是const全局变量的链接性为内部的，即在C++看来，全局const定义就像使用了static说明符一样。</p>
+<p>这也解释了为什么，头文件中可以存放const常量。因为内部链接性意味着，每个文件都有自己的一组常量，而不是所有文件共享同一组常量，每个定义都是所属文件私有的，这就是能够将常量定义在头文件中的原因，这样，只要在两个源代码文件中包含同一个头文件，则他们将获得同一组常量；</p>
+<h3 id="函数和链接性"><a href="#函数和链接性" class="headerlink" title="函数和链接性"></a>函数和链接性</h3><ol>
+<li><p>和变量一样，函数也有链接性，C++中不允许在一个函数中定义另外一个函数，因此所有的函数的存储持续性都自动为静态即在整个程序执行期间都存在；</p>
+</li>
+<li><p>可以使用static关键字将函数的链接性设置为内部的，使之只能在一个文件中使用，必须同时在函数原型和函数定义在中使用该关键字；</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">static</span> <span class="type">int</span> <span class="title">private</span><span class="params">(<span class="type">double</span> x)</span></span>;</span><br><span class="line"><span class="function"><span class="type">static</span> <span class="type">int</span> <span class="title">private</span><span class="params">(<span class="type">double</span> x)</span></span>&#123;</span><br><span class="line">   ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>这意味着该函数只能在这个文件中可见，还意味着可以在其他文件中定义同名的函数；</p>
+</li>
+<li><p>和变量一样，在定义静态函数的文件中，静态函数将覆盖外部定义；</p>
+</li>
+<li><p>內联函数不受单定义规则的约束，所以可以将內联函数的定义放到头文件中；</p>
+</li>
+</ol>
+<h1 id="new"><a href="#new" class="headerlink" title="new"></a>new</h1><h3 id="注意点"><a href="#注意点" class="headerlink" title="注意点"></a>注意点</h3><ol>
+<li><p>动态内存由运算符new&#x2F;delete控制，而不是由作用域和链接性规则控制；</p>
+</li>
+<li><p>但是作用域和链接性的规则适用于用来跟踪动态内存的自动和静态指针变量；</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">float</span> *p_free = <span class="keyword">new</span> <span class="type">float</span>[<span class="number">20</span>];</span><br></pre></td></tr></table></figure></li>
+<li><p>由new分配的内存将一直保留在内存中，直到使用delete运算符将其释放；</p>
+</li>
+<li><p>但是当包含该声明的语句块执行完毕时，p_free指针将消失；</p>
+</li>
+<li><p>如果希望另一个函数能够使用new分配的内存中的内容，则必须将其地址传递或者返回给其他函数；</p>
+</li>
+<li><p>如果将p_free的链接性设置为外部的，则文件中位于该声明后面的所有函数都可以使用它，另外通过在另一个文件中使用 <code>extern float *p_free</code>的声明就可以使用该指针；</p>
+</li>
+</ol>
+<h3 id="使用new初始化"><a href="#使用new初始化" class="headerlink" title="使用new初始化"></a>使用new初始化</h3><ol>
+<li><p>内置的标量类型</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 括号</span></span><br><span class="line"><span class="type">int</span> *pi = <span class="keyword">new</span> <span class="built_in">int</span>(<span class="number">6</span>);		<span class="comment">// *pi = 6</span></span><br><span class="line"><span class="type">double</span> *pd = <span class="keyword">new</span> <span class="built_in">double</span>(<span class="number">9.9</span>);	<span class="comment">// *pd = 9.9</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 初始化列表</span></span><br><span class="line"><span class="type">int</span> *pi = <span class="keyword">new</span> <span class="type">int</span>&#123;<span class="number">6</span>&#125;;		<span class="comment">// *pi = 6</span></span><br><span class="line"><span class="type">double</span> *pd = <span class="keyword">new</span> <span class="type">double</span>&#123;<span class="number">9.9</span>&#125;;	<span class="comment">// *pd = 9.9</span></span><br></pre></td></tr></table></figure></li>
+<li><p>常规结构或数组</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">where</span> &#123;<span class="type">double</span> x; <span class="type">double</span> y; <span class="type">double</span> z;&#125;;</span><br><span class="line">where *one = <span class="keyword">new</span> where&#123;<span class="number">2.5</span>, <span class="number">5.3</span>, <span class="number">7.2</span>&#125;;</span><br><span class="line"><span class="type">int</span> *ar = <span class="keyword">new</span> <span class="type">int</span>[<span class="number">4</span>]&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>&#125;;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>运算符new和new[]分别对应delete和delete[];</p>
+<h3 id="定位new运算符"><a href="#定位new运算符" class="headerlink" title="定位new运算符"></a>定位new运算符</h3><p>包含头文件：<code>#include &lt;new&gt;</code></p>
+<p>通常，new负责在堆中找到一个足以满足要求的内存块；new还有另一种变体，被称为定位new运算符，用于指定要使用的位置；通过这种方式，可以在特定位置设置内存管理规程，处理需要通过特定地址进行访问的硬件或在特定位置创建对象；</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// newplace.cpp -- using placement new</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;new&gt;</span> <span class="comment">// for placement new</span></span></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> BUF = <span class="number">512</span>;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> N = <span class="number">5</span>;</span><br><span class="line"><span class="type">char</span> buffer[BUF];      <span class="comment">// chunk of memory</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line">    <span class="type">double</span> *pd1, *pd2;</span><br><span class="line">    <span class="type">int</span> i;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;Calling new and placement new:\n&quot;</span>;</span><br><span class="line">    pd1 = <span class="keyword">new</span> <span class="type">double</span>[N];           <span class="comment">// use heap</span></span><br><span class="line">    pd2 = <span class="built_in">new</span> (buffer) <span class="type">double</span>[N];  <span class="comment">// use buffer array</span></span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; N; i++)</span><br><span class="line">        pd2[i] = pd1[i] = <span class="number">1000</span> + <span class="number">20.0</span> * i;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;Memory addresses:\n&quot;</span> &lt;&lt; <span class="string">&quot;  heap: &quot;</span> &lt;&lt; pd1</span><br><span class="line">        &lt;&lt; <span class="string">&quot;  static: &quot;</span> &lt;&lt;  (<span class="type">void</span> *) buffer  &lt;&lt;endl;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;Memory contents:\n&quot;</span>;</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; N; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        cout &lt;&lt; pd1[i] &lt;&lt; <span class="string">&quot; at &quot;</span> &lt;&lt; &amp;pd1[i] &lt;&lt; <span class="string">&quot;; &quot;</span>;</span><br><span class="line">        cout &lt;&lt; pd2[i] &lt;&lt; <span class="string">&quot; at &quot;</span> &lt;&lt; &amp;pd2[i] &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;\nCalling new and placement new a second time:\n&quot;</span>;</span><br><span class="line">    <span class="type">double</span> *pd3, *pd4;</span><br><span class="line">    pd3= <span class="keyword">new</span> <span class="type">double</span>[N];            <span class="comment">// find new address</span></span><br><span class="line">    pd4 = <span class="built_in">new</span> (buffer) <span class="type">double</span>[N];  <span class="comment">// overwrite old data</span></span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; N; i++)</span><br><span class="line">        pd4[i] = pd3[i] = <span class="number">1000</span> + <span class="number">40.0</span> * i;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;Memory contents:\n&quot;</span>;</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; N; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        cout &lt;&lt; pd3[i] &lt;&lt; <span class="string">&quot; at &quot;</span> &lt;&lt; &amp;pd3[i] &lt;&lt; <span class="string">&quot;; &quot;</span>;</span><br><span class="line">        cout &lt;&lt; pd4[i] &lt;&lt; <span class="string">&quot; at &quot;</span> &lt;&lt; &amp;pd4[i] &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;\nCalling new and placement new a third time:\n&quot;</span>;</span><br><span class="line">    <span class="keyword">delete</span> [] pd1;</span><br><span class="line">    pd1= <span class="keyword">new</span> <span class="type">double</span>[N];</span><br><span class="line">    pd2 = <span class="built_in">new</span> (buffer + N * <span class="built_in">sizeof</span>(<span class="type">double</span>)) <span class="type">double</span>[N]; </span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; N; i++)</span><br><span class="line">        pd2[i] = pd1[i] = <span class="number">1000</span> + <span class="number">60.0</span> * i;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;Memory contents:\n&quot;</span>;</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; N; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        cout &lt;&lt; pd1[i] &lt;&lt; <span class="string">&quot; at &quot;</span> &lt;&lt; &amp;pd1[i] &lt;&lt; <span class="string">&quot;; &quot;</span>;</span><br><span class="line">        cout &lt;&lt; pd2[i] &lt;&lt; <span class="string">&quot; at &quot;</span> &lt;&lt; &amp;pd2[i] &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">delete</span> [] pd1;</span><br><span class="line">    <span class="keyword">delete</span> [] pd3;</span><br><span class="line">    <span class="comment">// cin.get();</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>输出结果：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">$ ./app</span><br><span class="line">Calling new and placement new:</span><br><span class="line">Memory addresses:</span><br><span class="line">  heap: 0x5b00d966b6c0  static: 0x5b00d7fc0160</span><br><span class="line">Memory contents:</span><br><span class="line">1000 at 0x5b00d966b6c0; 1000 at 0x5b00d7fc0160</span><br><span class="line">1020 at 0x5b00d966b6c8; 1020 at 0x5b00d7fc0168</span><br><span class="line">1040 at 0x5b00d966b6d0; 1040 at 0x5b00d7fc0170</span><br><span class="line">1060 at 0x5b00d966b6d8; 1060 at 0x5b00d7fc0178</span><br><span class="line">1080 at 0x5b00d966b6e0; 1080 at 0x5b00d7fc0180</span><br><span class="line"></span><br><span class="line">Calling new and placement new a second time:</span><br><span class="line">Memory contents:</span><br><span class="line">1000 at 0x5b00d966b6f0; 1000 at 0x5b00d7fc0160</span><br><span class="line">1040 at 0x5b00d966b6f8; 1040 at 0x5b00d7fc0168</span><br><span class="line">1080 at 0x5b00d966b700; 1080 at 0x5b00d7fc0170</span><br><span class="line">1120 at 0x5b00d966b708; 1120 at 0x5b00d7fc0178</span><br><span class="line">1160 at 0x5b00d966b710; 1160 at 0x5b00d7fc0180</span><br><span class="line"></span><br><span class="line">Calling new and placement new a third time:</span><br><span class="line">Memory contents:</span><br><span class="line">1000 at 0x5b00d966b6c0; 1000 at 0x5b00d7fc0188</span><br><span class="line">1060 at 0x5b00d966b6c8; 1060 at 0x5b00d7fc0190</span><br><span class="line">1120 at 0x5b00d966b6d0; 1120 at 0x5b00d7fc0198</span><br><span class="line">1180 at 0x5b00d966b6d8; 1180 at 0x5b00d7fc01a0</span><br><span class="line">1240 at 0x5b00d966b6e0; 1240 at 0x5b00d7fc01a8</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>定位new运算符把p2放在了数组buffer中，pd2和buffer的地址相同，但是他们两个类型不同，pd2是double指针，buffer是char指针，这也是为什么程序中使用(void*)对buffer进行强制转换；</li>
+<li>当再次使用定位new运算符指向相同的内存时，它会覆盖上一次的数据，所以定位new运算符不跟踪哪些内存已被使用，也不查找未使用的内存块；</li>
+<li>程序中没有使用delete来释放使用定位new运算符分配的内存，因为在这个示例代码中buffer指定的内存是静态内存，而delete只能作用于常规new运算符分配的堆内存；</li>
+<li>如果buffer是使用常规的new运算符创建的，那么也可以使用常规delete运算符来释放整个内存块；</li>
+</ol>
+<h1 id="名称空间"><a href="#名称空间" class="headerlink" title="名称空间"></a>名称空间</h1><p>名称可以是变量，函数，结构，枚举，类，类和结构的成员。例如，两个库可能都定义了a,b,c的类，但是定义的方式不兼容，用户可能希望使用一个库的a，另一个库的b，这种冲突被称为名称空间问题；</p>
+<h3 id="using声明和using编译"><a href="#using声明和using编译" class="headerlink" title="using声明和using编译"></a>using声明和using编译</h3><h4 id="using声明"><a href="#using声明" class="headerlink" title="using声明"></a>using声明</h4><ul>
+<li><strong>作用</strong>：<code>using</code>声明用于将一个或多个特定的名称从命名空间中引入到当前作用域中。</li>
+<li><strong>语法</strong>：<code>using namespace_name::identifier;</code></li>
+<li><strong>示例</strong>：<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> std::cout;</span><br><span class="line"><span class="keyword">using</span> std::endl;</span><br></pre></td></tr></table></figure></li>
+<li><strong>效果</strong>：在上述示例中，<code>cout</code>和 <code>endl</code>被直接引入到当前作用域中，可以在不加 <code>std::</code>前缀的情况下直接使用它们。</li>
+<li><strong>适用场景</strong>：当你只需要从命名空间中使用少量的名称时，使用 <code>using</code>声明是更好的选择，因为它可以避免命名冲突。</li>
+</ul>
+<h4 id="using编译指令"><a href="#using编译指令" class="headerlink" title="using编译指令"></a>using编译指令</h4><ul>
+<li><strong>作用</strong>：<code>using</code>编译指令用于将整个命名空间中的所有名称引入到当前作用域中。</li>
+<li><strong>语法</strong>：<code>using namespace namespace_name;</code></li>
+<li><strong>示例</strong>：<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br></pre></td></tr></table></figure></li>
+<li><strong>效果</strong>：在上述示例中，<code>std</code>命名空间中的所有名称都被引入到当前作用域中，可以在不加 <code>std::</code>前缀的情况下直接使用它们。</li>
+<li><strong>适用场景</strong>：当你需要频繁地使用某个命名空间中的多个名称时，使用 <code>using</code>编译指令可以减少代码的冗余。然而，过度使用可能会导致命名冲突和代码可读性降低。</li>
+</ul>
+<h4 id="引用命名空间内的标识符"><a href="#引用命名空间内的标识符" class="headerlink" title="引用命名空间内的标识符"></a>引用命名空间内的标识符</h4><p>当引用的标识符不在当前命名空间或全局命名空间内时，有三种方式可以引用该标识符：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 方式一</span></span><br><span class="line">std::cout &lt;&lt; <span class="string">&quot;hello&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 方式二</span></span><br><span class="line"><span class="keyword">using</span> std::cout;</span><br><span class="line">cout &lt;&lt; <span class="string">&quot;hello&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 方式三</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line">cout &lt;&lt; <span class="string">&quot;hello&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>方式一只在必要的时候通过域运算符 <code>::</code>引用指定命令空间内的标识符，适用于当前编译单元引用std内的标识符不多，而且编译单元内使用这些标识符的次数也不多的情况。</p>
+<p>方式二只引入std::cout一个标识符，如果在当前编译单元内使用std::cout次数较多，而且不会与当前命名空间内的标识符冲突，建议使用这种方式。</p>
+<p>方式三是把std命名空间中的全部标识符都引入到当前命名空间中，此后std所有的标识符对于当前命名空间都是可见的，这会提高标识符冲突的危险。如果当前编译单元用到std命令空间内的标识符较多，而且不会出现标识符冲突的问题，可以使用这种方式，以减少字符的输入。</p>
+<h3 id="命名空间的别名"><a href="#命名空间的别名" class="headerlink" title="命名空间的别名"></a>命名空间的别名</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> mvft = my_very_favorite_thing;</span><br></pre></td></tr></table></figure>
+
+<h3 id="匿名命名空间"><a href="#匿名命名空间" class="headerlink" title="匿名命名空间"></a>匿名命名空间</h3><p>在匿名命名空间中声明的名称也将被编译器转换，与编译器为这个匿名命名空间生成的唯一内部名称(即这里的__UNIQUE_NAME_)绑定在一起。还有一点很重要，就是这些名称具有internal链接属性，这和声明为static的全局名称的链接属性是相同的，即名称的作用域被限制在当前文件中，无法通过在另外的文件中使用extern声明来进行链接。</p>
+<p>相对于C的static声明来说，可以在匿名的空间里面声明很多变量和函数,这样可以省去了对每个变量和函数添加static声明。实质上匿名空间的功能跟static声明是一样的。</p>
+<p>还有一个好处是，命名空间是可以嵌套的。</p>
+<h3 id="示例代码"><a href="#示例代码" class="headerlink" title="示例代码"></a>示例代码</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// namesp.h</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string&gt;</span></span></span><br><span class="line"><span class="comment">// create the pers and debts namespaces</span></span><br><span class="line"><span class="keyword">namespace</span> pers</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">struct</span> <span class="title class_">Person</span></span><br><span class="line">    &#123; </span><br><span class="line">        std::string fname;</span><br><span class="line">        std::string lname;</span><br><span class="line">     &#125;;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">getPerson</span><span class="params">(Person &amp;)</span></span>;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">showPerson</span><span class="params">(<span class="type">const</span> Person &amp;)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> debts</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">using</span> <span class="keyword">namespace</span> pers;</span><br><span class="line">    <span class="keyword">struct</span> <span class="title class_">Debt</span></span><br><span class="line">    &#123;</span><br><span class="line">        Person name;</span><br><span class="line">        <span class="type">double</span> amount;</span><br><span class="line">    &#125;;</span><br><span class="line">  </span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">getDebt</span><span class="params">(Debt &amp;)</span></span>;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">showDebt</span><span class="params">(<span class="type">const</span> Debt &amp;)</span></span>;</span><br><span class="line">    <span class="function"><span class="type">double</span> <span class="title">sumDebts</span><span class="params">(<span class="type">const</span> Debt ar[], <span class="type">int</span> n)</span></span>; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// namesp.cpp -- namespaces</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;namesp.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> pers</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">using</span> std::cout;</span><br><span class="line">    <span class="keyword">using</span> std::cin;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">getPerson</span><span class="params">(Person &amp; rp)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;Enter first name: &quot;</span>;</span><br><span class="line">        cin &gt;&gt; rp.fname;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;Enter last name: &quot;</span>;</span><br><span class="line">        cin &gt;&gt; rp.lname;</span><br><span class="line">    &#125;</span><br><span class="line">  </span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">showPerson</span><span class="params">(<span class="type">const</span> Person &amp; rp)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        std::cout &lt;&lt; rp.lname &lt;&lt; <span class="string">&quot;, &quot;</span> &lt;&lt; rp.fname;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> debts</span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">getDebt</span><span class="params">(Debt &amp; rd)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="built_in">getPerson</span>(rd.name);</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;Enter debt: &quot;</span>;</span><br><span class="line">        std::cin &gt;&gt; rd.amount;</span><br><span class="line">    &#125;</span><br><span class="line">  </span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">showDebt</span><span class="params">(<span class="type">const</span> Debt &amp; rd)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="built_in">showPerson</span>(rd.name);</span><br><span class="line">        std::cout &lt;&lt;<span class="string">&quot;: $&quot;</span> &lt;&lt; rd.amount &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line">  </span><br><span class="line">    <span class="function"><span class="type">double</span> <span class="title">sumDebts</span><span class="params">(<span class="type">const</span> Debt ar[], <span class="type">int</span> n)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="type">double</span> total = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">            total += ar[i].amount;</span><br><span class="line">        <span class="keyword">return</span> total;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在命名空间中声明的函数名作用于整个空间，因此定义和声明必须位于同一个名称空间中；</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// usenmsp.cpp -- using namespaces</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;namesp.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">other</span><span class="params">(<span class="type">void</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">another</span><span class="params">(<span class="type">void</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">using</span> debts::Debt;</span><br><span class="line">	<span class="keyword">using</span> debts::showDebt;</span><br><span class="line">    Debt golf = &#123; &#123;<span class="string">&quot;Benny&quot;</span>, <span class="string">&quot;Goatsniff&quot;</span>&#125;, <span class="number">120.0</span> &#125;;</span><br><span class="line">    <span class="built_in">showDebt</span>(golf);</span><br><span class="line">    <span class="built_in">other</span>();</span><br><span class="line">    <span class="built_in">another</span>(); </span><br><span class="line">	<span class="comment">// std::cin.get();</span></span><br><span class="line">	<span class="comment">// std::cin.get();</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">other</span><span class="params">(<span class="type">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">using</span> std::cout;</span><br><span class="line">    <span class="keyword">using</span> std::endl;</span><br><span class="line">    <span class="keyword">using</span> <span class="keyword">namespace</span> debts;</span><br><span class="line">    Person dg = &#123;<span class="string">&quot;Doodles&quot;</span>, <span class="string">&quot;Glister&quot;</span>&#125;;</span><br><span class="line">    <span class="built_in">showPerson</span>(dg);</span><br><span class="line">    cout &lt;&lt; endl;</span><br><span class="line">    Debt zippy[<span class="number">3</span>];</span><br><span class="line">    <span class="type">int</span> i;</span><br><span class="line">  </span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; <span class="number">3</span>; i++)</span><br><span class="line">        <span class="built_in">getDebt</span>(zippy[i]);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; <span class="number">3</span>; i++)</span><br><span class="line">        <span class="built_in">showDebt</span>(zippy[i]);</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;Total debt: $&quot;</span> &lt;&lt; <span class="built_in">sumDebts</span>(zippy, <span class="number">3</span>) &lt;&lt; endl;</span><br><span class="line">  </span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">another</span><span class="params">(<span class="type">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">using</span> pers::Person;;</span><br><span class="line">  </span><br><span class="line">    Person collector = &#123; <span class="string">&quot;Milo&quot;</span>, <span class="string">&quot;Rightshift&quot;</span> &#125;;</span><br><span class="line">    pers::<span class="built_in">showPerson</span>(collector);</span><br><span class="line">    std::cout &lt;&lt; std::endl; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/01/17/Cpp/cpp-4/" rel="prev" title="cpp-4-回调函数">
+      <i class="fa fa-chevron-left"></i> cpp-4-回调函数
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2025/01/17/Cpp/cpp-2/" rel="next" title="cpp-2-类">
+      cpp-2-类 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8D%95%E7%8B%AC%E7%BC%96%E8%AF%91"><span class="nav-number">1.</span> <span class="nav-text">单独编译</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AD%98%E5%82%A8%E6%8C%81%E7%BB%AD%E6%80%A7%EF%BC%8C%E4%BD%9C%E7%94%A8%E5%9F%9F%E5%92%8C%E9%93%BE%E6%8E%A5%E6%80%A7"><span class="nav-number">2.</span> <span class="nav-text">存储持续性，作用域和链接性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%9C%E7%94%A8%E5%9F%9F%E5%92%8C%E9%93%BE%E6%8E%A5"><span class="nav-number">2.0.1.</span> <span class="nav-text">作用域和链接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%84%E5%AD%98%E5%99%A8%E5%8F%98%E9%87%8F"><span class="nav-number">2.0.2.</span> <span class="nav-text">寄存器变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E6%8C%81%E7%BB%AD%E5%8F%98%E9%87%8F"><span class="nav-number">2.0.3.</span> <span class="nav-text">静态持续变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E6%8C%81%E7%BB%AD%E6%80%A7%EF%BC%8C%E5%A4%96%E9%83%A8%E9%93%BE%E6%8E%A5%E6%80%A7"><span class="nav-number">2.0.4.</span> <span class="nav-text">静态持续性，外部链接性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8D%95%E5%AE%9A%E4%B9%89%E8%A7%84%E5%88%99"><span class="nav-number">2.0.4.1.</span> <span class="nav-text">单定义规则</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%9C%E7%94%A8%E5%9F%9F%E8%A7%A3%E6%9E%90%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">2.0.4.2.</span> <span class="nav-text">作用域解析运算符</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E6%8C%81%E7%BB%AD%E6%80%A7%EF%BC%8C%E5%86%85%E9%83%A8%E9%93%BE%E6%8E%A5%E6%80%A7"><span class="nav-number">2.0.5.</span> <span class="nav-text">静态持续性，内部链接性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%99%90%E5%AE%9A%E7%AC%A6%E5%92%8C%E8%AF%B4%E6%98%8E%E7%AC%A6"><span class="nav-number">2.0.6.</span> <span class="nav-text">限定符和说明符</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#cv-%E9%99%90%E5%AE%9A%E7%AC%A6"><span class="nav-number">2.0.6.1.</span> <span class="nav-text">cv-限定符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mutable"><span class="nav-number">2.0.6.2.</span> <span class="nav-text">mutable</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#const"><span class="nav-number">2.0.6.3.</span> <span class="nav-text">const</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E5%92%8C%E9%93%BE%E6%8E%A5%E6%80%A7"><span class="nav-number">2.0.7.</span> <span class="nav-text">函数和链接性</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#new"><span class="nav-number">3.</span> <span class="nav-text">new</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F%E7%82%B9"><span class="nav-number">3.0.1.</span> <span class="nav-text">注意点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8new%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">3.0.2.</span> <span class="nav-text">使用new初始化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E4%BD%8Dnew%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">3.0.3.</span> <span class="nav-text">定位new运算符</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%90%8D%E7%A7%B0%E7%A9%BA%E9%97%B4"><span class="nav-number">4.</span> <span class="nav-text">名称空间</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#using%E5%A3%B0%E6%98%8E%E5%92%8Cusing%E7%BC%96%E8%AF%91"><span class="nav-number">4.0.1.</span> <span class="nav-text">using声明和using编译</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#using%E5%A3%B0%E6%98%8E"><span class="nav-number">4.0.1.1.</span> <span class="nav-text">using声明</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#using%E7%BC%96%E8%AF%91%E6%8C%87%E4%BB%A4"><span class="nav-number">4.0.1.2.</span> <span class="nav-text">using编译指令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BC%95%E7%94%A8%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4%E5%86%85%E7%9A%84%E6%A0%87%E8%AF%86%E7%AC%A6"><span class="nav-number">4.0.1.3.</span> <span class="nav-text">引用命名空间内的标识符</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4%E7%9A%84%E5%88%AB%E5%90%8D"><span class="nav-number">4.0.2.</span> <span class="nav-text">命名空间的别名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8C%BF%E5%90%8D%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4"><span class="nav-number">4.0.3.</span> <span class="nav-text">匿名命名空间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B%E4%BB%A3%E7%A0%81"><span class="nav-number">4.0.4.</span> <span class="nav-text">示例代码</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">ZhangHangming</p>
+  <div class="site-description" itemprop="description">张航铭（ZhangHangming）的笔记本</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">54</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ZhangHangming</span>
+</div>
+
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+-->
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+</html>
