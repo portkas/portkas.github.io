@@ -19,6 +19,25 @@
       </categories>
   </entry>
   <entry>
+    <title>cpp-2-类</title>
+    <url>/2025/01/17/Cpp/cpp-2/</url>
+    <content><![CDATA[<ol>
+<li>类</li>
+<li>构造和析构函数</li>
+<li>const成员函数</li>
+<li>this指针</li>
+</ol>
+<span id="more"></span>
+
+<h1 id="抽象和类"><a href="#抽象和类" class="headerlink" title="抽象和类"></a>抽象和类</h1><p>类是一种将抽象转换为用户定义类型的C++工具，它将数据表示和操纵数据的方法组合成一个整洁的包；</p>
+<h3 id="访问控制"><a href="#访问控制" class="headerlink" title="访问控制"></a>访问控制</h3><p>使用类对象的程序都可以直接访问公有部分，但只能通过公有成员函数或友元函数来访问对象的私有成员；</p>
+<p>公有成员函数是程序和对象的私有成员之间的桥梁，提供了对象和程序之间的接口；</p>
+]]></content>
+      <categories>
+        <category>cpp</category>
+      </categories>
+  </entry>
+  <entry>
     <title>cpp-1</title>
     <url>/2025/01/17/Cpp/cpp-1/</url>
     <content><![CDATA[<h1 id="explicit"><a href="#explicit" class="headerlink" title="explicit"></a>explicit</h1><p>explicit关键字是一个类修饰符，用于修饰构造函数或转换操作符，以防止类的构造函数或转换操作符进行隐式类型转换。</p>
@@ -314,25 +333,6 @@ rd2 value and address: -13.85, 0x7fff68ec89e0
 
 <p>此外，关键字 <code>delete</code>可用于禁止编译器使用特定方法，如果要禁止复制对象，可禁用复制构造函数和复制赋值运算符：</p>
 <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">someclass</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">someclass</span>() = <span class="keyword">default</span>;</span><br><span class="line">    <span class="built_in">someclass</span>(someclass &amp;&amp;) = <span class="keyword">default</span>;</span><br><span class="line">    someclass&amp; <span class="keyword">operator</span>=(someclass &amp;&amp;) = <span class="keyword">default</span>;</span><br><span class="line">    <span class="built_in">someclass</span>(<span class="type">const</span> someclass &amp;) = <span class="keyword">delete</span>;</span><br><span class="line">    someclass&amp; <span class="keyword">operator</span>=(<span class="type">const</span> someclass &amp;) = <span class="keyword">delete</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>cpp</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>cpp-2-类</title>
-    <url>/2025/01/17/Cpp/cpp-2/</url>
-    <content><![CDATA[<ol>
-<li>类</li>
-<li>构造和析构函数</li>
-<li>const成员函数</li>
-<li>this指针</li>
-</ol>
-<span id="more"></span>
-
-<h1 id="抽象和类"><a href="#抽象和类" class="headerlink" title="抽象和类"></a>抽象和类</h1><p>类是一种将抽象转换为用户定义类型的C++工具，它将数据表示和操纵数据的方法组合成一个整洁的包；</p>
-<h3 id="访问控制"><a href="#访问控制" class="headerlink" title="访问控制"></a>访问控制</h3><p>使用类对象的程序都可以直接访问公有部分，但只能通过公有成员函数或友元函数来访问对象的私有成员；</p>
-<p>公有成员函数是程序和对象的私有成员之间的桥梁，提供了对象和程序之间的接口；</p>
 ]]></content>
       <categories>
         <category>cpp</category>
@@ -2096,33 +2096,6 @@ rd2 value and address: -13.85, 0x7fff68ec89e0
       </categories>
   </entry>
   <entry>
-    <title>gcc</title>
-    <url>/2025/01/17/MissingSemester/gcc/</url>
-    <content><![CDATA[<h1 id="gcc编译流程"><a href="#gcc编译流程" class="headerlink" title="gcc编译流程"></a>gcc编译流程</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 1.预处理</span></span><br><span class="line">$ gcc -E main.c -o main.i</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2.编译</span></span><br><span class="line">$ gcc -S main.i -o main.s</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3.汇编</span></span><br><span class="line">$ gcc -c main.s -o main.o</span><br><span class="line"></span><br><span class="line"><span class="comment"># 4.链接</span></span><br><span class="line">$ gcc main.o -o main</span><br></pre></td></tr></table></figure>
-<span id="more"></span>
-<h1 id="gcc常用参数"><a href="#gcc常用参数" class="headerlink" title="gcc常用参数"></a>gcc常用参数</h1><ul>
-<li>-E：预处理，不进行编译</li>
-<li>-S：编译，但不汇编</li>
-<li>-c：编译并汇编，但不链接</li>
-<li>-o：指定生成的文件名</li>
-<li>-I：指定include包含文件的目录</li>
-<li>-g：生成调试信息</li>
-<li>-D：编译的时候指定一个宏</li>
-<li>-W：不生成任何警告</li>
-<li>-Wall：生成所有警告</li>
-<li>-On：代码优化</li>
-<li>-l：编译的时候，指定使用的库</li>
-<li>-L：指定编译的时候搜索库的路径</li>
-<li>-fpic：生成与位置无关代码</li>
-<li>-shared：生成共享目标文件</li>
-<li>-std：指定标准</li>
-</ul>
-]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-  </entry>
-  <entry>
     <title>coredump</title>
     <url>/2025/01/17/MissingSemester/coredump/</url>
     <content><![CDATA[<h1 id="什么是coredump"><a href="#什么是coredump" class="headerlink" title="什么是coredump"></a>什么是coredump</h1><p>coredump又叫核心转储，是程序崩溃时候的一个内存快照，存储了进程的内存，寄存器状态，运行堆栈等信息。</p>
@@ -2283,6 +2256,33 @@ rd2 value and address: -13.85, 0x7fff68ec89e0
 
 <p>如上即可跳转到指定的线程中，并查看所在线程正在运行的堆栈信息和寄存器信息。</p>
 <h1 id="学习资源"><a href="#学习资源" class="headerlink" title="学习资源"></a>学习资源</h1><p><a href="https://cloud.tencent.com/developer/article/1860631">coredump文件是如何生成的</a><br><a href="https://www.cnblogs.com/flyinggod/p/13415862.html">Linux生成coredump的方法及设置</a><br><a href="https://www.cnblogs.com/lidabo/p/14311900.html">gdb调试coredump</a><br><a href="https://blog.csdn.net/sunxiaopengsun/article/details/72974548">gdb调试示例-强烈推荐</a><br><a href="https://developers.redhat.com/articles/2022/01/10/gdb-developers-gnu-debugger-tutorial-part-2-all-about-debuginfo#">debuginfo</a>【这篇文章有很多不明白的名词，涉及到编译器和DWARF调试信息】<br><a href="https://imageslr.com/2023/gdb.html#coredump">GDB 入门笔记</a>【这是一篇非常全面的GDB入门笔记】<br><a href="https://sourceware.org/gdb/documentation/">GDB Documentation</a>【GDB官方文档】</p>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>gcc</title>
+    <url>/2025/01/17/MissingSemester/gcc/</url>
+    <content><![CDATA[<h1 id="gcc编译流程"><a href="#gcc编译流程" class="headerlink" title="gcc编译流程"></a>gcc编译流程</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 1.预处理</span></span><br><span class="line">$ gcc -E main.c -o main.i</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2.编译</span></span><br><span class="line">$ gcc -S main.i -o main.s</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3.汇编</span></span><br><span class="line">$ gcc -c main.s -o main.o</span><br><span class="line"></span><br><span class="line"><span class="comment"># 4.链接</span></span><br><span class="line">$ gcc main.o -o main</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+<h1 id="gcc常用参数"><a href="#gcc常用参数" class="headerlink" title="gcc常用参数"></a>gcc常用参数</h1><ul>
+<li>-E：预处理，不进行编译</li>
+<li>-S：编译，但不汇编</li>
+<li>-c：编译并汇编，但不链接</li>
+<li>-o：指定生成的文件名</li>
+<li>-I：指定include包含文件的目录</li>
+<li>-g：生成调试信息</li>
+<li>-D：编译的时候指定一个宏</li>
+<li>-W：不生成任何警告</li>
+<li>-Wall：生成所有警告</li>
+<li>-On：代码优化</li>
+<li>-l：编译的时候，指定使用的库</li>
+<li>-L：指定编译的时候搜索库的路径</li>
+<li>-fpic：生成与位置无关代码</li>
+<li>-shared：生成共享目标文件</li>
+<li>-std：指定标准</li>
+</ul>
 ]]></content>
       <categories>
         <category>Linux</category>
@@ -4601,6 +4601,58 @@ rd2 value and address: -13.85, 0x7fff68ec89e0
       </categories>
   </entry>
   <entry>
+    <title>camera info</title>
+    <url>/2025/01/17/StructLight/camera/info/</url>
+    <content><![CDATA[<h1 id="相机信息"><a href="#相机信息" class="headerlink" title="相机信息"></a>相机信息</h1><p>相机信息是指相机设备的基本信息，包括设备类型、传输层协议、硬件接口数据类型等，以USB接入设备为例。</p>
+<span id="more"></span>
+
+<h2 id="控制端点"><a href="#控制端点" class="headerlink" title="控制端点"></a>控制端点</h2><p>控制端点是指相机设备与主机之间进行控制传输的入口和出口。控制传输通常用于发送命令、请求或接收设备的状态信息等。</p>
+<ul>
+<li><strong>CrtlInEndPoint（控制输入端点）</strong> ：用于控制传输的输入端点。</li>
+<li><strong>CrtlOutEndPoint（控制输出端点）</strong> ：用于控制传输的输出端点。</li>
+</ul>
+<h2 id="数据传输端点"><a href="#数据传输端点" class="headerlink" title="数据传输端点"></a>数据传输端点</h2><ul>
+<li><strong>StreamEndPoint（流端点）</strong> ：用于数据传输的端点，通常用于传输大量数据，如图像数据、视频流等。对于相机设备，流端点非常重要，因为它决定了数据传输的效率和性能。</li>
+<li><strong>EventEndPoint（事件端点）</strong> ：用于事件通知的端点，通常用于接收设备的事件信息，如设备状态变化、错误事件等。</li>
+</ul>
+<h2 id="设备标识信息"><a href="#设备标识信息" class="headerlink" title="设备标识信息"></a>设备标识信息</h2><ul>
+<li><strong>chVendorName（供应商名字）</strong> ：设备供应商的名称。了解供应商名字可以帮助用户了解设备的制造商和品牌。</li>
+<li><strong>chModelName（型号名字）</strong> ：设备的型号名称。型号名称是用户识别和选择设备的重要依据，它通常包含了设备的主要功能和技术规格。</li>
+<li><strong>chFamilyName（家族名字）</strong> ：设备所属的产品家族名称。家族名称可以帮助用户了解设备所属的产品系列和定位，以及与其他设备的关系。</li>
+<li><strong>chDeviceVersion（设备版本）</strong> ：设备的版本信息。设备版本可以帮助用户了解设备的更新状态和功能改进，以及是否需要进行固件升级等操作。</li>
+<li><strong>chManufacturerName（制造商名字）</strong> ：设备制造商的名称。制造商名字可以帮助用户了解设备的生产厂商和质量保证。</li>
+</ul>
+<h2 id="序列号和用户自定义名称"><a href="#序列号和用户自定义名称" class="headerlink" title="序列号和用户自定义名称"></a>序列号和用户自定义名称</h2><ul>
+<li><strong>chSerialNumber（序列号）</strong> ：设备的唯一序列号，用于标识和追踪设备。</li>
+<li><strong>chUserDefinedName（用户自定义名字）</strong> ：用户为设备设置的自定义名称。用户自定义名称可以帮助用户更方便地识别和管理设备，特别是在连接多个设备时。</li>
+</ul>
+<h2 id="USB协议和设备地址"><a href="#USB协议和设备地址" class="headerlink" title="USB协议和设备地址"></a>USB协议和设备地址</h2><ul>
+<li><strong>nbcdUSB（支持的USB协议）</strong> ：设备支持的USB协议版本。</li>
+<li><strong>nDeviceAddress（设备地址）</strong> ：设备在USB总线上的地址。设备地址用于在USB总线中唯一标识设备，主要用于底层的设备通信和管理。</li>
+</ul>
+<h1 id="设备传输层协议"><a href="#设备传输层协议" class="headerlink" title="设备传输层协议"></a>设备传输层协议</h1><p>传输层协议是网络通信协议栈中的一部分，负责在设备之间传输数据。</p>
+<h2 id="硬件接口数据类型"><a href="#硬件接口数据类型" class="headerlink" title="硬件接口数据类型"></a>硬件接口数据类型</h2><ul>
+<li><strong>MV_GIGE_DEVICE</strong> ：表示GigE设备，即使用Gigabit Ethernet（千兆以太网）作为传输层协议的设备。GigE设备通常用于工业相机、网络摄像头等，具有高速数据传输和远程通信的能力。</li>
+<li><strong>MV_1394_DEVICE</strong> ：表示1394-a&#x2F;b设备，即使用IEEE 1394接口（也称为FireWire）作为传输层协议的设备。IEEE 1394是一种高速串行总线，常用于连接数字视频摄像机、硬盘驱动器等设备，支持即插即用和热插拔。</li>
+<li><strong>MV_USB_DEVICE</strong> ：表示USB设备，即使用通用串行总线（USB）作为传输层协议的设备。USB是一种广泛使用的接口技术，支持多种设备连接和数据传输，具有通用性强、使用方便等特点。</li>
+<li><strong>MV_CAMERALINK_DEVICE</strong> ：表示CameraLink设备，即使用Camera Link接口作为传输层协议的设备。Camera Link是一种专为高速图像传输设计的接口标准，常用于工业相机和图像采集系统，支持高分辨率和高帧率的图像数据传输。</li>
+</ul>
+<h2 id="虚拟设备类型"><a href="#虚拟设备类型" class="headerlink" title="虚拟设备类型"></a>虚拟设备类型</h2><ol>
+<li><strong>MV_VIR_GIGE_DEVICE</strong> ：指的是虚拟GigE设备。这种设备通常不是物理存在的，而是通过软件创建的模拟设备。它们用于模拟真实的GigE网络设备的功能，可以用于开发和测试网络应用，或者在没有真实硬件的情况下模拟网络环境。</li>
+<li><strong>MV_VIR_USB_DEVICE</strong> ：指的是虚拟USB设备。这同样是一种软件模拟的设备，用来模拟USB设备的行为。这可以帮助开发者在没有物理USB设备的情况下测试和开发USB相关的应用程序。</li>
+</ol>
+<h2 id="自研网卡下的设备类型"><a href="#自研网卡下的设备类型" class="headerlink" title="自研网卡下的设备类型"></a>自研网卡下的设备类型</h2><ol>
+<li><strong>MV_GENTL_GIGE_DEVICE</strong> ：这是一种在特定的自研网卡下使用的GigE设备。自研网卡是指根据特定需求定制开发的网络卡，可能具有优化的性能特征。这种设备类型适用于需要高性能网络通讯的应用场景。</li>
+<li><strong>MV_GENTL_CAMERALINK_DEVICE</strong> ：这是使用CameraLink标准的相机设备。CameraLink是一种用于高速图像数据传输的技术标准，常用于工业和科研领域中的图像采集。</li>
+<li><strong>MV_GENTL_CXP_DEVICE</strong> ：指的是使用CoaXPress接口的设备。CoaXPress利用同轴电缆传输高速数据，非常适合于需要长距离传输和高数据率的应用。</li>
+<li><strong>MV_GENTL_XOF_DEVICE</strong> ：这是基于Xilinx Optical Fiber的设备，使用光纤进行高速数据通信，适用于数据中心和高性能计算环境。</li>
+</ol>
+]]></content>
+      <categories>
+        <category>StructLight</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Get Image in Callback Function</title>
     <url>/2025/01/17/StructLight/camera/ImageCallback/</url>
     <content><![CDATA[<ol>
@@ -4668,58 +4720,6 @@ rd2 value and address: -13.85, 0x7fff68ec89e0
 <li>调用 MV_CC_StartGrabbing()开始流式传输;</li>
 <li>对于原始图像数据，您可以调用 MV_CC_ConvertPixelTypeEx()转换图像像素格式，或调用 MV_CC_SaveImageEx3()将图像转换为 JPEG 或 BMP 格式并另存为文件;</li>
 <li>可以在回调函数中保存图像；</li>
-</ol>
-]]></content>
-      <categories>
-        <category>StructLight</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>camera info</title>
-    <url>/2025/01/17/StructLight/camera/info/</url>
-    <content><![CDATA[<h1 id="相机信息"><a href="#相机信息" class="headerlink" title="相机信息"></a>相机信息</h1><p>相机信息是指相机设备的基本信息，包括设备类型、传输层协议、硬件接口数据类型等，以USB接入设备为例。</p>
-<span id="more"></span>
-
-<h2 id="控制端点"><a href="#控制端点" class="headerlink" title="控制端点"></a>控制端点</h2><p>控制端点是指相机设备与主机之间进行控制传输的入口和出口。控制传输通常用于发送命令、请求或接收设备的状态信息等。</p>
-<ul>
-<li><strong>CrtlInEndPoint（控制输入端点）</strong> ：用于控制传输的输入端点。</li>
-<li><strong>CrtlOutEndPoint（控制输出端点）</strong> ：用于控制传输的输出端点。</li>
-</ul>
-<h2 id="数据传输端点"><a href="#数据传输端点" class="headerlink" title="数据传输端点"></a>数据传输端点</h2><ul>
-<li><strong>StreamEndPoint（流端点）</strong> ：用于数据传输的端点，通常用于传输大量数据，如图像数据、视频流等。对于相机设备，流端点非常重要，因为它决定了数据传输的效率和性能。</li>
-<li><strong>EventEndPoint（事件端点）</strong> ：用于事件通知的端点，通常用于接收设备的事件信息，如设备状态变化、错误事件等。</li>
-</ul>
-<h2 id="设备标识信息"><a href="#设备标识信息" class="headerlink" title="设备标识信息"></a>设备标识信息</h2><ul>
-<li><strong>chVendorName（供应商名字）</strong> ：设备供应商的名称。了解供应商名字可以帮助用户了解设备的制造商和品牌。</li>
-<li><strong>chModelName（型号名字）</strong> ：设备的型号名称。型号名称是用户识别和选择设备的重要依据，它通常包含了设备的主要功能和技术规格。</li>
-<li><strong>chFamilyName（家族名字）</strong> ：设备所属的产品家族名称。家族名称可以帮助用户了解设备所属的产品系列和定位，以及与其他设备的关系。</li>
-<li><strong>chDeviceVersion（设备版本）</strong> ：设备的版本信息。设备版本可以帮助用户了解设备的更新状态和功能改进，以及是否需要进行固件升级等操作。</li>
-<li><strong>chManufacturerName（制造商名字）</strong> ：设备制造商的名称。制造商名字可以帮助用户了解设备的生产厂商和质量保证。</li>
-</ul>
-<h2 id="序列号和用户自定义名称"><a href="#序列号和用户自定义名称" class="headerlink" title="序列号和用户自定义名称"></a>序列号和用户自定义名称</h2><ul>
-<li><strong>chSerialNumber（序列号）</strong> ：设备的唯一序列号，用于标识和追踪设备。</li>
-<li><strong>chUserDefinedName（用户自定义名字）</strong> ：用户为设备设置的自定义名称。用户自定义名称可以帮助用户更方便地识别和管理设备，特别是在连接多个设备时。</li>
-</ul>
-<h2 id="USB协议和设备地址"><a href="#USB协议和设备地址" class="headerlink" title="USB协议和设备地址"></a>USB协议和设备地址</h2><ul>
-<li><strong>nbcdUSB（支持的USB协议）</strong> ：设备支持的USB协议版本。</li>
-<li><strong>nDeviceAddress（设备地址）</strong> ：设备在USB总线上的地址。设备地址用于在USB总线中唯一标识设备，主要用于底层的设备通信和管理。</li>
-</ul>
-<h1 id="设备传输层协议"><a href="#设备传输层协议" class="headerlink" title="设备传输层协议"></a>设备传输层协议</h1><p>传输层协议是网络通信协议栈中的一部分，负责在设备之间传输数据。</p>
-<h2 id="硬件接口数据类型"><a href="#硬件接口数据类型" class="headerlink" title="硬件接口数据类型"></a>硬件接口数据类型</h2><ul>
-<li><strong>MV_GIGE_DEVICE</strong> ：表示GigE设备，即使用Gigabit Ethernet（千兆以太网）作为传输层协议的设备。GigE设备通常用于工业相机、网络摄像头等，具有高速数据传输和远程通信的能力。</li>
-<li><strong>MV_1394_DEVICE</strong> ：表示1394-a&#x2F;b设备，即使用IEEE 1394接口（也称为FireWire）作为传输层协议的设备。IEEE 1394是一种高速串行总线，常用于连接数字视频摄像机、硬盘驱动器等设备，支持即插即用和热插拔。</li>
-<li><strong>MV_USB_DEVICE</strong> ：表示USB设备，即使用通用串行总线（USB）作为传输层协议的设备。USB是一种广泛使用的接口技术，支持多种设备连接和数据传输，具有通用性强、使用方便等特点。</li>
-<li><strong>MV_CAMERALINK_DEVICE</strong> ：表示CameraLink设备，即使用Camera Link接口作为传输层协议的设备。Camera Link是一种专为高速图像传输设计的接口标准，常用于工业相机和图像采集系统，支持高分辨率和高帧率的图像数据传输。</li>
-</ul>
-<h2 id="虚拟设备类型"><a href="#虚拟设备类型" class="headerlink" title="虚拟设备类型"></a>虚拟设备类型</h2><ol>
-<li><strong>MV_VIR_GIGE_DEVICE</strong> ：指的是虚拟GigE设备。这种设备通常不是物理存在的，而是通过软件创建的模拟设备。它们用于模拟真实的GigE网络设备的功能，可以用于开发和测试网络应用，或者在没有真实硬件的情况下模拟网络环境。</li>
-<li><strong>MV_VIR_USB_DEVICE</strong> ：指的是虚拟USB设备。这同样是一种软件模拟的设备，用来模拟USB设备的行为。这可以帮助开发者在没有物理USB设备的情况下测试和开发USB相关的应用程序。</li>
-</ol>
-<h2 id="自研网卡下的设备类型"><a href="#自研网卡下的设备类型" class="headerlink" title="自研网卡下的设备类型"></a>自研网卡下的设备类型</h2><ol>
-<li><strong>MV_GENTL_GIGE_DEVICE</strong> ：这是一种在特定的自研网卡下使用的GigE设备。自研网卡是指根据特定需求定制开发的网络卡，可能具有优化的性能特征。这种设备类型适用于需要高性能网络通讯的应用场景。</li>
-<li><strong>MV_GENTL_CAMERALINK_DEVICE</strong> ：这是使用CameraLink标准的相机设备。CameraLink是一种用于高速图像数据传输的技术标准，常用于工业和科研领域中的图像采集。</li>
-<li><strong>MV_GENTL_CXP_DEVICE</strong> ：指的是使用CoaXPress接口的设备。CoaXPress利用同轴电缆传输高速数据，非常适合于需要长距离传输和高数据率的应用。</li>
-<li><strong>MV_GENTL_XOF_DEVICE</strong> ：这是基于Xilinx Optical Fiber的设备，使用光纤进行高速数据通信，适用于数据中心和高性能计算环境。</li>
 </ol>
 ]]></content>
       <categories>
