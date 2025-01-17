@@ -18,7 +18,6 @@ categories:
 - 本地仓库：本地电脑存储历史记录的区域；
 - 远程仓库：托管在服务器上的代码副本；
 
-
 # 整体流程
 
 ## 基础操作
@@ -32,7 +31,6 @@ $ git init
 ```
 
 该命令执行完后会在当前目录生成一个.git目录。
-
 
 ### 2. 新建本地文件
 
@@ -72,7 +70,6 @@ git remote add origin <server>
 
 这样就可以将改动推送到所添加的服务器上了。
 
-
 ## 分支操作
 
 分支是用来将特性开发绝缘开来的，在创建仓库的时候，master时默认的分支。
@@ -86,7 +83,6 @@ $ git branch
 ```
 
 没有参数时，git branch会列出在本地的分支。
-
 
 ### 2. 创建分支
 
@@ -134,7 +130,6 @@ git branch -d test
 git branch -D test
 ```
 
-
 ## 替换本地改动
 
 如果操作失误，可以使用如下命令替换掉本地改动：
@@ -156,7 +151,6 @@ $ git fetch origin
 $ git reset --hard origin/master
 ```
 
-
 ## 重置
 
 当我们不想要之前提交的修改时，就会用到这个命令，比如一个错误的提交或者引入一个bug的提交，这个时候就可以使用命令：`git reset`，它可以让我们不再使用当前台面上的文件，让我们可以控制HEAD应该指向的位置。
@@ -176,7 +170,6 @@ $ git reset --hard origin/master
 ![img](../../image/gitresethard.bmp)
 
 可以看到所有提交的信息都已经被移除了，工作区文件恢复到恢复到特定状态，打开文件可以看到所有添加的信息都不存在了。
-
 
 # 分析
 
@@ -198,7 +191,6 @@ $ git branch -a
 ### 1. 为什么 `git branch`只显示一个本地分支？
 
 `git branch`命令默认只显示本地分支，在当前仓库中，只有一个本地分支 `station-computer`;
-
 
 ### 2. 如何操作其他远程分支？
 
@@ -244,7 +236,6 @@ $ git branch -a
   $ git push origin --delete zhm-old-computer
   ```
 
-
 # 命令大全
 
 ### 1. 仓库
@@ -260,7 +251,6 @@ $ git init [project-name]
 $ git clone [url]
 ```
 
-
 ### 2. 配置
 
 ```bash
@@ -274,7 +264,6 @@ $ git config -e [--global]
 $ git config [--global] user.name "[name]"
 $ git config [--global] user.email "[email address]"
 ```
-
 
 ### 3. 增加/删除文件
 
@@ -302,7 +291,6 @@ $ git rm --cached [file]
 $ git mv [file-original] [file-renamed]
 ```
 
-
 ### 4. 代码提交
 
 ```bash
@@ -325,7 +313,6 @@ $ git commit --amend -m [message]
 # 重做上一次commit，并包括指定文件的新变化
 $ git commit --amend [file1] [file2] ...
 ```
-
 
 ### 5. 分支
 
@@ -374,7 +361,6 @@ $ git push origin --delete [branch-name]
 $ git branch -dr [remote/branch]
 ```
 
-
 ### 6. 标签
 
 ```bash
@@ -405,7 +391,6 @@ $ git push [remote] --tags
 # 新建一个分支，指向某个tag
 $ git checkout -b [branch] [tag]
 ```
-
 
 ### 7. 查看信息
 
@@ -472,7 +457,6 @@ $ git show [commit]:[filename]
 $ git reflog
 ```
 
-
 ### 8. 远程同步
 
 ```bash
@@ -500,7 +484,6 @@ $ git push [remote] --force
 # 推送所有分支到远程仓库
 $ git push [remote] --all
 ```
-
 
 ### 9.撤销
 
@@ -537,7 +520,6 @@ $ git revert [commit]
 $ git stash
 $ git stash pop
 ```
-
 
 ### 10. 其他
 
