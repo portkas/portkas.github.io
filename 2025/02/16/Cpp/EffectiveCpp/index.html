@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="宏 符号表 定义式和声明式">
+<meta property="og:type" content="article">
+<meta property="og:title" content="EffectiveC++笔记">
+<meta property="og:url" content="http://example.com/2025/02/16/Cpp/EffectiveCpp/index.html">
+<meta property="og:site_name" content="勿以浮沙筑高台">
+<meta property="og:description" content="宏 符号表 定义式和声明式">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-02-16T15:24:38.246Z">
+<meta property="article:modified_time" content="2025-02-14T11:24:54.000Z">
+<meta property="article:author" content="ZhangHangming">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2025/02/16/Cpp/EffectiveCpp/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>EffectiveC++笔记 | 勿以浮沙筑高台</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">勿以浮沙筑高台</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">张航铭的笔记本</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/02/16/Cpp/EffectiveCpp/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="ZhangHangming">
+      <meta itemprop="description" content="张航铭（ZhangHangming）的笔记本">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="勿以浮沙筑高台">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          EffectiveC++笔记
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-02-16 23:24:38" itemprop="dateCreated datePublished" datetime="2025-02-16T23:24:38+08:00">2025-02-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-02-14 19:24:54" itemprop="dateModified" datetime="2025-02-14T19:24:54+08:00">2025-02-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/cpp/" itemprop="url" rel="index"><span itemprop="name">cpp</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <ol>
+<li>宏</li>
+<li>符号表</li>
+<li>定义式和声明式</li>
+</ol>
+<span id="more"></span>
+
+<h2 id="宏函数"><a href="#宏函数" class="headerlink" title="宏函数"></a>宏函数</h2><h3 id="p16问题"><a href="#p16问题" class="headerlink" title="p16问题"></a>p16问题</h3><blockquote>
+<p>#define CALL_WITH_MAX(a,b) f((a)&gt;(b)?(a):(b))<br>int a&#x3D;5,b&#x3D;0;<br>CALL_WITH_MAX(++a,b);<br>CALL_WITH_MAX(++a,b+10);<br>为什么前者a被累加两次，后者a被累加一次？？？</p>
+</blockquote>
+<p>对上述进行展开，可以得到：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 第一个调用</span></span><br><span class="line"><span class="built_in">f</span>((++a)&gt;(b)?(++a):(b))</span><br><span class="line"></span><br><span class="line"><span class="comment">// 第二个调用</span></span><br><span class="line"><span class="built_in">f</span>((++a)&gt;(b<span class="number">+10</span>)?(++a):(b<span class="number">+10</span>))</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>当条件为真的时候，会执行f(++a)<ol>
+<li>在第一个调用中++a已经被调用一次当条件为真的时候，在后面又会调用一次</li>
+<li>在第二个调用中条件为假，所以在后面不会再次执行++a</li>
+<li>所以最终执行的是f(7)</li>
+</ol>
+</li>
+<li>当条件为假的时候，会执行f(b+10)<ol>
+<li>这里最终执行的是f(10)</li>
+<li>为什么是f(10)而不是f(20)?因为从始至终b的值都是0，所以最终执行的f(b+10)即f(10)</li>
+</ol>
+</li>
+</ol>
+<h3 id="代码测试"><a href="#代码测试" class="headerlink" title="代码测试"></a>代码测试</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义宏</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> CALL_WITH_MAX(a, b) f((a) &gt; (b) ? (a) : (b))</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义一个简单的函数f，用于打印参数值</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">f</span><span class="params">(<span class="type">int</span> value)</span> </span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;f(%d)\n&quot;</span>, value);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> a = <span class="number">5</span>, b = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Before first CALL_WITH_MAX: a = %d, b = %d\n&quot;</span>, a, b);</span><br><span class="line">    <span class="built_in">CALL_WITH_MAX</span>(++a, b);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;After first CALL_WITH_MAX: a = %d, b = %d\n&quot;</span>, a, b);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Before second CALL_WITH_MAX: a = %d, b = %d\n&quot;</span>, a, b);</span><br><span class="line">    <span class="built_in">CALL_WITH_MAX</span>(++a, b + <span class="number">10</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;After second CALL_WITH_MAX: a = %d, b = %d\n&quot;</span>, a, b);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行结果：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ ./app</span><br><span class="line">Before first CALL_WITH_MAX: a = 5, b = 0</span><br><span class="line">f(7)</span><br><span class="line">After first CALL_WITH_MAX: a = 7, b = 0</span><br><span class="line">Before second CALL_WITH_MAX: a = 7, b = 0</span><br><span class="line">f(10)</span><br><span class="line">After second CALL_WITH_MAX: a = 8, b = 0</span><br></pre></td></tr></table></figure>
+
+<h2 id="符号表"><a href="#符号表" class="headerlink" title="符号表"></a>符号表</h2><h3 id="符号表是什么？"><a href="#符号表是什么？" class="headerlink" title="符号表是什么？"></a>符号表是什么？</h3><p>符号表是编程语言编译过程中使用的一种数据结构，用于存储源代码中各种标识符（如变量、函数、类型等）的信息。它在编译器的多个阶段中发挥重要作用，例如帮助编译器识别和解析标识符、进行类型检查、分配内存以及生成代码。</p>
+<h3 id="符号表是如何生成的？"><a href="#符号表是如何生成的？" class="headerlink" title="符号表是如何生成的？"></a>符号表是如何生成的？</h3><p>符号表的生成通常在编译器的词法分析和语法分析阶段完成。词法分析器会识别源代码中的标识符，并将其传递给语法分析器。语法分析器在构建抽象语法树（AST）的同时，会将标识符及其相关信息插入到符号表中。例如，当遇到一个变量声明时，语法分析器会创建一个符号表条目，记录该变量的名称、类型、作用域等信息。</p>
+<h3 id="符号表长什么样子？"><a href="#符号表长什么样子？" class="headerlink" title="符号表长什么样子？"></a>符号表长什么样子？</h3><p>符号表通常由多个条目组成，每个条目代表一个标识符。每个条目包含以下信息：</p>
+<ul>
+<li><strong>名称</strong> ：标识符的名称。</li>
+<li><strong>类型</strong> ：标识符的数据类型。</li>
+<li><strong>作用域</strong> ：标识符的作用域，例如全局作用域或局部作用域。</li>
+<li><strong>存储位置</strong> ：标识符在内存中的位置。</li>
+<li><strong>其他属性</strong> ：根据标识符的类型，可能还会包含其他属性，如函数的参数列表、变量的初始值等。</li>
+</ul>
+<p>例如，对于以下C代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> a = <span class="number">5</span>;</span><br><span class="line">    <span class="type">float</span> b = <span class="number">3.14</span>;</span><br><span class="line">    <span class="type">int</span> c;</span><br><span class="line">    c = a + b;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其符号表可能如下所示：</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>类型</th>
+<th>作用域</th>
+<th>存储位置</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>a</td>
+<td>int</td>
+<td>main()</td>
+<td>0x1000</td>
+</tr>
+<tr>
+<td>b</td>
+<td>float</td>
+<td>main()</td>
+<td>0x1004</td>
+</tr>
+<tr>
+<td>c</td>
+<td>int</td>
+<td>main()</td>
+<td>0x1008</td>
+</tr>
+</tbody></table>
+<h3 id="符号表的底层原理是什么？"><a href="#符号表的底层原理是什么？" class="headerlink" title="符号表的底层原理是什么？"></a>符号表的底层原理是什么？</h3><p>符号表的底层原理主要涉及以下几个方面：</p>
+<ul>
+<li><strong>数据结构</strong> ：符号表通常使用哈希表、平衡二叉搜索树等数据结构来存储和管理符号。哈希表可以提供快速的查找和插入操作，而平衡二叉搜索树则可以保证操作的时间复杂度。</li>
+<li><strong>作用域管理</strong> ：符号表需要支持嵌套作用域。当进入一个新的作用域（如函数或代码块）时，符号表会创建一个新的作用域层，并在该层中存储局部符号。当退出作用域时，局部符号会被移除。</li>
+<li><strong>符号解析</strong> ：在代码生成阶段，编译器需要根据符号表中的信息来分配内存和生成指令。例如，变量的地址可以通过其在符号表中的存储位置属性来确定。</li>
+</ul>
+<h2 id="定义式和声明式"><a href="#定义式和声明式" class="headerlink" title="定义式和声明式"></a>定义式和声明式</h2><h3 id="定义式（Definition）"><a href="#定义式（Definition）" class="headerlink" title="定义式（Definition）"></a>定义式（Definition）</h3><p>定义式是指在编程语言中，为一个变量、函数、类型等分配存储空间，并且可以初始化的过程。定义式不仅声明了标识符的存在，还分配了内存，并且可以为变量赋初值。</p>
+<h3 id="声明式（Declaration）"><a href="#声明式（Declaration）" class="headerlink" title="声明式（Declaration）"></a>声明式（Declaration）</h3><p>声明式是指在编程语言中，声明一个变量、函数、类型等的存在，但不分配存储空间。声明式的主要目的是让编译器知道标识符的类型、作用域等信息，以便在后续的代码中正确地使用它。</p>
+<h3 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h3><h4 id="1-存储空间"><a href="#1-存储空间" class="headerlink" title="1. 存储空间"></a>1. <strong>存储空间</strong></h4><ul>
+<li><strong>定义式</strong> ：会分配存储空间。</li>
+<li><strong>声明式</strong> ：不会分配存储空间。</li>
+</ul>
+<h4 id="2-初始化"><a href="#2-初始化" class="headerlink" title="2. 初始化"></a>2. <strong>初始化</strong></h4><ul>
+<li><strong>定义式</strong> ：可以初始化变量。</li>
+<li><strong>声明式</strong> ：不能初始化变量。</li>
+</ul>
+<h4 id="3-作用域和链接"><a href="#3-作用域和链接" class="headerlink" title="3. 作用域和链接"></a>3. <strong>作用域和链接</strong></h4><ul>
+<li><strong>定义式</strong> ：定义的变量或函数在当前作用域中可用，并且可以被链接到其他作用域。</li>
+<li><strong>声明式</strong> ：声明的变量或函数在当前作用域中可用，但不会分配存储空间，通常用于声明外部变量或函数。</li>
+</ul>
+<h4 id="4-编译器处理"><a href="#4-编译器处理" class="headerlink" title="4. 编译器处理"></a>4. <strong>编译器处理</strong></h4><ul>
+<li><strong>定义式</strong> ：编译器会为定义的变量或函数分配内存，并且可以进行初始化。</li>
+<li><strong>声明式</strong> ：编译器只会记录声明的变量或函数的类型和作用域信息，不会分配内存。</li>
+</ul>
+<h3 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定义式</span></span><br><span class="line"><span class="type">int</span> a = <span class="number">10</span>; <span class="comment">// 定义了一个整型变量a，并初始化为10</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">func</span><span class="params">()</span> &#123; <span class="comment">// 定义了一个函数func</span></span><br><span class="line">    <span class="comment">// 函数体</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 声明式</span></span><br><span class="line"><span class="keyword">extern</span> <span class="type">int</span> b; <span class="comment">// 声明了一个外部变量b，但不分配存储空间</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">func</span><span class="params">()</span>; <span class="comment">// 声明了一个函数func，但不定义函数体</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
+<li><strong>定义式</strong> ：分配存储空间，可以初始化，是声明式的一种特殊情况。</li>
+<li><strong>声明式</strong> ：不分配存储空间，只声明标识符的存在，通常用于跨文件或跨作用域的引用。</li>
+</ul>
+<h2 id="常量指针和指针常量"><a href="#常量指针和指针常量" class="headerlink" title="常量指针和指针常量"></a>常量指针和指针常量</h2><ol>
+<li>const修饰*：表示这个指针的指向是不能改变的；指向的内容可以改变；</li>
+<li>const修饰类型：表示这个指针指向的内容是不能改变的；指针的指向可以改变；</li>
+</ol>
+<h2 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h2><blockquote>
+<p>为免除“跨编译单元之初始化次序”问题，请以local static对象替代non-local static对象。</p>
+</blockquote>
+<h3 id="1-问题背景"><a href="#1-问题背景" class="headerlink" title="1.问题背景"></a>1.问题背景</h3><p>在C++中，non-local static对象（非局部静态对象）是指定义在函数外部的全局静态对象，它们在程序启动时初始化，但在不同编译单元（.cpp文件）中定义的全局静态对象的初始化顺序是未定义的。这意味着如果一个全局静态对象依赖于另一个全局静态对象，可能会出现未初始化的依赖对象被访问的情况，从而导致未定义行为。</p>
+<h4 id="静态对象初始化顺序问题"><a href="#静态对象初始化顺序问题" class="headerlink" title="静态对象初始化顺序问题"></a>静态对象初始化顺序问题</h4><p>在C++中，全局静态对象（non-local static objects）的初始化顺序是未定义的，特别是在多个编译单元（.cpp文件）中定义的全局静态对象。这意味着如果一个全局静态对象依赖于另一个全局静态对象，可能会出现未初始化的依赖对象被访问的情况，从而导致未定义行为。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// File1.cpp</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;File2.h&quot;</span></span></span><br><span class="line">A a;</span><br><span class="line"></span><br><span class="line"><span class="comment">// File2.cpp</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;File1.h&quot;</span></span></span><br><span class="line">B b;</span><br></pre></td></tr></table></figure>
+
+<p>如果 <code>A</code>的构造函数依赖于 <code>B</code>，而 <code>B</code>尚未初始化，就会导致问题。</p>
+<h3 id="2-解决方案：使用Local-Static对象"><a href="#2-解决方案：使用Local-Static对象" class="headerlink" title="2. 解决方案：使用Local Static对象"></a>2. 解决方案：使用Local Static对象</h3><h4 id="局部静态对象的优势"><a href="#局部静态对象的优势" class="headerlink" title="局部静态对象的优势"></a>局部静态对象的优势</h4><p>局部静态对象（local static objects）是指在函数内部定义的静态对象。它们在第一次调用该函数时初始化，并且只初始化一次。由于局部静态对象的初始化时机是明确的（即在第一次调用时），因此可以避免跨编译单元的初始化顺序问题。</p>
+<h3 id="3-具体示例"><a href="#3-具体示例" class="headerlink" title="3. 具体示例"></a>3. 具体示例</h3><h4 id="问题代码"><a href="#问题代码" class="headerlink" title="问题代码"></a>问题代码</h4><p>假设有一个全局静态对象 <code>FileSystem</code>，它被另一个全局静态对象 <code>Directory</code>使用。为了避免初始化顺序问题，可以将 <code>FileSystem</code>改为局部静态对象。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// FileSystem.h</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">FileSystem</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">std::<span class="type">size_t</span> <span class="title">numDisks</span><span class="params">()</span> <span class="type">const</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">extern</span> FileSystem tfs;  <span class="comment">// 全局静态对象</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Directory.h</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Directory</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Directory</span>();</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Directory.cpp</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;FileSystem.h&quot;</span></span></span><br><span class="line">Directory::<span class="built_in">Directory</span>() &#123;</span><br><span class="line">    std::<span class="type">size_t</span> disks = tfs.<span class="built_in">numDisks</span>();  <span class="comment">// 使用全局静态对象</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在上述代码中，<code>tfs</code>和 <code>Directory</code>的初始化顺序是不确定的。</p>
+<h4 id="改进代码"><a href="#改进代码" class="headerlink" title="改进代码"></a>改进代码</h4><p>将 <code>FileSystem</code>改为局部静态对象：</p>
+<p><strong>cpp</strong>Copy</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// FileSystem.h</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">FileSystem</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">std::<span class="type">size_t</span> <span class="title">numDisks</span><span class="params">()</span> <span class="type">const</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function">FileSystem&amp; <span class="title">tfs</span><span class="params">()</span> </span>&#123;  <span class="comment">// 返回局部静态对象的引用</span></span><br><span class="line">    <span class="type">static</span> FileSystem fs;</span><br><span class="line">    <span class="keyword">return</span> fs;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Directory.cpp</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;FileSystem.h&quot;</span></span></span><br><span class="line">Directory::<span class="built_in">Directory</span>() &#123;</span><br><span class="line">    std::<span class="type">size_t</span> disks = <span class="built_in">tfs</span>().<span class="built_in">numDisks</span>();  <span class="comment">// 调用函数获取局部静态对象</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>通过这种方式，<code>FileSystem</code>对象 <code>fs</code>会在第一次调用 <code>tfs()</code>时初始化，从而避免了初始化顺序问题。</p>
+<h3 id="4-多线程环境下的安全性"><a href="#4-多线程环境下的安全性" class="headerlink" title="4. 多线程环境下的安全性"></a>4. 多线程环境下的安全性</h3><h4 id="线程安全性"><a href="#线程安全性" class="headerlink" title="线程安全性"></a>线程安全性</h4><p>在多线程环境中，局部静态对象的初始化是线程安全的（C++11及之后的标准保证了这一点）。这意味着即使多个线程同时调用 <code>tfs()</code>，<code>FileSystem</code>对象 <code>fs</code>也只会被初始化一次。</p>
+<p>但如果需要在多线程启动阶段初始化多个对象，建议在程序的单线程启动阶段手工调用这些对象的初始化函数，以避免潜在的线程安全问题。</p>
+<h3 id="5-总结"><a href="#5-总结" class="headerlink" title="5. 总结"></a>5. 总结</h3><h4 id="关键点"><a href="#关键点" class="headerlink" title="关键点"></a>关键点</h4><ul>
+<li><strong>Non-local static对象</strong> ：初始化顺序是不确定的，容易导致跨编译单元的初始化问题。</li>
+<li><strong>Local static对象</strong> ：在第一次调用时初始化，初始化顺序明确，可以避免上述问题。</li>
+<li><strong>多线程安全性</strong> ：C++11及之后的标准保证了局部静态对象的线程安全性，但在多线程启动阶段初始化多个对象时，建议在单线程启动阶段手工调用初始化函数。</li>
+</ul>
+<h3 id="6-其他注意事项"><a href="#6-其他注意事项" class="headerlink" title="6. 其他注意事项"></a>6. 其他注意事项</h3><h4 id="避免使用全局静态对象"><a href="#避免使用全局静态对象" class="headerlink" title="避免使用全局静态对象"></a>避免使用全局静态对象</h4><p>如果可能，尽量避免使用全局静态对象，因为它们不仅存在初始化顺序问题，还可能导致其他问题，如线程安全问题和资源管理问题。</p>
+<h4 id="使用单例模式"><a href="#使用单例模式" class="headerlink" title="使用单例模式"></a>使用单例模式</h4><p>如果确实需要全局对象，可以考虑使用单例模式，结合局部静态对象来实现线程安全的全局对象。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Singleton</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">static</span> Singleton&amp; <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="type">static</span> Singleton instance;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="built_in">Singleton</span>() &#123;&#125;  <span class="comment">// 私有构造函数</span></span><br><span class="line">    <span class="built_in">Singleton</span>(<span class="type">const</span> Singleton&amp;) = <span class="keyword">delete</span>;  <span class="comment">// 禁止拷贝构造</span></span><br><span class="line">    Singleton&amp; <span class="keyword">operator</span>=(<span class="type">const</span> Singleton&amp;) = <span class="keyword">delete</span>;  <span class="comment">// 禁止赋值</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="局部静态对象"><a href="#局部静态对象" class="headerlink" title="局部静态对象"></a>局部静态对象</h2><p>局部静态对象（Local Static Object）的初始化顺序是明确的，原因在于其初始化时机是由语言标准明确定义的：局部静态对象在第一次进入其作用域时被初始化。这种机制确保了初始化的顺序与代码的执行流程一致，从而避免了全局静态对象（Non-local Static Object）初始化顺序不确定的问题。</p>
+<h3 id="1-局部静态对象的初始化机制"><a href="#1-局部静态对象的初始化机制" class="headerlink" title="1.局部静态对象的初始化机制"></a>1.局部静态对象的初始化机制</h3><p>局部静态对象是定义在函数内部的静态变量。它们的生命周期从第一次进入作用域开始，直到程序结束，但其初始化时机是延迟到第一次使用时。这种机制被称为“延迟初始化”（Lazy Initialization）。</p>
+<p>根据C++标准（C++11及之后版本），局部静态对象的初始化是线程安全的，并且只会在第一次进入其作用域时发生。具体来说：</p>
+<ul>
+<li>如果多个线程同时首次进入该局部静态对象的作用域，C++标准库会确保只有一个线程执行初始化操作，其他线程会等待初始化完成</li>
+<li>初始化完成后，后续的所有访问都会直接使用已经初始化的对象</li>
+</ul>
+<h3 id="2-为什么初始化顺序明确"><a href="#2-为什么初始化顺序明确" class="headerlink" title="2.为什么初始化顺序明确"></a>2.为什么初始化顺序明确</h3><p>局部静态对象的初始化顺序明确，是因为它们的初始化时机与代码的执行流程直接相关。具体来说：</p>
+<ul>
+<li>延迟初始化：局部静态对象只有在第一次进入其作用域时才会被初始化。这意味着它们的初始化顺序完全取决于代码的执行路径</li>
+<li>作用域限制：局部静态对象的作用域是函数内部，因此它们的初始化顺序不会受到其他编译单元中全局静态对象的影响。</li>
+<li>线程安全：在多线程环境中，C++标准确保局部静态对象的初始化是线程安全的。即使多个线程同时首次进入该作用域，初始化也只会发生一次</li>
+</ul>
+<h3 id="3-示例"><a href="#3-示例" class="headerlink" title="3.示例"></a>3.示例</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;thread&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;mutex&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">func</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="type">static</span> <span class="type">int</span> counter = <span class="number">0</span>;  <span class="comment">// 局部静态变量</span></span><br><span class="line">    counter++;</span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Counter: &quot;</span> &lt;&lt; counter &lt;&lt; std::endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="function">std::thread <span class="title">t1</span><span class="params">(func)</span></span>;</span><br><span class="line">    <span class="function">std::thread <span class="title">t2</span><span class="params">(func)</span></span>;</span><br><span class="line">    t<span class="number">1.</span><span class="built_in">join</span>();</span><br><span class="line">    t<span class="number">2.</span><span class="built_in">join</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Counter: 1</span><br><span class="line">Counter: 2</span><br></pre></td></tr></table></figure>
+
+<p>解释：</p>
+<ul>
+<li><code>counter</code> 是一个局部静态变量，它在第一次调用 <code>func()</code> 时被初始化为 <code>0</code>。</li>
+<li>在多线程环境中，即使 <code>t1</code> 和 <code>t2</code> 同时调用 <code>func()</code>，<code>counter</code> 的初始化也只会发生一次（线程安全）。</li>
+<li>第一次调用 <code>func()</code> 时，<code>counter</code> 被初始化为 <code>0</code>，然后递增为 <code>1</code>。</li>
+<li>第二次调用 <code>func()</code> 时，<code>counter</code> 已经初始化，直接递增为 <code>2</code>。</li>
+</ul>
+<h3 id="4-为什么全局静态对象的初始化顺序不确定？"><a href="#4-为什么全局静态对象的初始化顺序不确定？" class="headerlink" title="4. 为什么全局静态对象的初始化顺序不确定？"></a>4. 为什么全局静态对象的初始化顺序不确定？</h3><p>与局部静态对象不同，全局静态对象（Non-local Static Object）的初始化顺序是不确定的，原因在于：</p>
+<ul>
+<li>跨编译单元初始化：全局静态对象的初始化顺序取决于它们在不同编译单元中的定义顺序。</li>
+<li>编译器限制：编译器无法保证不同编译单元中全局静态对象的初始化顺序。</li>
+<li>依赖关系：如果一个全局静态对象依赖于另一个全局静态对象，而后者尚未初始化，就会导致未定义行为。</li>
+</ul>
+<h3 id="5-总结-1"><a href="#5-总结-1" class="headerlink" title="5. 总结"></a>5. 总结</h3><ul>
+<li>局部静态对象的初始化顺序是明确的，因为它们的初始化时机与代码的执行流程直接相关，且初始化只发生在第一次进入作用域时。</li>
+<li>全局静态对象的初始化顺序是不确定的，因为它们的初始化顺序取决于编译单元的定义顺序，且编译器无法保证跨编译单元的初始化顺序。</li>
+<li>使用局部静态对象可以有效避免全局静态对象初始化顺序不确定的问题。</li>
+</ul>
+<h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://kimi.moonshot.cn/chat/cundehcupvno1tud2j90#">Effective C++：条款4：确定对象被使用前已先被初始化</a></li>
+<li><a target="_blank" rel="noopener" href="https://kimi.moonshot.cn/chat/cundehcupvno1tud2j90#">Effective C++：使用局部静态对象替代全局静态对象</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/02/16/Cpp/cpp-6/" rel="prev" title="cpp-6-智能指针">
+      <i class="fa fa-chevron-left"></i> cpp-6-智能指针
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%8F%E5%87%BD%E6%95%B0"><span class="nav-number">1.</span> <span class="nav-text">宏函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#p16%E9%97%AE%E9%A2%98"><span class="nav-number">1.1.</span> <span class="nav-text">p16问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E6%B5%8B%E8%AF%95"><span class="nav-number">1.2.</span> <span class="nav-text">代码测试</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%A6%E5%8F%B7%E8%A1%A8"><span class="nav-number">2.</span> <span class="nav-text">符号表</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%A6%E5%8F%B7%E8%A1%A8%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="nav-number">2.1.</span> <span class="nav-text">符号表是什么？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%A6%E5%8F%B7%E8%A1%A8%E6%98%AF%E5%A6%82%E4%BD%95%E7%94%9F%E6%88%90%E7%9A%84%EF%BC%9F"><span class="nav-number">2.2.</span> <span class="nav-text">符号表是如何生成的？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%A6%E5%8F%B7%E8%A1%A8%E9%95%BF%E4%BB%80%E4%B9%88%E6%A0%B7%E5%AD%90%EF%BC%9F"><span class="nav-number">2.3.</span> <span class="nav-text">符号表长什么样子？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%A6%E5%8F%B7%E8%A1%A8%E7%9A%84%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="nav-number">2.4.</span> <span class="nav-text">符号表的底层原理是什么？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89%E5%BC%8F%E5%92%8C%E5%A3%B0%E6%98%8E%E5%BC%8F"><span class="nav-number">3.</span> <span class="nav-text">定义式和声明式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89%E5%BC%8F%EF%BC%88Definition%EF%BC%89"><span class="nav-number">3.1.</span> <span class="nav-text">定义式（Definition）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A3%B0%E6%98%8E%E5%BC%8F%EF%BC%88Declaration%EF%BC%89"><span class="nav-number">3.2.</span> <span class="nav-text">声明式（Declaration）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8C%BA%E5%88%AB"><span class="nav-number">3.3.</span> <span class="nav-text">区别</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E5%AD%98%E5%82%A8%E7%A9%BA%E9%97%B4"><span class="nav-number">3.3.1.</span> <span class="nav-text">1. 存储空间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">3.3.2.</span> <span class="nav-text">2. 初始化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E4%BD%9C%E7%94%A8%E5%9F%9F%E5%92%8C%E9%93%BE%E6%8E%A5"><span class="nav-number">3.3.3.</span> <span class="nav-text">3. 作用域和链接</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E7%BC%96%E8%AF%91%E5%99%A8%E5%A4%84%E7%90%86"><span class="nav-number">3.3.4.</span> <span class="nav-text">4. 编译器处理</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B"><span class="nav-number">3.4.</span> <span class="nav-text">示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">3.5.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E9%87%8F%E6%8C%87%E9%92%88%E5%92%8C%E6%8C%87%E9%92%88%E5%B8%B8%E9%87%8F"><span class="nav-number">4.</span> <span class="nav-text">常量指针和指针常量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">5.</span> <span class="nav-text">初始化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E9%97%AE%E9%A2%98%E8%83%8C%E6%99%AF"><span class="nav-number">5.1.</span> <span class="nav-text">1.问题背景</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E5%AF%B9%E8%B1%A1%E5%88%9D%E5%A7%8B%E5%8C%96%E9%A1%BA%E5%BA%8F%E9%97%AE%E9%A2%98"><span class="nav-number">5.1.1.</span> <span class="nav-text">静态对象初始化顺序问题</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%EF%BC%9A%E4%BD%BF%E7%94%A8Local-Static%E5%AF%B9%E8%B1%A1"><span class="nav-number">5.2.</span> <span class="nav-text">2. 解决方案：使用Local Static对象</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B1%80%E9%83%A8%E9%9D%99%E6%80%81%E5%AF%B9%E8%B1%A1%E7%9A%84%E4%BC%98%E5%8A%BF"><span class="nav-number">5.2.1.</span> <span class="nav-text">局部静态对象的优势</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%85%B7%E4%BD%93%E7%A4%BA%E4%BE%8B"><span class="nav-number">5.3.</span> <span class="nav-text">3. 具体示例</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E4%BB%A3%E7%A0%81"><span class="nav-number">5.3.1.</span> <span class="nav-text">问题代码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%94%B9%E8%BF%9B%E4%BB%A3%E7%A0%81"><span class="nav-number">5.3.2.</span> <span class="nav-text">改进代码</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%8E%AF%E5%A2%83%E4%B8%8B%E7%9A%84%E5%AE%89%E5%85%A8%E6%80%A7"><span class="nav-number">5.4.</span> <span class="nav-text">4. 多线程环境下的安全性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E6%80%A7"><span class="nav-number">5.4.1.</span> <span class="nav-text">线程安全性</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E6%80%BB%E7%BB%93"><span class="nav-number">5.5.</span> <span class="nav-text">5. 总结</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B3%E9%94%AE%E7%82%B9"><span class="nav-number">5.5.1.</span> <span class="nav-text">关键点</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E5%85%B6%E4%BB%96%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-number">5.6.</span> <span class="nav-text">6. 其他注意事项</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%81%BF%E5%85%8D%E4%BD%BF%E7%94%A8%E5%85%A8%E5%B1%80%E9%9D%99%E6%80%81%E5%AF%B9%E8%B1%A1"><span class="nav-number">5.6.1.</span> <span class="nav-text">避免使用全局静态对象</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F"><span class="nav-number">5.6.2.</span> <span class="nav-text">使用单例模式</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B1%80%E9%83%A8%E9%9D%99%E6%80%81%E5%AF%B9%E8%B1%A1"><span class="nav-number">6.</span> <span class="nav-text">局部静态对象</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%B1%80%E9%83%A8%E9%9D%99%E6%80%81%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%88%9D%E5%A7%8B%E5%8C%96%E6%9C%BA%E5%88%B6"><span class="nav-number">6.1.</span> <span class="nav-text">1.局部静态对象的初始化机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E4%B8%BA%E4%BB%80%E4%B9%88%E5%88%9D%E5%A7%8B%E5%8C%96%E9%A1%BA%E5%BA%8F%E6%98%8E%E7%A1%AE"><span class="nav-number">6.2.</span> <span class="nav-text">2.为什么初始化顺序明确</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E7%A4%BA%E4%BE%8B"><span class="nav-number">6.3.</span> <span class="nav-text">3.示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E4%B8%BA%E4%BB%80%E4%B9%88%E5%85%A8%E5%B1%80%E9%9D%99%E6%80%81%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%88%9D%E5%A7%8B%E5%8C%96%E9%A1%BA%E5%BA%8F%E4%B8%8D%E7%A1%AE%E5%AE%9A%EF%BC%9F"><span class="nav-number">6.4.</span> <span class="nav-text">4. 为什么全局静态对象的初始化顺序不确定？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E6%80%BB%E7%BB%93-1"><span class="nav-number">6.5.</span> <span class="nav-text">5. 总结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">6.6.</span> <span class="nav-text">参考资料</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">ZhangHangming</p>
+  <div class="site-description" itemprop="description">张航铭（ZhangHangming）的笔记本</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">56</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ZhangHangming</span>
+</div>
+
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+-->
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+</html>

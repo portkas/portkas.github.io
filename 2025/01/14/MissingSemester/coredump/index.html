@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="什么是coredumpcoredump又叫核心转储，是程序崩溃时候的一个内存快照，存储了进程的内存，寄存器状态，运行堆栈等信息。 是一个二进制文件，可以使用以下工具打开分析： Linux中可以使用：gdb，elfdump，objdump Windows中可以使用：windebug，solaris下的mdb">
+<meta property="og:type" content="article">
+<meta property="og:title" content="coredump">
+<meta property="og:url" content="http://example.com/2025/01/14/MissingSemester/coredump/index.html">
+<meta property="og:site_name" content="勿以浮沙筑高台">
+<meta property="og:description" content="什么是coredumpcoredump又叫核心转储，是程序崩溃时候的一个内存快照，存储了进程的内存，寄存器状态，运行堆栈等信息。 是一个二进制文件，可以使用以下工具打开分析： Linux中可以使用：gdb，elfdump，objdump Windows中可以使用：windebug，solaris下的mdb">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/image/coredump.bmp">
+<meta property="article:published_time" content="2025-01-14T07:09:19.544Z">
+<meta property="article:modified_time" content="2025-01-14T07:09:19.544Z">
+<meta property="article:author" content="ZhangHangming">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/image/coredump.bmp">
+
+<link rel="canonical" href="http://example.com/2025/01/14/MissingSemester/coredump/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>coredump | 勿以浮沙筑高台</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">勿以浮沙筑高台</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">张航铭的笔记本</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/01/14/MissingSemester/coredump/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="ZhangHangming">
+      <meta itemprop="description" content="张航铭（ZhangHangming）的笔记本">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="勿以浮沙筑高台">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          coredump
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-01-14 15:09:19" itemprop="dateCreated datePublished" datetime="2025-01-14T15:09:19+08:00">2025-01-14</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="什么是coredump"><a href="#什么是coredump" class="headerlink" title="什么是coredump"></a>什么是coredump</h1><p>coredump又叫核心转储，是程序崩溃时候的一个内存快照，存储了进程的内存，寄存器状态，运行堆栈等信息。</p>
+<p>是一个二进制文件，可以使用以下工具打开分析：</p>
+<p>Linux中可以使用：gdb，elfdump，objdump</p>
+<p>Windows中可以使用：windebug，solaris下的mdb</p>
+<span id="more"></span>
+
+<h1 id="什么时候使用coredump"><a href="#什么时候使用coredump" class="headerlink" title="什么时候使用coredump"></a>什么时候使用coredump</h1><p>业务逻辑上的bug，比如参数设置，这种不会导致程序崩溃的错误，使用printf这类输出函数打点调试；</p>
+<p>致命操作的bug，比如访问未经申请的内存地址，导致程序崩溃，此时不能使用printf，应该怎么调试呢？</p>
+<p>对于必现的bug，一般使用GDB设置断点，逐步执行程序，检查变量和内存，以及回溯调用栈来定位问题。但是对于偶现的bug（多线程竞争，事件相关，资源限制等），由于只在某些特定的条件下发生，所以比较难通过GDB调试，这个时候就可以使用Linux提供的coredump文件进行调试。</p>
+<h1 id="coredump文件生成原理"><a href="#coredump文件生成原理" class="headerlink" title="coredump文件生成原理"></a>coredump文件生成原理</h1><p>在程序发生某些错误而导致进程异常退出的时候，Linux内核会根据进程当时的内存信息，生成coredump文件。GDB通过coredump文件可以重现当时的场景，从而定位错误信息。</p>
+<ol>
+<li>程序发生错误 -&gt; 产生信号</li>
+<li>进程内核检测到对应信号 -&gt; 生成coredump文件</li>
+</ol>
+<p>以下信号会导致生成coredump文件：</p>
+<ul>
+<li>SIGILL：非法指令信号</li>
+<li>SIGABRT：由abort()函数发起的信号，用于异常终止程序</li>
+<li>SIGSEGV：无效的内存引用信号，当程序试图访问未分配或不允许访问的内存时</li>
+<li>SIGTRAP：由断点或者某些调试器触发的信号，用于调试目的</li>
+<li>SIGFPE：浮点异常信号，如算术溢出，除以零</li>
+<li>SIGBUG：硬件故障信号，如非法内存访问</li>
+<li>SIGSIS：无效的系统调用信号</li>
+</ul>
+<p>当进程从内核态返回到用户态前，内核会检查进程的信号队列中是否有信号没有处理，如果有就调用 <code>do_signal</code>内核函数处理信号，流程如下：</p>
+<p><img src="/../image/coredump.bmp" alt="img"></p>
+<h2 id="信号处理do-signal"><a href="#信号处理do-signal" class="headerlink" title="信号处理do_signal()"></a>信号处理do_signal()</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">static</span> <span class="type">void</span> fastcall <span class="title">do_signal</span><span class="params">(<span class="keyword">struct</span> pt_regs *regs)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">siginfo_t</span> info;</span><br><span class="line">    <span class="type">int</span> signr;</span><br><span class="line">    <span class="keyword">struct</span> <span class="title class_">k_sigaction</span> ka;</span><br><span class="line">    <span class="type">sigset_t</span> *oldset;</span><br><span class="line"></span><br><span class="line">    ...</span><br><span class="line">    signr = <span class="built_in">get_signal_to_deliver</span>(&amp;info, &amp;ka, regs, <span class="literal">NULL</span>);</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>该函数负责将用户空间的信号传递给进程。其中该函数接收一个指向 <code>pt_regs</code>结构的指针作为参数，其中包含了程序计数器、栈指针和所有通用寄存器，这些寄存器在信号处理时被保存。</p>
+<h2 id="信号获取get-signal-to-deliver"><a href="#信号获取get-signal-to-deliver" class="headerlink" title="信号获取get_signal_to_deliver()"></a>信号获取get_signal_to_deliver()</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">get_signal_to_deliver</span><span class="params">(<span class="type">siginfo_t</span> *info, <span class="keyword">struct</span> k_sigaction *return_ka,</span></span></span><br><span class="line"><span class="params"><span class="function">                          <span class="keyword">struct</span> pt_regs *regs, <span class="type">void</span> *cookie)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">sigset_t</span> *mask = &amp;current-&gt;blocked;</span><br><span class="line">    <span class="type">int</span> signr = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">for</span> (;;) &#123;</span><br><span class="line">        ...</span><br><span class="line">        <span class="comment">// 1. 从进程信号队列中获取一个信号</span></span><br><span class="line">        signr = <span class="built_in">dequeue_signal</span>(current, mask, info); </span><br><span class="line"></span><br><span class="line">        ...</span><br><span class="line">        <span class="comment">// 2. 判断是否会生成 coredump 文件的信号</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">sig_kernel_coredump</span>(signr)) &#123;</span><br><span class="line">            <span class="comment">// 3. 调用 do_coredump() 函数生成 coredump 文件</span></span><br><span class="line">            <span class="built_in">do_coredump</span>((<span class="type">long</span>)signr, signr, regs);</span><br><span class="line">        &#125;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>get_signal_to_deliver</code>函数主要完成以下三个工作：</p>
+<ul>
+<li>调用 <code>dequeue_signal</code>函数从进程的信号队列中获取一个信号</li>
+<li>调用 <code>sig_kernel_coredump</code>函数判断信号是否会生成coredump文件</li>
+<li>如果信号会生成coredump文件，那么就调用 <code>do_coredump</code>函数生成coredump文件</li>
+</ul>
+<h2 id="生成coredump文件"><a href="#生成coredump文件" class="headerlink" title="生成coredump文件"></a>生成coredump文件</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">do_coredump</span><span class="params">(<span class="type">long</span> signr, <span class="type">int</span> exit_code, <span class="keyword">struct</span> pt_regs *regs)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">char</span> corename[CORENAME_MAX_SIZE + <span class="number">1</span>];</span><br><span class="line">    <span class="keyword">struct</span> <span class="title class_">mm_struct</span> *mm = current-&gt;mm;</span><br><span class="line">    <span class="keyword">struct</span> <span class="title class_">linux_binfmt</span> *binfmt;</span><br><span class="line">    <span class="keyword">struct</span> <span class="title class_">inode</span> *inode;</span><br><span class="line">    <span class="keyword">struct</span> <span class="title class_">file</span> *file;</span><br><span class="line">    <span class="type">int</span> retval = <span class="number">0</span>;</span><br><span class="line">    <span class="type">int</span> fsuid = current-&gt;fsuid;</span><br><span class="line">    <span class="type">int</span> flag = <span class="number">0</span>;</span><br><span class="line">    <span class="type">int</span> ispipe = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    binfmt = current-&gt;binfmt; <span class="comment">// 当前进程所使用的可执行文件格式（如ELF格式）</span></span><br><span class="line"></span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">// 1. 判断当前进程可生成的 coredump 文件大小是否受到资源限制</span></span><br><span class="line">    <span class="keyword">if</span> (current-&gt;signal-&gt;rlim[RLIMIT_CORE].rlim_cur &lt; binfmt-&gt;min_coredump)</span><br><span class="line">        <span class="keyword">goto</span> fail_unlock;</span><br><span class="line"></span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">// 2. 生成 coredump 文件名</span></span><br><span class="line">    ispipe = format_corename(corename, core_pattern, signr);</span><br><span class="line"></span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">// 3. 创建 coredump 文件</span></span><br><span class="line">    file = <span class="built_in">filp_open</span>(corename, O_CREAT|<span class="number">2</span>|O_NOFOLLOW|O_LARGEFILE|flag, <span class="number">0600</span>);</span><br><span class="line"></span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">// 4. 把进程的内存信息写入到 coredump 文件中</span></span><br><span class="line">    retval = binfmt-&gt;<span class="built_in">core_dump</span>(signr, regs, file);</span><br><span class="line"></span><br><span class="line">fail_unlock:</span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">return</span> retval;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>do_coredump</code>函数主要完成以下四个工作：</p>
+<ul>
+<li>判断当前进程可生成的coredump文件大小是否收到资源限制</li>
+<li>如果不受限制调用 <code>format_corename</code>生成coredump文件的文件名</li>
+<li>调用 <code>filp_open</code>函数创建coredump文件</li>
+<li>根据当前进程所使用的可执行文件格式选择相应的方式填充coredump文件的内容</li>
+<li>elf文件格式使用的是 <code>elf_core_dump</code>方法</li>
+</ul>
+<h1 id="coredump文件使用-准备阶段"><a href="#coredump文件使用-准备阶段" class="headerlink" title="coredump文件使用-准备阶段"></a>coredump文件使用-准备阶段</h1><h2 id="生成coredump文件到当前目录下"><a href="#生成coredump文件到当前目录下" class="headerlink" title="生成coredump文件到当前目录下"></a>生成coredump文件到当前目录下</h2><p>要让core文件生成在当前目录下，你可以通过设置 <code>/proc/sys/kernel/core_pattern</code>文件来指定core文件的保存位置和命名模式。以下是具体的步骤：</p>
+<ol>
+<li><p><strong>开启core文件生成</strong>：<br>使用 <code>ulimit -c unlimited</code>命令来确保系统允许生成core文件。</p>
+</li>
+<li><p><strong>设置core文件的命名模式</strong>：<br>使用 <code>echo</code>命令将core文件的命名模式设置为当前目录下。具体命令如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;./core-%e-%p-%t&#x27;</span> &gt; /proc/sys/kernel/core_pattern</span><br></pre></td></tr></table></figure>
+
+<p>这个命令会将core文件统一生成到当前目录下，文件名为 <code>core-命令名-pid-时间戳</code>。</p>
+</li>
+<li><p><strong>参数解释</strong>：</p>
+<ul>
+<li><code>%p</code>：插入pid到文件名中，即进程ID。</li>
+<li><code>%e</code>：插入产生core文件的命令名到文件名中。</li>
+<li><code>%t</code>：插入Unix时间戳到文件名中，即core文件生成时的时间。</li>
+</ul>
+</li>
+</ol>
+<p>执行上述命令后，如果程序再次发生段错误，core文件将会生成在程序运行的当前目录下，并且文件名包含了程序名、进程ID和时间戳，这样你就可以更容易地识别和管理这些core文件了。</p>
+<p>需要注意的是，修改 <code>/proc/sys/kernel/core_pattern</code>可能需要root权限，如果遇到权限问题，可以尝试使用 <code>sudo</code>命令来执行。同时，这些设置是临时的，重启系统后会恢复默认设置。如果需要永久设置，可以修改 <code>/etc/sysctl.conf</code>文件并添加相应的配置行，然后运行 <code>sysctl -p</code>来使设置生效。</p>
+<h2 id="设置永久保存"><a href="#设置永久保存" class="headerlink" title="设置永久保存"></a>设置永久保存</h2><p>打开&#x2F;etc&#x2F;security&#x2F;limits.conf文件，在该文件的最后加上两行，配置后重启后生效。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@root soft core unlimited</span><br><span class="line">@root hard core unlimited</span><br></pre></td></tr></table></figure>
+
+<p>命名规则的修改在&#x2F;proc&#x2F;sys&#x2F;kernel&#x2F;core_pattern中也只是临时的，这个也是动态加载和生成的。永久修改在&#x2F;etc&#x2F;sysctl.conf文件中，在该文件的最后加上两行：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kernel.core_pattern = ./core-%e-%p-%t</span><br><span class="line">kernel.core_uses_pid = 0</span><br></pre></td></tr></table></figure>
+
+<p>可以使用该命令，立即生效：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> su</span><br><span class="line"><span class="comment"># sysctl –p</span></span><br><span class="line"><span class="comment"># exit</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="coredump命名规则"><a href="#coredump命名规则" class="headerlink" title="coredump命名规则"></a>coredump命名规则</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">产生的文件名为core-命令名-pid-时间戳</span><br><span class="line">以下是参数列表:</span><br><span class="line">%p - insert pid into filename 添加pid</span><br><span class="line">%u - insert current uid into filename 添加当前uid</span><br><span class="line">%g - insert current gid into filename 添加当前gid</span><br><span class="line">%s - insert signal that caused the coredump into the filename 添加导致产生core的信号</span><br><span class="line">%t - insert UNIX time that the coredump occurred into filename 添加core文件生成时的unix时间</span><br><span class="line">%h - insert hostname where the coredump happened into filename 添加主机名</span><br><span class="line">%e - insert coredumping executable name into filename 添加命令名</span><br></pre></td></tr></table></figure>
+
+<h2 id="proc-sys-kernel-core-pattern"><a href="#proc-sys-kernel-core-pattern" class="headerlink" title="&#x2F;proc&#x2F;sys&#x2F;kernel&#x2F;core_pattern"></a>&#x2F;proc&#x2F;sys&#x2F;kernel&#x2F;core_pattern</h2><p>&#x2F;proc&#x2F;sys&#x2F;kernel&#x2F;core_pattern是一个位于&#x2F;proc伪文件系统中的文件，它用于定义系统在发生核心转储（coredump）时生成的核心文件（corefile）的命名模式和路径。</p>
+<h1 id="示例1-段错误"><a href="#示例1-段错误" class="headerlink" title="示例1-段错误"></a>示例1-段错误</h1><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line">  </span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">func</span><span class="params">(<span class="type">int</span> *p)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    *p = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line">  </span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">func</span>(<span class="literal">NULL</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>编写文件并编译运行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ gcc -g -o app main.c</span><br><span class="line">$ ./app</span><br><span class="line">Segmentation fault (core dumped)</span><br></pre></td></tr></table></figure>
+
+<p>文件目录中产生coredump文件：core-app-20132-1733721582，使用coredump文件定位错误信息：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">$ gdb ./app core-app-20132-1733721582</span><br><span class="line">GNU gdb (Ubuntu 12.1-0ubuntu1~22.04.2) 12.1</span><br><span class="line">Copyright (C) 2022 Free Software Foundation, Inc.</span><br><span class="line">License GPLv3+: GNU GPL version 3 or later &lt;http://gnu.org/licenses/gpl.html&gt;</span><br><span class="line">This is free software: you are free to change and redistribute it.</span><br><span class="line">There is NO WARRANTY, to the extent permitted by law.</span><br><span class="line">Type <span class="string">&quot;show copying&quot;</span> and <span class="string">&quot;show warranty&quot;</span> <span class="keyword">for</span> details.</span><br><span class="line">This GDB was configured as <span class="string">&quot;x86_64-linux-gnu&quot;</span>.</span><br><span class="line">Type <span class="string">&quot;show configuration&quot;</span> <span class="keyword">for</span> configuration details.</span><br><span class="line">For bug reporting instructions, please see:</span><br><span class="line">&lt;https://www.gnu.org/software/gdb/bugs/&gt;.</span><br><span class="line">Find the GDB manual and other documentation resources online at:</span><br><span class="line">    &lt;http://www.gnu.org/software/gdb/documentation/&gt;.</span><br><span class="line"></span><br><span class="line">For <span class="built_in">help</span>, <span class="built_in">type</span> <span class="string">&quot;help&quot;</span>.</span><br><span class="line">Type <span class="string">&quot;apropos word&quot;</span> to search <span class="keyword">for</span> commands related to <span class="string">&quot;word&quot;</span>...</span><br><span class="line">Reading symbols from ./app...</span><br><span class="line">[New LWP 20132]</span><br><span class="line">[Thread debugging using libthread_db enabled]</span><br><span class="line">Using host libthread_db library <span class="string">&quot;/lib/x86_64-linux-gnu/libthread_db.so.1&quot;</span>.</span><br><span class="line">--Type &lt;RET&gt; <span class="keyword">for</span> more, q to quit, c to <span class="built_in">continue</span> without paging--c</span><br><span class="line">Core was generated by `./app<span class="string">&#x27;.</span></span><br><span class="line"><span class="string">Program terminated with signal SIGSEGV, Segmentation fault.</span></span><br><span class="line"><span class="string">#0  0x000055902ca68139 in func (p=0x0) at main.c:5</span></span><br><span class="line"><span class="string">5           *p = 0;</span></span><br></pre></td></tr></table></figure>
+
+<p>可以看到程序是由于 <code>SIGSEGV</code>信号产生的coredump文件。接着查看coredump时的堆栈：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ bt</span><br><span class="line">or</span><br><span class="line">$ <span class="built_in">where</span></span><br><span class="line">(gdb) <span class="built_in">where</span></span><br><span class="line"><span class="comment">#0  0x000055902ca68139 in func (p=0x0) at main.c:5</span></span><br><span class="line"><span class="comment">#1  0x000055902ca68154 in main () at main.c:10</span></span><br></pre></td></tr></table></figure>
+
+<p>通过 <code>#0  0x000055902ca68139 in func (p=0x0) at main.c:5</code>可以定位到是由于 <code>func (p=0x0)</code>导致的错误信号。</p>
+<p>接着可以使用 <code>disassemble</code>打开该帧函数的反汇编代码。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">(gdb) disassemble</span><br><span class="line">Dump of assembler code <span class="keyword">for</span> <span class="keyword">function</span> func:</span><br><span class="line">   0x000055902ca68129 &lt;+0&gt;:     endbr64 </span><br><span class="line">   0x000055902ca6812d &lt;+4&gt;:     push   %rbp</span><br><span class="line">   0x000055902ca6812e &lt;+5&gt;:     mov    %rsp,%rbp</span><br><span class="line">   0x000055902ca68131 &lt;+8&gt;:     mov    %rdi,-0x8(%rbp)</span><br><span class="line">   0x000055902ca68135 &lt;+12&gt;:    mov    -0x8(%rbp),%rax</span><br><span class="line">=&gt; 0x000055902ca68139 &lt;+16&gt;:    movl   <span class="variable">$0x0</span>,(%rax)</span><br><span class="line">   0x000055902ca6813f &lt;+22&gt;:    nop</span><br><span class="line">   0x000055902ca68140 &lt;+23&gt;:    pop    %rbp</span><br><span class="line">   0x000055902ca68141 &lt;+24&gt;:    ret  </span><br><span class="line">End of assembler dump.</span><br></pre></td></tr></table></figure>
+
+<p>如上箭头位置表示coredump时该函数调用所在位置。</p>
+<p>接着使用 <code>info registers</code> 查看当前寄存器的状态，特别是 <code>rdi</code> 寄存器，因为它包含了传递给 <code>func</code> 函数的第一个参数。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">(gdb) info registers </span><br><span class="line">rax            0x0                 0</span><br><span class="line">rbx            0x0                 0</span><br><span class="line">rcx            0x55902ca6adf8      94077712772600</span><br><span class="line">rdx            0x7fff37b64018      140734128078872</span><br><span class="line">rsi            0x7fff37b64008      140734128078856</span><br><span class="line">rdi            0x0                 0</span><br><span class="line">rbp            0x7fff37b63ee0      0x7fff37b63ee0</span><br><span class="line">rsp            0x7fff37b63ee0      0x7fff37b63ee0</span><br><span class="line">r8             0x7fe5c2aadf10      140624790216464</span><br><span class="line">r9             0x7fe5c2acb040      140624790335552</span><br><span class="line">r10            0x7fe5c2ac5908      140624790313224</span><br><span class="line">r11            0x7fe5c2ae0660      140624790423136</span><br><span class="line">r12            0x7fff37b64008      140734128078856</span><br><span class="line">r13            0x55902ca68142      94077712761154</span><br><span class="line">r14            0x55902ca6adf8      94077712772600</span><br><span class="line">r15            0x7fe5c2aff040      140624790548544</span><br><span class="line">rip            0x55902ca68139      0x55902ca68139 &lt;func+16&gt;</span><br><span class="line">eflags         0x10246             [ PF ZF IF RF ]</span><br><span class="line">cs             0x33                51</span><br><span class="line">--Type &lt;RET&gt; <span class="keyword">for</span> more, q to quit, c to <span class="built_in">continue</span> without paging--</span><br></pre></td></tr></table></figure>
+
+<p>可以看到 <code>rdi</code>寄存器指向了一个0地址。接着使用 <code>x/1x $rax</code>查看 <code>rax</code>寄存器指向的内存地址的内容。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(gdb) x/1x <span class="variable">$rax</span></span><br><span class="line">0x0:    Cannot access memory at address 0x0</span><br></pre></td></tr></table></figure>
+
+<p>由于 <code>rax</code> 寄存器存储的是 <code>NULL</code>，这将显示一个不可访问的内存区域。</p>
+<h1 id="寻找this指针和虚指针"><a href="#寻找this指针和虚指针" class="headerlink" title="寻找this指针和虚指针"></a>寻找this指针和虚指针</h1><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;stdio.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;stdlib.h&quot;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">base</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">base</span>();</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">test</span><span class="params">()</span></span>;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="type">const</span> <span class="type">char</span> *basePStr;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">dumpTest</span> : <span class="keyword">public</span> base</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">test</span><span class="params">()</span></span>;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="type">char</span> *childPStr;</span><br><span class="line">&#125;;</span><br><span class="line">base::<span class="built_in">base</span>()</span><br><span class="line">&#123;</span><br><span class="line">    basePStr = <span class="string">&quot;test_info&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">base::test</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cout&lt;&lt;basePStr&lt;&lt;endl;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">dumpTest::test</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;dumpTest&quot;</span>&lt;&lt;endl;</span><br><span class="line">    <span class="keyword">delete</span> childPStr;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    dumpTest dump;</span><br><span class="line">    dump.<span class="built_in">test</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如上代码实现了一个简单的基类和子类，在main函数里定义了一个子类的实例化对象，并调用他的虚函数方法test，由于test里面没有初始化指针childPStr而直接删除，会造成coredump。</p>
+<p>首先编译并运行代码：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ g++ -g -o app main.cpp</span><br><span class="line">$ ./app</span><br><span class="line">dumpTest</span><br><span class="line">free(): invalid pointer</span><br><span class="line">Aborted (core dumped)</span><br></pre></td></tr></table></figure>
+
+<p>目录列表里产生了coredump文件：core-app-34711-1733723593</p>
+<p>接着使用gdb打开coredump文件，同时使用 <code>bt</code>打开coredump堆栈信息：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">$ gdb ./app core-app-34711-1733723593</span><br><span class="line">GNU gdb (Ubuntu 12.1-0ubuntu1~22.04.2) 12.1</span><br><span class="line">Copyright (C) 2022 Free Software Foundation, Inc.</span><br><span class="line">License GPLv3+: GNU GPL version 3 or later &lt;http://gnu.org/licenses/gpl.html&gt;</span><br><span class="line">This is free software: you are free to change and redistribute it.</span><br><span class="line">There is NO WARRANTY, to the extent permitted by law.</span><br><span class="line">Type <span class="string">&quot;show copying&quot;</span> and <span class="string">&quot;show warranty&quot;</span> <span class="keyword">for</span> details.</span><br><span class="line">This GDB was configured as <span class="string">&quot;x86_64-linux-gnu&quot;</span>.</span><br><span class="line">Type <span class="string">&quot;show configuration&quot;</span> <span class="keyword">for</span> configuration details.</span><br><span class="line">For bug reporting instructions, please see:</span><br><span class="line">&lt;https://www.gnu.org/software/gdb/bugs/&gt;.</span><br><span class="line">Find the GDB manual and other documentation resources online at:</span><br><span class="line">    &lt;http://www.gnu.org/software/gdb/documentation/&gt;.</span><br><span class="line"></span><br><span class="line">For <span class="built_in">help</span>, <span class="built_in">type</span> <span class="string">&quot;help&quot;</span>.</span><br><span class="line">Type <span class="string">&quot;apropos word&quot;</span> to search <span class="keyword">for</span> commands related to <span class="string">&quot;word&quot;</span>...</span><br><span class="line">Reading symbols from ./app...</span><br><span class="line">[New LWP 34711]</span><br><span class="line">[Thread debugging using libthread_db enabled]</span><br><span class="line">Using host libthread_db library <span class="string">&quot;/lib/x86_64-linux-gnu/libthread_db.so.1&quot;</span>.</span><br><span class="line">Core was generated by `./app<span class="string">&#x27;.</span></span><br><span class="line"><span class="string">Program terminated with signal SIGABRT, Aborted.</span></span><br><span class="line"><span class="string">#0  __pthread_kill_implementation (no_tid=0, signo=6, threadid=139759220007872)</span></span><br><span class="line"><span class="string">    at ./nptl/pthread_kill.c:44</span></span><br><span class="line"><span class="string">44      ./nptl/pthread_kill.c: No such file or directory.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">(gdb) bt</span></span><br><span class="line"><span class="string">#0  __pthread_kill_implementation (no_tid=0, signo=6, threadid=139759220007872)</span></span><br><span class="line"><span class="string">    at ./nptl/pthread_kill.c:44</span></span><br><span class="line"><span class="string">#1  __pthread_kill_internal (signo=6, threadid=139759220007872) at ./nptl/pthread_kill.c:78</span></span><br><span class="line"><span class="string">#2  __GI___pthread_kill (threadid=139759220007872, signo=signo@entry=6)</span></span><br><span class="line"><span class="string">    at ./nptl/pthread_kill.c:89</span></span><br><span class="line"><span class="string">#3  0x00007f1c3abe4476 in __GI_raise (sig=sig@entry=6) at ../sysdeps/posix/raise.c:26</span></span><br><span class="line"><span class="string">#4  0x00007f1c3abca7f3 in __GI_abort () at ./stdlib/abort.c:79</span></span><br><span class="line"><span class="string">#5  0x00007f1c3ac2b676 in __libc_message (action=action@entry=do_abort, </span></span><br><span class="line"><span class="string">    fmt=fmt@entry=0x7f1c3ad7db77 &quot;%s\n&quot;) at ../sysdeps/posix/libc_fatal.c:155</span></span><br><span class="line"><span class="string">#6  0x00007f1c3ac42cfc in malloc_printerr (</span></span><br><span class="line"><span class="string">    str=str@entry=0x7f1c3ad7b744 &quot;free(): invalid pointer&quot;) at ./malloc/malloc.c:5664</span></span><br><span class="line"><span class="string">#7  0x00007f1c3ac44a44 in _int_free (av=&lt;optimized out&gt;, p=&lt;optimized out&gt;, have_lock=0)</span></span><br><span class="line"><span class="string">    at ./malloc/malloc.c:4439</span></span><br><span class="line"><span class="string">#8  0x00007f1c3ac47453 in __GI___libc_free (mem=&lt;optimized out&gt;) at ./malloc/malloc.c:3391</span></span><br><span class="line"><span class="string">#9  0x0000559355e2f2ab in dumpTest::test (this=0x7ffd2b1ddd50) at main.cpp:31</span></span><br><span class="line"><span class="string">#10 0x0000559355e2f2e1 in main () at main.cpp:37</span></span><br></pre></td></tr></table></figure>
+
+<p>从堆栈信息可以看到，除了最后两帧，其他的都是libc的代码。</p>
+<p>进入到第9帧，并查看堆栈寄存器信息：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">(gdb) info f</span><br><span class="line">Stack level 9, frame at 0x7fff871b7060:</span><br><span class="line"> rip = 0x563d0c5df2ab <span class="keyword">in</span> dumpTest::<span class="built_in">test</span> (main.cpp:32); saved rip = 0x563d0c5df2e1</span><br><span class="line"> called by frame at 0x7fff871b7090, <span class="built_in">caller</span> of frame at 0x7fff871b7040</span><br><span class="line"> <span class="built_in">source</span> language c++.</span><br><span class="line"> Arglist at 0x7fff871b7050, args: this=0x7fff871b7060</span><br><span class="line"> Locals at 0x7fff871b7050, Previous frame<span class="string">&#x27;s sp is 0x7fff871b7060</span></span><br><span class="line"><span class="string"> Saved registers:</span></span><br><span class="line"><span class="string">  rbp at 0x7fff871b7050, rip at 0x7fff871b7058</span></span><br></pre></td></tr></table></figure>
+
+<p>通过 <code>this=0x7fff871b7060</code>可知，this指针指向0x7fff871b7060。</p>
+<p>在 C++ 中，对象的内存布局通常如下：</p>
+<ol>
+<li>第一个位置是指向虚函数表（vtable）的指针，如果类有虚函数的话。</li>
+<li>紧接着是对象的实际数据成员。</li>
+</ol>
+<p>虚函数表指针通常存储在对象内存的开始位置，由于this指针指向对象的起始位置，所以可以通过解引用this指针获取虚函数表的地址：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">(gdb) p *(void**)0x7fff871b7060</span><br><span class="line"><span class="variable">$2</span> = (void *) 0x563d0c5e1d38 &lt;vtable <span class="keyword">for</span> dumpTest+16&gt;</span><br><span class="line">(gdb) x 0x563d0c5e1d38</span><br><span class="line">0x563d0c5e1d38 &lt;_ZTV8dumpTest+16&gt;:      0x0c5df256</span><br><span class="line">(gdb) shell <span class="built_in">echo</span> _ZTV8dumpTest | c++filt</span><br><span class="line">vtable <span class="keyword">for</span> dumpTest</span><br></pre></td></tr></table></figure>
+
+<p>打印this指针存储的地址，可以看到this指针指向的地址为 <code>0x563d0c5e1d38</code>该地址为 <code>&lt;vtable for dumpTest+16&gt;</code>即虚函数表偏移16个字节的位置。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">(gdb) x 0x563d0c5e1d38-16</span><br><span class="line">0x563d0c5e1d28 &lt;_ZTV8dumpTest&gt;: 0x00000000</span><br><span class="line">(gdb) x *(void**)0x563d0c5e1d38</span><br><span class="line">0x563d0c5df256 &lt;_ZN8dumpTest4testEv&gt;:   0xfa1e0ff3</span><br><span class="line">(gdb) shell <span class="built_in">echo</span> _ZN8dumpTest4testEv | c++filt</span><br><span class="line">dumpTest::<span class="built_in">test</span>()</span><br><span class="line">(gdb) x *(void**)0x563d0c5e1d38-8</span><br><span class="line">0x563d0c5df24e &lt;_ZN4base4testEv+56&gt;:    0xfffffe7e</span><br><span class="line">(gdb) shell <span class="built_in">echo</span> _ZN4base4testEv | c++filt</span><br><span class="line">base::<span class="built_in">test</span>()</span><br></pre></td></tr></table></figure>
+
+<p>可以看到减去this指针指向的地址减去16字节的偏移量，正好就是虚函数表的地址 <code>0x563d0c5e1d28</code>，该内存单元存储的地址为 <code>0x00000000</code>。</p>
+<p>当使用 <code>x *(void**)0x563d0c5e1d38</code>查看该内存地址处的内容时，可以看到存储的内容就是 <code>dumpTest::test()</code>；其往前偏移8个字节正好就是 <code>base::test()</code>，这也正好说明了，在继承关系中，基类的虚函数在子类虚函数的前面。</p>
+<p>在实际问题中，C++程序的很多coredump问题都是和指针相关的，很多segmentfault都是由于指针被误删或者访问空指针、或者越界等造成的，而这些都一般意味着正在访问的对象的this指针可能已经被破坏了，此时，我们通过去寻找函数对应的对象的this指针、虚指针能验证我们的推测。之后再结合代码寻找问题所在。</p>
+<h2 id="疑惑点解答"><a href="#疑惑点解答" class="headerlink" title="疑惑点解答"></a>疑惑点解答</h2><p><code>(void**)0x563d0c5e1d38</code>将地址 <code>0x563d0c5e1d38</code> 视为一个指向 <code>void*</code> 指针的指针（即 <code>void**</code>）,也就是说 <code>(void**)0x563d0c5e1d38</code>是一个指向void<em>类型的指针。</em></p>
+<p><code>*(void**)0x563d0c5e1d38</code>是对 <code>void**</code>类型指针的解引用操作，得到的是一个 <code>void*</code>类型的值。这个值可以是一个函数地址，一个对象的地址，或者是虚函数表指针。</p>
+<h1 id="GDB查看core进程的所有线程堆栈"><a href="#GDB查看core进程的所有线程堆栈" class="headerlink" title="GDB查看core进程的所有线程堆栈"></a>GDB查看core进程的所有线程堆栈</h1><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="meta">#<span class="keyword">define</span> NUM_THREADS 5</span></span><br><span class="line"><span class="type">int</span> count = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span>* <span class="title">say_hello</span><span class="params">( <span class="type">void</span> *args )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">sleep</span>(<span class="number">1</span>);</span><br><span class="line">        cout&lt;&lt;<span class="string">&quot;hello...&quot;</span>&lt;&lt;endl;</span><br><span class="line">        <span class="keyword">if</span>(<span class="number">1</span> == count)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="type">const</span> <span class="type">char</span> *pStr = <span class="string">&quot;hello&quot;</span>;</span><br><span class="line">            <span class="keyword">delete</span> pStr;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">pthread_t</span> tids[NUM_THREADS];</span><br><span class="line">    <span class="keyword">for</span>( <span class="type">int</span> i = <span class="number">0</span>; i &lt; NUM_THREADS; ++i )</span><br><span class="line">    &#123;</span><br><span class="line">        count = i<span class="number">+1</span>;</span><br><span class="line">        <span class="type">int</span> ret = <span class="built_in">pthread_create</span>( &amp;tids[i], <span class="literal">NULL</span>, say_hello, <span class="literal">NULL</span>);</span><br><span class="line">        <span class="keyword">if</span>( ret != <span class="number">0</span> )</span><br><span class="line">        &#123;</span><br><span class="line">            cout &lt;&lt; <span class="string">&quot;pthread_create error:error_code=&quot;</span> &lt;&lt; ret &lt;&lt; endl;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>( <span class="type">int</span> i = <span class="number">0</span>; i &lt; NUM_THREADS; ++i )</span><br><span class="line">    &#123;</span><br><span class="line">        count = i<span class="number">+1</span>;</span><br><span class="line">        <span class="type">int</span> ret = <span class="built_in">pthread_join</span>(tids[i], <span class="literal">NULL</span>); </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">pthread_exit</span>(<span class="literal">NULL</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>由于代码中在count等于5的时候会delete一个未初始化的指针，所以会生成coredump文件。</p>
+<p>首先使用GDB打开coredump文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">gdb ./app core-app-178100-1733743589</span><br><span class="line">GNU gdb (Ubuntu 12.1-0ubuntu1~22.04.2) 12.1</span><br><span class="line">Copyright (C) 2022 Free Software Foundation, Inc.</span><br><span class="line">License GPLv3+: GNU GPL version 3 or later &lt;http://gnu.org/licenses/gpl.html&gt;</span><br><span class="line">This is free software: you are free to change and redistribute it.</span><br><span class="line">There is NO WARRANTY, to the extent permitted by law.</span><br><span class="line">Type <span class="string">&quot;show copying&quot;</span> and <span class="string">&quot;show warranty&quot;</span> <span class="keyword">for</span> details.</span><br><span class="line">This GDB was configured as <span class="string">&quot;x86_64-linux-gnu&quot;</span>.</span><br><span class="line">Type <span class="string">&quot;show configuration&quot;</span> <span class="keyword">for</span> configuration details.</span><br><span class="line">For bug reporting instructions, please see:</span><br><span class="line">&lt;https://www.gnu.org/software/gdb/bugs/&gt;.</span><br><span class="line">Find the GDB manual and other documentation resources online at:</span><br><span class="line">    &lt;http://www.gnu.org/software/gdb/documentation/&gt;.</span><br><span class="line"></span><br><span class="line">For <span class="built_in">help</span>, <span class="built_in">type</span> <span class="string">&quot;help&quot;</span>.</span><br><span class="line">Type <span class="string">&quot;apropos word&quot;</span> to search <span class="keyword">for</span> commands related to <span class="string">&quot;word&quot;</span>...</span><br><span class="line">Reading symbols from ./app...</span><br><span class="line">[New LWP 178101]</span><br><span class="line">[New LWP 178102]</span><br><span class="line">[New LWP 178103]</span><br><span class="line">[New LWP 178100]</span><br><span class="line">[New LWP 178104]</span><br><span class="line">[New LWP 178105]</span><br><span class="line">[Thread debugging using libthread_db enabled]</span><br><span class="line">Using host libthread_db library <span class="string">&quot;/lib/x86_64-linux-gnu/libthread_db.so.1&quot;</span>.</span><br><span class="line">--Type &lt;RET&gt; <span class="keyword">for</span> more, q to quit, c to <span class="built_in">continue</span> without paging--c</span><br><span class="line">Core was generated by `./app<span class="string">&#x27;.</span></span><br><span class="line"><span class="string">Program terminated with signal SIGSEGV, Segmentation fault.</span></span><br><span class="line"><span class="string">#0  0x00007f7001fb4449 in arena_for_chunk (ptr=0x55f147223001 &lt;_IO_stdin_used+1&gt;) at ./malloc/arena.c:156</span></span><br><span class="line"><span class="string">156     ./malloc/arena.c: No such file or directory.</span></span><br><span class="line"><span class="string">[Current thread is 1 (Thread 0x7f7001e03640 (LWP 178101))]</span></span><br></pre></td></tr></table></figure>
+
+<p>可以看到5个线程的LWP信息。</p>
+<p>接着使用 <code>info threads</code>查看所有线程正在运行的指令信息：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">(gdb) info threads</span><br><span class="line">  Id   Target Id                          Frame </span><br><span class="line">* 1    Thread 0x7f7001e03640 (LWP 178101) 0x00007f7001fb4449 <span class="keyword">in</span> arena_for_chunk (</span><br><span class="line">    ptr=0x55f147223001 &lt;_IO_stdin_used+1&gt;) at ./malloc/arena.c:156</span><br><span class="line">  2    Thread 0x7f7001602640 (LWP 178102) __GI___lll_lock_wake_private (</span><br><span class="line">    futex=0x7f700212ba70 &lt;_IO_stdfile_1_lock&gt;) at ./nptl/lowlevellock.c:57</span><br><span class="line">  3    Thread 0x7f7000e01640 (LWP 178103) futex_wait (private=0, expected=2, </span><br><span class="line">    futex_word=0x7f700212ba70 &lt;_IO_stdfile_1_lock&gt;) at ../sysdeps/nptl/futex-internal.h:146</span><br><span class="line">  4    Thread 0x7f7001e073c0 (LWP 178100) __futex_abstimed_wait_common64 (private=128, </span><br><span class="line">    cancel=<span class="literal">true</span>, abstime=0x0, op=265, expected=178101, futex_word=0x7f7001e03910)</span><br><span class="line">    at ./nptl/futex-internal.c:57</span><br><span class="line">  5    Thread 0x7f7000600640 (LWP 178104) 0x00007f700202da7b <span class="keyword">in</span> munmap ()</span><br><span class="line">    at ../sysdeps/unix/syscall-template.S:117</span><br><span class="line">  6    Thread 0x7f6fffdff640 (LWP 178105) futex_wait (private=0, expected=2, </span><br><span class="line">    futex_word=0x7f700212ba70 &lt;_IO_stdfile_1_lock&gt;) at ../sysdeps/nptl/futex-internal.h:146</span><br></pre></td></tr></table></figure>
+
+<p>接着使用 <code>thread apply all bt</code>打开所有线程的堆栈信息：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line">(gdb) thread apply all bt</span><br><span class="line"></span><br><span class="line">Thread 6 (Thread 0x7f6fffdff640 (LWP 178105)):</span><br><span class="line"><span class="comment">#0  futex_wait (private=0, expected=2, futex_word=0x7f700212ba70 &lt;_IO_stdfile_1_lock&gt;) at ../sysdeps/nptl/futex-internal.h:146</span></span><br><span class="line"><span class="comment">#1  __GI___lll_lock_wait_private (futex=0x7f700212ba70 &lt;_IO_stdfile_1_lock&gt;) at ./nptl/lowlevellock.c:34</span></span><br><span class="line"><span class="comment">#2  0x00007f7001f8f095 in __GI__IO_fwrite (buf=0x55f147223008, size=1, count=8, fp=0x7f700212a780 &lt;_IO_2_1_stdout_&gt;) at ./libio/iofwrite.c:37</span></span><br><span class="line"><span class="comment">#3  0x00007f7002274b65 in std::basic_ostream&lt;char, std::char_traits&lt;char&gt; &gt;&amp; std::__ostream_insert&lt;char, std::char_traits&lt;char&gt; &gt;(std::basic_ostream&lt;char, std::char_traits&lt;char&gt; &gt;&amp;, char const*, long) () from /lib/x86_64-linux-gnu/libstdc++.so.6</span></span><br><span class="line"><span class="comment">#4  0x00007f7002274ebb in std::basic_ostream&lt;char, std::char_traits&lt;char&gt; &gt;&amp; std::operator&lt;&lt; &lt;std::char_traits&lt;char&gt; &gt;(std::basic_ostream&lt;char, std::char_traits&lt;char&gt; &gt;&amp;, char const*) () from /lib/x86_64-linux-gnu/libstdc++.so.6</span></span><br><span class="line"><span class="comment">#5  0x000055f14722229c in say_hello (args=0x0) at main.cpp:13</span></span><br><span class="line"><span class="comment">#6  0x00007f7001fa3ac3 in start_thread (arg=&lt;optimized out&gt;) at ./nptl/pthread_create.c:442</span></span><br><span class="line"><span class="comment">#7  0x00007f7002035850 in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:81</span></span><br><span class="line"></span><br><span class="line">Thread 5 (Thread 0x7f7000600640 (LWP 178104)):</span><br><span class="line"><span class="comment">#0  0x00007f700202da7b in munmap () at ../sysdeps/unix/syscall-template.S:117</span></span><br><span class="line"><span class="comment">#1  0x00007f7001fb0cc5 in alloc_new_heap (size=135168, size@entry=2904, top_pad=top_pad@entry=131072, pagesize=pagesize@entry=4096, mmap_flags=mmap_flags@entry=16384) at ./malloc/arena.c:528</span></span><br><span class="line"><span class="comment">#2  0x00007f7001fb116c in new_heap (top_pad=131072, size=2904) at ./malloc/arena.c:576</span></span><br><span class="line">--Type &lt;RET&gt; <span class="keyword">for</span> more, q to quit, c to <span class="built_in">continue</span> without paging--c</span><br><span class="line"><span class="comment">#3  _int_new_arena (size=640) at ./malloc/arena.c:744</span></span><br><span class="line"><span class="comment">#4  arena_get2 (size=size@entry=640, avoid_arena=avoid_arena@entry=0x0) at ./malloc/arena.c:963</span></span><br><span class="line"><span class="comment">#5  0x00007f7001fb3a41 in arena_get2 (avoid_arena=0x0, size=640) at ./malloc/arena.c:931</span></span><br><span class="line"><span class="comment">#6  tcache_init () at ./malloc/malloc.c:3244</span></span><br><span class="line"><span class="comment">#7  0x00007f7001fb44cf in tcache_init () at ./malloc/malloc.c:3241</span></span><br><span class="line"><span class="comment">#8  __GI___libc_free (mem=0x55f147223011) at ./malloc/malloc.c:3385</span></span><br><span class="line"><span class="comment">#9  0x000055f1472222da in say_hello (args=0x0) at main.cpp:17</span></span><br><span class="line"><span class="comment">#10 0x00007f7001fa3ac3 in start_thread (arg=&lt;optimized out&gt;) at ./nptl/pthread_create.c:442</span></span><br><span class="line"><span class="comment">#11 0x00007f7002035850 in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:81</span></span><br><span class="line"></span><br><span class="line">Thread 4 (Thread 0x7f7001e073c0 (LWP 178100)):</span><br><span class="line"><span class="comment">#0  __futex_abstimed_wait_common64 (private=128, cancel=true, abstime=0x0, op=265, expected=178101, futex_word=0x7f7001e03910) at ./nptl/futex-internal.c:57</span></span><br><span class="line"><span class="comment">#1  __futex_abstimed_wait_common (cancel=true, private=128, abstime=0x0, clockid=0, expected=178101, futex_word=0x7f7001e03910) at ./nptl/futex-internal.c:87</span></span><br><span class="line"><span class="comment">#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x7f7001e03910, expected=178101, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=128) at ./nptl/futex-internal.c:139</span></span><br><span class="line"><span class="comment">#3  0x00007f7001fa5624 in __pthread_clockjoin_ex (threadid=140119044535872, thread_return=0x0, clockid=0, abstime=0x0, block=&lt;optimized out&gt;) at ./nptl/pthread_join_common.c:105</span></span><br><span class="line"><span class="comment">#4  0x000055f1472223b3 in main () at main.cpp:38</span></span><br><span class="line"></span><br><span class="line">Thread 3 (Thread 0x7f7000e01640 (LWP 178103)):</span><br><span class="line"><span class="comment">#0  futex_wait (private=0, expected=2, futex_word=0x7f700212ba70 &lt;_IO_stdfile_1_lock&gt;) at ../sysdeps/nptl/futex-internal.h:146</span></span><br><span class="line"><span class="comment">#1  __GI___lll_lock_wait_private (futex=0x7f700212ba70 &lt;_IO_stdfile_1_lock&gt;) at ./nptl/lowlevellock.c:34</span></span><br><span class="line"><span class="comment">#2  0x00007f7001f96f05 in __GI__IO_putc (c=10, fp=0x7f700212a780 &lt;_IO_2_1_stdout_&gt;) at ./libio/putc.c:30</span></span><br><span class="line"><span class="comment">#3  0x00007f700227426a in std::ostream::put(char) () from /lib/x86_64-linux-gnu/libstdc++.so.6</span></span><br><span class="line"><span class="comment">#4  0x00007f7002274813 in std::basic_ostream&lt;char, std::char_traits&lt;char&gt; &gt;&amp; std::endl&lt;char, std::char_traits&lt;char&gt; &gt;(std::basic_ostream&lt;char, std::char_traits&lt;char&gt; &gt;&amp;) () from /lib/x86_64-linux-gnu/libstdc++.so.6</span></span><br><span class="line"><span class="comment">#5  0x000055f1472222ae in say_hello (args=0x0) at main.cpp:13</span></span><br><span class="line"><span class="comment">#6  0x00007f7001fa3ac3 in start_thread (arg=&lt;optimized out&gt;) at ./nptl/pthread_create.c:442</span></span><br><span class="line"><span class="comment">#7  0x00007f7002035850 in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:81</span></span><br><span class="line"></span><br><span class="line">Thread 2 (Thread 0x7f7001602640 (LWP 178102)):</span><br><span class="line"><span class="comment">#0  __GI___lll_lock_wake_private (futex=0x7f700212ba70 &lt;_IO_stdfile_1_lock&gt;) at ./nptl/lowlevellock.c:57</span></span><br><span class="line"><span class="comment">#1  0x00007f7001f8f06d in _IO_acquire_lock_fct (p=&lt;synthetic pointer&gt;) at ./libio/libioP.h:884</span></span><br><span class="line"><span class="comment">#2  __GI__IO_fwrite (buf=&lt;optimized out&gt;, size=1, count=8, fp=0x7f700212a780 &lt;_IO_2_1_stdout_&gt;) at ./libio/iofwrite.c:37</span></span><br><span class="line"><span class="comment">#3  0x00007f7002274b65 in std::basic_ostream&lt;char, std::char_traits&lt;char&gt; &gt;&amp; std::__ostream_insert&lt;char, std::char_traits&lt;char&gt; &gt;(std::basic_ostream&lt;char, std::char_traits&lt;char&gt; &gt;&amp;, char const*, long) () from /lib/x86_64-linux-gnu/libstdc++.so.6</span></span><br><span class="line"><span class="comment">#4  0x00007f7002274ebb in std::basic_ostream&lt;char, std::char_traits&lt;char&gt; &gt;&amp; std::operator&lt;&lt; &lt;std::char_traits&lt;char&gt; &gt;(std::basic_ostream&lt;char, std::char_traits&lt;char&gt; &gt;&amp;, char const*) () from /lib/x86_64-linux-gnu/libstdc++.so.6</span></span><br><span class="line"><span class="comment">#5  0x000055f14722229c in say_hello (args=0x0) at main.cpp:13</span></span><br><span class="line"><span class="comment">#6  0x00007f7001fa3ac3 in start_thread (arg=&lt;optimized out&gt;) at ./nptl/pthread_create.c:442</span></span><br><span class="line"><span class="comment">#7  0x00007f7002035850 in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:81</span></span><br><span class="line"></span><br><span class="line">Thread 1 (Thread 0x7f7001e03640 (LWP 178101)):</span><br><span class="line"><span class="comment">#0  0x00007f7001fb4449 in arena_for_chunk (ptr=0x55f147223001 &lt;_IO_stdin_used+1&gt;) at ./malloc/arena.c:156</span></span><br><span class="line"><span class="comment">#1  arena_for_chunk (ptr=0x55f147223001 &lt;_IO_stdin_used+1&gt;) at ./malloc/arena.c:160</span></span><br><span class="line"><span class="comment">#2  __GI___libc_free (mem=&lt;optimized out&gt;) at ./malloc/malloc.c:3390</span></span><br><span class="line"><span class="comment">#3  0x000055f1472222da in say_hello (args=0x0) at main.cpp:17</span></span><br><span class="line"><span class="comment">#4  0x00007f7001fa3ac3 in start_thread (arg=&lt;optimized out&gt;) at ./nptl/pthread_create.c:442</span></span><br><span class="line"><span class="comment">#5  0x00007f7002035850 in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:81</span></span><br></pre></td></tr></table></figure>
+
+<p>查看指定线程堆栈信息 <code>thread apply 4 bt</code>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">(gdb) thread apply 4 bt</span><br><span class="line"></span><br><span class="line">Thread 4 (Thread 0x7f7001e073c0 (LWP 178100)):</span><br><span class="line"><span class="comment">#0  __futex_abstimed_wait_common64 (private=128, cancel=true, abstime=0x0, op=265, expected=178101, futex_word=0x7f7001e03910) at ./nptl/futex-internal.c:57</span></span><br><span class="line"><span class="comment">#1  __futex_abstimed_wait_common (cancel=true, private=128, abstime=0x0, clockid=0, expected=178101, futex_word=0x7f7001e03910) at ./nptl/futex-internal.c:87</span></span><br><span class="line"><span class="comment">#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x7f7001e03910, expected=178101, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=128) at ./nptl/futex-internal.c:139</span></span><br><span class="line"><span class="comment">#3  0x00007f7001fa5624 in __pthread_clockjoin_ex (threadid=140119044535872, thread_return=0x0, clockid=0, abstime=0x0, block=&lt;optimized out&gt;) at ./nptl/pthread_join_common.c:105</span></span><br><span class="line"><span class="comment">#4  0x000055f1472223b3 in main () at main.cpp:38</span></span><br></pre></td></tr></table></figure>
+
+<p>进入指定线程栈空间：</p>
+<ol>
+<li>thread n</li>
+<li>bt</li>
+<li>i f</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">(gdb) thread 4</span><br><span class="line">[Switching to thread 4 (Thread 0x7f7001e073c0 (LWP 178100))]</span><br><span class="line"><span class="comment">#0  __futex_abstimed_wait_common64 (private=128, cancel=true, abstime=0x0, op=265, </span></span><br><span class="line">    expected=178101, futex_word=0x7f7001e03910) at ./nptl/futex-internal.c:57</span><br><span class="line">57      ./nptl/futex-internal.c: No such file or directory.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">(gdb) bt</span><br><span class="line"><span class="comment">#0  __futex_abstimed_wait_common64 (private=128, cancel=true, abstime=0x0, op=265, </span></span><br><span class="line">    expected=178101, futex_word=0x7f7001e03910) at ./nptl/futex-internal.c:57</span><br><span class="line"><span class="comment">#1  __futex_abstimed_wait_common (cancel=true, private=128, abstime=0x0, clockid=0, </span></span><br><span class="line">    expected=178101, futex_word=0x7f7001e03910) at ./nptl/futex-internal.c:87</span><br><span class="line"><span class="comment">#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x7f7001e03910, </span></span><br><span class="line">    expected=178101, clockid=clockid@entry=0, abstime=abstime@entry=0x0, </span><br><span class="line">    private=private@entry=128) at ./nptl/futex-internal.c:139</span><br><span class="line"><span class="comment">#3  0x00007f7001fa5624 in __pthread_clockjoin_ex (threadid=140119044535872, thread_return=0x0, </span></span><br><span class="line">    clockid=0, abstime=0x0, block=&lt;optimized out&gt;) at ./nptl/pthread_join_common.c:105</span><br><span class="line"><span class="comment">#4  0x000055f1472223b3 in main () at main.cpp:38</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">(gdb) i f</span><br><span class="line">Stack level 0, frame at 0x7ffebda6cb90:</span><br><span class="line"> rip = 0x7f7001fa0117 <span class="keyword">in</span> __futex_abstimed_wait_common64 (./nptl/futex-internal.c:57); </span><br><span class="line">    saved rip = 0x7f7001fa5624</span><br><span class="line"> inlined into frame 1</span><br><span class="line"> <span class="built_in">source</span> language c.</span><br><span class="line"> Arglist at unknown address.</span><br><span class="line"> Locals at unknown address, Previous frame<span class="string">&#x27;s sp in rsp</span></span><br></pre></td></tr></table></figure>
+
+<p>如上即可跳转到指定的线程中，并查看所在线程正在运行的堆栈信息和寄存器信息。</p>
+<h1 id="学习资源"><a href="#学习资源" class="headerlink" title="学习资源"></a>学习资源</h1><p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1860631">coredump文件是如何生成的</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/flyinggod/p/13415862.html">Linux生成coredump的方法及设置</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/lidabo/p/14311900.html">gdb调试coredump</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/sunxiaopengsun/article/details/72974548">gdb调试示例-强烈推荐</a><br><a target="_blank" rel="noopener" href="https://developers.redhat.com/articles/2022/01/10/gdb-developers-gnu-debugger-tutorial-part-2-all-about-debuginfo#">debuginfo</a>【这篇文章有很多不明白的名词，涉及到编译器和DWARF调试信息】<br><a target="_blank" rel="noopener" href="https://imageslr.com/2023/gdb.html#coredump">GDB 入门笔记</a>【这是一篇非常全面的GDB入门笔记】<br><a target="_blank" rel="noopener" href="https://sourceware.org/gdb/documentation/">GDB Documentation</a>【GDB官方文档】</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/01/14/MissingSemester/gcc/" rel="prev" title="gcc">
+      <i class="fa fa-chevron-left"></i> gcc
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2025/01/14/MissingSemester/cmake/" rel="next" title="CMake">
+      CMake <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFcoredump"><span class="nav-number">1.</span> <span class="nav-text">什么是coredump</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E4%BD%BF%E7%94%A8coredump"><span class="nav-number">2.</span> <span class="nav-text">什么时候使用coredump</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#coredump%E6%96%87%E4%BB%B6%E7%94%9F%E6%88%90%E5%8E%9F%E7%90%86"><span class="nav-number">3.</span> <span class="nav-text">coredump文件生成原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%A1%E5%8F%B7%E5%A4%84%E7%90%86do-signal"><span class="nav-number">3.1.</span> <span class="nav-text">信号处理do_signal()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%A1%E5%8F%B7%E8%8E%B7%E5%8F%96get-signal-to-deliver"><span class="nav-number">3.2.</span> <span class="nav-text">信号获取get_signal_to_deliver()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%9F%E6%88%90coredump%E6%96%87%E4%BB%B6"><span class="nav-number">3.3.</span> <span class="nav-text">生成coredump文件</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#coredump%E6%96%87%E4%BB%B6%E4%BD%BF%E7%94%A8-%E5%87%86%E5%A4%87%E9%98%B6%E6%AE%B5"><span class="nav-number">4.</span> <span class="nav-text">coredump文件使用-准备阶段</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%9F%E6%88%90coredump%E6%96%87%E4%BB%B6%E5%88%B0%E5%BD%93%E5%89%8D%E7%9B%AE%E5%BD%95%E4%B8%8B"><span class="nav-number">4.1.</span> <span class="nav-text">生成coredump文件到当前目录下</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E6%B0%B8%E4%B9%85%E4%BF%9D%E5%AD%98"><span class="nav-number">4.2.</span> <span class="nav-text">设置永久保存</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#coredump%E5%91%BD%E5%90%8D%E8%A7%84%E5%88%99"><span class="nav-number">4.3.</span> <span class="nav-text">coredump命名规则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#proc-sys-kernel-core-pattern"><span class="nav-number">4.4.</span> <span class="nav-text">&#x2F;proc&#x2F;sys&#x2F;kernel&#x2F;core_pattern</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B1-%E6%AE%B5%E9%94%99%E8%AF%AF"><span class="nav-number">5.</span> <span class="nav-text">示例1-段错误</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AF%BB%E6%89%BEthis%E6%8C%87%E9%92%88%E5%92%8C%E8%99%9A%E6%8C%87%E9%92%88"><span class="nav-number">6.</span> <span class="nav-text">寻找this指针和虚指针</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%96%91%E6%83%91%E7%82%B9%E8%A7%A3%E7%AD%94"><span class="nav-number">6.1.</span> <span class="nav-text">疑惑点解答</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GDB%E6%9F%A5%E7%9C%8Bcore%E8%BF%9B%E7%A8%8B%E7%9A%84%E6%89%80%E6%9C%89%E7%BA%BF%E7%A8%8B%E5%A0%86%E6%A0%88"><span class="nav-number">7.</span> <span class="nav-text">GDB查看core进程的所有线程堆栈</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%BA%90"><span class="nav-number">8.</span> <span class="nav-text">学习资源</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">ZhangHangming</p>
+  <div class="site-description" itemprop="description">张航铭（ZhangHangming）的笔记本</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">56</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ZhangHangming</span>
+</div>
+
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+-->
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+</html>

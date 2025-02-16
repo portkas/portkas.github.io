@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="什么是回调函数 回调函数用法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cpp-4-回调函数">
+<meta property="og:url" content="http://example.com/2025/01/14/Cpp/cpp-4/index.html">
+<meta property="og:site_name" content="勿以浮沙筑高台">
+<meta property="og:description" content="什么是回调函数 回调函数用法">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-01-14T07:09:19.544Z">
+<meta property="article:modified_time" content="2025-01-08T05:05:14.000Z">
+<meta property="article:author" content="ZhangHangming">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2025/01/14/Cpp/cpp-4/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>cpp-4-回调函数 | 勿以浮沙筑高台</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">勿以浮沙筑高台</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">张航铭的笔记本</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/01/14/Cpp/cpp-4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="ZhangHangming">
+      <meta itemprop="description" content="张航铭（ZhangHangming）的笔记本">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="勿以浮沙筑高台">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          cpp-4-回调函数
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-01-14 15:09:19" itemprop="dateCreated datePublished" datetime="2025-01-14T15:09:19+08:00">2025-01-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-01-08 13:05:14" itemprop="dateModified" datetime="2025-01-08T13:05:14+08:00">2025-01-08</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/cpp/" itemprop="url" rel="index"><span itemprop="name">cpp</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <ol>
+<li>什么是回调函数</li>
+<li>回调函数用法</li>
+</ol>
+<span id="more"></span>
+
+<h1 id="回调函数"><a href="#回调函数" class="headerlink" title="回调函数"></a>回调函数</h1><p>回调函数，是计算机编程中对某一段可执行代码的引用，它被作为参数传递给另一段代码；</p>
+<p>回调函数不是由该函数的实现方直接调用，而是在特定的事件或条件发生时由另外的一方调用的，用于对该事件或条件进行响应；</p>
+<ol>
+<li>普通函数的回调</li>
+<li>类成员函数的回调</li>
+<li>基于std::function和std::bind的回调</li>
+<li>Lambda表达式的回调</li>
+</ol>
+<h1 id="普通函数的回调"><a href="#普通函数的回调" class="headerlink" title="普通函数的回调"></a>普通函数的回调</h1><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">typedef</span>  <span class="title">int</span> <span class="params">(*callBackFunc)</span><span class="params">(<span class="type">char</span>* name)</span></span>;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">playBegin</span><span class="params">(<span class="type">char</span>* name)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;视频开始解码，即将出现画面....\n&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">playEnd</span><span class="params">(<span class="type">char</span>* name)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;视频播放结束....\n&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">play</span><span class="params">(callBackFunc fn, <span class="type">char</span>* name)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (*fn)(name);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="type">char</span> pName[<span class="number">1024</span>] = <span class="string">&quot;色即是空&quot;</span>;</span><br><span class="line">   <span class="comment">//视频播放开始....</span></span><br><span class="line">   <span class="built_in">play</span>(playBegin,pName);<span class="comment">//playBegin函数指针作为参数传递</span></span><br><span class="line">   <span class="comment">//视频播放中....</span></span><br><span class="line">   <span class="comment">//视频播放结束....</span></span><br><span class="line">   <span class="built_in">play</span>(playEnd,pName);<span class="comment">//playEnd函数指针作为参数传递</span></span><br><span class="line">   <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>playBegin(),playEnd()是普通函数，定义了回调函数的逻辑；</li>
+<li>play()函数是一个高阶函数，接收函数指针作为参数，并在内部调用回调函数；</li>
+<li>在main()中，将函数playBegin(),playEnd()的地址传递给play()实现回调；</li>
+</ol>
+<p>需要注意的是：</p>
+<p>在 <code>play</code> 函数中，<code>fn</code> 是一个 <code>callBackFunc</code> 类型的参数，即它是一个指向函数的指针。因此，<code>(*fn)(name)</code> 和 <code>fn(name)</code> 都是合法的函数调用方式，它们都表示通过函数指针 <code>fn</code> 调用指向的函数，并传递 <code>name</code> 作为参数。</p>
+<ul>
+<li><code>(*fn)(name)</code> 是显式地通过解引用函数指针来调用函数。<code>*fn</code> 获取函数指针指向的函数，然后调用该函数。</li>
+<li><code>fn(name)</code> 是更简洁的写法，直接通过函数指针调用函数。在 C 语言中，当函数指针用于调用函数时，可以省略解引用操作符 <code>*</code>，因为上下文已经明确了这是一个函数调用操作.</li>
+</ul>
+<h1 id="类成员函数的回调"><a href="#类成员函数的回调" class="headerlink" title="类成员函数的回调"></a>类成员函数的回调</h1><h3 id="示例1"><a href="#示例1" class="headerlink" title="示例1"></a>示例1</h3><p>由于普通成员函数必须依赖具体对象才能调用，因此在回调时需要传递对象指针和成员函数指针。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">CallbackHandler</span>&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">// 成员函数作为回调函数</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">memberCallback</span><span class="params">(<span class="type">int</span> value)</span></span>&#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;成员函数回调，被调用时传入的值是:&quot;</span> &lt;&lt; value &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 一个执行回调的函数</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">executableMemberCallback</span><span class="params">(CallbackHandler* obj, <span class="type">void</span> (CallbackHandler::*callback)(<span class="type">int</span>), <span class="type">int</span> value)</span></span>&#123;</span><br><span class="line">    <span class="comment">// 通过对象指针和成员函数指针调用成员函数</span></span><br><span class="line">    (obj-&gt;*callback)(value);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="comment">// 传递对象和成员函数指针进行回调</span></span><br><span class="line">    CallbackHandler handler;</span><br><span class="line">    <span class="built_in">executableMemberCallback</span>(&amp;handler, &amp;CallbackHandler::memberCallback, <span class="number">42</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>CallbackHandler类中定义了一个成员函数memberCallback;</li>
+<li>executeMemberCallback接收对象指针CallbackHandler* obj和成员函数指针void (CallbackHandler::*callback)(int)</li>
+<li>通过(obj-&gt;*callback)(value)调用成员函数；</li>
+<li>在main函数中，通过对象handler和成员函数指针&amp;CallbackHandler::memberCallback实现回调；</li>
+</ol>
+<h3 id="示例2"><a href="#示例2" class="headerlink" title="示例2"></a>示例2</h3><p>在c++面向对象里面，回调函数是成员函数的情况更常见，这样的好处是，一个类A的一个函数生成一个结果之后，可以调用另一个类B的成员函数。而不必类A拥有B的实例。</p>
+<p>尤其是在B中有了A的实例的情况下，A中如果再包含B的实例会出现循环引用的问题 ，这也是可以解决的，但是这种耦合还是容易让逻辑变得混乱。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> std::function&lt;<span class="type">void</span> (string)&gt; CaptureCallback;  </span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">CaptureController</span>&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    CaptureCallback callback;</span><br><span class="line">    <span class="built_in">CaptureController</span>(CaptureCallback callback):<span class="built_in">callback</span>(callback)&#123;&#125;;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">capturePic</span><span class="params">(CaptureCallback callback)</span></span>&#123;</span><br><span class="line">        string t = <span class="string">&quot;a pic&quot;</span>;</span><br><span class="line">        <span class="built_in">callback</span>(t);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">UI</span>&#123;</span><br><span class="line">    <span class="comment">//开始捕捉图像</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">startCapture</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="function">CaptureController <span class="title">c</span><span class="params">(std::bind(&amp;UI::renderPic,<span class="keyword">this</span>,_1))</span></span>; </span><br><span class="line">        c.<span class="built_in">capturePic</span>();</span><br><span class="line">    &#125;</span><br><span class="line">  </span><br><span class="line">    <span class="comment">//渲染图片作为回调函数</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">renderPic</span><span class="params">(string t)</span></span>&#123;</span><br><span class="line">        <span class="built_in">print</span>(t);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//main.cpp</span></span><br><span class="line">UI ui;</span><br><span class="line">ui.<span class="built_in">startCapture</span>();</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="std-function-std-bind"><a href="#std-function-std-bind" class="headerlink" title="std::function&#x2F;std::bind"></a>std::function&#x2F;std::bind</h1><ol>
+<li>std::function可以存储任意可调用对象（普通函数，成员函数，Lambda表达式)</li>
+<li>std::bind可以绑定成员函数和对象</li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;functional&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> function&lt;<span class="type">void</span>(<span class="type">int</span>)&gt; CallBackFunc;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">executeCallback</span><span class="params">(CallBackFunc callback, <span class="type">int</span> value)</span></span>&#123;</span><br><span class="line">    <span class="built_in">callback</span>(value);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">freeFunction</span><span class="params">(<span class="type">int</span> value)</span></span>&#123;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;普通函数回调，传入的参数为：&quot;</span> &lt;&lt; value &lt;&lt; endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">CallbackHandler</span>&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">memberCallback</span><span class="params">(<span class="type">int</span> value)</span></span>&#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;成员函数回调，传入的参数为：&quot;</span> &lt;&lt; value &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    CallbackHandler handler;</span><br><span class="line">    <span class="comment">// 1. 传递普通函数作为回调</span></span><br><span class="line">    <span class="built_in">executeCallback</span>(freeFunction, <span class="number">42</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 2. 传递Lambda表达式作为回调</span></span><br><span class="line">    <span class="built_in">executeCallback</span>([](<span class="type">int</span> value)&#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;Lambda 回调，传入的参数为：&quot;</span> &lt;&lt; value &lt;&lt; endl;</span><br><span class="line">    &#125;, <span class="number">43</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 3. 传递成员函数作为回调</span></span><br><span class="line">    <span class="built_in">executeCallback</span>(std::<span class="built_in">bind</span>(&amp;CallbackHandler::memberCallback, &amp;handler, std::placeholders::_1), <span class="number">44</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><code>function&lt;void(int)&gt;</code>可以存储普通函数，Lambda表达式或绑定后的成员函数；</li>
+<li>使用std::bind将成员函数和对象绑定，并通过std::placeholder::_1占位符传递参数；</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/01/14/Cpp/cpp-5/" rel="prev" title="cpp-5-类和动态内存分配">
+      <i class="fa fa-chevron-left"></i> cpp-5-类和动态内存分配
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2025/01/14/Cpp/cpp-3/" rel="next" title="cpp-3-内存模型">
+      cpp-3-内存模型 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%9E%E8%B0%83%E5%87%BD%E6%95%B0"><span class="nav-number">1.</span> <span class="nav-text">回调函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%99%AE%E9%80%9A%E5%87%BD%E6%95%B0%E7%9A%84%E5%9B%9E%E8%B0%83"><span class="nav-number">2.</span> <span class="nav-text">普通函数的回调</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%B1%BB%E6%88%90%E5%91%98%E5%87%BD%E6%95%B0%E7%9A%84%E5%9B%9E%E8%B0%83"><span class="nav-number">3.</span> <span class="nav-text">类成员函数的回调</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B1"><span class="nav-number">3.0.1.</span> <span class="nav-text">示例1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B2"><span class="nav-number">3.0.2.</span> <span class="nav-text">示例2</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#std-function-std-bind"><span class="nav-number">4.</span> <span class="nav-text">std::function&#x2F;std::bind</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">ZhangHangming</p>
+  <div class="site-description" itemprop="description">张航铭（ZhangHangming）的笔记本</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">56</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ZhangHangming</span>
+</div>
+
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+-->
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+</html>
