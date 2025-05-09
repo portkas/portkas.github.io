@@ -1,0 +1,1005 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="ZhangHangming">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="安装12345# 安装$ sudo apt install vim# 查看版本$ vim --version">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vim">
+<meta property="og:url" content="http://example.com/2025/02/22/MissingSemester/Vim/index.html">
+<meta property="og:site_name" content="向所有小狗say hi">
+<meta property="og:description" content="安装12345# 安装$ sudo apt install vim# 查看版本$ vim --version">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-02-22T08:25:39.836Z">
+<meta property="article:modified_time" content="2025-02-22T08:25:39.836Z">
+<meta property="article:author" content="ZhangHangming">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>Vim - 向所有小狗say hi</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Vim"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-02-22 16:25" pubdate>
+          2025年2月22日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          10 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Vim</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 安装</span><br>$ <span class="hljs-built_in">sudo</span> apt install vim<br><br><span class="hljs-comment"># 查看版本</span><br>$ vim --version<br></code></pre></td></tr></table></figure>
+<span id="more"></span>
+<h1 id="vim模式简介"><a href="#vim模式简介" class="headerlink" title="vim模式简介"></a>vim模式简介</h1><ul>
+<li>命令模式：查看文件内容，修改文件，关键词条的搜索</li>
+<li>编辑模式：修改文件内容</li>
+<li>末行模式：执行Linux命令，保存文件，行跳转，窗口分屏</li>
+</ul>
+<h1 id="命令模式"><a href="#命令模式" class="headerlink" title="命令模式"></a>命令模式</h1><h2 id="保存和退出"><a href="#保存和退出" class="headerlink" title="保存和退出"></a>保存和退出</h2><p>连续按两个大写的Z，即<code>ZZ</code>可在命令行模式下，保存并退出文件，等同于末行模式下的<code>:wq</code></p>
+<h2 id="代码标准化"><a href="#代码标准化" class="headerlink" title="代码标准化"></a>代码标准化</h2><p>命令模式下，直接通过键盘输入<code>gg=G</code>，即可对代码进行标准化，使得代码排版更加工整。</p>
+<h2 id="光标移动"><a href="#光标移动" class="headerlink" title="光标移动"></a>光标移动</h2><table>
+<thead>
+<tr>
+<th align="center">快捷键</th>
+<th align="left">功能</th>
+<th align="left">备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">0</td>
+<td align="left">光标移动到行首</td>
+<td align="left">无</td>
+</tr>
+<tr>
+<td align="center">$</td>
+<td align="left">光标移动到行尾</td>
+<td align="left">无</td>
+</tr>
+<tr>
+<td align="center">gg</td>
+<td align="left">光标移动到文件头</td>
+<td align="left">第一行的开始</td>
+</tr>
+<tr>
+<td align="center">G</td>
+<td align="left">光标移动到文件尾</td>
+<td align="left">最后一行的开始</td>
+</tr>
+<tr>
+<td align="center">nG</td>
+<td align="left">行跳转</td>
+<td align="left">n代表要跳转到哪行</td>
+</tr>
+<tr>
+<td align="center">n+回车</td>
+<td align="left">相对跳转n行</td>
+<td align="left">从光标开始处往下跳转n行</td>
+</tr>
+</tbody></table>
+<h2 id="删除命令"><a href="#删除命令" class="headerlink" title="删除命令"></a>删除命令</h2><p>vim中没有删除操作，删除即剪切，剪切后可复制到其他地方。</p>
+<table>
+<thead>
+<tr>
+<th align="center">快捷键</th>
+<th align="center">功能</th>
+<th align="center">备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">x</td>
+<td align="center">删除光标后面的单个字符</td>
+<td align="center">无</td>
+</tr>
+<tr>
+<td align="center">X</td>
+<td align="center">删除光标前面的单个字符</td>
+<td align="center">无</td>
+</tr>
+<tr>
+<td align="center">dw</td>
+<td align="center">删除单词</td>
+<td align="center">要把光标移动到单词的第一个字母上</td>
+</tr>
+<tr>
+<td align="center">d0</td>
+<td align="center">删除光标前的字符串</td>
+<td align="center">光标所在行前面的字符全部删除</td>
+</tr>
+<tr>
+<td align="center">dD($)</td>
+<td align="center">删除光标后面的字符串</td>
+<td align="center">dD 和 d$ 功能一样</td>
+</tr>
+<tr>
+<td align="center">dd</td>
+<td align="center">删除光标所在行</td>
+<td align="center">无</td>
+</tr>
+<tr>
+<td align="center">ndd</td>
+<td align="center">删除n行</td>
+<td align="center">从光标开始往下删除n行</td>
+</tr>
+</tbody></table>
+<h2 id="撤销和反撤销"><a href="#撤销和反撤销" class="headerlink" title="撤销和反撤销"></a>撤销和反撤销</h2><table>
+<thead>
+<tr>
+<th align="center">快捷键</th>
+<th align="center">功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">u</td>
+<td align="center">撤销</td>
+</tr>
+<tr>
+<td align="center">ctrl+r</td>
+<td align="center">反撤销</td>
+</tr>
+</tbody></table>
+<h2 id="复制和粘贴"><a href="#复制和粘贴" class="headerlink" title="复制和粘贴"></a>复制和粘贴</h2><table>
+<thead>
+<tr>
+<th align="center">快捷键</th>
+<th align="center">功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">yy</td>
+<td align="center">复制光标所在行</td>
+</tr>
+<tr>
+<td align="center">nyy</td>
+<td align="center">从光标所在行向下复制n行</td>
+</tr>
+<tr>
+<td align="center">p</td>
+<td align="center">粘贴到光标所在行的下面</td>
+</tr>
+<tr>
+<td align="center">P</td>
+<td align="center">粘贴到光标所在行的上面</td>
+</tr>
+</tbody></table>
+<h2 id="可视模式"><a href="#可视模式" class="headerlink" title="可视模式"></a>可视模式</h2><ul>
+<li>v：进入字符可视模式，文本以字符为单位</li>
+<li>V：进入行可视模式，文本以行为单位</li>
+<li>ctrl+v：进入块可视模式，可以选择一个矩形内的文本</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">快捷键</th>
+<th align="center">功能</th>
+<th align="center">备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">d</td>
+<td align="center">删除（剪切）</td>
+<td align="center">删除可视模式下的可视块</td>
+</tr>
+<tr>
+<td align="center">y</td>
+<td align="center">复制</td>
+<td align="center">复制可视模式下选中的数据块</td>
+</tr>
+<tr>
+<td align="center">p</td>
+<td align="center">数据粘贴到光标的后面</td>
+<td align="center">无</td>
+</tr>
+<tr>
+<td align="center">P</td>
+<td align="center">数据粘贴到光标的前面</td>
+<td align="center">无</td>
+</tr>
+</tbody></table>
+<h3 id="代码块注释"><a href="#代码块注释" class="headerlink" title="代码块注释"></a>代码块注释</h3><p>1.通过<code>ctrl+v</code>进入块可视模式<br>2.移动光标选中多行代码开头<br>3.选择完毕后，输入大写的<code>I</code>进入<code>insert</code>模式<br>4.输入要插入的注释符<code>//</code><br>5.按ESC键退出</p>
+<h2 id="替换"><a href="#替换" class="headerlink" title="替换"></a>替换</h2><table>
+<thead>
+<tr>
+<th align="center">快捷键</th>
+<th align="center">功能</th>
+<th align="center">备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">r</td>
+<td align="center">替换光标后的单个字符</td>
+<td align="center">无</td>
+</tr>
+<tr>
+<td align="center">R</td>
+<td align="center">替换光标后的多个字符</td>
+<td align="center">按ESC结束替换</td>
+</tr>
+</tbody></table>
+<h2 id="查找"><a href="#查找" class="headerlink" title="查找"></a>查找</h2><table>
+<thead>
+<tr>
+<th align="center">搜索快捷键</th>
+<th align="left">关键字遍历</th>
+<th align="center">描述</th>
+<th align="center">备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">&#x2F;</td>
+<td align="left">n</td>
+<td align="center">从当前位置向下</td>
+<td align="center">无</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="left">N</td>
+<td align="center">从当前位置向上</td>
+<td align="center">无</td>
+</tr>
+<tr>
+<td align="center">?</td>
+<td align="left">n</td>
+<td align="center">从当前位置向上</td>
+<td align="center">无</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="left">N</td>
+<td align="center">从当前位置向下</td>
+<td align="center">无</td>
+</tr>
+<tr>
+<td align="center">#</td>
+<td align="left">n</td>
+<td align="center">从当前位置向上</td>
+<td align="center">光标当在需要搜索的关键字上按<code>#</code></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="left">N</td>
+<td align="center">从当前位置向下</td>
+<td align="center">无</td>
+</tr>
+</tbody></table>
+<h2 id="切换到编辑模式"><a href="#切换到编辑模式" class="headerlink" title="切换到编辑模式"></a>切换到编辑模式</h2><table>
+<thead>
+<tr>
+<th align="center">快捷键</th>
+<th align="center">功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">i</td>
+<td align="center">从光标前面开始输入</td>
+</tr>
+<tr>
+<td align="center">o</td>
+<td align="center">在光标下面创建新行，并从新行开始输入</td>
+</tr>
+<tr>
+<td align="center">O</td>
+<td align="center">在光标上面创建新行，并从新行开始输入</td>
+</tr>
+<tr>
+<td align="center">A</td>
+<td align="center">从当前行行尾开始输入</td>
+</tr>
+<tr>
+<td align="center">S（大写S）</td>
+<td align="center">删除当前行，在当前行开始输入</td>
+</tr>
+<tr>
+<td align="center">a</td>
+<td align="center">从光标的后面开始输入</td>
+</tr>
+<tr>
+<td align="center">s（小写s）</td>
+<td align="center">删除光标盖住的字符，并开始输入</td>
+</tr>
+<tr>
+<td align="center">I（大写i）</td>
+<td align="center">从当前行行首开始输入</td>
+</tr>
+</tbody></table>
+<h1 id="末行模式"><a href="#末行模式" class="headerlink" title="末行模式"></a>末行模式</h1><h2 id="保存和退出-1"><a href="#保存和退出-1" class="headerlink" title="保存和退出"></a>保存和退出</h2><table>
+<thead>
+<tr>
+<th align="center">末行模式下输入的命令</th>
+<th align="center">功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">q</td>
+<td align="center">退出</td>
+</tr>
+<tr>
+<td align="center">q!</td>
+<td align="center">直接退出不保存</td>
+</tr>
+<tr>
+<td align="center">w</td>
+<td align="center">保存不退出</td>
+</tr>
+<tr>
+<td align="center">wq</td>
+<td align="center">保存并退出</td>
+</tr>
+<tr>
+<td align="center">x</td>
+<td align="center">保存并退出</td>
+</tr>
+</tbody></table>
+<h2 id="替换-1"><a href="#替换-1" class="headerlink" title="替换"></a>替换</h2><table>
+<thead>
+<tr>
+<th align="center">末行模式下输入的命令</th>
+<th align="center">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">s&#x2F;被替换的关键字&#x2F;新的关键字&#x2F;g</td>
+<td align="center">只对光标所在行进行替换</td>
+</tr>
+<tr>
+<td align="center">行号1,行号2 s&#x2F;被替换关键字&#x2F;新的关键字&#x2F;g</td>
+<td align="center">替换行号1-行号2之间的关键字</td>
+</tr>
+<tr>
+<td align="center">%s&#x2F;被替换的关键字&#x2F;新的关键字&#x2F;g</td>
+<td align="center">替换所有关键字</td>
+</tr>
+</tbody></table>
+<h2 id="分屏"><a href="#分屏" class="headerlink" title="分屏"></a>分屏</h2><table>
+<thead>
+<tr>
+<th align="center">末行模式下输入的命令</th>
+<th align="center">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">sp</td>
+<td align="center">水平分屏，上下两个屏</td>
+</tr>
+<tr>
+<td align="center">vsp</td>
+<td align="center">垂直分屏，左右两个屏</td>
+</tr>
+<tr>
+<td align="center">ctrl+w+w</td>
+<td align="center">光标在打开的屏幕之间切换</td>
+</tr>
+<tr>
+<td align="center">qall</td>
+<td align="center">同时退出所有屏幕</td>
+</tr>
+<tr>
+<td align="center">wqall</td>
+<td align="center">保存并退出所有屏幕</td>
+</tr>
+<tr>
+<td align="center">sp 文件名</td>
+<td align="center">分屏的同时，打开指定文件</td>
+</tr>
+<tr>
+<td align="center">vsp 文件名</td>
+<td align="center">分屏的同时，打开指定文件</td>
+</tr>
+</tbody></table>
+<p>vim打开多个文件的时候，可以分屏打开</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 水平分屏，上下两个屏</span><br>$ vim -o file1 file2<br><br><span class="hljs-comment"># 垂直分屏，左右两个屏</span><br>$ vim -O file1 file2<br></code></pre></td></tr></table></figure>
+
+<h2 id="执行shell命令（-）"><a href="#执行shell命令（-）" class="headerlink" title="执行shell命令（:!）"></a>执行shell命令（:!）</h2><figure class="highlight erlang-repl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs erlang-repl">:!shell命令<br>:!ls<br></code></pre></td></tr></table></figure>
+
+<h1 id="vim配置文件"><a href="#vim配置文件" class="headerlink" title="vim配置文件"></a>vim配置文件</h1><ul>
+<li>用户级别的配置文件：<code>~/.vimrc</code></li>
+<li>系统级别的配置文件：<code>/etc/vim/vimrc</code></li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Linux/" class="category-chain-item">Linux</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Vim</div>
+      <div>http://example.com/2025/02/22/MissingSemester/Vim/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>ZhangHangming</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年2月22日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/02/22/MissingSemester/Tmux/" title="Tmux">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Tmux</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/02/22/MissingSemester/cmake/" title="CMake">
+                        <span class="hidden-mobile">CMake</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+</html>

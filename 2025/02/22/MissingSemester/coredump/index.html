@@ -1,0 +1,799 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="ZhangHangming">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="什么是coredumpcoredump又叫核心转储，是程序崩溃时候的一个内存快照，存储了进程的内存，寄存器状态，运行堆栈等信息。 是一个二进制文件，可以使用以下工具打开分析： Linux中可以使用：gdb，elfdump，objdump Windows中可以使用：windebug，solaris下的mdb">
+<meta property="og:type" content="article">
+<meta property="og:title" content="coredump">
+<meta property="og:url" content="http://example.com/2025/02/22/MissingSemester/coredump/index.html">
+<meta property="og:site_name" content="向所有小狗say hi">
+<meta property="og:description" content="什么是coredumpcoredump又叫核心转储，是程序崩溃时候的一个内存快照，存储了进程的内存，寄存器状态，运行堆栈等信息。 是一个二进制文件，可以使用以下工具打开分析： Linux中可以使用：gdb，elfdump，objdump Windows中可以使用：windebug，solaris下的mdb">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/image/coredump.bmp">
+<meta property="article:published_time" content="2025-02-22T08:25:39.836Z">
+<meta property="article:modified_time" content="2025-02-22T08:25:39.836Z">
+<meta property="article:author" content="ZhangHangming">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/image/coredump.bmp">
+  
+  
+  
+  <title>coredump - 向所有小狗say hi</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="coredump"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-02-22 16:25" pubdate>
+          2025年2月22日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          40 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">coredump</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="什么是coredump"><a href="#什么是coredump" class="headerlink" title="什么是coredump"></a>什么是coredump</h1><p>coredump又叫核心转储，是程序崩溃时候的一个内存快照，存储了进程的内存，寄存器状态，运行堆栈等信息。</p>
+<p>是一个二进制文件，可以使用以下工具打开分析：</p>
+<p>Linux中可以使用：gdb，elfdump，objdump</p>
+<p>Windows中可以使用：windebug，solaris下的mdb</p>
+<span id="more"></span>
+
+<h1 id="什么时候使用coredump"><a href="#什么时候使用coredump" class="headerlink" title="什么时候使用coredump"></a>什么时候使用coredump</h1><p>业务逻辑上的bug，比如参数设置，这种不会导致程序崩溃的错误，使用printf这类输出函数打点调试；</p>
+<p>致命操作的bug，比如访问未经申请的内存地址，导致程序崩溃，此时不能使用printf，应该怎么调试呢？</p>
+<p>对于必现的bug，一般使用GDB设置断点，逐步执行程序，检查变量和内存，以及回溯调用栈来定位问题。但是对于偶现的bug（多线程竞争，事件相关，资源限制等），由于只在某些特定的条件下发生，所以比较难通过GDB调试，这个时候就可以使用Linux提供的coredump文件进行调试。</p>
+<h1 id="coredump文件生成原理"><a href="#coredump文件生成原理" class="headerlink" title="coredump文件生成原理"></a>coredump文件生成原理</h1><p>在程序发生某些错误而导致进程异常退出的时候，Linux内核会根据进程当时的内存信息，生成coredump文件。GDB通过coredump文件可以重现当时的场景，从而定位错误信息。</p>
+<ol>
+<li>程序发生错误 -&gt; 产生信号</li>
+<li>进程内核检测到对应信号 -&gt; 生成coredump文件</li>
+</ol>
+<p>以下信号会导致生成coredump文件：</p>
+<ul>
+<li>SIGILL：非法指令信号</li>
+<li>SIGABRT：由abort()函数发起的信号，用于异常终止程序</li>
+<li>SIGSEGV：无效的内存引用信号，当程序试图访问未分配或不允许访问的内存时</li>
+<li>SIGTRAP：由断点或者某些调试器触发的信号，用于调试目的</li>
+<li>SIGFPE：浮点异常信号，如算术溢出，除以零</li>
+<li>SIGBUG：硬件故障信号，如非法内存访问</li>
+<li>SIGSIS：无效的系统调用信号</li>
+</ul>
+<p>当进程从内核态返回到用户态前，内核会检查进程的信号队列中是否有信号没有处理，如果有就调用 <code>do_signal</code>内核函数处理信号，流程如下：</p>
+<p><img src="/../image/coredump.bmp" srcset="/img/loading.gif" lazyload alt="img"></p>
+<h2 id="信号处理do-signal"><a href="#信号处理do-signal" class="headerlink" title="信号处理do_signal()"></a>信号处理do_signal()</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-type">void</span> fastcall <span class="hljs-title">do_signal</span><span class="hljs-params">(<span class="hljs-keyword">struct</span> pt_regs *regs)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-type">siginfo_t</span> info;<br>    <span class="hljs-type">int</span> signr;<br>    <span class="hljs-keyword">struct</span> <span class="hljs-title class_">k_sigaction</span> ka;<br>    <span class="hljs-type">sigset_t</span> *oldset;<br><br>    ...<br>    signr = <span class="hljs-built_in">get_signal_to_deliver</span>(&amp;info, &amp;ka, regs, <span class="hljs-literal">NULL</span>);<br>    ...<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>该函数负责将用户空间的信号传递给进程。其中该函数接收一个指向 <code>pt_regs</code>结构的指针作为参数，其中包含了程序计数器、栈指针和所有通用寄存器，这些寄存器在信号处理时被保存。</p>
+<h2 id="信号获取get-signal-to-deliver"><a href="#信号获取get-signal-to-deliver" class="headerlink" title="信号获取get_signal_to_deliver()"></a>信号获取get_signal_to_deliver()</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">get_signal_to_deliver</span><span class="hljs-params">(<span class="hljs-type">siginfo_t</span> *info, <span class="hljs-keyword">struct</span> k_sigaction *return_ka,</span></span><br><span class="hljs-params"><span class="hljs-function">                          <span class="hljs-keyword">struct</span> pt_regs *regs, <span class="hljs-type">void</span> *cookie)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-type">sigset_t</span> *mask = &amp;current-&gt;blocked;<br>    <span class="hljs-type">int</span> signr = <span class="hljs-number">0</span>;<br><br>    ...<br>    <span class="hljs-keyword">for</span> (;;) &#123;<br>        ...<br>        <span class="hljs-comment">// 1. 从进程信号队列中获取一个信号</span><br>        signr = <span class="hljs-built_in">dequeue_signal</span>(current, mask, info); <br><br>        ...<br>        <span class="hljs-comment">// 2. 判断是否会生成 coredump 文件的信号</span><br>        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">sig_kernel_coredump</span>(signr)) &#123;<br>            <span class="hljs-comment">// 3. 调用 do_coredump() 函数生成 coredump 文件</span><br>            <span class="hljs-built_in">do_coredump</span>((<span class="hljs-type">long</span>)signr, signr, regs);<br>        &#125;<br>        ...<br>    &#125;<br>    ...<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><code>get_signal_to_deliver</code>函数主要完成以下三个工作：</p>
+<ul>
+<li>调用 <code>dequeue_signal</code>函数从进程的信号队列中获取一个信号</li>
+<li>调用 <code>sig_kernel_coredump</code>函数判断信号是否会生成coredump文件</li>
+<li>如果信号会生成coredump文件，那么就调用 <code>do_coredump</code>函数生成coredump文件</li>
+</ul>
+<h2 id="生成coredump文件"><a href="#生成coredump文件" class="headerlink" title="生成coredump文件"></a>生成coredump文件</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">do_coredump</span><span class="hljs-params">(<span class="hljs-type">long</span> signr, <span class="hljs-type">int</span> exit_code, <span class="hljs-keyword">struct</span> pt_regs *regs)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-type">char</span> corename[CORENAME_MAX_SIZE + <span class="hljs-number">1</span>];<br>    <span class="hljs-keyword">struct</span> <span class="hljs-title class_">mm_struct</span> *mm = current-&gt;mm;<br>    <span class="hljs-keyword">struct</span> <span class="hljs-title class_">linux_binfmt</span> *binfmt;<br>    <span class="hljs-keyword">struct</span> <span class="hljs-title class_">inode</span> *inode;<br>    <span class="hljs-keyword">struct</span> <span class="hljs-title class_">file</span> *file;<br>    <span class="hljs-type">int</span> retval = <span class="hljs-number">0</span>;<br>    <span class="hljs-type">int</span> fsuid = current-&gt;fsuid;<br>    <span class="hljs-type">int</span> flag = <span class="hljs-number">0</span>;<br>    <span class="hljs-type">int</span> ispipe = <span class="hljs-number">0</span>;<br><br>    binfmt = current-&gt;binfmt; <span class="hljs-comment">// 当前进程所使用的可执行文件格式（如ELF格式）</span><br><br>    ...<br>    <span class="hljs-comment">// 1. 判断当前进程可生成的 coredump 文件大小是否受到资源限制</span><br>    <span class="hljs-keyword">if</span> (current-&gt;signal-&gt;rlim[RLIMIT_CORE].rlim_cur &lt; binfmt-&gt;min_coredump)<br>        <span class="hljs-keyword">goto</span> fail_unlock;<br><br>    ...<br>    <span class="hljs-comment">// 2. 生成 coredump 文件名</span><br>    ispipe = format_corename(corename, core_pattern, signr);<br><br>    ...<br>    <span class="hljs-comment">// 3. 创建 coredump 文件</span><br>    file = <span class="hljs-built_in">filp_open</span>(corename, O_CREAT|<span class="hljs-number">2</span>|O_NOFOLLOW|O_LARGEFILE|flag, <span class="hljs-number">0600</span>);<br><br>    ...<br>    <span class="hljs-comment">// 4. 把进程的内存信息写入到 coredump 文件中</span><br>    retval = binfmt-&gt;<span class="hljs-built_in">core_dump</span>(signr, regs, file);<br><br>fail_unlock:<br>    ...<br>    <span class="hljs-keyword">return</span> retval;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><code>do_coredump</code>函数主要完成以下四个工作：</p>
+<ul>
+<li>判断当前进程可生成的coredump文件大小是否收到资源限制</li>
+<li>如果不受限制调用 <code>format_corename</code>生成coredump文件的文件名</li>
+<li>调用 <code>filp_open</code>函数创建coredump文件</li>
+<li>根据当前进程所使用的可执行文件格式选择相应的方式填充coredump文件的内容</li>
+<li>elf文件格式使用的是 <code>elf_core_dump</code>方法</li>
+</ul>
+<h1 id="coredump文件使用-准备阶段"><a href="#coredump文件使用-准备阶段" class="headerlink" title="coredump文件使用-准备阶段"></a>coredump文件使用-准备阶段</h1><h2 id="生成coredump文件到当前目录下"><a href="#生成coredump文件到当前目录下" class="headerlink" title="生成coredump文件到当前目录下"></a>生成coredump文件到当前目录下</h2><p>要让core文件生成在当前目录下，你可以通过设置 <code>/proc/sys/kernel/core_pattern</code>文件来指定core文件的保存位置和命名模式。以下是具体的步骤：</p>
+<ol>
+<li><p><strong>开启core文件生成</strong>：<br>使用 <code>ulimit -c unlimited</code>命令来确保系统允许生成core文件。</p>
+</li>
+<li><p><strong>设置core文件的命名模式</strong>：<br>使用 <code>echo</code>命令将core文件的命名模式设置为当前目录下。具体命令如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">echo</span> <span class="hljs-string">&#x27;./core-%e-%p-%t&#x27;</span> &gt; /proc/sys/kernel/core_pattern<br></code></pre></td></tr></table></figure>
+
+<p>这个命令会将core文件统一生成到当前目录下，文件名为 <code>core-命令名-pid-时间戳</code>。</p>
+</li>
+<li><p><strong>参数解释</strong>：</p>
+<ul>
+<li><code>%p</code>：插入pid到文件名中，即进程ID。</li>
+<li><code>%e</code>：插入产生core文件的命令名到文件名中。</li>
+<li><code>%t</code>：插入Unix时间戳到文件名中，即core文件生成时的时间。</li>
+</ul>
+</li>
+</ol>
+<p>执行上述命令后，如果程序再次发生段错误，core文件将会生成在程序运行的当前目录下，并且文件名包含了程序名、进程ID和时间戳，这样你就可以更容易地识别和管理这些core文件了。</p>
+<p>需要注意的是，修改 <code>/proc/sys/kernel/core_pattern</code>可能需要root权限，如果遇到权限问题，可以尝试使用 <code>sudo</code>命令来执行。同时，这些设置是临时的，重启系统后会恢复默认设置。如果需要永久设置，可以修改 <code>/etc/sysctl.conf</code>文件并添加相应的配置行，然后运行 <code>sysctl -p</code>来使设置生效。</p>
+<h2 id="设置永久保存"><a href="#设置永久保存" class="headerlink" title="设置永久保存"></a>设置永久保存</h2><p>打开&#x2F;etc&#x2F;security&#x2F;limits.conf文件，在该文件的最后加上两行，配置后重启后生效。</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs less"><span class="hljs-variable">@root</span> soft core unlimited<br><span class="hljs-variable">@root</span> hard core unlimited<br></code></pre></td></tr></table></figure>
+
+<p>命名规则的修改在&#x2F;proc&#x2F;sys&#x2F;kernel&#x2F;core_pattern中也只是临时的，这个也是动态加载和生成的。永久修改在&#x2F;etc&#x2F;sysctl.conf文件中，在该文件的最后加上两行：</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">kernel.core_pattern</span> = ./core-%e-%p-%t<br><span class="hljs-attr">kernel.core_uses_pid</span> = <span class="hljs-number">0</span><br></code></pre></td></tr></table></figure>
+
+<p>可以使用该命令，立即生效：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">sudo</span> su<br><span class="hljs-comment"># sysctl –p</span><br><span class="hljs-comment"># exit</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="coredump命名规则"><a href="#coredump命名规则" class="headerlink" title="coredump命名规则"></a>coredump命名规则</h2><figure class="highlight sas"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs sas">产生的文件名为core-命令名-pid-时间戳<br>以下是参数列表:<br><span class="hljs-title function_">%p</span> - <span class="hljs-keyword">insert</span> pid <span class="hljs-keyword">into</span> <span class="hljs-keyword">filename</span> 添加pid<br><span class="hljs-title function_">%u</span> - <span class="hljs-keyword">insert</span> current uid <span class="hljs-keyword">into</span> <span class="hljs-keyword">filename</span> 添加当前uid<br><span class="hljs-title function_">%g</span> - <span class="hljs-keyword">insert</span> current gid <span class="hljs-keyword">into</span> <span class="hljs-keyword">filename</span> 添加当前gid<br><span class="hljs-title function_">%s</span> - <span class="hljs-keyword">insert</span> signal that caused the coredump <span class="hljs-keyword">into</span> the <span class="hljs-keyword">filename</span> 添加导致产生core的信号<br><span class="hljs-title function_">%t</span> - <span class="hljs-keyword">insert</span> UNIX time that the coredump occurred <span class="hljs-keyword">into</span> <span class="hljs-keyword">filename</span> 添加core文件生成时的unix时间<br><span class="hljs-title function_">%h</span> - <span class="hljs-keyword">insert</span> hostname <span class="hljs-keyword">where</span> the coredump happened <span class="hljs-keyword">into</span> <span class="hljs-keyword">filename</span> 添加主机名<br><span class="hljs-title function_">%e</span> - <span class="hljs-keyword">insert</span> coredumping executable name <span class="hljs-keyword">into</span> <span class="hljs-keyword">filename</span> 添加命令名<br></code></pre></td></tr></table></figure>
+
+<h2 id="proc-sys-kernel-core-pattern"><a href="#proc-sys-kernel-core-pattern" class="headerlink" title="&#x2F;proc&#x2F;sys&#x2F;kernel&#x2F;core_pattern"></a>&#x2F;proc&#x2F;sys&#x2F;kernel&#x2F;core_pattern</h2><p>&#x2F;proc&#x2F;sys&#x2F;kernel&#x2F;core_pattern是一个位于&#x2F;proc伪文件系统中的文件，它用于定义系统在发生核心转储（coredump）时生成的核心文件（corefile）的命名模式和路径。</p>
+<h1 id="示例1-段错误"><a href="#示例1-段错误" class="headerlink" title="示例1-段错误"></a>示例1-段错误</h1><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br>  <br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">func</span><span class="hljs-params">(<span class="hljs-type">int</span> *p)</span></span><br><span class="hljs-function"></span>&#123;<br>    *p = <span class="hljs-number">0</span>;<br>&#125;<br>  <br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-built_in">func</span>(<span class="hljs-literal">NULL</span>);<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>编写文件并编译运行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ gcc -g -o app main.c<br>$ ./app<br>Segmentation fault (core dumped)<br></code></pre></td></tr></table></figure>
+
+<p>文件目录中产生coredump文件：core-app-20132-1733721582，使用coredump文件定位错误信息：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ gdb ./app core-app-20132-1733721582<br>GNU gdb (Ubuntu 12.1-0ubuntu1~22.04.2) 12.1<br>Copyright (C) 2022 Free Software Foundation, Inc.<br>License GPLv3+: GNU GPL version 3 or later &lt;http://gnu.org/licenses/gpl.html&gt;<br>This is free software: you are free to change and redistribute it.<br>There is NO WARRANTY, to the extent permitted by law.<br>Type <span class="hljs-string">&quot;show copying&quot;</span> and <span class="hljs-string">&quot;show warranty&quot;</span> <span class="hljs-keyword">for</span> details.<br>This GDB was configured as <span class="hljs-string">&quot;x86_64-linux-gnu&quot;</span>.<br>Type <span class="hljs-string">&quot;show configuration&quot;</span> <span class="hljs-keyword">for</span> configuration details.<br>For bug reporting instructions, please see:<br>&lt;https://www.gnu.org/software/gdb/bugs/&gt;.<br>Find the GDB manual and other documentation resources online at:<br>    &lt;http://www.gnu.org/software/gdb/documentation/&gt;.<br><br>For <span class="hljs-built_in">help</span>, <span class="hljs-built_in">type</span> <span class="hljs-string">&quot;help&quot;</span>.<br>Type <span class="hljs-string">&quot;apropos word&quot;</span> to search <span class="hljs-keyword">for</span> commands related to <span class="hljs-string">&quot;word&quot;</span>...<br>Reading symbols from ./app...<br>[New LWP 20132]<br>[Thread debugging using libthread_db enabled]<br>Using host libthread_db library <span class="hljs-string">&quot;/lib/x86_64-linux-gnu/libthread_db.so.1&quot;</span>.<br>--Type &lt;RET&gt; <span class="hljs-keyword">for</span> more, q to quit, c to <span class="hljs-built_in">continue</span> without paging--c<br>Core was generated by `./app<span class="hljs-string">&#x27;.</span><br><span class="hljs-string">Program terminated with signal SIGSEGV, Segmentation fault.</span><br><span class="hljs-string">#0  0x000055902ca68139 in func (p=0x0) at main.c:5</span><br><span class="hljs-string">5           *p = 0;</span><br></code></pre></td></tr></table></figure>
+
+<p>可以看到程序是由于 <code>SIGSEGV</code>信号产生的coredump文件。接着查看coredump时的堆栈：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ bt<br>or<br>$ <span class="hljs-built_in">where</span><br>(gdb) <span class="hljs-built_in">where</span><br><span class="hljs-comment">#0  0x000055902ca68139 in func (p=0x0) at main.c:5</span><br><span class="hljs-comment">#1  0x000055902ca68154 in main () at main.c:10</span><br></code></pre></td></tr></table></figure>
+
+<p>通过 <code>#0  0x000055902ca68139 in func (p=0x0) at main.c:5</code>可以定位到是由于 <code>func (p=0x0)</code>导致的错误信号。</p>
+<p>接着可以使用 <code>disassemble</code>打开该帧函数的反汇编代码。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs bash">(gdb) disassemble<br>Dump of assembler code <span class="hljs-keyword">for</span> <span class="hljs-keyword">function</span> func:<br>   0x000055902ca68129 &lt;+0&gt;:     endbr64 <br>   0x000055902ca6812d &lt;+4&gt;:     push   %rbp<br>   0x000055902ca6812e &lt;+5&gt;:     mov    %rsp,%rbp<br>   0x000055902ca68131 &lt;+8&gt;:     mov    %rdi,-0x8(%rbp)<br>   0x000055902ca68135 &lt;+12&gt;:    mov    -0x8(%rbp),%rax<br>=&gt; 0x000055902ca68139 &lt;+16&gt;:    movl   <span class="hljs-variable">$0x0</span>,(%rax)<br>   0x000055902ca6813f &lt;+22&gt;:    nop<br>   0x000055902ca68140 &lt;+23&gt;:    pop    %rbp<br>   0x000055902ca68141 &lt;+24&gt;:    ret  <br>End of assembler dump.<br></code></pre></td></tr></table></figure>
+
+<p>如上箭头位置表示coredump时该函数调用所在位置。</p>
+<p>接着使用 <code>info registers</code> 查看当前寄存器的状态，特别是 <code>rdi</code> 寄存器，因为它包含了传递给 <code>func</code> 函数的第一个参数。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs bash">(gdb) info registers <br>rax            0x0                 0<br>rbx            0x0                 0<br>rcx            0x55902ca6adf8      94077712772600<br>rdx            0x7fff37b64018      140734128078872<br>rsi            0x7fff37b64008      140734128078856<br>rdi            0x0                 0<br>rbp            0x7fff37b63ee0      0x7fff37b63ee0<br>rsp            0x7fff37b63ee0      0x7fff37b63ee0<br>r8             0x7fe5c2aadf10      140624790216464<br>r9             0x7fe5c2acb040      140624790335552<br>r10            0x7fe5c2ac5908      140624790313224<br>r11            0x7fe5c2ae0660      140624790423136<br>r12            0x7fff37b64008      140734128078856<br>r13            0x55902ca68142      94077712761154<br>r14            0x55902ca6adf8      94077712772600<br>r15            0x7fe5c2aff040      140624790548544<br>rip            0x55902ca68139      0x55902ca68139 &lt;func+16&gt;<br>eflags         0x10246             [ PF ZF IF RF ]<br>cs             0x33                51<br>--Type &lt;RET&gt; <span class="hljs-keyword">for</span> more, q to quit, c to <span class="hljs-built_in">continue</span> without paging--<br></code></pre></td></tr></table></figure>
+
+<p>可以看到 <code>rdi</code>寄存器指向了一个0地址。接着使用 <code>x/1x $rax</code>查看 <code>rax</code>寄存器指向的内存地址的内容。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">(gdb) x/1x <span class="hljs-variable">$rax</span><br>0x0:    Cannot access memory at address 0x0<br></code></pre></td></tr></table></figure>
+
+<p>由于 <code>rax</code> 寄存器存储的是 <code>NULL</code>，这将显示一个不可访问的内存区域。</p>
+<h1 id="寻找this指针和虚指针"><a href="#寻找this指针和虚指针" class="headerlink" title="寻找this指针和虚指针"></a>寻找this指针和虚指针</h1><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;stdio.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;stdlib.h&quot;</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">base</span><br>&#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-built_in">base</span>();<br>    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">test</span><span class="hljs-params">()</span></span>;<br><span class="hljs-keyword">private</span>:<br>    <span class="hljs-type">const</span> <span class="hljs-type">char</span> *basePStr;<br>&#125;;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">dumpTest</span> : <span class="hljs-keyword">public</span> base<br>&#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">test</span><span class="hljs-params">()</span></span>;<br><span class="hljs-keyword">private</span>:<br>    <span class="hljs-type">char</span> *childPStr;<br>&#125;;<br>base::<span class="hljs-built_in">base</span>()<br>&#123;<br>    basePStr = <span class="hljs-string">&quot;test_info&quot;</span>;<br>&#125;<br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">base::test</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    cout&lt;&lt;basePStr&lt;&lt;endl;<br>&#125;<br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">dumpTest::test</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    cout&lt;&lt;<span class="hljs-string">&quot;dumpTest&quot;</span>&lt;&lt;endl;<br>    <span class="hljs-keyword">delete</span> childPStr;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    dumpTest dump;<br>    dump.<span class="hljs-built_in">test</span>();<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>如上代码实现了一个简单的基类和子类，在main函数里定义了一个子类的实例化对象，并调用他的虚函数方法test，由于test里面没有初始化指针childPStr而直接删除，会造成coredump。</p>
+<p>首先编译并运行代码：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ g++ -g -o app main.cpp<br>$ ./app<br>dumpTest<br>free(): invalid pointer<br>Aborted (core dumped)<br></code></pre></td></tr></table></figure>
+
+<p>目录列表里产生了coredump文件：core-app-34711-1733723593</p>
+<p>接着使用gdb打开coredump文件，同时使用 <code>bt</code>打开coredump堆栈信息：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ gdb ./app core-app-34711-1733723593<br>GNU gdb (Ubuntu 12.1-0ubuntu1~22.04.2) 12.1<br>Copyright (C) 2022 Free Software Foundation, Inc.<br>License GPLv3+: GNU GPL version 3 or later &lt;http://gnu.org/licenses/gpl.html&gt;<br>This is free software: you are free to change and redistribute it.<br>There is NO WARRANTY, to the extent permitted by law.<br>Type <span class="hljs-string">&quot;show copying&quot;</span> and <span class="hljs-string">&quot;show warranty&quot;</span> <span class="hljs-keyword">for</span> details.<br>This GDB was configured as <span class="hljs-string">&quot;x86_64-linux-gnu&quot;</span>.<br>Type <span class="hljs-string">&quot;show configuration&quot;</span> <span class="hljs-keyword">for</span> configuration details.<br>For bug reporting instructions, please see:<br>&lt;https://www.gnu.org/software/gdb/bugs/&gt;.<br>Find the GDB manual and other documentation resources online at:<br>    &lt;http://www.gnu.org/software/gdb/documentation/&gt;.<br><br>For <span class="hljs-built_in">help</span>, <span class="hljs-built_in">type</span> <span class="hljs-string">&quot;help&quot;</span>.<br>Type <span class="hljs-string">&quot;apropos word&quot;</span> to search <span class="hljs-keyword">for</span> commands related to <span class="hljs-string">&quot;word&quot;</span>...<br>Reading symbols from ./app...<br>[New LWP 34711]<br>[Thread debugging using libthread_db enabled]<br>Using host libthread_db library <span class="hljs-string">&quot;/lib/x86_64-linux-gnu/libthread_db.so.1&quot;</span>.<br>Core was generated by `./app<span class="hljs-string">&#x27;.</span><br><span class="hljs-string">Program terminated with signal SIGABRT, Aborted.</span><br><span class="hljs-string">#0  __pthread_kill_implementation (no_tid=0, signo=6, threadid=139759220007872)</span><br><span class="hljs-string">    at ./nptl/pthread_kill.c:44</span><br><span class="hljs-string">44      ./nptl/pthread_kill.c: No such file or directory.</span><br><span class="hljs-string"></span><br><span class="hljs-string"></span><br><span class="hljs-string">(gdb) bt</span><br><span class="hljs-string">#0  __pthread_kill_implementation (no_tid=0, signo=6, threadid=139759220007872)</span><br><span class="hljs-string">    at ./nptl/pthread_kill.c:44</span><br><span class="hljs-string">#1  __pthread_kill_internal (signo=6, threadid=139759220007872) at ./nptl/pthread_kill.c:78</span><br><span class="hljs-string">#2  __GI___pthread_kill (threadid=139759220007872, signo=signo@entry=6)</span><br><span class="hljs-string">    at ./nptl/pthread_kill.c:89</span><br><span class="hljs-string">#3  0x00007f1c3abe4476 in __GI_raise (sig=sig@entry=6) at ../sysdeps/posix/raise.c:26</span><br><span class="hljs-string">#4  0x00007f1c3abca7f3 in __GI_abort () at ./stdlib/abort.c:79</span><br><span class="hljs-string">#5  0x00007f1c3ac2b676 in __libc_message (action=action@entry=do_abort, </span><br><span class="hljs-string">    fmt=fmt@entry=0x7f1c3ad7db77 &quot;%s\n&quot;) at ../sysdeps/posix/libc_fatal.c:155</span><br><span class="hljs-string">#6  0x00007f1c3ac42cfc in malloc_printerr (</span><br><span class="hljs-string">    str=str@entry=0x7f1c3ad7b744 &quot;free(): invalid pointer&quot;) at ./malloc/malloc.c:5664</span><br><span class="hljs-string">#7  0x00007f1c3ac44a44 in _int_free (av=&lt;optimized out&gt;, p=&lt;optimized out&gt;, have_lock=0)</span><br><span class="hljs-string">    at ./malloc/malloc.c:4439</span><br><span class="hljs-string">#8  0x00007f1c3ac47453 in __GI___libc_free (mem=&lt;optimized out&gt;) at ./malloc/malloc.c:3391</span><br><span class="hljs-string">#9  0x0000559355e2f2ab in dumpTest::test (this=0x7ffd2b1ddd50) at main.cpp:31</span><br><span class="hljs-string">#10 0x0000559355e2f2e1 in main () at main.cpp:37</span><br></code></pre></td></tr></table></figure>
+
+<p>从堆栈信息可以看到，除了最后两帧，其他的都是libc的代码。</p>
+<p>进入到第9帧，并查看堆栈寄存器信息：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs bash">(gdb) info f<br>Stack level 9, frame at 0x7fff871b7060:<br> rip = 0x563d0c5df2ab <span class="hljs-keyword">in</span> dumpTest::<span class="hljs-built_in">test</span> (main.cpp:32); saved rip = 0x563d0c5df2e1<br> called by frame at 0x7fff871b7090, <span class="hljs-built_in">caller</span> of frame at 0x7fff871b7040<br> <span class="hljs-built_in">source</span> language c++.<br> Arglist at 0x7fff871b7050, args: this=0x7fff871b7060<br> Locals at 0x7fff871b7050, Previous frame<span class="hljs-string">&#x27;s sp is 0x7fff871b7060</span><br><span class="hljs-string"> Saved registers:</span><br><span class="hljs-string">  rbp at 0x7fff871b7050, rip at 0x7fff871b7058</span><br></code></pre></td></tr></table></figure>
+
+<p>通过 <code>this=0x7fff871b7060</code>可知，this指针指向0x7fff871b7060。</p>
+<p>在 C++ 中，对象的内存布局通常如下：</p>
+<ol>
+<li>第一个位置是指向虚函数表（vtable）的指针，如果类有虚函数的话。</li>
+<li>紧接着是对象的实际数据成员。</li>
+</ol>
+<p>虚函数表指针通常存储在对象内存的开始位置，由于this指针指向对象的起始位置，所以可以通过解引用this指针获取虚函数表的地址：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash">(gdb) p *(void**)0x7fff871b7060<br><span class="hljs-variable">$2</span> = (void *) 0x563d0c5e1d38 &lt;vtable <span class="hljs-keyword">for</span> dumpTest+16&gt;<br>(gdb) x 0x563d0c5e1d38<br>0x563d0c5e1d38 &lt;_ZTV8dumpTest+16&gt;:      0x0c5df256<br>(gdb) shell <span class="hljs-built_in">echo</span> _ZTV8dumpTest | c++filt<br>vtable <span class="hljs-keyword">for</span> dumpTest<br></code></pre></td></tr></table></figure>
+
+<p>打印this指针存储的地址，可以看到this指针指向的地址为 <code>0x563d0c5e1d38</code>该地址为 <code>&lt;vtable for dumpTest+16&gt;</code>即虚函数表偏移16个字节的位置。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs bash">(gdb) x 0x563d0c5e1d38-16<br>0x563d0c5e1d28 &lt;_ZTV8dumpTest&gt;: 0x00000000<br>(gdb) x *(void**)0x563d0c5e1d38<br>0x563d0c5df256 &lt;_ZN8dumpTest4testEv&gt;:   0xfa1e0ff3<br>(gdb) shell <span class="hljs-built_in">echo</span> _ZN8dumpTest4testEv | c++filt<br>dumpTest::<span class="hljs-built_in">test</span>()<br>(gdb) x *(void**)0x563d0c5e1d38-8<br>0x563d0c5df24e &lt;_ZN4base4testEv+56&gt;:    0xfffffe7e<br>(gdb) shell <span class="hljs-built_in">echo</span> _ZN4base4testEv | c++filt<br>base::<span class="hljs-built_in">test</span>()<br></code></pre></td></tr></table></figure>
+
+<p>可以看到减去this指针指向的地址减去16字节的偏移量，正好就是虚函数表的地址 <code>0x563d0c5e1d28</code>，该内存单元存储的地址为 <code>0x00000000</code>。</p>
+<p>当使用 <code>x *(void**)0x563d0c5e1d38</code>查看该内存地址处的内容时，可以看到存储的内容就是 <code>dumpTest::test()</code>；其往前偏移8个字节正好就是 <code>base::test()</code>，这也正好说明了，在继承关系中，基类的虚函数在子类虚函数的前面。</p>
+<p>在实际问题中，C++程序的很多coredump问题都是和指针相关的，很多segmentfault都是由于指针被误删或者访问空指针、或者越界等造成的，而这些都一般意味着正在访问的对象的this指针可能已经被破坏了，此时，我们通过去寻找函数对应的对象的this指针、虚指针能验证我们的推测。之后再结合代码寻找问题所在。</p>
+<h2 id="疑惑点解答"><a href="#疑惑点解答" class="headerlink" title="疑惑点解答"></a>疑惑点解答</h2><p><code>(void**)0x563d0c5e1d38</code>将地址 <code>0x563d0c5e1d38</code> 视为一个指向 <code>void*</code> 指针的指针（即 <code>void**</code>）,也就是说 <code>(void**)0x563d0c5e1d38</code>是一个指向void<em>类型的指针。</em></p>
+<p><code>*(void**)0x563d0c5e1d38</code>是对 <code>void**</code>类型指针的解引用操作，得到的是一个 <code>void*</code>类型的值。这个值可以是一个函数地址，一个对象的地址，或者是虚函数表指针。</p>
+<h1 id="GDB查看core进程的所有线程堆栈"><a href="#GDB查看core进程的所有线程堆栈" class="headerlink" title="GDB查看core进程的所有线程堆栈"></a>GDB查看core进程的所有线程堆栈</h1><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;pthread.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;unistd.h&gt;</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><span class="hljs-meta">#<span class="hljs-keyword">define</span> NUM_THREADS 5</span><br><span class="hljs-type">int</span> count = <span class="hljs-number">0</span>;<br><br><span class="hljs-function"><span class="hljs-type">void</span>* <span class="hljs-title">say_hello</span><span class="hljs-params">( <span class="hljs-type">void</span> *args )</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">while</span>(<span class="hljs-number">1</span>)<br>    &#123;<br>        <span class="hljs-built_in">sleep</span>(<span class="hljs-number">1</span>);<br>        cout&lt;&lt;<span class="hljs-string">&quot;hello...&quot;</span>&lt;&lt;endl;<br>        <span class="hljs-keyword">if</span>(<span class="hljs-number">1</span> == count)<br>        &#123;<br>            <span class="hljs-type">const</span> <span class="hljs-type">char</span> *pStr = <span class="hljs-string">&quot;hello&quot;</span>;<br>            <span class="hljs-keyword">delete</span> pStr;<br>        &#125;<br>    &#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-type">pthread_t</span> tids[NUM_THREADS];<br>    <span class="hljs-keyword">for</span>( <span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; NUM_THREADS; ++i )<br>    &#123;<br>        count = i<span class="hljs-number">+1</span>;<br>        <span class="hljs-type">int</span> ret = <span class="hljs-built_in">pthread_create</span>( &amp;tids[i], <span class="hljs-literal">NULL</span>, say_hello, <span class="hljs-literal">NULL</span>);<br>        <span class="hljs-keyword">if</span>( ret != <span class="hljs-number">0</span> )<br>        &#123;<br>            cout &lt;&lt; <span class="hljs-string">&quot;pthread_create error:error_code=&quot;</span> &lt;&lt; ret &lt;&lt; endl;<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-keyword">for</span>( <span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; NUM_THREADS; ++i )<br>    &#123;<br>        count = i<span class="hljs-number">+1</span>;<br>        <span class="hljs-type">int</span> ret = <span class="hljs-built_in">pthread_join</span>(tids[i], <span class="hljs-literal">NULL</span>); <br>    &#125;<br>    <span class="hljs-built_in">pthread_exit</span>(<span class="hljs-literal">NULL</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>由于代码中在count等于5的时候会delete一个未初始化的指针，所以会生成coredump文件。</p>
+<p>首先使用GDB打开coredump文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs bash">gdb ./app core-app-178100-1733743589<br>GNU gdb (Ubuntu 12.1-0ubuntu1~22.04.2) 12.1<br>Copyright (C) 2022 Free Software Foundation, Inc.<br>License GPLv3+: GNU GPL version 3 or later &lt;http://gnu.org/licenses/gpl.html&gt;<br>This is free software: you are free to change and redistribute it.<br>There is NO WARRANTY, to the extent permitted by law.<br>Type <span class="hljs-string">&quot;show copying&quot;</span> and <span class="hljs-string">&quot;show warranty&quot;</span> <span class="hljs-keyword">for</span> details.<br>This GDB was configured as <span class="hljs-string">&quot;x86_64-linux-gnu&quot;</span>.<br>Type <span class="hljs-string">&quot;show configuration&quot;</span> <span class="hljs-keyword">for</span> configuration details.<br>For bug reporting instructions, please see:<br>&lt;https://www.gnu.org/software/gdb/bugs/&gt;.<br>Find the GDB manual and other documentation resources online at:<br>    &lt;http://www.gnu.org/software/gdb/documentation/&gt;.<br><br>For <span class="hljs-built_in">help</span>, <span class="hljs-built_in">type</span> <span class="hljs-string">&quot;help&quot;</span>.<br>Type <span class="hljs-string">&quot;apropos word&quot;</span> to search <span class="hljs-keyword">for</span> commands related to <span class="hljs-string">&quot;word&quot;</span>...<br>Reading symbols from ./app...<br>[New LWP 178101]<br>[New LWP 178102]<br>[New LWP 178103]<br>[New LWP 178100]<br>[New LWP 178104]<br>[New LWP 178105]<br>[Thread debugging using libthread_db enabled]<br>Using host libthread_db library <span class="hljs-string">&quot;/lib/x86_64-linux-gnu/libthread_db.so.1&quot;</span>.<br>--Type &lt;RET&gt; <span class="hljs-keyword">for</span> more, q to quit, c to <span class="hljs-built_in">continue</span> without paging--c<br>Core was generated by `./app<span class="hljs-string">&#x27;.</span><br><span class="hljs-string">Program terminated with signal SIGSEGV, Segmentation fault.</span><br><span class="hljs-string">#0  0x00007f7001fb4449 in arena_for_chunk (ptr=0x55f147223001 &lt;_IO_stdin_used+1&gt;) at ./malloc/arena.c:156</span><br><span class="hljs-string">156     ./malloc/arena.c: No such file or directory.</span><br><span class="hljs-string">[Current thread is 1 (Thread 0x7f7001e03640 (LWP 178101))]</span><br></code></pre></td></tr></table></figure>
+
+<p>可以看到5个线程的LWP信息。</p>
+<p>接着使用 <code>info threads</code>查看所有线程正在运行的指令信息：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs bash">(gdb) info threads<br>  Id   Target Id                          Frame <br>* 1    Thread 0x7f7001e03640 (LWP 178101) 0x00007f7001fb4449 <span class="hljs-keyword">in</span> arena_for_chunk (<br>    ptr=0x55f147223001 &lt;_IO_stdin_used+1&gt;) at ./malloc/arena.c:156<br>  2    Thread 0x7f7001602640 (LWP 178102) __GI___lll_lock_wake_private (<br>    futex=0x7f700212ba70 &lt;_IO_stdfile_1_lock&gt;) at ./nptl/lowlevellock.c:57<br>  3    Thread 0x7f7000e01640 (LWP 178103) futex_wait (private=0, expected=2, <br>    futex_word=0x7f700212ba70 &lt;_IO_stdfile_1_lock&gt;) at ../sysdeps/nptl/futex-internal.h:146<br>  4    Thread 0x7f7001e073c0 (LWP 178100) __futex_abstimed_wait_common64 (private=128, <br>    cancel=<span class="hljs-literal">true</span>, abstime=0x0, op=265, expected=178101, futex_word=0x7f7001e03910)<br>    at ./nptl/futex-internal.c:57<br>  5    Thread 0x7f7000600640 (LWP 178104) 0x00007f700202da7b <span class="hljs-keyword">in</span> munmap ()<br>    at ../sysdeps/unix/syscall-template.S:117<br>  6    Thread 0x7f6fffdff640 (LWP 178105) futex_wait (private=0, expected=2, <br>    futex_word=0x7f700212ba70 &lt;_IO_stdfile_1_lock&gt;) at ../sysdeps/nptl/futex-internal.h:146<br></code></pre></td></tr></table></figure>
+
+<p>接着使用 <code>thread apply all bt</code>打开所有线程的堆栈信息：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><code class="hljs bash">(gdb) thread apply all bt<br><br>Thread 6 (Thread 0x7f6fffdff640 (LWP 178105)):<br><span class="hljs-comment">#0  futex_wait (private=0, expected=2, futex_word=0x7f700212ba70 &lt;_IO_stdfile_1_lock&gt;) at ../sysdeps/nptl/futex-internal.h:146</span><br><span class="hljs-comment">#1  __GI___lll_lock_wait_private (futex=0x7f700212ba70 &lt;_IO_stdfile_1_lock&gt;) at ./nptl/lowlevellock.c:34</span><br><span class="hljs-comment">#2  0x00007f7001f8f095 in __GI__IO_fwrite (buf=0x55f147223008, size=1, count=8, fp=0x7f700212a780 &lt;_IO_2_1_stdout_&gt;) at ./libio/iofwrite.c:37</span><br><span class="hljs-comment">#3  0x00007f7002274b65 in std::basic_ostream&lt;char, std::char_traits&lt;char&gt; &gt;&amp; std::__ostream_insert&lt;char, std::char_traits&lt;char&gt; &gt;(std::basic_ostream&lt;char, std::char_traits&lt;char&gt; &gt;&amp;, char const*, long) () from /lib/x86_64-linux-gnu/libstdc++.so.6</span><br><span class="hljs-comment">#4  0x00007f7002274ebb in std::basic_ostream&lt;char, std::char_traits&lt;char&gt; &gt;&amp; std::operator&lt;&lt; &lt;std::char_traits&lt;char&gt; &gt;(std::basic_ostream&lt;char, std::char_traits&lt;char&gt; &gt;&amp;, char const*) () from /lib/x86_64-linux-gnu/libstdc++.so.6</span><br><span class="hljs-comment">#5  0x000055f14722229c in say_hello (args=0x0) at main.cpp:13</span><br><span class="hljs-comment">#6  0x00007f7001fa3ac3 in start_thread (arg=&lt;optimized out&gt;) at ./nptl/pthread_create.c:442</span><br><span class="hljs-comment">#7  0x00007f7002035850 in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:81</span><br><br>Thread 5 (Thread 0x7f7000600640 (LWP 178104)):<br><span class="hljs-comment">#0  0x00007f700202da7b in munmap () at ../sysdeps/unix/syscall-template.S:117</span><br><span class="hljs-comment">#1  0x00007f7001fb0cc5 in alloc_new_heap (size=135168, size@entry=2904, top_pad=top_pad@entry=131072, pagesize=pagesize@entry=4096, mmap_flags=mmap_flags@entry=16384) at ./malloc/arena.c:528</span><br><span class="hljs-comment">#2  0x00007f7001fb116c in new_heap (top_pad=131072, size=2904) at ./malloc/arena.c:576</span><br>--Type &lt;RET&gt; <span class="hljs-keyword">for</span> more, q to quit, c to <span class="hljs-built_in">continue</span> without paging--c<br><span class="hljs-comment">#3  _int_new_arena (size=640) at ./malloc/arena.c:744</span><br><span class="hljs-comment">#4  arena_get2 (size=size@entry=640, avoid_arena=avoid_arena@entry=0x0) at ./malloc/arena.c:963</span><br><span class="hljs-comment">#5  0x00007f7001fb3a41 in arena_get2 (avoid_arena=0x0, size=640) at ./malloc/arena.c:931</span><br><span class="hljs-comment">#6  tcache_init () at ./malloc/malloc.c:3244</span><br><span class="hljs-comment">#7  0x00007f7001fb44cf in tcache_init () at ./malloc/malloc.c:3241</span><br><span class="hljs-comment">#8  __GI___libc_free (mem=0x55f147223011) at ./malloc/malloc.c:3385</span><br><span class="hljs-comment">#9  0x000055f1472222da in say_hello (args=0x0) at main.cpp:17</span><br><span class="hljs-comment">#10 0x00007f7001fa3ac3 in start_thread (arg=&lt;optimized out&gt;) at ./nptl/pthread_create.c:442</span><br><span class="hljs-comment">#11 0x00007f7002035850 in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:81</span><br><br>Thread 4 (Thread 0x7f7001e073c0 (LWP 178100)):<br><span class="hljs-comment">#0  __futex_abstimed_wait_common64 (private=128, cancel=true, abstime=0x0, op=265, expected=178101, futex_word=0x7f7001e03910) at ./nptl/futex-internal.c:57</span><br><span class="hljs-comment">#1  __futex_abstimed_wait_common (cancel=true, private=128, abstime=0x0, clockid=0, expected=178101, futex_word=0x7f7001e03910) at ./nptl/futex-internal.c:87</span><br><span class="hljs-comment">#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x7f7001e03910, expected=178101, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=128) at ./nptl/futex-internal.c:139</span><br><span class="hljs-comment">#3  0x00007f7001fa5624 in __pthread_clockjoin_ex (threadid=140119044535872, thread_return=0x0, clockid=0, abstime=0x0, block=&lt;optimized out&gt;) at ./nptl/pthread_join_common.c:105</span><br><span class="hljs-comment">#4  0x000055f1472223b3 in main () at main.cpp:38</span><br><br>Thread 3 (Thread 0x7f7000e01640 (LWP 178103)):<br><span class="hljs-comment">#0  futex_wait (private=0, expected=2, futex_word=0x7f700212ba70 &lt;_IO_stdfile_1_lock&gt;) at ../sysdeps/nptl/futex-internal.h:146</span><br><span class="hljs-comment">#1  __GI___lll_lock_wait_private (futex=0x7f700212ba70 &lt;_IO_stdfile_1_lock&gt;) at ./nptl/lowlevellock.c:34</span><br><span class="hljs-comment">#2  0x00007f7001f96f05 in __GI__IO_putc (c=10, fp=0x7f700212a780 &lt;_IO_2_1_stdout_&gt;) at ./libio/putc.c:30</span><br><span class="hljs-comment">#3  0x00007f700227426a in std::ostream::put(char) () from /lib/x86_64-linux-gnu/libstdc++.so.6</span><br><span class="hljs-comment">#4  0x00007f7002274813 in std::basic_ostream&lt;char, std::char_traits&lt;char&gt; &gt;&amp; std::endl&lt;char, std::char_traits&lt;char&gt; &gt;(std::basic_ostream&lt;char, std::char_traits&lt;char&gt; &gt;&amp;) () from /lib/x86_64-linux-gnu/libstdc++.so.6</span><br><span class="hljs-comment">#5  0x000055f1472222ae in say_hello (args=0x0) at main.cpp:13</span><br><span class="hljs-comment">#6  0x00007f7001fa3ac3 in start_thread (arg=&lt;optimized out&gt;) at ./nptl/pthread_create.c:442</span><br><span class="hljs-comment">#7  0x00007f7002035850 in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:81</span><br><br>Thread 2 (Thread 0x7f7001602640 (LWP 178102)):<br><span class="hljs-comment">#0  __GI___lll_lock_wake_private (futex=0x7f700212ba70 &lt;_IO_stdfile_1_lock&gt;) at ./nptl/lowlevellock.c:57</span><br><span class="hljs-comment">#1  0x00007f7001f8f06d in _IO_acquire_lock_fct (p=&lt;synthetic pointer&gt;) at ./libio/libioP.h:884</span><br><span class="hljs-comment">#2  __GI__IO_fwrite (buf=&lt;optimized out&gt;, size=1, count=8, fp=0x7f700212a780 &lt;_IO_2_1_stdout_&gt;) at ./libio/iofwrite.c:37</span><br><span class="hljs-comment">#3  0x00007f7002274b65 in std::basic_ostream&lt;char, std::char_traits&lt;char&gt; &gt;&amp; std::__ostream_insert&lt;char, std::char_traits&lt;char&gt; &gt;(std::basic_ostream&lt;char, std::char_traits&lt;char&gt; &gt;&amp;, char const*, long) () from /lib/x86_64-linux-gnu/libstdc++.so.6</span><br><span class="hljs-comment">#4  0x00007f7002274ebb in std::basic_ostream&lt;char, std::char_traits&lt;char&gt; &gt;&amp; std::operator&lt;&lt; &lt;std::char_traits&lt;char&gt; &gt;(std::basic_ostream&lt;char, std::char_traits&lt;char&gt; &gt;&amp;, char const*) () from /lib/x86_64-linux-gnu/libstdc++.so.6</span><br><span class="hljs-comment">#5  0x000055f14722229c in say_hello (args=0x0) at main.cpp:13</span><br><span class="hljs-comment">#6  0x00007f7001fa3ac3 in start_thread (arg=&lt;optimized out&gt;) at ./nptl/pthread_create.c:442</span><br><span class="hljs-comment">#7  0x00007f7002035850 in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:81</span><br><br>Thread 1 (Thread 0x7f7001e03640 (LWP 178101)):<br><span class="hljs-comment">#0  0x00007f7001fb4449 in arena_for_chunk (ptr=0x55f147223001 &lt;_IO_stdin_used+1&gt;) at ./malloc/arena.c:156</span><br><span class="hljs-comment">#1  arena_for_chunk (ptr=0x55f147223001 &lt;_IO_stdin_used+1&gt;) at ./malloc/arena.c:160</span><br><span class="hljs-comment">#2  __GI___libc_free (mem=&lt;optimized out&gt;) at ./malloc/malloc.c:3390</span><br><span class="hljs-comment">#3  0x000055f1472222da in say_hello (args=0x0) at main.cpp:17</span><br><span class="hljs-comment">#4  0x00007f7001fa3ac3 in start_thread (arg=&lt;optimized out&gt;) at ./nptl/pthread_create.c:442</span><br><span class="hljs-comment">#5  0x00007f7002035850 in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:81</span><br></code></pre></td></tr></table></figure>
+
+<p>查看指定线程堆栈信息 <code>thread apply 4 bt</code>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash">(gdb) thread apply 4 bt<br><br>Thread 4 (Thread 0x7f7001e073c0 (LWP 178100)):<br><span class="hljs-comment">#0  __futex_abstimed_wait_common64 (private=128, cancel=true, abstime=0x0, op=265, expected=178101, futex_word=0x7f7001e03910) at ./nptl/futex-internal.c:57</span><br><span class="hljs-comment">#1  __futex_abstimed_wait_common (cancel=true, private=128, abstime=0x0, clockid=0, expected=178101, futex_word=0x7f7001e03910) at ./nptl/futex-internal.c:87</span><br><span class="hljs-comment">#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x7f7001e03910, expected=178101, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=128) at ./nptl/futex-internal.c:139</span><br><span class="hljs-comment">#3  0x00007f7001fa5624 in __pthread_clockjoin_ex (threadid=140119044535872, thread_return=0x0, clockid=0, abstime=0x0, block=&lt;optimized out&gt;) at ./nptl/pthread_join_common.c:105</span><br><span class="hljs-comment">#4  0x000055f1472223b3 in main () at main.cpp:38</span><br></code></pre></td></tr></table></figure>
+
+<p>进入指定线程栈空间：</p>
+<ol>
+<li>thread n</li>
+<li>bt</li>
+<li>i f</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs bash">(gdb) thread 4<br>[Switching to thread 4 (Thread 0x7f7001e073c0 (LWP 178100))]<br><span class="hljs-comment">#0  __futex_abstimed_wait_common64 (private=128, cancel=true, abstime=0x0, op=265, </span><br>    expected=178101, futex_word=0x7f7001e03910) at ./nptl/futex-internal.c:57<br>57      ./nptl/futex-internal.c: No such file or directory.<br><br><br>(gdb) bt<br><span class="hljs-comment">#0  __futex_abstimed_wait_common64 (private=128, cancel=true, abstime=0x0, op=265, </span><br>    expected=178101, futex_word=0x7f7001e03910) at ./nptl/futex-internal.c:57<br><span class="hljs-comment">#1  __futex_abstimed_wait_common (cancel=true, private=128, abstime=0x0, clockid=0, </span><br>    expected=178101, futex_word=0x7f7001e03910) at ./nptl/futex-internal.c:87<br><span class="hljs-comment">#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x7f7001e03910, </span><br>    expected=178101, clockid=clockid@entry=0, abstime=abstime@entry=0x0, <br>    private=private@entry=128) at ./nptl/futex-internal.c:139<br><span class="hljs-comment">#3  0x00007f7001fa5624 in __pthread_clockjoin_ex (threadid=140119044535872, thread_return=0x0, </span><br>    clockid=0, abstime=0x0, block=&lt;optimized out&gt;) at ./nptl/pthread_join_common.c:105<br><span class="hljs-comment">#4  0x000055f1472223b3 in main () at main.cpp:38</span><br><br><br>(gdb) i f<br>Stack level 0, frame at 0x7ffebda6cb90:<br> rip = 0x7f7001fa0117 <span class="hljs-keyword">in</span> __futex_abstimed_wait_common64 (./nptl/futex-internal.c:57); <br>    saved rip = 0x7f7001fa5624<br> inlined into frame 1<br> <span class="hljs-built_in">source</span> language c.<br> Arglist at unknown address.<br> Locals at unknown address, Previous frame<span class="hljs-string">&#x27;s sp in rsp</span><br></code></pre></td></tr></table></figure>
+
+<p>如上即可跳转到指定的线程中，并查看所在线程正在运行的堆栈信息和寄存器信息。</p>
+<h1 id="学习资源"><a href="#学习资源" class="headerlink" title="学习资源"></a>学习资源</h1><p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1860631">coredump文件是如何生成的</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/flyinggod/p/13415862.html">Linux生成coredump的方法及设置</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/lidabo/p/14311900.html">gdb调试coredump</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/sunxiaopengsun/article/details/72974548">gdb调试示例-强烈推荐</a><br><a target="_blank" rel="noopener" href="https://developers.redhat.com/articles/2022/01/10/gdb-developers-gnu-debugger-tutorial-part-2-all-about-debuginfo#">debuginfo</a>【这篇文章有很多不明白的名词，涉及到编译器和DWARF调试信息】<br><a target="_blank" rel="noopener" href="https://imageslr.com/2023/gdb.html#coredump">GDB 入门笔记</a>【这是一篇非常全面的GDB入门笔记】<br><a target="_blank" rel="noopener" href="https://sourceware.org/gdb/documentation/">GDB Documentation</a>【GDB官方文档】</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Linux/" class="category-chain-item">Linux</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>coredump</div>
+      <div>http://example.com/2025/02/22/MissingSemester/coredump/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>ZhangHangming</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年2月22日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/02/22/MissingSemester/cmake/" title="CMake">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">CMake</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/02/22/MissingSemester/gcc/" title="gcc">
+                        <span class="hidden-mobile">gcc</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+</html>

@@ -1,0 +1,1111 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="ZhangHangming">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="开始编译程序的时候：1.打开编译选项（-g）2.关掉编译器优化选项（-O0）3.打开所有的warning（-Wall）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="gdb">
+<meta property="og:url" content="http://example.com/2025/02/22/MissingSemester/gdb/index.html">
+<meta property="og:site_name" content="向所有小狗say hi">
+<meta property="og:description" content="开始编译程序的时候：1.打开编译选项（-g）2.关掉编译器优化选项（-O0）3.打开所有的warning（-Wall）">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-02-22T08:25:39.836Z">
+<meta property="article:modified_time" content="2025-02-22T08:25:39.836Z">
+<meta property="article:author" content="ZhangHangming">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>gdb - 向所有小狗say hi</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="gdb"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-02-22 16:25" pubdate>
+          2025年2月22日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          36 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          1 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">gdb</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h1><p>编译程序的时候：<br>1.打开编译选项（-g）<br>2.关掉编译器优化选项（-O0）<br>3.打开所有的warning（-Wall）</p>
+<!-- more -
+
+# g++编译重要参数
+
+- -g 编译带调试信息的可执行文件，选项告诉GCC产生能被GNU调试器——gdb使用的调试信息。
+- -O[n] 优化源代码，一般使用-O2。省略掉代码中未使用的变量，将表达式用结果值代替等等。
+- -l 和 -L 分别表示指定库文件，指定库路径。库名或者库路径要紧跟在这两个[option]后，中间无空格。
+- -I 指定头文件搜索目录
+- -Wall 打印警告信息
+- -w 关闭警告信息
+- -std=c++11 设置编译标准
+- -o 指定输出文件名
+- -D 定义宏
+
+# 概述
+
+- help [comend]     	查看命令帮助
+- run(r)            		重新开始运行文件
+- start        			单步运行程序
+- list(l)             		查看源代码，list-n从第n行开始查看，list [functionname]查看具体函数
+- set          			设置变量值
+- next(n)          		单步调试，逐过程
+- step(s)           		单步调试，逐语句
+- backtrace(bt)        	查看函数调用的栈帧和层级关系
+- frame(f)			切换函数栈帧
+- info(i)           		查看函数内部局部变量数值
+- finish            		结束当前函数，返回函数调用点
+- continus(c)    		继续运行
+- print(p)  			打印值或地址
+
+# 启动和退出gdb
+
+## 启动gdb
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 语法：gdb 可执行程序</span><br>$ gdb main<br></code></pre></td></tr></table></figure>
+
+<h2 id="gdb中命令行传参（set-args）"><a href="#gdb中命令行传参（set-args）" class="headerlink" title="gdb中命令行传参（set args）"></a>gdb中命令行传参（set args）</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 启动gdb之后</span><br><span class="hljs-comment"># 语法：set args 参数1 参数2 ...</span><br><span class="hljs-comment"># 通过gdb给应用程序设置命令行参数</span><br>(gdb) <span class="hljs-built_in">set</span> args 1 2 3<br><br><span class="hljs-comment"># 查看设置的命令行参数</span><br>(gdb) show args<br></code></pre></td></tr></table></figure>
+
+<h2 id="gdb中启动程序（run-start）"><a href="#gdb中启动程序（run-start）" class="headerlink" title="gdb中启动程序（run&#x2F;start）"></a>gdb中启动程序（run&#x2F;start）</h2><ul>
+<li>run（r）：如果程序设置了断点，会停在断点的位置，如果没有设置断点，程序执行到结束。</li>
+<li>start：启动程序，程序运行到main函数的第一行。</li>
+</ul>
+<p>ps.<code>run</code>和 <code>start</code>在启动gdb之后只能执行其中一个，并只能执行一次。如果遇到断点需要继续执行，输入命令 <code>continue(c)</code></p>
+<h2 id="退出gdb（quit）"><a href="#退出gdb（quit）" class="headerlink" title="退出gdb（quit）"></a>退出gdb（quit）</h2><figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs lisp">(<span class="hljs-name">gdb</span>) quit<br>or<br>(<span class="hljs-name">gdb</span>) q<br></code></pre></td></tr></table></figure>
+
+<h1 id="查看代码（list）"><a href="#查看代码（list）" class="headerlink" title="查看代码（list）"></a>查看代码（list）</h1><h2 id="在当前文件下查看代码"><a href="#在当前文件下查看代码" class="headerlink" title="在当前文件下查看代码"></a>在当前文件下查看代码</h2><p>通过list查看代码，每次只显示10行，如果需要继续查看后面的代码，直接按回车（即再次执行list指令）</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-comment"># 从第一行开始显示</span><br>(gdb) list<br><br><span class="hljs-comment"># 显示第n行的上下文</span><br>(gdb) list n<br><br><span class="hljs-comment"># 显示某个函数的上下文</span><br>(gdb) list &lt;<span class="hljs-keyword">function</span>-name&gt;<br></code></pre></td></tr></table></figure>
+
+<h2 id="显示其他文件下的代码"><a href="#显示其他文件下的代码" class="headerlink" title="显示其他文件下的代码"></a>显示其他文件下的代码</h2><figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs elixir"><span class="hljs-comment"># 切换到指定的文件，并列出第n行对应的上下文</span><br>(gdb) list &lt;filename&gt;<span class="hljs-symbol">:n</span><br><br><span class="hljs-comment"># 切换到指定的文件，并列出函数的上下文</span><br>(gdb) list &lt;filename&gt;<span class="hljs-symbol">:&lt;function-name&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="设置显示的行数"><a href="#设置显示的行数" class="headerlink" title="设置显示的行数"></a>设置显示的行数</h2><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs routeros"><span class="hljs-comment"># 设置每次显示的行数</span><br>(gdb) <span class="hljs-built_in">set</span> listsize 行数<br><br><span class="hljs-comment"># 查看当前list一次能显示的行数</span><br>(gdb) show listsize<br></code></pre></td></tr></table></figure>
+
+<h1 id="断点"><a href="#断点" class="headerlink" title="断点"></a>断点</h1><h2 id="设置断点（break）"><a href="#设置断点（break）" class="headerlink" title="设置断点（break）"></a>设置断点（break）</h2><ul>
+<li>常规断点</li>
+<li>条件断点</li>
+</ul>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs elixir"><span class="hljs-comment"># 在当前文件下设置断点</span><br>(gdb) b &lt;n&gt;<br>(gdb) b &lt;function-name&gt;<br><br><span class="hljs-comment"># 在其他文件上设置断点（比如当前在PC指针在main.c文件下，但是想在sub.c中设置断点）</span><br>(gdb) b &lt;filename&gt;<span class="hljs-symbol">:n</span><br>(gdb) b &lt;filename&gt;<span class="hljs-symbol">:&lt;function-name&gt;</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs gherkin"><span class="hljs-comment"># 条件断点：只有满足某个条件后程序才会停在这个断点的位置上</span><br>(gdb) b <span class="hljs-variable">&lt;n&gt;</span> if 变量名==某个值<br></code></pre></td></tr></table></figure>
+
+<h2 id="查看断点（info）"><a href="#查看断点（info）" class="headerlink" title="查看断点（info）"></a>查看断点（info）</h2><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm">(gdb) info <span class="hljs-keyword">b</span><br><span class="hljs-keyword"></span>Num     Type           <span class="hljs-keyword">Disp </span>Enb <span class="hljs-keyword">Address </span>           What<br><span class="hljs-number">1</span>       <span class="hljs-keyword">breakpoint </span>    keep y   <span class="hljs-number">0x0000000000400cb5</span> in main() <span class="hljs-built_in">at</span> test.cpp:<span class="hljs-number">12</span><br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>Num：断点的编号</li>
+<li>Enb：断点的状态，y表示使能，n表示未使能</li>
+<li>What：断点所在文件，函数，行数</li>
+</ul>
+<h2 id="删除断点（delete）"><a href="#删除断点（delete）" class="headerlink" title="删除断点（delete）"></a>删除断点（delete）</h2><figure class="highlight tap"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs tap"><span class="hljs-comment"># 删除一个断点</span><br>(gdb) d 断点编号<br><br><span class="hljs-comment"># 删除断点1,2,3</span><br>(gdb) d<span class="hljs-number"> 1 </span>2 3<br><br><span class="hljs-comment"># 删除一个范围的断点</span><br>(gdb) d 断点编号1-断点编号N<br><br><span class="hljs-comment"># 删除编号1到编号5的所有断点</span><br>(gdb) d 1-5<br></code></pre></td></tr></table></figure>
+
+<h2 id="设置断点状态（enable-disable）"><a href="#设置断点状态（enable-disable）" class="headerlink" title="设置断点状态（enable&#x2F;disable）"></a>设置断点状态（enable&#x2F;disable）</h2><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs routeros"><span class="hljs-comment"># 设置断点无效</span><br>(gdb) <span class="hljs-built_in">disable</span> 断点编号<br><br><span class="hljs-comment"># 设置断点有效</span><br>(gdb) <span class="hljs-built_in">enable</span> 断点编号<br></code></pre></td></tr></table></figure>
+
+<h1 id="调试"><a href="#调试" class="headerlink" title="调试"></a>调试</h1><h2 id="继续运行（continue）"><a href="#继续运行（continue）" class="headerlink" title="继续运行（continue）"></a>继续运行（continue）</h2><p>遇到断点，程序停止，可以执行c指令继续向下运行，直到遇到下一个断点。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs kotlin">(gdb) <span class="hljs-keyword">continue</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="手动打印信息"><a href="#手动打印信息" class="headerlink" title="手动打印信息"></a>手动打印信息</h2><h3 id="打印变量值（print）"><a href="#打印变量值（print）" class="headerlink" title="打印变量值（print）"></a>打印变量值（print）</h3><table>
+<thead>
+<tr>
+<th align="center">格式化字符</th>
+<th align="center">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">&#x2F;x</td>
+<td align="center">十六进制</td>
+</tr>
+<tr>
+<td align="center">&#x2F;d</td>
+<td align="center">有符号十进制</td>
+</tr>
+<tr>
+<td align="center">&#x2F;u</td>
+<td align="center">无符号十进制</td>
+</tr>
+<tr>
+<td align="center">&#x2F;o</td>
+<td align="center">八进制</td>
+</tr>
+<tr>
+<td align="center">&#x2F;t</td>
+<td align="center">二进制</td>
+</tr>
+<tr>
+<td align="center">&#x2F;f</td>
+<td align="center">浮点型</td>
+</tr>
+<tr>
+<td align="center">&#x2F;c</td>
+<td align="center">字符型</td>
+</tr>
+</tbody></table>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs css">(gdb) <span class="hljs-selector-tag">p</span> 变量名<br># 以<span class="hljs-number">16</span>进制打印变量<span class="hljs-selector-tag">i</span><br>(gdb) <span class="hljs-selector-tag">p</span>/<span class="hljs-attribute">x</span> <span class="hljs-selector-tag">i</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="打印变量类型（ptype）"><a href="#打印变量类型（ptype）" class="headerlink" title="打印变量类型（ptype）"></a>打印变量类型（ptype）</h3><figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs smali">(gdb) ptype 变量名<br><span class="hljs-comment"># 打印数组array的类型</span><br>(gdb) ptype<span class="hljs-built_in"> array</span><br><span class="hljs-built_in"></span>type = int[12]<br></code></pre></td></tr></table></figure>
+
+<h2 id="查看内存（x）"><a href="#查看内存（x）" class="headerlink" title="查看内存（x）"></a>查看内存（x）</h2><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs kotlin">x &lt;addr&gt;<br><br># 查看函数<span class="hljs-function"><span class="hljs-keyword">fun</span>的地址,以16进制输出</span><br>(gdb) x/x <span class="hljs-function"><span class="hljs-keyword">fun</span></span><br></code></pre></td></tr></table></figure>
+
+<h2 id="自动打印信息"><a href="#自动打印信息" class="headerlink" title="自动打印信息"></a>自动打印信息</h2><h3 id="设置某些变量自动打印变量值-display"><a href="#设置某些变量自动打印变量值-display" class="headerlink" title="设置某些变量自动打印变量值(display)"></a>设置某些变量自动打印变量值(display)</h3><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs css">(gdb) <span class="hljs-attribute">display</span> 变量名<br><br># 以<span class="hljs-number">16</span>进制自动显示变量<span class="hljs-selector-tag">i</span>的值<br>(gdb) <span class="hljs-attribute">display</span>/<span class="hljs-attribute">x</span> <span class="hljs-selector-tag">i</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="查看自动显示列表-info-display"><a href="#查看自动显示列表-info-display" class="headerlink" title="查看自动显示列表(info display)"></a>查看自动显示列表(info display)</h3><figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs scss">(gdb) info <span class="hljs-attribute">display</span><br>Auto-<span class="hljs-attribute">display</span> expressions now in effect:<br>Num Enb Expression<br><span class="hljs-number">2</span>:   y  array[i]<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>Num：变量&#x2F;表达式的编号（唯一）。</li>
+<li>Enb：y表示激活状态，n表示禁用状态</li>
+<li>Expression：变量&#x2F;表达式的名字</li>
+</ul>
+<h3 id="取消自动显示-undisplay"><a href="#取消自动显示-undisplay" class="headerlink" title="取消自动显示(undisplay)"></a>取消自动显示(undisplay)</h3><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs routeros"><span class="hljs-comment"># 删除自动显示列表中的变量或表达式</span><br>(gdb) undisplay 编号<br><br><span class="hljs-comment"># 禁用某个变量自动显示</span><br>(gdb) <span class="hljs-built_in">disable</span> display 编号<br><br><span class="hljs-comment"># 激活某个变量自动显示</span><br>(gdb) <span class="hljs-built_in">enable</span> display 编号<br></code></pre></td></tr></table></figure>
+
+<h2 id="单步调试"><a href="#单步调试" class="headerlink" title="单步调试"></a>单步调试</h2><h3 id="step（s）"><a href="#step（s）" class="headerlink" title="step（s）"></a>step（s）</h3><p>命令被执行一次，代码向下运行一行，如果有函数，则会进入函数体内部。</p>
+<h3 id="finish"><a href="#finish" class="headerlink" title="finish"></a>finish</h3><p>通过s单步调试进入函数体内部，如果想要跳出函数体，执行该命令。但是需要保证函数体内不能有有效断点，否则无法跳出。</p>
+<h3 id="next"><a href="#next" class="headerlink" title="next"></a>next</h3><p>命令被执行一次，代码向下运行一行，不会进入函数体内部。</p>
+<h3 id="until"><a href="#until" class="headerlink" title="until"></a>until</h3><p>通过until命令跳出循环体，需要满足以下条件：</p>
+<ul>
+<li>要跳出的函数体内部不能有有效的断点</li>
+<li>必须要在循环体的开始&#x2F;结束行执行该命令</li>
+</ul>
+<h2 id="设置变量值"><a href="#设置变量值" class="headerlink" title="设置变量值"></a>设置变量值</h2><p>在循环体中，如果循环比较久，可以直接设置变量到最后两次循环，然后单步运行查看运行结果。</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs routeros">(gdb) <span class="hljs-built_in">set</span> var 变量名=值<br><span class="hljs-comment"># 在100次的循环体中设置变量i为99</span><br>(gdb) <span class="hljs-built_in">set</span> var <span class="hljs-attribute">i</span>=99<br></code></pre></td></tr></table></figure>
+
+<h1 id="基本命令"><a href="#基本命令" class="headerlink" title="基本命令"></a>基本命令</h1><h2 id="选择线程-t"><a href="#选择线程-t" class="headerlink" title="选择线程: t"></a>选择线程: t</h2><p><code>info thread</code>可以查看当前进程的所有线程。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">(gdb) info threads<br>  Id   Target Id            Frame <br>* 1    process 1537 <span class="hljs-string">&quot;example&quot;</span> main () at main.cpp:15<br></code></pre></td></tr></table></figure>
+
+<p><code>thread/t</code>可以查看当前位于哪个线程：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">(gdb) t<br>[Current thread is 1 (process 3496)]<br></code></pre></td></tr></table></figure>
+
+<p>在多线程程序里，可以通过 <code>t &#123;id&#125;</code>切换线程，每个线程都有独立的调用栈。</p>
+<h2 id="查看堆栈-bt"><a href="#查看堆栈-bt" class="headerlink" title="查看堆栈: bt"></a>查看堆栈: bt</h2><p><code>backtrace/bt</code>可以查看调用栈，调用栈展示了从 <code>main()</code>入口到当前断点的所有函数调用路径：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">(gdb) bt<br><span class="hljs-comment">#0  0x0 in (unknown) at :0</span><br><span class="hljs-comment">#1  0x1a796e7c in foo() at main.cpp:13</span><br><span class="hljs-comment">#2  0x6259058 in bar() at main.cpp:17</span><br><span class="hljs-comment">#3  0x6bb7580 in main() at main.cpp:83</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="选择栈帧-f"><a href="#选择栈帧-f" class="headerlink" title="选择栈帧: f"></a>选择栈帧: f</h2><p>每次函数调用，都会创建一个独立的栈帧，对应上面的 <code>#0</code>,<code>#1</code>…，默认在 <code>#0</code></p>
+<p><code>frame/f</code>可以跳转到指定栈帧：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">(gdb) f 2<br><span class="hljs-comment">#2  bar() at main.cpp:17</span><br>17        int a = foo();<br></code></pre></td></tr></table></figure>
+
+<p><code>up/down</code>可以向下层或上层跳转，对应编号的增大或减小。</p>
+<h2 id="打印变量-p"><a href="#打印变量-p" class="headerlink" title="打印变量: p"></a>打印变量: p</h2><h3 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h3><p><code>print/p</code>可以打印一个变量值：数字，字符串，结构体，指针等变量类型</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">(gdb) p a // int a = 3;<br><span class="hljs-variable">$1</span> = 3<br></code></pre></td></tr></table></figure>
+
+<p>打印出来的值会存在名为 <code>$1</code>,<code>$2</code>…的变量里，后续可以直接复用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">(gdb) p <span class="hljs-variable">$1</span> // 等价于 p a<br><span class="hljs-variable">$2</span> = 3<br></code></pre></td></tr></table></figure>
+
+<h3 id="打印指针"><a href="#打印指针" class="headerlink" title="打印指针"></a>打印指针</h3><p>p后面直接跟一个指针类型的变量，打印的是指针的值，即指针所指向的地址：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">(gdb) p b // int* b = &amp;a;<br><span class="hljs-variable">$1</span> = (int *) 0x7ffd3dcfa27c<br></code></pre></td></tr></table></figure>
+
+<p>可以用解引用运算符，打印指针指向的值：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">(gdb) p *b<br><span class="hljs-variable">$2</span> = 1<br></code></pre></td></tr></table></figure>
+
+<p>如果是字符串指针，p会同时输出指针指向的地址和字符串的内容：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">p str<br><span class="hljs-variable">$3</span> = (char*) 0x7ffc734ff250 <span class="hljs-string">&quot;hello,world&quot;</span><br></code></pre></td></tr></table></figure>
+
+<p>如果只希望打印指针，可以使用说明符 <code>/a</code>:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">(gdb) p/a str	// /a表示address即把变量以地址的形式打印<br><span class="hljs-variable">$4</span> = 0x7ffc734ff250<br></code></pre></td></tr></table></figure>
+
+<h4 id="地址字面量"><a href="#地址字面量" class="headerlink" title="地址字面量"></a>地址字面量</h4><p>p默认会把十六进制的字面量看成是数字，输出一个十进制的整数：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash">(gdb) p 0x7ffd3dcfa27c<br><span class="hljs-variable">$1</span> = 140725640471164<br>(gdb) p 140725640471164 == 0x7ffd3dcfa27c<br><span class="hljs-variable">$2</span> = <span class="hljs-literal">true</span><br></code></pre></td></tr></table></figure>
+
+<p>如果想把数字解释为地址，打印地址上的内容，需要先指定变量类型，然后解引用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">(gdb) p *(int*)0x7ffd3dcfa27c<br><span class="hljs-variable">$3</span> = 1<br></code></pre></td></tr></table></figure>
+
+<p>更简单的语法是：<code>&#123;TYPE&#125; ADDRESS</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">(gdb) p &#123;int&#125;0x7ffd3dcfa27c<br><span class="hljs-variable">$4</span> = 1<br></code></pre></td></tr></table></figure>
+
+<h4 id="转换指针类型"><a href="#转换指针类型" class="headerlink" title="转换指针类型"></a>转换指针类型</h4><p>指针的类型可以转换，以不同的方式解释其指向的内存区域：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash">// char* c = <span class="hljs-string">&quot;hello, world&quot;</span>;<br>(gdb) p c<br><span class="hljs-variable">$1</span> = (char *) 0x7ffc734ff250 <span class="hljs-string">&quot;hello, world&quot;</span>;<br>(gdb) p *(int*)c<br><span class="hljs-variable">$2</span> = 1819043176<br>(gdb) p &#123;int&#125;c<br><span class="hljs-variable">$3</span> = 1819043176<br></code></pre></td></tr></table></figure>
+
+<p>打印内存可以发现，<code>1819043176</code>就是把hell四个字符解释成了一个整数：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">(gdb) x/w 0x7ffc734ff250    // 以 word 形式打印，4 个字节<br>0x7ffc734ff250:	1819043176  // 上述 4 个字符的 ASCII 码转成整数<br></code></pre></td></tr></table></figure>
+
+<p><code>1819043176</code> 对应的十六进制是 <code>0x6C6C6568</code>，恰好依次是 <code>l</code> , <code>l</code> , <code>e</code> 和 <code>h</code> 的 ASCII 码。</p>
+<h4 id="打印结构体字段"><a href="#打印结构体字段" class="headerlink" title="打印结构体字段"></a>打印结构体字段</h4><p>如果指针 <code>p</code> 指向某个结构体，可以用 <code>p ptr-&gt;field</code> 打印字段的值。</p>
+<p>在 GDB 里 <code>.</code> 和 <code>-&gt;</code> 是一样的，所以无论 <code>ptr</code> 是否是指针，都可以用 <code>p.field</code> 打印字段的值。</p>
+<h3 id="打印数组"><a href="#打印数组" class="headerlink" title="打印数组"></a>打印数组</h3><p>语法：<code>p ELEMENT@LEN</code>。从ELEMENT的地址开始向后解释LEN大小的内存单元</p>
+<h4 id="栈上数组"><a href="#栈上数组" class="headerlink" title="栈上数组"></a>栈上数组</h4><p>如果array是栈上数组，直接p array会打印数组的所有元素。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">// int array[] = &#123;1, 2, 3, 4&#125;;<br>(gdb) p array<br><span class="hljs-variable">$1</span> = &#123;1, 2, 3, 4&#125;<br></code></pre></td></tr></table></figure>
+
+<p>也可以 <code>p array[INDEX]@LEN</code>，从某个下标开始打印指定的长度：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">(gdb) p array[1]@3<br><span class="hljs-variable">$4</span> = &#123;2, 3, 4&#125;<br></code></pre></td></tr></table></figure>
+
+<p>但是不能 <code>p array@3</code>，因为栈上数组array的类型是int[4]而不是int：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">(gdb) p array@3<br><span class="hljs-variable">$6</span> = &#123;&#123;1, 2, 3, 4&#125;, &#123;4096, 0, 89129472, 1043493597&#125;, &#123;1, 0, -136626800, 32767&#125;&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="堆上数组"><a href="#堆上数组" class="headerlink" title="堆上数组"></a>堆上数组</h4><p>如果array是堆上数组，可以使用：<code>p *array@LEN</code>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">// int* array = (int*)malloc(3 * sizeof(int));<br>(gdb) p *array@3 // *array 是数组的第一个元素，类型是 int<br><span class="hljs-variable">$1</span> = &#123;1, 2, 3&#125;<br></code></pre></td></tr></table></figure>
+
+<p>或者 <code>p array[INDEX]@LEN</code>，从某个下标开始打印：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">(gdb) p array[1]@3 // array[1] 的类型是 int<br><span class="hljs-variable">$2</span> = &#123;2, 3, 4&#125;<br></code></pre></td></tr></table></figure>
+
+<p>但是不能 <code>p array</code>，因为堆上数组array的类型是int*指针，值是一个地址：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">(gdb) p array<br><span class="hljs-variable">$3</span> = 0x55669a743eb0<br></code></pre></td></tr></table></figure>
+
+<p>同理，<code>p array@LEN</code>会输出栈上相邻的内存地址（没有意义）：</p>
+<figure class="highlight autoit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs autoit">(gdb) p array<span class="hljs-symbol">@3</span><br>$4 = &#123;<span class="hljs-number">0x55669a743eb0</span>, <span class="hljs-number">0x55669a255330</span>, <span class="hljs-number">0x200000001</span>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>如果数组只有一个地址字面量，可以把它强制转换为指针类型，然后用同样的语法打印：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">(gdb) p ((int*)<span class="hljs-number">0</span>x55669a743eb0))[2]<br><span class="hljs-variable">$5</span> = 3<br></code></pre></td></tr></table></figure>
+
+<h3 id="格式化输出"><a href="#格式化输出" class="headerlink" title="格式化输出"></a>格式化输出</h3><p>可以在p后面添加说明符，把一个变量解释为给定的类型：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash">(gdb) p foo // int foo = 98;<br><span class="hljs-variable">$1</span> = 98<br>(gdb) p/c foo // 将 98 解释为字符<br><span class="hljs-variable">$2</span> = 98 <span class="hljs-string">&#x27;b&#x27;</span><br></code></pre></td></tr></table></figure>
+
+<p>所有说明符：</p>
+<ul>
+<li>p&#x2F;a：将变量解释为指针address，使用十六进制打印</li>
+<li>p&#x2F;c：将变量解释为字符，打印为字符</li>
+<li>p&#x2F;o：使用八进制打印变量</li>
+<li>p&#x2F;x：使用十六进制打印变量</li>
+<li>p&#x2F;u：将变量解释为无符号整数unsigned，使用十进制打印</li>
+<li>p&#x2F;s：将变量解释为字符串打印输出</li>
+<li>help x：查看全部</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">o(octal), x(hex), d(decimal), u(unsigned decimal),<br>t(binary), f(float), a(address), i(instruction), <br>c(char), s(string) and z(hex, zero padded on the left)<br></code></pre></td></tr></table></figure>
+
+<h3 id="STL容器"><a href="#STL容器" class="headerlink" title="STL容器"></a>STL容器</h3><h4 id="std-shared-ptr"><a href="#std-shared-ptr" class="headerlink" title="std::shared_ptr"></a>std::shared_ptr</h4><p>直接打印：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash">// std::shared_ptr&lt;int&gt; ptr = std::make_shared&lt;int&gt;(1);<br>(gdb) p ptr<br><span class="hljs-variable">$1</span> = std::shared_ptr&lt;int&gt; (use count 1, weak count 0) = &#123;<br>  get() = 0x5596169122f0&#125;<br>(gdb) p *ptr<br><span class="hljs-variable">$2</span> = 1<br></code></pre></td></tr></table></figure>
+
+<p>或者根据上面get()方法给出的地址打印：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">(gdb) p &#123;int&#125;0x5596169122f0<br><span class="hljs-variable">$3</span> = 1<br></code></pre></td></tr></table></figure>
+
+<p>或者根据shared_ptr内部的私有变量 <code>_M_ptr</code>打印：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash">(gdb) p ptr._M_ptr<br><span class="hljs-variable">$4</span> = 0x5596169122f0<br>(gdb) p *(ptr._M_ptr)<br><span class="hljs-variable">$5</span> = 1<br></code></pre></td></tr></table></figure>
+
+<h4 id="std-vector"><a href="#std-vector" class="headerlink" title="std::vector"></a>std::vector</h4><p>直接打印：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">// std::vector&lt;int&gt; vec = &#123;1, 2, 3, 4&#125;;<br>(gdb) p vec<br><span class="hljs-variable">$1</span> = std::vector of length 4, capacity 4 = &#123;1, 2, 3, 4&#125;<br></code></pre></td></tr></table></figure>
+
+<p>vector也有私有变量，保存了数据的实际存储位置：</p>
+<ul>
+<li><code>_M_imp1._M_start</code>：数组起始地址</li>
+<li><code>_M_imp1._M_finish</code>：数组结束地址（数组最后一个元素的下一个）</li>
+</ul>
+<p>可以根据这个指针打印：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash">(gdb) p &#123;int&#125;vec._M_impl._M_start<br><span class="hljs-variable">$2</span> = 1<br>(gdb) p &#123;int&#125;vec._M_impl._M_start@3<br><span class="hljs-variable">$3</span> = &#123;1, 2, 3&#125;<br>(gdb) p (&#123;int&#125;vec._M_impl._M_start)[2]<br><span class="hljs-variable">$4</span> = 3<br></code></pre></td></tr></table></figure>
+
+<h4 id="std-string"><a href="#std-string" class="headerlink" title="std::string"></a>std::string</h4><p>直接打印：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">(gdb) p str<br><span class="hljs-variable">$1</span> = <span class="hljs-string">&quot;hello,world&quot;</span><br></code></pre></td></tr></table></figure>
+
+<p>或者根据私有变量 <code>_M_dataplus._M_p</code>打印，其类型是char*：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">(gdb) p str._M_dataplus._M_p<br><span class="hljs-variable">$2</span> = (std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;::pointer) 0x7ffc734ff250 <span class="hljs-string">&quot;hello,world&quot;</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="使用STL-Views插件"><a href="#使用STL-Views插件" class="headerlink" title="使用STL-Views插件"></a>使用STL-Views插件</h4><p>使用gdb打印set，stack，map等STL容器比较困难。gdb支持使用python编写的printer，<a target="_blank" rel="noopener" href="https://sourceware.org/gdb/wiki/STLSupport">GDB官网</a>提供了STL容器的printer。</p>
+<ol>
+<li><a href="https://sourceware.org/gdb/wiki/STLSupport?action=AttachFile&do=view&target=stl-views-1.0.3.gdb">下载地址</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.yolinux.com/TUTORIALS/GDB-Commands.html#STLDEREF">官方教程</a></li>
+<li>把下载下来的文件放到home目录（wherever）</li>
+<li>进入gdb</li>
+<li>加载插件：source ~&#x2F;std-views-1.0.3.gdb</li>
+</ol>
+<p>进入gdb，加载插件，查看帮助：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">(gdb) <span class="hljs-built_in">source</span> ~/stl-views-1.0.3.gdb<br>(gdb) <span class="hljs-built_in">help</span> pset<br>(gdb) <span class="hljs-built_in">help</span> pmap<br></code></pre></td></tr></table></figure>
+
+<p>使用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">(gdb) pset s<br>(gdb) pset s int<br>(gdb) pset s int 20<br></code></pre></td></tr></table></figure>
+
+<h3 id="如果打印内容被省略"><a href="#如果打印内容被省略" class="headerlink" title="如果打印内容被省略"></a>如果打印内容被省略</h3><p>打印字符串的时候，如果有重复的字符，可能会被合并成一个：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">(gdb) p <span class="hljs-string">&quot;aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&quot;</span><br><span class="hljs-variable">$1</span> = <span class="hljs-string">&#x27;a&#x27;</span> &lt;repeats 30 <span class="hljs-built_in">times</span>&gt;<br></code></pre></td></tr></table></figure>
+
+<p>可以通过命令 <code>set print repeats 0</code>设置为不合并：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">(gdb) <span class="hljs-built_in">set</span> <span class="hljs-built_in">print</span> repeats 0<br>(gdb) p <span class="hljs-string">&quot;aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&quot;</span><br><span class="hljs-variable">$2</span> = <span class="hljs-string">&quot;aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&quot;</span><br></code></pre></td></tr></table></figure>
+
+<p>如果打印数组的时候元素过多，中间的元素会被省略，可以通过以下设置，设置为不省略：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">set</span> <span class="hljs-built_in">print</span> elements 0<br></code></pre></td></tr></table></figure>
+
+<h3 id="查看历史变量"><a href="#查看历史变量" class="headerlink" title="查看历史变量"></a>查看历史变量</h3><p>通过p打印出来的值，会被存在名为$1,$2,$3…的变量里（<a target="_blank" rel="noopener" href="https://sourceware.org/gdb/current/onlinedocs/gdb.html/Value-History.html#Value-History">value history</a>）后续可以直接复用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash">(gdb) p a<br><span class="hljs-variable">$1</span> = 123<br>(gdb) p <span class="hljs-variable">$1</span> // 等价于 p a<br><span class="hljs-variable">$2</span> = 123<br></code></pre></td></tr></table></figure>
+
+<p>一些特殊的变量：</p>
+<ul>
+<li><code>$</code>：最近打印的变量</li>
+<li><code>$$</code>：<code>$</code>之前的变量，即倒数第二个</li>
+<li><code>$$n</code>：最后一个变量往前的第n个变量比如 <code>$$0</code>就是 <code>$</code></li>
+</ul>
+<p>可以批量打印历史变量：</p>
+<ul>
+<li><code>show value</code>：打印最后10个历史变量</li>
+<li><code>show value +</code>：这个命令是在 <code>show value</code>的基础上使用的，它会打印出紧随刚才 <code>show value</code>命令打印的10个历史变量之后的另外10个历史变量。这个命令用于当你想要查看更多历史变量时，而不仅仅是最近的10个。</li>
+</ul>
+<h2 id="打印内存-x"><a href="#打印内存-x" class="headerlink" title="打印内存: x"></a>打印内存: x</h2><p>x可以查看一个内存地址的值，以指定的格式打印。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">(gdb) x/s 0x7ffc734ff250  // 以字符串形式打印<br>0x7ffc734ff250:	<span class="hljs-string">&quot;hello,world&quot;</span><br></code></pre></td></tr></table></figure>
+
+<p>x支持的格式化说明符：</p>
+<ul>
+<li>x&#x2F;c：将地址解释为字符char，打印为字符</li>
+<li>x&#x2F;o：使用八进制打印变量</li>
+<li>x&#x2F;x：使用十六进制打印变量</li>
+<li>x&#x2F;u：将地址解释为无符号整数unsiged，使用十进制打印</li>
+<li>x&#x2F;s：将地址解释为字符串</li>
+<li>help x：查看全部</li>
+</ul>
+<p>x的完整语法：<code>x/FMT ADDRESS</code>，<code>F</code> &#x2F; <code>M</code> &#x2F; <code>T</code> 是可选的参数。</p>
+<ul>
+<li><code>F</code>：一个数字，表示输出几个内存单元，默认是 1</li>
+<li><code>M</code>：格式化说明符，<code>o</code> &#x2F; <code>x</code> &#x2F; <code>d</code> &#x2F; <code>u</code> &#x2F; <code>s</code> 等</li>
+<li><code>T</code>：一个内存单元的字节数，默认是 4 个字节，可选的是 b(byte), h(halfword), w(word), g(giant, 8 bytes)</li>
+<li><code>ADDRESS</code>：一个内存地址，可以是一个字面量，也可以是一个指针类型的变量</li>
+</ul>
+<blockquote>
+<p>例如，<code>x/3uh 0x1234</code> 表示从内存地址 0x1234 开始，以两字节为单位，输出 3 个无符号整数。</p>
+</blockquote>
+<h3 id="x和p的区别："><a href="#x和p的区别：" class="headerlink" title="x和p的区别："></a>x和p的区别：</h3><ol>
+<li><p>传入一个数字，p会当作一个数字字面量，输出原始值得十进制；而x会当作一个地址，输出对应内存区域得值：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs bash">(gdb) p 0x10    // 字面量<br><span class="hljs-variable">$1</span> = 16  	      // 输出十进制值<br>(gdb) p/x 0x10  // 以十六进制形式输出<br><span class="hljs-variable">$2</span> = 0x10<br><br>(gdb) x/s 0x10  // 这个内存地址解释为字符串<br>0x10 <span class="hljs-string">&quot;hello, world&quot;</span>  <br>(gdb) x/c 0x10  // 把这个地址上的内容解释为单个字符<br>0x10:	<span class="hljs-string">&#x27;h&#x27;</span><br>(gdb) x/d 0x10  // 把这个地址上的内容解释为整数<br>0x10:	104<br></code></pre></td></tr></table></figure></li>
+<li><p>传入一个指针，p会输出指针的值，即一个十六进制的地址；而x会输出指针指向的内存区域的值：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">（gdb) p str_pointer;<br><span class="hljs-variable">$1</span> = 0x7ffc<br><br>(gdb) x/s 0x7ffc<br>0x7ffc <span class="hljs-string">&quot;hello world&quot;</span><br></code></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="打印类型-ptype"><a href="#打印类型-ptype" class="headerlink" title="打印类型: ptype"></a>打印类型: ptype</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">(gdb) ptype foo<br><span class="hljs-built_in">type</span> = int<br></code></pre></td></tr></table></figure>
+
+<h2 id="打印各种信息-i"><a href="#打印各种信息-i" class="headerlink" title="打印各种信息: i"></a>打印各种信息: i</h2><ul>
+<li><code>info locals</code>打印当前栈帧的局部变量</li>
+<li><code>info args</code>：打印所有函数参数</li>
+<li><code>info threads</code>：打印进程的线程信息</li>
+<li><code>info registers</code>：打印当前线程的寄存器信息</li>
+<li><code>info sharedlibrary</code>：打印当前加载的动态链接库</li>
+<li><code>info proc mappings</code>：打印地址空间中的内存map，用来确定某个地址的类型</li>
+<li><code>help info</code>：所有info支持的命令</li>
+</ul>
+<h2 id="存储变量-修改变量的值-set"><a href="#存储变量-修改变量的值-set" class="headerlink" title="存储变量&#x2F;修改变量的值: set"></a>存储变量&#x2F;修改变量的值: set</h2><p>set可以保存一个变量（<a target="_blank" rel="noopener" href="https://sourceware.org/gdb/current/onlinedocs/gdb.html/Convenience-Vars.html">Convenience Variables</a>）方便后续使用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">（gdb) <span class="hljs-built_in">set</span> <span class="hljs-variable">$foo</span> = *object_ptr<br></code></pre></td></tr></table></figure>
+
+<p>查看所有存储的变量：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">(gdb) show convenience<br>(gdb) show conv  // 简写形式<br></code></pre></td></tr></table></figure>
+
+<p>set命令可以用于在运行时修改某个变量的值：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">(gdb) <span class="hljs-built_in">set</span> foo.bar = <span class="hljs-literal">true</span><br></code></pre></td></tr></table></figure>
+
+<p>修改变量值的使用场景：</p>
+<ul>
+<li>临时修复某个bug使程序可以继续运行</li>
+<li>给变量设置不同的值，测试不同的case</li>
+<li>循环中设置循环变量的值，直接快进到最后一轮查看结果</li>
+</ul>
+<h2 id="断点调试-b"><a href="#断点调试-b" class="headerlink" title="断点调试: b"></a>断点调试: b</h2><h3 id="设置断点"><a href="#设置断点" class="headerlink" title="设置断点"></a>设置断点</h3><p>设置断点的方式有多种（<a target="_blank" rel="noopener" href="https://ftp.gnu.org/old-gnu/Manuals/gdb/html_node/gdb_28.html">官方文档</a>）:</p>
+<ul>
+<li>在当前执行位置设置断点：<code>b</code></li>
+<li>函数名：<code>b function</code></li>
+<li>文件名+函数名：<code>b filename:function</code></li>
+<li>当前文件行号：<code>b linenum</code></li>
+<li>特定文件行号：<code>b filename:linenum</code></li>
+<li>偏移量：<code>b +offset</code>&#x2F;<code>b -offset</code>，在当前栈帧执行位置的前后设置断点</li>
+</ul>
+<h3 id="删除断点-clear"><a href="#删除断点-clear" class="headerlink" title="删除断点: clear"></a>删除断点: clear</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">(gdb) clear foo.cpp:14<br></code></pre></td></tr></table></figure>
+
+<p>clear的语法和break相同，需要指定要删除的断点的位置：</p>
+<ul>
+<li>clear：删除当前指定位置上的所有断点</li>
+<li>clear function</li>
+<li>clear filename:function</li>
+<li>clear linenum</li>
+<li>clear filename:linenum</li>
+<li>delete：删除所有断点，简写d</li>
+</ul>
+<p>设置临时断点：tbreak，参数同break，命中一次后自动删除</p>
+<h3 id="启用-停用断点"><a href="#启用-停用断点" class="headerlink" title="启用&#x2F;停用断点"></a>启用&#x2F;停用断点</h3><p>停用断点：<code>disable</code></p>
+<p>启用断点：<code>enable</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash">停用断点：<span class="hljs-built_in">disable</span><br><br>(gdb) <span class="hljs-built_in">disable</span>      // 停用所有断点<br>(gdb) <span class="hljs-built_in">disable</span> NUM  // 停用编号为 n 的断点<br></code></pre></td></tr></table></figure>
+
+<h3 id="继续运行-c"><a href="#继续运行-c" class="headerlink" title="继续运行: c"></a>继续运行: c</h3><p>命中断点之后程序会停止运行，此时可以通过 <code>continue</code>命令继续运行程序，简写 <code>c</code></p>
+<h3 id="查看所有断点-i-b"><a href="#查看所有断点-i-b" class="headerlink" title="查看所有断点: i b"></a>查看所有断点: i b</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">(gdb) i b<br>(gdb) info breakpoints<br></code></pre></td></tr></table></figure>
+
+<p>会以表格的形式展示断点编号，是否是临时断点，是否enable，断点位置等信息。</p>
+<h3 id="在函数返回前中断"><a href="#在函数返回前中断" class="headerlink" title="在函数返回前中断"></a>在函数返回前中断</h3><p>有时候希望在函数返回前中断，从而检查函数的返回值，或者检查函数是在哪一个 <code>return</code>语句返回的。</p>
+<ol>
+<li><p>方式一：先正向执行直到函数返回，然后再反向执行设置断点：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">(gdb) record<br>(gdb) fin<br>(gdb) reverse-step<br></code></pre></td></tr></table></figure>
+
+<p>record：这个命令用于开启GDB的记录功能。当你执行 <code>record</code>命令后，GDB会开始记录程序的执行历史，包括函数调用、变量值的变化等。</p>
+<p>fin：这个命令用于结束当前的记录会话。在执行完 <code>record</code>命令并让程序运行到你想要检查的函数返回之后，使用 <code>fin</code>命令来停止记录。</p>
+<p>reverse-step：这个命令用于执行反向单步执行。在停止记录后，你可以使用 <code>reverse-step</code>命令来反向步进，检查函数返回前的状态。</p>
+</li>
+<li><p>方式二：所有函数无论有多少条return语句，在编译成汇编指令后，一定是只有一条 <code>retq</code>指令，因此可以在汇编指令中找到 <code>retq</code>所在位置打断点：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs bash">int <span class="hljs-function"><span class="hljs-title">main</span></span>() &#123;<br>  <span class="hljs-built_in">return</span> foo(0);<br>&#125;<br><br>(gdb) disas foo  // 查看汇编<br>Dump of assembler code <span class="hljs-keyword">for</span> <span class="hljs-keyword">function</span> foo:<br>   0x0000000000400448 &lt;+0&gt;: push   %rbp<br>   0x0000000000400449 &lt;+1&gt;: mov    %rsp,%rbp<br>   ...<br>   0x0000000000400473 &lt;+43&gt;:    jmp    0x40047c &lt;foo+52&gt;<br>   0x0000000000400480 &lt;+56&gt;:    retq   // 这里就是函数的返回指令<br>End of assembler dump.<br><br>(gdb) b *0x0000000000400480  // 在 retq 指令打断点<br>Breakpoint 1 at 0x400480<br><br>(gdb) r  // 运行程序，直到命中断点<br>Breakpoint 1, 0x0000000000400480 <span class="hljs-keyword">in</span> foo ()<br><br>(gdb) p var<br><span class="hljs-variable">$1</span> = 42<br></code></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="监控断点-watch"><a href="#监控断点-watch" class="headerlink" title="监控断点: watch"></a>监控断点: watch</h3><p>GDB可以监控一个变量，直到它被修改时才触发断点，<a target="_blank" rel="noopener" href="https://ftp.gnu.org/old-gnu/Manuals/gdb/html_node/gdb_29.html#SEC30">官方文档</a>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">(gdb) watch foo<br>(gdb) watch bar.var<br></code></pre></td></tr></table></figure>
+
+<p>如果想在变量被读取时中断，可以使用 <code>rwatch</code> 或 <code>awatch</code>：</p>
+<ul>
+<li>rwatch：仅当变量被读取时中断</li>
+<li>awatch：当变量被读取或写入时中断</li>
+</ul>
+<p>查看所有的watchpoints:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">(gdb) info watchpoints<br></code></pre></td></tr></table></figure>
+
+<h3 id="条件断点-b…if"><a href="#条件断点-b…if" class="headerlink" title="条件断点: b…if"></a>条件断点: b…if</h3><p>常规断点（breakpoints）和监控断点（watchpoints）都可以绑定一个条件，只有在满足条件时才触发断点，<a target="_blank" rel="noopener" href="https://ftp.gnu.org/old-gnu/Manuals/gdb/html_node/gdb_33.html#SEC34">官方文档</a>：</p>
+<p>“条件”是一个布尔表达式：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">(gdb) b foo.cpp:123 <span class="hljs-keyword">if</span> bar == 1<br>(gdb) b foo.cpp:123 <span class="hljs-keyword">if</span> bar == 1 &amp;&amp; foo &lt; 2<br></code></pre></td></tr></table></figure>
+
+<p>如果要判断两个字符串是否相等，可以使用gdb的内置函数 <code>$_streu</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">(gdb) b foo.cpp:123 <span class="hljs-keyword">if</span> <span class="hljs-variable">$_streq</span>(some_str, <span class="hljs-string">&quot;hello_world&quot;</span>)<br></code></pre></td></tr></table></figure>
+
+<h3 id="断点命令列表-commands"><a href="#断点命令列表-commands" class="headerlink" title="断点命令列表: commands"></a>断点命令列表: commands</h3><p>可以通过commands命令给断点绑定一组自定义命令，当命中断点后会自动执行，打印变量的值，或者设置另一个断点。</p>
+<p>语法：先制定要绑定的断点的编号，然后输入自定义命令，最后以end结束：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">（gdb) commands 1<br>（gdb) p foo<br>（gdb) end<br></code></pre></td></tr></table></figure>
+
+<p>断点编号可以通过 <code>i b</code>或者 <code>i wat</code> 获取，如果不给commands传入任何编号，默认绑定到最近触发的断点上。</p>
+<p><code>commands</code>的应用场景之一是收集信息。比如在某行代码后面插入一行debug日志，打印变量或者调用栈。由于每次命中断点后，必须输入 <code>cont</code>命令才会继续运行程序，因此可以在 <code>end</code>前加一个 <code>cont</code>命令，这样程序就可以无需干预自动执行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">(gdb) b foo.cpp:123<br>(gdb) commands<br>(gdb) p bar<br>(gdb) cont<br>(gdb) end<br></code></pre></td></tr></table></figure>
+
+<p><code>commands</code>的另一个应用场景是临时修复一个bug，以便让程序正常运行。比如在某一行错误代码后面，给变量设置正确的值。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash">(gdb) b foo.cpp:123<br>(gdb) commands<br>(gdb) silent  // 这个命令后面的命令不会有任何输出<br>(gdb) <span class="hljs-built_in">set</span> x = y + 4<br>(gdb) cont<br>(gdb) end<br></code></pre></td></tr></table></figure>
+
+<h2 id="运行程序-n-s-n-fin-u"><a href="#运行程序-n-s-n-fin-u" class="headerlink" title="运行程序: n&#x2F;s&#x2F;n&#x2F;fin&#x2F;u"></a>运行程序: n&#x2F;s&#x2F;n&#x2F;fin&#x2F;u</h2><ul>
+<li>run&#x2F;r：启动程序，直到遇到第一个断点或运行结束</li>
+<li>start：启动程序，临时停在main()的第一行</li>
+<li>next&#x2F;n：逐行执行，如果某一行是函数，不会进入函数内部，而是执行完整个函数</li>
+<li>step&#x2F;s：逐行执行，如果某一行是函数，则会进入函数的第一行</li>
+<li>continue&#x2F;c：从断点位置继续执行，直到遇到下一个断点或运行结束</li>
+<li>finish&#x2F;fin：执行到函数结束，停在return后的下一条语句</li>
+<li>until&#x2F;u<ul>
+<li>不加任何参数：执行直到当前语句结束，比如在for循环里，until会跳到for循环体的下一行，准备开始下一次迭代。这样，你可以逐个检查循环的每次迭代，而不需要每次都手动继续执行。</li>
+<li>加参数：执行直到指定位置，参数语法同break，等价于tbreak+continue</li>
+</ul>
+</li>
+<li>quit&#x2F;q：退出GDB</li>
+</ul>
+<p>直接回车会重复上一次执行的命令。</p>
+<h2 id="输出日志-set-logging"><a href="#输出日志-set-logging" class="headerlink" title="输出日志: set logging"></a>输出日志: set logging</h2><p>可以把所有输出打印到日志里，作进一步分析。</p>
+<p>需要执行以下两个命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">(gdb) <span class="hljs-built_in">set</span> logging file gdb.txt<br>(gdb) <span class="hljs-built_in">set</span> logging on<br>copying output to gdb.txt<br></code></pre></td></tr></table></figure>
+
+<p>这样任何命令的输出便会写到 <code>gdb.txt</code>文件中，前提是shell拥有该文件的写入权限。</p>
+<p>配合以下命令，确保输出完整内容：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">set</span> <span class="hljs-built_in">print</span> repeats 0       // 否则相同的连续字符会被合并<br><span class="hljs-built_in">set</span> <span class="hljs-built_in">print</span> elements 0      // 否则过长的数组会被省略<br><span class="hljs-built_in">set</span> height 0              // 否则如果一页显示不完，会停下来要求 <span class="hljs-built_in">continue</span><br><span class="hljs-built_in">set</span> width 0  <br></code></pre></td></tr></table></figure>
+
+<h1 id="配置文件-gdbinit"><a href="#配置文件-gdbinit" class="headerlink" title="配置文件: ~&#x2F;.gdbinit"></a>配置文件: ~&#x2F;.gdbinit</h1><p>可以把一些常用的配置、插件、自定义命令放在 <code>~/.gdbinit</code></p>
+<p>Github 上有一些开箱即用的 <code>~/.gdbinit</code> 文件：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/gdbinit/Gdbinit/blob/master/gdbinit">https://github.com/gdbinit/Gdbinit/blob/master/gdbinit</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/cyrus-and/gdb-dashboard">gdb-dashboard</a>：可视化界面、丰富的功能</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/hugsy/gef">gef</a>：可视化界面、丰富的功能</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/pwndbg/pwndbg">pwndbg</a></li>
+</ul>
+<p>gdb-dashboard 使用笔记：</p>
+<ul>
+<li>使用 <code>-output</code> 命令将某些组件在其他终端显示，比如终端 A 执行 gdb 命令，终端 B 显示断点、变量值、调用栈。在终端输入 <code>tty</code> 命令就可以查看当前终端的序号。</li>
+<li>介绍文章：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/435918702">https://zhuanlan.zhihu.com/p/435918702</a></li>
+</ul>
+<h1 id="加载插件"><a href="#加载插件" class="headerlink" title="加载插件"></a>加载插件</h1><p>GDB 可以使用 <a target="_blank" rel="noopener" href="https://sourceware.org/gdb/onlinedocs/gdb/Python-API.html">Python API</a> 来实现自定义脚本。脚本可以直接写在 <code>~/.gdbinit</code>，或者写在一个单独的文件中，然后通过 <code>source</code> 命令加载。</p>
+<p>网上有很多可用的插件，比如 <a target="_blank" rel="noopener" href="https://sourceware.org/gdb/wiki/STLSupport">STL views</a> 提供了一些打印 STL 容器的命令。</p>
+<h1 id="术语"><a href="#术语" class="headerlink" title="术语"></a>术语</h1><h2 id="栈帧"><a href="#栈帧" class="headerlink" title="栈帧"></a>栈帧</h2><p>调用栈（call stack）被分成若干个栈帧（stack frame），每个栈帧包括一次函数调用相关的所有数据：函数的参数，函数的局部变量，函数的返回地址等。</p>
+<p>程序启动时只有一个栈帧即main函数，又称初始栈帧或最外层栈帧。每次函数调用都会创建一个新栈帧，每次函数返回时，一个栈帧也会被弹出。当前执行的函数所对应的栈帧又称最内层栈帧。</p>
+<p>GDB给每个栈帧分配了一个数字，最内层栈帧的编号为0，外层栈帧一次加1。可以通过 <code>bt</code>命令查看所有栈帧，通过 <code>f</code>命令加上编号进入到对应的栈帧。</p>
+<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><ul>
+<li><code>gdb -p 8043</code>启动gdb附加到进程ID(PID)为8043的进程上。附加成功后可以使用gdb提供的各种调试命令检查和控制该进程的执行。</li>
+<li><code>bt full</code>查看详细调用栈信息，会把frame中的入参和局部变量显示出来。</li>
+<li><code>./exec &amp;</code>后面的&amp;表示把程序放在后台运行，从而立即返回命令行，可以执行下一步操作，而不需要等待程序运行。</li>
+<li><code>ps -e</code>列出当前系统上所有的进程。<code>ps</code>显示系统上的进程状态，<code>-e</code>表示显示所有的进程列表不仅仅是当前用户的进程</li>
+</ul>
+<h1 id="学习资源"><a href="#学习资源" class="headerlink" title="学习资源"></a>学习资源</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://sourceware.org/gdb/">GDB官网</a></li>
+<li><a target="_blank" rel="noopener" href="https://sourceware.org/gdb/onlinedocs/gdb/">Debugging with GDB</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.brendangregg.com/blog/2016-08-09/gdb-example-ncurses.html">gdb debug full examples</a></li>
+<li><a target="_blank" rel="noopener" href="https://wizardforcel.gitbooks.io/100-gdb-tips/content/index.html">100个 GDB 小技巧</a></li>
+<li><a target="_blank" rel="noopener" href="https://pernos.co/">在线 GDB 平台</a></li>
+<li><a target="_blank" rel="noopener" href="https://imageslr.com/2023/gdb.html#coredump">GDB 入门</a></li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Linux/" class="category-chain-item">Linux</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>gdb</div>
+      <div>http://example.com/2025/02/22/MissingSemester/gdb/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>ZhangHangming</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年2月22日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/02/22/MissingSemester/gcc/" title="gcc">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">gcc</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/02/22/MissingSemester/git-2/" title="Git2">
+                        <span class="hidden-mobile">Git2</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+</html>

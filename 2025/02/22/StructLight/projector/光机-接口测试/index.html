@@ -1,0 +1,704 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="ZhangHangming">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="DLPC-API-1.10给的API比较杂，有很多也用不上，需要自己另外定义接口，官方给的有一个示例程序，程序里封装了一部分接口，先测试这些接口能不能用，然后在这个基础上增加需要的接口，实例程序中的包括：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="光机接口测试">
+<meta property="og:url" content="http://example.com/2025/02/22/StructLight/projector/%E5%85%89%E6%9C%BA-%E6%8E%A5%E5%8F%A3%E6%B5%8B%E8%AF%95/index.html">
+<meta property="og:site_name" content="向所有小狗say hi">
+<meta property="og:description" content="DLPC-API-1.10给的API比较杂，有很多也用不上，需要自己另外定义接口，官方给的有一个示例程序，程序里封装了一部分接口，先测试这些接口能不能用，然后在这个基础上增加需要的接口，实例程序中的包括：">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-02-22T08:25:39.836Z">
+<meta property="article:modified_time" content="2025-02-22T08:25:39.836Z">
+<meta property="article:author" content="ZhangHangming">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>光机接口测试 - 向所有小狗say hi</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="光机接口测试"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-02-22 16:25" pubdate>
+          2025年2月22日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          11 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">光机接口测试</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>DLPC-API-1.10给的API比较杂，有很多也用不上，需要自己另外定义接口，官方给的有一个示例程序，程序里封装了一部分接口，先测试这些接口能不能用，然后在这个基础上增加需要的接口，实例程序中的包括：</p>
+<span id="more"></span>
+<ul>
+<li>I2C 写入</li>
+<li>I2C 读取</li>
+<li>初始化命令层</li>
+<li>以秒为单位等待指定的时间</li>
+<li>生成一个1位（二维）图案</li>
+<li>生成一个8位（灰度）图案</li>
+<li>填充数组<code>s_PatternSets 中的 DLPC34XX_INT_PAT_PatternSet_s</code>结构</li>
+<li>填充数组<code>s_PatternOrderTable 中的 DLPC34XX_INT_PAT_PatternOrderTableEntry_s</code>结构</li>
+<li>将数据复制到 Flash 编程缓冲区以便后续写入</li>
+<li>将缓冲区数据编程到 Flash 中</li>
+<li>将数据写入文件</li>
+<li>生成图案数据并写入到文件</li>
+<li>缓存图案数据并编程到 Flash 中</li>
+<li>生成和编程图案数据到 Flash 中</li>
+<li>从 Flash 中加载图案顺序表条目</li>
+<li>加载特定的图案顺序表条目</li>
+<li>写入测试图案网格线</li>
+<li>写入测试图案色条</li>
+<li>写入选定视图外观（Look）</li>
+<li>加载预构建的模式数据</li>
+<li>写入 LABB 和 CAIC 设置</li>
+<li>加载固件</li>
+</ul>
+<h1 id="过程记录"><a href="#过程记录" class="headerlink" title="过程记录"></a>过程记录</h1><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> <span class="hljs-title">WriteI2C</span><span class="hljs-params">(<span class="hljs-type">uint16_t</span> WriteDataLength, <span class="hljs-type">uint8_t</span> *WriteData, DLPC_COMMON_CommandProtocolData_s *ProtocolData)</span> </span>&#123;<br>    <span class="hljs-comment">// 实现写入 I2C 设备的逻辑</span><br>    <span class="hljs-comment">// ...</span><br>    <span class="hljs-keyword">return</span> SUCCESS; <span class="hljs-comment">// 或者在出错时返回错误代码</span><br>&#125;<br><br><span class="hljs-comment">// 假设您有一个函数接受一个回调函数指针</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">ExecuteWriteOperation</span><span class="hljs-params">(DLPC_COMMON_WriteCommandCallback callback)</span> </span>&#123;<br>    <span class="hljs-comment">// ...</span><br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> result = <span class="hljs-built_in">callback</span>(WriteDataLength, WriteData, &amp;ProtocolData);<br>    <span class="hljs-comment">// ...</span><br>&#125;<br><br><span class="hljs-comment">// 在调用 ExecuteWriteOperation 时，您可以传递 WriteI2C 函数</span><br><span class="hljs-built_in">ExecuteWriteOperation</span>(WriteI2C);<br></code></pre></td></tr></table></figure>
+<p>在这个例子中，ExecuteWriteOperation 函数接受一个类型为 DLPC_COMMON_WriteCommandCallback 的回调函数，并在内部调用它。这样，您可以将不同的写入操作作为回调传递给 ExecuteWriteOperation，而不需要修改其内部实现。</p>
+<figure class="highlight delphi"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs delphi">(gdb) ptype DLPC_COMMON_WriteCommandCallback<br><span class="hljs-keyword">type</span> = unsigned int <span class="hljs-comment">(*)(uint16_t, uint8_t *, DLPC_COMMON_CommandProtocolData_s *)</span><br></code></pre></td></tr></table></figure>
+<ul>
+<li>函数指针：定义回调函数，可以在不同的上下文中被调用。抽象特定的行为，使得代码更加模块化和可重用。</li>
+<li>返回类型：unsigned int</li>
+<li>参数列表：<ul>
+<li>uint16_t：无符号的16位整数</li>
+<li>uint8_t *：指向无符号8位的整数的指针参数，数据缓冲区</li>
+<li>DLPC_COMMON_CommandProtocolData_s *：指向结构体的指针，协议相关</li>
+</ul>
+</li>
+</ul>
+<p>当光机接入或者没有接入USB的时候均出现：Status &#x3D; CY_ERROR_REQUEST_FAILED, NumDevices &#x3D; 0 ‘\000’</p>
+<ul>
+<li>CY_ERROR_REQUEST_FAILED：发送到 USB Serial 设备的请求失败</li>
+<li>表明函数 CyGetListofDevices 没有成功地找到任何连接的设备</li>
+</ul>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">zhm</span>@Ubuntu:~/Jetson/StructLight/CyUSBSerial_SDK_Linux/linux/library$ lsusb<br><span class="hljs-attribute">Bus</span> <span class="hljs-number">001</span> Device <span class="hljs-number">001</span>: ID <span class="hljs-number">1</span>d6b:<span class="hljs-number">0002</span> Linux Foundation <span class="hljs-number">2</span>.<span class="hljs-number">0</span> root hub<br><span class="hljs-attribute">Bus</span> <span class="hljs-number">001</span> Device <span class="hljs-number">002</span>: ID <span class="hljs-number">0</span>bda:<span class="hljs-number">8771</span> Realtek Semiconductor Corp. Bluetooth Radio<br><span class="hljs-attribute">Bus</span> <span class="hljs-number">001</span> Device <span class="hljs-number">003</span>: ID <span class="hljs-number">0000</span>:<span class="hljs-number">3825</span>   USB OPTICAL MOUSE<br><span class="hljs-attribute">Bus</span> <span class="hljs-number">001</span> Device <span class="hljs-number">004</span>: ID <span class="hljs-number">1</span>c4f:<span class="hljs-number">0026</span> SiGma Micro Keyboard<br><span class="hljs-attribute">Bus</span> <span class="hljs-number">001</span> Device <span class="hljs-number">005</span>: ID <span class="hljs-number">05</span>e3:<span class="hljs-number">0608</span> Genesys Logic, Inc. Hub<br><span class="hljs-attribute">Bus</span> <span class="hljs-number">001</span> Device <span class="hljs-number">018</span>: ID <span class="hljs-number">04</span>b4:<span class="hljs-number">000</span>a Cypress Semiconductor Corp. USB-Serial (Dual Channel)<br><span class="hljs-attribute">Bus</span> <span class="hljs-number">002</span> Device <span class="hljs-number">001</span>: ID <span class="hljs-number">1</span>d6b:<span class="hljs-number">0003</span> Linux Foundation <span class="hljs-number">3</span>.<span class="hljs-number">0</span> root hub<br></code></pre></td></tr></table></figure>
+<p>说明Cypress USB-Serial设备已经被系统识别，并且分配了设备ID 04b4:000a</p>
+<p>驱动程序：libusb-1.0库（需要测试它能不能用）<br>经过测试，是可以用的。</p>
+<p>使用sudo apt-get install <package>的时候，出现无法命中等问题，换源之后问题依然没有解决，可以尝试使用下面的方法。</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">1</span>. sudo vim /etc/resolv.conf # 添加如下内容<br><span class="hljs-attribute">nameserver</span> <span class="hljs-number">8.8.8.8</span><br><span class="hljs-attribute">nameserver</span> <span class="hljs-number">8.8.4.4</span><br><span class="hljs-attribute">nameserver</span> <span class="hljs-number">127.0.0.1</span><br><br><span class="hljs-attribute">2</span>. 输入Esc，:wq，保存并退出<br></code></pre></td></tr></table></figure>
+
+<h1 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h1><p><code>InitConnectionAndCommandLayer();</code>出现错误，函数内部为：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs C"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 初始化命令层，设置读/写缓冲区和回调函数。</span><br><span class="hljs-comment"> */</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">InitConnectionAndCommandLayer</span><span class="hljs-params">()</span><br>&#123;<br>    <span class="hljs-comment">// 初始化命令库，设置读/写缓冲区和对应的 I2C 读写函数</span><br>    DLPC_COMMON_InitCommandLibrary(s_WriteBuffer,<br>                                   <span class="hljs-keyword">sizeof</span>(s_WriteBuffer),<br>                                   s_ReadBuffer,<br>                                   <span class="hljs-keyword">sizeof</span>(s_ReadBuffer),<br>                                   WriteI2C,<br>                                   ReadI2C);<br><br>    <span class="hljs-comment">// 连接到 Cypress I2C</span><br>    CYPRESS_I2C_ConnectToCyI2C();<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><code>CYPRESS_I2C_ConnectToCyI2C();</code>函数内部为，添加<code>printf</code>定位问题出现位置：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs C"><span class="hljs-type">bool</span> <span class="hljs-title function_">CYPRESS_I2C_ConnectToCyI2C</span><span class="hljs-params">()</span><br>&#123;<br>    CY_RETURN_STATUS Status;	<br>    CY_I2C_CONFIG I2CConfig;<br>    <span class="hljs-keyword">if</span> (GetCyI2CHandle(&amp;s_Handle) == <span class="hljs-literal">false</span>)<br>    &#123;<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Get CyI2C Handle Failed!!! \n&quot;</span>);<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br><br>    I2CConfig.frequency      = I2C_CLOCK_FREQUENCY_HZ;<br>    I2CConfig.slaveAddress   = <span class="hljs-number">0x30</span>;<br>    I2CConfig.isMaster       = <span class="hljs-literal">true</span>;<br>    I2CConfig.isClockStretch = <span class="hljs-literal">false</span>;<br>    <br>    Status = CySetI2cConfig(s_Handle, &amp;I2CConfig);<br>    <span class="hljs-keyword">if</span> (Status != CY_SUCCESS)<br>    &#123;<br>		<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Connect to I2C Error %d!!! \n&quot;</span>, Status);<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br><br>    s_DataConfig.isNakBit     = <span class="hljs-literal">true</span>;<br>    s_DataConfig.isStopBit    = <span class="hljs-literal">true</span>;<br>    s_DataConfig.slaveAddress = DLP_I2C_SLAVE_ADDRESS;<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><code>GetCyI2CHandle(&amp;s_Handle)</code>这里出现错误，添加<code>printf</code>定位问题，函数内部为：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><code class="hljs C"><span class="hljs-comment">/* Gets the handle of the connected Cypress USB-Serial bridge controller */</span><br><span class="hljs-type">bool</span> <span class="hljs-title function_">GetCyI2CHandle</span><span class="hljs-params">(CY_HANDLE* Handle)</span><br>&#123;<br>    CY_RETURN_STATUS Status;<br>    CY_DEVICE_INFO   DeviceInfo;<br>    <span class="hljs-type">uint8_t</span>          NumDevices = <span class="hljs-number">0</span>;<br>    <span class="hljs-type">uint8_t</span>          DeviceIdx;<br>    <span class="hljs-type">uint8_t</span>          InterfaceIdx;<br><br>    Status = CyGetListofDevices(&amp;NumDevices);<br>    <span class="hljs-keyword">if</span> ((Status != CY_SUCCESS) || (NumDevices == <span class="hljs-number">0</span>))<br>    &#123;<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Status: %d\n&quot;</span>, Status);<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;NumDevices: %d\n&quot;</span>, NumDevices);<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;无设备连接成功,没有设备连接!!!\n&quot;</span>);<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br><br>    <span class="hljs-keyword">for</span> (DeviceIdx = <span class="hljs-number">0</span>; DeviceIdx &lt; NumDevices; DeviceIdx++)<br>    &#123;<br>        Status = CyGetDeviceInfo(DeviceIdx, &amp;DeviceInfo);<br>        <span class="hljs-keyword">if</span> (Status != CY_SUCCESS)<br>        &#123;<br>            <span class="hljs-keyword">continue</span>;<br>        &#125;<br><br>        <span class="hljs-keyword">for</span> (InterfaceIdx = <span class="hljs-number">0</span>; InterfaceIdx &lt; DeviceInfo.numInterfaces; InterfaceIdx++)<br>        &#123;<br>            <span class="hljs-keyword">if</span> (DeviceInfo.deviceType[InterfaceIdx] == CY_TYPE_I2C)<br>            &#123;<br>                Status = CyOpen(DeviceIdx, InterfaceIdx, Handle);<br>                <span class="hljs-keyword">if</span> (Status == CY_SUCCESS)<br>                &#123;<br>                    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>                &#125;<br>            &#125;<br>        &#125;<br>    &#125;<br><br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Get I2C Handle Error %d!!! \n&quot;</span>, Status);<br>	<span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>使用gdb定位到<code>Status = CyGetListofDevices(&amp;NumDevices);</code>，Status输出为<code>CY_ERROR_REQUEST_FAILED</code>，定位到<code>CyGetListofDevices(&amp;NumDevices);</code>：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs C"><span class="hljs-comment">/*</span><br><span class="hljs-comment">   Summary</span><br><span class="hljs-comment">   This API retrieves number of USB devices connected to the host.</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">   Description</span><br><span class="hljs-comment">   This API retrieves the number of devices connected to the host.</span><br><span class="hljs-comment">   In Windows family of operating systems the API retrieves only the number of devices that are attached</span><br><span class="hljs-comment">   to CyUSB3.SYS driver. For other operating systems, it retrieves the total number of USB devices present</span><br><span class="hljs-comment">   on the bus. It includes both USB Serial device as well as other devices.</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">   Note: In case of Linux and Mac apart from providing number of devices connected, it builds the</span><br><span class="hljs-comment">   device list which is used for opening the device and obtaining device handle. Thus the API should be</span><br><span class="hljs-comment">   called during device discovery in the application.</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">   Return Value</span><br><span class="hljs-comment">   * CY_SUCCESS on success </span><br><span class="hljs-comment">   * CY_ERROR_DEVICE_NOT_FOUND if there are no devices attached.</span><br><span class="hljs-comment">   * CY_ERROR_REQUEST_FAILED if library was not initialized.</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">   See Also</span><br><span class="hljs-comment">   * CyGetDeviceInfo</span><br><span class="hljs-comment">   * CyGetDeviceInfoVidPid</span><br><span class="hljs-comment">   * CyOpen</span><br><span class="hljs-comment">   * CyClose</span><br><span class="hljs-comment">*/</span><br>CYWINEXPORT CY_RETURN_STATUS <span class="hljs-title function_">CyGetListofDevices</span> <span class="hljs-params">(</span><br><span class="hljs-params">    UINT8* numDevices                            <span class="hljs-comment">/*Number of Devices connected*/</span></span><br><span class="hljs-params">    )</span>;<br></code></pre></td></tr></table></figure>
+<p>定位到这里<code>CY_ERROR_REQUEST_FAILED if library was not initialized.</code>出现的原因是，因为library没有初始化。修改<code>GetCyI2CHandle(CY_HANDLE* Handle)</code>代码，添加初始化函数：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><code class="hljs C"><span class="hljs-type">bool</span> <span class="hljs-title function_">GetCyI2CHandle</span><span class="hljs-params">(CY_HANDLE* Handle)</span><br>&#123;<br>    CY_RETURN_STATUS Status;<br>    CY_DEVICE_INFO   DeviceInfo;<br>    <span class="hljs-type">uint8_t</span>          NumDevices = <span class="hljs-number">0</span>;<br>    <span class="hljs-type">uint8_t</span>          DeviceIdx;<br>    <span class="hljs-type">uint8_t</span>          InterfaceIdx;<br><br>    Status = CyLibraryInit();<br>    <span class="hljs-keyword">if</span> (Status != CY_SUCCESS) &#123;<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d 设备初始化失败!!!\n&quot;</span>, Status);<br>    &#125;<br>    Status = CyGetListofDevices(&amp;NumDevices);<br>    <span class="hljs-keyword">if</span> ((Status != CY_SUCCESS) || (NumDevices == <span class="hljs-number">0</span>))<br>    &#123;<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Status: %d\n&quot;</span>, Status);<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;NumDevices: %d\n&quot;</span>, NumDevices);<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;无设备连接成功,没有设备连接!!!\n&quot;</span>);<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br><br>    <span class="hljs-keyword">for</span> (DeviceIdx = <span class="hljs-number">0</span>; DeviceIdx &lt; NumDevices; DeviceIdx++)<br>    &#123;<br>        Status = CyGetDeviceInfo(DeviceIdx, &amp;DeviceInfo);<br>        <span class="hljs-keyword">if</span> (Status != CY_SUCCESS)<br>        &#123;<br>            <span class="hljs-keyword">continue</span>;<br>        &#125;<br><br>        <span class="hljs-keyword">for</span> (InterfaceIdx = <span class="hljs-number">0</span>; InterfaceIdx &lt; DeviceInfo.numInterfaces; InterfaceIdx++)<br>        &#123;<br>            <span class="hljs-keyword">if</span> (DeviceInfo.deviceType[InterfaceIdx] == CY_TYPE_I2C)<br>            &#123;<br>                Status = CyOpen(DeviceIdx, InterfaceIdx, Handle);<br>                <span class="hljs-keyword">if</span> (Status == CY_SUCCESS)<br>                &#123;<br>                    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>                &#125;<br>            &#125;<br>        &#125;<br>    &#125;<br><br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Get I2C Handle Error %d!!! \n&quot;</span>, Status);<br>	<span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>问题解决。</p>
+<p>总结：<br>1、首先是单独测试USB驱动程序能不能用，写了一个单独测试USB的程序，可以正常运行。<br>2、检查PC机有没有连接到光机设备，可以使用<code>lsusb</code>指令。光机是连接到PC机上的。<br>3、检查程序有没有问题。<code>printf</code>和<code>gdb</code>定位问题。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%BB%93%E6%9E%84%E5%85%89%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E9%A1%B9%E7%9B%AE/" class="category-chain-item">嵌入式结构光三维重建项目</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>光机接口测试</div>
+      <div>http://example.com/2025/02/22/StructLight/projector/光机-接口测试/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>ZhangHangming</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年2月22日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/02/22/StructLight/projector/interface/" title="光机接口">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">光机接口</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/02/22/StructLight/camera/GrabMulCamera/" title="Grab Multiple Camera">
+                        <span class="hidden-mobile">Grab Multiple Camera</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+</html>
