@@ -1,7 +1,8 @@
 ---
 title: google benchmark 1
 categories:
-	- benchmark
+- 工具
+- benchmark
 ---
 # 安装
 

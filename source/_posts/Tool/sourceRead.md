@@ -1,7 +1,8 @@
 ---
 title: gtest官方示例代码
 categories:
-	- gtest
+- 工具
+- gtest
 ---
 # gtest_main
 

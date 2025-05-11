@@ -1,7 +1,8 @@
 ---
 title: gtest入门-1
 categories:
-	- gtest
+- 工具
+- gtest
 ---
 # 安装
 
@@ -48,8 +49,6 @@ int main(int argc,char*argv[])
 }
 ```
 
-
-
 ## 编译运行
 
 ```bash
@@ -67,14 +66,11 @@ $ ./app
 [  PASSED  ] 1 test.
 ```
 
-
 ## 使用流程
 
 1. 头文件gtest/gtest.h；
 2. 使用TEST宏定义测试，两个参数：测试用例名，测试名，这两个参数只是起到提示作用；
 3. 在main中调用RUN_ALL_TESTS()；
-
-
 
 # 命令行参数
 
@@ -136,7 +132,6 @@ Repeating all tests (iteration 3) . . .
 [  PASSED  ] 1 test.
 ```
 
-
 # 断言
 
 gtest使用一系列断言的宏来检查是否符合预期，主要分为两类：ASSERT和EXPECT
@@ -151,7 +146,6 @@ gtest使用一系列断言的宏来检查是否符合预期，主要分为两类
 | ASSERT_TRUE(condition);  | EXPECT_TRUE(condition);  | condition is true  |
 | ASSERT_FALSE(condition); | EXPECT_FALSE(condition); | condition is false |
 
-
 ### 数值比较
 
 | ASSERT                 | EXPECT                 | Verifiles    |
@@ -162,7 +156,6 @@ gtest使用一系列断言的宏来检查是否符合预期，主要分为两类
 | ASSERT_LE(val1, val2); | EXPECT_LE(val1, val2); | val1 <= val2 |
 | ASSERT_GT(val1, val2); | EXPECT_GT(val1, val2); | val1 > val2  |
 | ASSERT_GE(val1, val2); | EXPECT_GE(val1, val2); | val1 >= val2 |
-
 
 ### 字符串比较
 
