@@ -21,15 +21,15 @@
   <meta name="author" content="ZhangHangming">
   <meta name="keywords" content="">
   
-    <meta name="description" content="[ ] CMake嵌套写法 动态库：源文件非常多，生成的可执行文件比较小，发布的时候不仅需要发布可执行文件，还需要发布动态库。静态库：源文件比较少，生成的可执行文件比较大，发布的时候只需要发布可执行文件就可以了。">
+    <meta name="description" content="CMake嵌套写法 动态库：源文件非常多，生成的可执行文件比较小，发布的时候不仅需要发布可执行文件，还需要发布动态库。静态库：源文件比较少，生成的可执行文件比较大，发布的时候只需要发布可执行文件就可以了。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CMake嵌套写法">
 <meta property="og:url" content="http://example.com/2025/02/22/MissingSemester/CMake%E5%B5%8C%E5%A5%97%E5%86%99%E6%B3%95/index.html">
 <meta property="og:site_name" content="向所有小狗say hi">
-<meta property="og:description" content="[ ] CMake嵌套写法 动态库：源文件非常多，生成的可执行文件比较小，发布的时候不仅需要发布可执行文件，还需要发布动态库。静态库：源文件比较少，生成的可执行文件比较大，发布的时候只需要发布可执行文件就可以了。">
+<meta property="og:description" content="CMake嵌套写法 动态库：源文件非常多，生成的可执行文件比较小，发布的时候不仅需要发布可执行文件，还需要发布动态库。静态库：源文件比较少，生成的可执行文件比较大，发布的时候只需要发布可执行文件就可以了。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-02-22T08:25:39.836Z">
-<meta property="article:modified_time" content="2025-02-22T08:25:39.836Z">
+<meta property="article:modified_time" content="2025-09-23T12:37:45.054Z">
 <meta property="article:author" content="ZhangHangming">
 <meta name="twitter:card" content="summary_large_image">
   
@@ -277,11 +277,11 @@
             
               <div class="markdown-body">
                 
-                <p>[ ] CMake嵌套写法</p>
+                <p>CMake嵌套写法</p>
 <p>动态库：源文件非常多，生成的可执行文件比较小，发布的时候不仅需要发布可执行文件，还需要发布动态库。<br>静态库：源文件比较少，生成的可执行文件比较大，发布的时候只需要发布可执行文件就可以了。</p>
 <span id="more"></span>
 
-<p><code>CMAKE_CURRENT_SOURCE_DIR</code>:指向当前正在解析的CMakeLists.txt文件所在目录，它的值会随着CMake处理不同的CMakeLists.txt而变化。<br><code>PROJECT_SOURCE_DIR</code>:指向项目的根目录，即包含顶层CMakeLists.txt文件所在的目录。这个变量只在项目的顶层CMakeLists.txt文件中有效，即在调用project()命令之后。<br><code>CMAKE_SOURCE_DIR</code>：总是指向整个项目的根目录，这个变量在项目的顶层CMakeLists.txt文件中等同于<code>PROJECT_SOURCE_DIR</code>，并且在子目录中也是可以使用的。<br><code>PROJECT_BINARY_DIR</code>:指向项目的二进制文件，即CMake生成的构建文件（如Makefile）所在的目录。</p>
+<p><code>CMAKE_CURRENT_SOURCE_DIR</code>:指向当前正在解析的CMakeLists.txt文件所在目录，它的值会随着CMake处理不同的CMakeLists.txt而变化。<br><code>PROJECT_SOURCE_DIR</code>:指向项目的根目录，即包含顶层CMakeLists.txt文件所在的目录。这个变量只在项目的顶层CMakeLists.txt文件中有效，即在调用project()命令之后。<br><code>CMAKE_SOURCE_DIR</code>：总是指向整个项目的根目录，这个变量在项目的顶层CMakeLists.txt文件中等同于 <code>PROJECT_SOURCE_DIR</code>，并且在子目录中也是可以使用的。<br><code>PROJECT_BINARY_DIR</code>:指向项目的二进制文件，即CMake生成的构建文件（如Makefile）所在的目录。</p>
 <p>父节点里的变量可以在子节点中用（继承）<br>子节点中定义的变量不能再父节点中用</p>
 <h1 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h1><h2 id="文件结构"><a href="#文件结构" class="headerlink" title="文件结构"></a>文件结构</h2><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs stylus">$ tree <br>.<br>├── CMakeLists<span class="hljs-selector-class">.txt</span><br>├── calc<br>│   ├── CMakeLists<span class="hljs-selector-class">.txt</span><br>│   ├── add<span class="hljs-selector-class">.cpp</span><br>│   ├── <span class="hljs-selector-tag">div</span><span class="hljs-selector-class">.cpp</span><br>│   ├── mult<span class="hljs-selector-class">.cpp</span><br>│   └── sub<span class="hljs-selector-class">.cpp</span><br>├── include<br>│   ├── calc<span class="hljs-selector-class">.h</span><br>│   └── sort<span class="hljs-selector-class">.h</span><br>├── sort<br>│   ├── CMakeLists<span class="hljs-selector-class">.txt</span><br>│   ├── bubbleSort<span class="hljs-selector-class">.cpp</span><br>│   ├── insertionSort<span class="hljs-selector-class">.cpp</span><br>│   └── selectionSort<span class="hljs-selector-class">.cpp</span><br>├── test01<br>│   ├── CMakeLists<span class="hljs-selector-class">.txt</span><br>│   └── sort<span class="hljs-selector-class">.cpp</span><br>└── test02<br>    ├── CMakeLists<span class="hljs-selector-class">.txt</span><br>    └── calc<span class="hljs-selector-class">.cpp</span><br><br><span class="hljs-number">5</span> directories, <span class="hljs-number">16</span> files<br></code></pre></td></tr></table></figure>
 
@@ -294,6 +294,7 @@
 <h2 id="test01目录中CMakeLists-txt文件"><a href="#test01目录中CMakeLists-txt文件" class="headerlink" title="test01目录中CMakeLists.txt文件"></a>test01目录中CMakeLists.txt文件</h2><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs CMake"><span class="hljs-keyword">cmake_minimum_required</span>(VERSION <span class="hljs-number">3.10</span>)<br><span class="hljs-keyword">project</span>(test01)<br><br><span class="hljs-keyword">aux_source_directory</span>(./ SRC)<br><span class="hljs-keyword">include_directories</span>(<span class="hljs-variable">$&#123;HEADPATH&#125;</span>)<br><span class="hljs-keyword">link_directories</span>(<span class="hljs-variable">$&#123;LIBPATH&#125;</span>)<br><span class="hljs-keyword">link_libraries</span>(<span class="hljs-variable">$&#123;SORTLIB&#125;</span>)<br><span class="hljs-keyword">set</span>(EXECUTABLE_OUTPUT_PATH <span class="hljs-variable">$&#123;EXECPATH&#125;</span>)<br><span class="hljs-keyword">add_executable</span>(<span class="hljs-variable">$&#123;APPNAME1&#125;</span> <span class="hljs-variable">$&#123;SRC&#125;</span>)<br></code></pre></td></tr></table></figure>
 
 <h2 id="test02目录中CMakeLists-txt文件"><a href="#test02目录中CMakeLists-txt文件" class="headerlink" title="test02目录中CMakeLists.txt文件"></a>test02目录中CMakeLists.txt文件</h2><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs CMake"><span class="hljs-keyword">cmake_minimum_required</span>(VERSION <span class="hljs-number">3.10</span>)<br><span class="hljs-keyword">project</span>(test02)<br><br><span class="hljs-keyword">aux_source_directory</span>(./ SRC)<br><span class="hljs-keyword">include_directories</span>(<span class="hljs-variable">$&#123;HEADPATH&#125;</span>)<br><span class="hljs-keyword">link_directories</span>(<span class="hljs-variable">$&#123;LIBPATH&#125;</span>)<br><span class="hljs-keyword">link_libraries</span>(<span class="hljs-variable">$&#123;CALCLIB&#125;</span>)<br><span class="hljs-keyword">set</span>(EXECUTABLE_OUTPUT_PATH <span class="hljs-variable">$&#123;EXECPATH&#125;</span>)<br><span class="hljs-keyword">add_executable</span>(<span class="hljs-variable">$&#123;APPNAME2&#125;</span> <span class="hljs-variable">$&#123;SRC&#125;</span>)<br></code></pre></td></tr></table></figure>
+
                 
               </div>
             

@@ -1,0 +1,863 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="ZhangHangming">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="内核如果管理虚拟内存区域？task_struct结构体是什么？ 1. task_structflowchart LR     task_struct --&gt; B[pid_t pid] --&gt;B1(进程id)     task_struct --&gt; C[pid_t tgid] --&gt; C1(线程所属pid)     task_struct --&gt; D[files_struct] --&gt; D1(进程打">
+<meta property="og:type" content="article">
+<meta property="og:title" content="内存管理-虚拟内存管理">
+<meta property="og:url" content="http://example.com/2025/05/15/OperatingSystem/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86-%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/index.html">
+<meta property="og:site_name" content="向所有小狗say hi">
+<meta property="og:description" content="内核如果管理虚拟内存区域？task_struct结构体是什么？ 1. task_structflowchart LR     task_struct --&gt; B[pid_t pid] --&gt;B1(进程id)     task_struct --&gt; C[pid_t tgid] --&gt; C1(线程所属pid)     task_struct --&gt; D[files_struct] --&gt; D1(进程打">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-05-15T02:00:00.000Z">
+<meta property="article:modified_time" content="2025-05-17T06:19:52.965Z">
+<meta property="article:author" content="ZhangHangming">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>内存管理-虚拟内存管理 - 向所有小狗say hi</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="内存管理-虚拟内存管理"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-05-15 10:00" pubdate>
+          2025年5月15日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          31 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">内存管理-虚拟内存管理</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>内核如果管理虚拟内存区域？task_struct结构体是什么？</p>
+<h2 id="1-task-struct"><a href="#1-task-struct" class="headerlink" title="1. task_struct"></a>1. task_struct</h2><pre class="mermaid">flowchart LR
+    task_struct --> B[pid_t pid] -->B1(进程id)
+    task_struct --> C[pid_t tgid] --> C1(线程所属pid)
+    task_struct --> D[files_struct] --> D1(进程打开的文件信息)
+    task_struct --> E[mm_struct] --> E1(内存描述符)</pre>
+
+<p>task_struct创建流程：</p>
+<ol>
+<li>调用fork()函数创建进程的时候，会创建task_struct;</li>
+<li>通过 <code>copy_process</code>函数，用父进程的资源，填充新进程task_struct结构；</li>
+</ol>
+<p>其中拷贝信息包括mm_struct结构，并且子进程在新创建出来之后他的虚拟内存空间和父进程虚拟内存空间是一摸一样的。</p>
+<h3 id="1-1-进程和线程的区别"><a href="#1-1-进程和线程的区别" class="headerlink" title="1.1 进程和线程的区别"></a>1.1 进程和线程的区别</h3><ul>
+<li>进程：是程序的一次执行实例，是操作系统资源分配的基本单位，每个进程都拥有独立的虚拟地址空间，相互隔离；</li>
+<li>线程：是进程内的一个执行单元，是CPU调度的基本单位，同一进程的线程共享进程的资源，但拥有独立的栈，程序计数器和寄存器。</li>
+</ul>
+<p>进程之间的通信</p>
+<ul>
+<li>管道</li>
+<li>共享内存</li>
+<li>消息队列</li>
+</ul>
+<p>线程之间的通信</p>
+<ul>
+<li>同一进程的线程共享代码，数据，文件等资源，通信可以直接读写共享变；</li>
+<li>线程间同步需要使用锁，避免数据竞争；</li>
+</ul>
+<h3 id="1-2-进程和线程的底层区别"><a href="#1-2-进程和线程的底层区别" class="headerlink" title="1.2 进程和线程的底层区别"></a>1.2 进程和线程的底层区别</h3><ul>
+<li>底层区别是创建线程和进程的流程是一致的，只是他们是创建子进程时的两个分支；</li>
+<li>进程：如果是通过fork系统调用创建出的子进程，它的虚拟内存空间以及相关页表相当于父进程虚拟内存空间的一份拷贝；</li>
+<li>线程：如果是通过vfork或clone系统调用创建出的子进程，会将父进程的虚拟内存空间以及相关页表直接赋值给子进程，即父子进程的虚拟内存空间变为共享，此时不是一份拷贝。</li>
+<li>对Linux内核来说，线程仅仅是一个共享特定资源的进程而已。</li>
+</ul>
+<h3 id="1-3-内核线程和用户线程的区别"><a href="#1-3-内核线程和用户线程的区别" class="headerlink" title="1.3 内核线程和用户线程的区别"></a>1.3 内核线程和用户线程的区别</h3><ul>
+<li>内核线程和用户线程的区别是内核线程没有相关的内存描述符mm_struct，内核线程对应的tsak_struct结构中的mm_struct为空；</li>
+<li>当内核线程被调度的时候，内核线程不会访问用户态内存，只会访问内核态内存；</li>
+<li>由于内核态内存所有线程都相同，内核将调度之前的用户态进程的虚拟内存空间的mm_struct直接赋值给内存线程，从而避免为内核线程分配mm_struct和相关页表的开销，以及避免内核线程之间调度时地址空间切换的开销。</li>
+</ul>
+<h2 id="2-mm-struct"><a href="#2-mm-struct" class="headerlink" title="2. mm_struct"></a>2. mm_struct</h2><p>每个进程都有唯一的mm_struct结构体，用于描述进程虚拟空间。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">mm_struct</span> &#123;<br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> task_size;    <span class="hljs-comment">/* size of task vm space */</span><br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> start_code, end_code, start_data, end_data;<br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> start_brk, brk, start_stack;<br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> arg_start, arg_end, env_start, env_end;<br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> mmap_base;  <span class="hljs-comment">/* base of mmap area */</span><br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> total_vm;    <span class="hljs-comment">/* Total pages mapped */</span><br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> locked_vm;  <span class="hljs-comment">/* Pages that have PG_mlocked set */</span><br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> pinned_vm;  <span class="hljs-comment">/* Refcount permanently increased */</span><br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> data_vm;    <span class="hljs-comment">/* VM_WRITE &amp; ~VM_SHARED &amp; ~VM_STACK */</span><br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> exec_vm;    <span class="hljs-comment">/* VM_EXEC &amp; ~VM_WRITE &amp; ~VM_STACK */</span><br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> stack_vm;    <span class="hljs-comment">/* VM_STACK */</span><br><br>       ...... 省略 ........<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<h3 id="2-1-task-size"><a href="#2-1-task-size" class="headerlink" title="2.1 task_size"></a>2.1 task_size</h3><p>task_size定义了用户空间和内核空间的分界线：</p>
+<ul>
+<li>32位中：task_size &#x3D; 0xC000 0000</li>
+<li>64位中：task_size &#x3D; 0x0000 7FFF FFFF F000</li>
+</ul>
+<h3 id="2-2-代码段"><a href="#2-2-代码段" class="headerlink" title="2.2 代码段"></a>2.2 代码段</h3><ul>
+<li>start_code：定义代码段的起始位置；</li>
+<li>end_code：定义代码段的结束位置；</li>
+</ul>
+<h3 id="2-3-数据段"><a href="#2-3-数据段" class="headerlink" title="2.3 数据段"></a>2.3 数据段</h3><ul>
+<li>start_data：数据段的起始位置；</li>
+<li>end_data：数据段的结束位置（也是BSS段的起始位置）；</li>
+</ul>
+<h3 id="2-4-BSS段"><a href="#2-4-BSS段" class="headerlink" title="2.4 BSS段"></a>2.4 BSS段</h3><ul>
+<li>end_data：BSS段的起始位置；</li>
+<li>start_brk：BSS段的结束位置（也是堆的起始位置）；</li>
+</ul>
+<h3 id="2-5-堆"><a href="#2-5-堆" class="headerlink" title="2.5 堆"></a>2.5 堆</h3><ul>
+<li>start_brk：堆的起始位置；</li>
+<li>brk：当前堆的结束位置（堆中的内存地址的增长方向是由低地址向高地址增长）；</li>
+</ul>
+<h3 id="2-6-文件映射与匿名映射区"><a href="#2-6-文件映射与匿名映射区" class="headerlink" title="2.6 文件映射与匿名映射区"></a>2.6 文件映射与匿名映射区</h3><ul>
+<li>mmap_base：内存映射区的起始地址（内存映射区地址的增长方向是由高地址向低地址增长）；</li>
+</ul>
+<h3 id="2-7-栈"><a href="#2-7-栈" class="headerlink" title="2.7 栈"></a>2.7 栈</h3><ul>
+<li>start_stack：栈的起始地址（栈中的内存地址的增长方向是由高地址向低地址增长，和文件映射区一致）；</li>
+<li>栈的起始位置在RBP寄存器中存储，栈的结束位置即栈顶指针在RSP寄存器中存储；</li>
+</ul>
+<h3 id="2-8-其他参数"><a href="#2-8-其他参数" class="headerlink" title="2.8 其他参数"></a>2.8 其他参数</h3><ul>
+<li>arg_start&#x2F;arg_end：描述参数列表的位置，位于栈中最高地址处；</li>
+<li>env_start&#x2F;env_end：描述环境变量的位置，位于栈中最高地址处；</li>
+<li>total_vm：描述在进程虚拟内存空间中，总共与物理内存映射的页数；</li>
+<li>locked_vm：内存回收时，被锁定不能换出的内存页总数；</li>
+<li>pinned_vm：内存回收时，既不能换出也不能移动的内存页总数；</li>
+<li>data_vm：描述数据段中映射的内存页数目；</li>
+<li>exec_vm：描述代码段中存放可执行文件的内存页数目；</li>
+<li>stack_vm：描述栈中映射的内存页数目；</li>
+</ul>
+<h2 id="3-vm-area-struct"><a href="#3-vm-area-struct" class="headerlink" title="3. vm_area_struct"></a>3. vm_area_struct</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">vm_area_struct</span> &#123;<br><br>	<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> vm_start;		<span class="hljs-comment">/* Our start address within vm_mm. */</span><br>	<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> vm_end;		<span class="hljs-comment">/* The first byte after our end address</span><br><span class="hljs-comment">					   within vm_mm. */</span><br>	<span class="hljs-comment">/*</span><br><span class="hljs-comment">	 * Access permissions of this VMA.</span><br><span class="hljs-comment">	 */</span><br>	<span class="hljs-type">pgprot_t</span> vm_page_prot;<br>	<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> vm_flags;<br><br>	<span class="hljs-keyword">struct</span> <span class="hljs-title class_">anon_vma</span> *anon_vma;	<span class="hljs-comment">/* Serialized by page_table_lock */</span><br>    <span class="hljs-keyword">struct</span> <span class="hljs-title class_">file</span> * vm_file;		<span class="hljs-comment">/* File we map to (can be NULL). */</span><br>	<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> vm_pgoff;		<span class="hljs-comment">/* Offset (within vm_file) in PAGE_SIZE</span><br><span class="hljs-comment">					   units */</span><br>	<span class="hljs-type">void</span> * vm_private_data;		<span class="hljs-comment">/* was vm_pte (shared mem) */</span><br>	<span class="hljs-comment">/* Function pointers to deal with this struct. */</span><br>	<span class="hljs-type">const</span> <span class="hljs-keyword">struct</span> <span class="hljs-title class_">vm_operations_struct</span> *vm_ops;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<h3 id="3-1-虚拟内存区域"><a href="#3-1-虚拟内存区域" class="headerlink" title="3.1 虚拟内存区域"></a>3.1 虚拟内存区域</h3><ul>
+<li>vm_start：指向vm_area_struct描述的这块虚拟内存区域的起始位置；</li>
+<li>vm_end：指向vm_area_struct描述的这块虚拟内存区域的结束位置；</li>
+<li>虚拟内存区域，是用一个双向链表进行管理的，vm_area_struct内部定义了vm_next和vm_prev指针，用来指向上一个和下一个虚拟内存区域；</li>
+<li>也不一定，也可能是是用红黑树进行管理的，因为红黑树查找更高效，使用红黑树进行管理的话，每一个虚拟内存区域都是红黑树的一个节点；</li>
+<li>实际上，内核关于虚拟内存区域的管理是由两种方式的，定义了一个mmap指针用于双向列表的管理，同时定义了一个mm_rb指针用于红黑树的管理；</li>
+</ul>
+<h3 id="3-2-vm-page-prot"><a href="#3-2-vm-page-prot" class="headerlink" title="3.2 vm_page_prot"></a>3.2 vm_page_prot</h3><p>vm_page_prot是一个具体的概念，用于定义底层页表项（PTE）中的访问控制权限，直接应用于内存页级别，决定单个物理页的读写，执行等属性；</p>
+<p>什么是底层页表项？</p>
+<ul>
+<li>底层页表项（PTE）是操作系统内存管理中的核心数据结构，用于实现虚拟地址到物理地址的映射，并控制访问权限；</li>
+<li>每个PTE记录一个虚拟页与物理页框的映射关系；</li>
+<li>Linux等现代操作系统中，页表通常采用多级结构，底层页表项是最末级的条目，直接指向物理页框；</li>
+</ul>
+<p>页表项组成：</p>
+<ul>
+<li>物理页框号：虚拟页对应的物理内存地址；</li>
+<li>权限位：控制读，写，执行权限；</li>
+<li>状态位：<ul>
+<li>存在位：标记该页是否已经加载到物理内存；</li>
+<li>脏位：标记该页是否被修改过，如果是脏页则需要写回磁盘；</li>
+<li>访问页：标记该页是否被访问过，用于页面置换算法；</li>
+</ul>
+</li>
+<li>其他标志：共享位，用户&#x2F;内核模式位；</li>
+</ul>
+<p>工作流程：</p>
+<ul>
+<li>地址转换：CPU访问虚拟地址时，MMU（内存管理单元）主机查找页表，最终通过PTE（页表项）获取物理地址；</li>
+<li>缺页异常：若PTE的存在位为0，触发缺页中断，内核分配物理页并更新PTE；</li>
+<li>权限检查：若访问违反PTE权限位，触发段错误；</li>
+</ul>
+<h3 id="3-3-vm-flags"><a href="#3-3-vm-flags" class="headerlink" title="3.3 vm_flags"></a>3.3 vm_flags</h3><p>vm_flags是一个抽象概念，用于描述整个虚拟内存区域的访问权限和行为规范；</p>
+<ul>
+<li>通过掩码位（例如VM_READ,VM_WRITE）定义区域的整体属性；</li>
+<li>影响内存区域的全局行为（例如是否允许换出，是都映射设备IO空间）；</li>
+<li>不直接操作页表，而是通过转换生成vm_page_prot；</li>
+</ul>
+<p>vm_flags有哪些属性设置？</p>
+<ul>
+<li>VM_READ：定义虚拟内存区域是否可读；</li>
+<li>VM_WRITE：定义虚拟内存区域是否可写；</li>
+<li>VM_EXEC：定义虚拟内存区域是否可执行；</li>
+<li>VM_SHARD：定义虚拟内存区域是否可以在多进程之间共享，以便完成进程间通讯；</li>
+<li>VM_IO：表示这块虚拟内存区域可以映射到设备IO空间，通常在设备驱动程序执行mmap进程IO空间映射时设置；</li>
+<li>VM_RESERVED：表示在内存紧张的时候，这块虚拟内存很重要不能被换出；</li>
+<li>VM_SEQ_READ：用于暗示内核，应用程序对这块虚拟内存区域采用顺序读的方式，内核可根据实际情况决定预读后续的内存页数，加快下次顺序访问速度；</li>
+<li>VM_RAND_READ：用于暗示内核，应用应用程序对这块虚拟内存区域采用随机读的方式，内核可根据实际情况减少预读的内存页数，或者停止预读；</li>
+</ul>
+<h3 id="3-4-vm-ops"><a href="#3-4-vm-ops" class="headerlink" title="3.4 vm_ops"></a>3.4 vm_ops</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">vm_operations_struct</span> &#123;<br>	<span class="hljs-built_in">void</span> (*open)(<span class="hljs-keyword">struct</span> vm_area_struct * area);<br>	<span class="hljs-built_in">void</span> (*close)(<span class="hljs-keyword">struct</span> vm_area_struct * area);<br>	<span class="hljs-built_in">vm_fault_t</span> (*fault)(<span class="hljs-keyword">struct</span> vm_fault *vmf);<br>	<span class="hljs-built_in">vm_fault_t</span> (*page_mkwrite)(<span class="hljs-keyword">struct</span> vm_fault *vmf);<br>    	..... 省略 .......<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<p>以上是针对虚拟内存区域的相关操作的函数指针：</p>
+<ul>
+<li>open：在创建或扩展虚拟内存区域的时候调用，用于初始化虚拟内存区域的私有数据或资源，例如当进行文件映射（mmap）时，若虚拟内存区域是新创建的，内核会调用open初始化文件缓存或计数器；</li>
+<li>close：在销毁或收缩虚拟内存区域的时候调用，例如当用户调用munmap或者进程退出的时候，内核遍历所有虚拟内存区域并调用close；</li>
+<li>fault：当进程访问虚拟内存时，访问的页面不在物理内存中，可能时未分配物理内存也可能时被置换到磁盘中，这个时候就会产生缺页异常，调用fault函数；<ul>
+<li>文件映射：从磁盘读取数据到物理页；</li>
+<li>匿名映射：分配零页或写时复制页；</li>
+</ul>
+</li>
+<li>page_mkwrite：在只读页首次被写入时调用，用于处理写时复制或者文件写回；</li>
+</ul>
+<p>在内核中，每个特定领域的描述符都会有定义相关的操作。</p>
+<h3 id="什么是写时复制？"><a href="#什么是写时复制？" class="headerlink" title="什么是写时复制？"></a>什么是写时复制？</h3><h3 id="什么是文件写回？"><a href="#什么是文件写回？" class="headerlink" title="什么是文件写回？"></a>什么是文件写回？</h3><h2 id="4-程序编译后的二进制文件如何映射到虚拟内存空间？"><a href="#4-程序编译后的二进制文件如何映射到虚拟内存空间？" class="headerlink" title="4. 程序编译后的二进制文件如何映射到虚拟内存空间？"></a>4. 程序编译后的二进制文件如何映射到虚拟内存空间？</h2><p>编写好的程序代码，编译之后会生成一个ELF格式的二进制文件，这个二进制文件中包含了程序运行所需要的元信息，比比如程序的机器码，全局变量等。这个ELF格式的二进制文件中的布局和虚拟内存空间中的布局类似，也是一段一段的，只不过在文件中每个段我们称之为section，在虚拟内存空间中我们称之为segment。</p>
+<h3 id="4-1-ELF二进制文件中的section如何映射到虚拟内存空间？"><a href="#4-1-ELF二进制文件中的section如何映射到虚拟内存空间？" class="headerlink" title="4.1 ELF二进制文件中的section如何映射到虚拟内存空间？"></a>4.1 ELF二进制文件中的section如何映射到虚拟内存空间？</h3><p>通过 <code>load_elf_binary</code>函数，完成内存的映射：</p>
+<ul>
+<li>设置虚拟内存空间中的内存映射区域的起始地址；</li>
+<li>创建并初始化栈对应的vm_area_struct结构，包括栈底指针和栈顶指针；</li>
+<li>将二进制文件中的代码部分映射到虚拟内存空间中；</li>
+<li>设置并初始化堆对应的vm_area_struct结构，包括堆的起始地址和结束地址；</li>
+<li>将进程依赖的动态链接库加载到虚拟内存空间中的内存映射区域；</li>
+<li>初始化内存描述符mm_struct；</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-type">int</span> <span class="hljs-title">load_elf_binary</span><span class="hljs-params">(<span class="hljs-keyword">struct</span> linux_binprm *bprm)</span></span><br><span class="hljs-function"></span>&#123;<br>      ...... 省略 ........<br>  <span class="hljs-comment">// 设置虚拟内存空间中的内存映射区域起始地址 mmap_base</span><br>  <span class="hljs-built_in">setup_new_exec</span>(bprm);<br><br>     ...... 省略 ........<br>  <span class="hljs-comment">// 创建并初始化栈对应的 vm_area_struct 结构。</span><br>  <span class="hljs-comment">// 设置 mm-&gt;start_stack 就是栈的起始地址也就是栈底，并将 mm-&gt;arg_start 是指向栈底的。</span><br>  retval = <span class="hljs-built_in">setup_arg_pages</span>(bprm, <span class="hljs-built_in">randomize_stack_top</span>(STACK_TOP),<br>         executable_stack);<br><br>     ...... 省略 ........<br>  <span class="hljs-comment">// 将二进制文件中的代码部分映射到虚拟内存空间中</span><br>  error = <span class="hljs-built_in">elf_map</span>(bprm-&gt;file, load_bias + vaddr, elf_ppnt,<br>        elf_prot, elf_flags, total_size);<br><br>     ...... 省略 ........<br> <span class="hljs-comment">// 创建并初始化堆对应的的 vm_area_struct 结构</span><br> <span class="hljs-comment">// 设置 current-&gt;mm-&gt;start_brk = current-&gt;mm-&gt;brk，设置堆的起始地址 start_brk，结束地址 brk。 起初两者相等表示堆是空的</span><br>  retval = <span class="hljs-built_in">set_brk</span>(elf_bss, elf_brk, bss_prot);<br><br>     ...... 省略 ........<br>  <span class="hljs-comment">// 将进程依赖的动态链接库 .so 文件映射到虚拟内存空间中的内存映射区域</span><br>  elf_entry = <span class="hljs-built_in">load_elf_interp</span>(&amp;loc-&gt;interp_elf_ex,<br>              interpreter,<br>              &amp;interp_map_addr,<br>              load_bias, interp_elf_phdata);<br><br>     ...... 省略 ........<br>  <span class="hljs-comment">// 初始化内存描述符 mm_struct</span><br>  current-&gt;mm-&gt;end_code = end_code;<br>  current-&gt;mm-&gt;start_code = start_code;<br>  current-&gt;mm-&gt;start_data = start_data;<br>  current-&gt;mm-&gt;end_data = end_data;<br>  current-&gt;mm-&gt;start_stack = bprm-&gt;p;<br><br>     ...... 省略 ........<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<h2 id="5-内核虚拟内存空间"><a href="#5-内核虚拟内存空间" class="headerlink" title="5. 内核虚拟内存空间"></a>5. 内核虚拟内存空间</h2><h3 id="上述是用户态虚拟内存空间？还是说是用户虚拟内存空间，在内核中的管理方式？"><a href="#上述是用户态虚拟内存空间？还是说是用户虚拟内存空间，在内核中的管理方式？" class="headerlink" title="上述是用户态虚拟内存空间？还是说是用户虚拟内存空间，在内核中的管理方式？"></a>上述是用户态虚拟内存空间？还是说是用户虚拟内存空间，在内核中的管理方式？</h3><h3 id="进程虚拟内存空间在内核中的布局及管理？"><a href="#进程虚拟内存空间在内核中的布局及管理？" class="headerlink" title="进程虚拟内存空间在内核中的布局及管理？"></a>进程虚拟内存空间在内核中的布局及管理？</h3><h3 id="刚才关注的是0x0000-0000-0xC000-0000？现在关注的是0xC000-0000-0xFFFF-FFFF？"><a href="#刚才关注的是0x0000-0000-0xC000-0000？现在关注的是0xC000-0000-0xFFFF-FFFF？" class="headerlink" title="刚才关注的是0x0000 0000 - 0xC000 0000？现在关注的是0xC000 0000 - 0xFFFF FFFF？"></a>刚才关注的是0x0000 0000 - 0xC000 0000？现在关注的是0xC000 0000 - 0xFFFF FFFF？</h3><h3 id="5-1-32位"><a href="#5-1-32位" class="headerlink" title="5.1 32位"></a>5.1 32位</h3><ul>
+<li>3G~3G+896MB：这块内存在虚拟地址空间中被称为直接映射区；在物理内存中被称为：ZONE_DMA和ZONE_NORMAL<ul>
+<li>这一块的虚拟内存地址直接减去0xC000 0000即得到物理内存地址。</li>
+<li>内核同样会为这块空间建立映射页表；</li>
+<li>这段896MB大小的物理内存中，前1MB在系统启动的时候被系统占用；</li>
+<li>1MB之后的物理内存，存放内核代码段，数据段等，这些信息最开始在一个ELF文件中保存，在系统启动时被加载进内存；</li>
+<li>当使用fork系统调用创建进程的时候，内核会创建一系列进程相关的描述符，task_struct，mm_struct，vm_area_struct等，也被保存在直接映射区；</li>
+<li>内核栈；</li>
+</ul>
+</li>
+<li>3G+896MB~4G：这块内存在虚拟地址空间中有如下划分（动态映射）；在物理内存中被称为：ZONE_HIGHMEM（高端内存）<ul>
+<li>vmalloc动态映射区：vmalloc分配的内存在虚拟内存上是连续的，在物理内存上是不连续的；</li>
+<li>永久映射区：允许建立与物理高端内存的长期映射关系；</li>
+<li>固定映射：固定映射区中虚拟地址是固定的，而被映射的物理地址是可以改变的，即有些虚拟地址在编译的时候就固定下来了，再内核启动过程中被确定；用来将固定的虚拟内存，映射到指定的物理内存。</li>
+<li>临时映射区：用于处理缓存页；</li>
+</ul>
+</li>
+</ul>
+<h3 id="5-2-32位Linux虚拟内存空间整体布局（高地址-低地址）"><a href="#5-2-32位Linux虚拟内存空间整体布局（高地址-低地址）" class="headerlink" title="5.2 32位Linux虚拟内存空间整体布局（高地址-&gt;低地址）"></a>5.2 32位Linux虚拟内存空间整体布局（高地址-&gt;低地址）</h3><ul>
+<li>内核虚拟内存空间<ul>
+<li>临时映射区</li>
+<li>固定映射区</li>
+<li>永久映射区</li>
+<li>vmalloc动态映射区</li>
+<li>NORMAL映射区</li>
+<li>DMA映射区</li>
+</ul>
+</li>
+<li>进程虚拟内存空间<ul>
+<li>栈</li>
+<li>文件映射与匿名映射区</li>
+<li>堆</li>
+<li>BSS段</li>
+<li>数据段</li>
+<li>代码段</li>
+<li>保留区</li>
+</ul>
+</li>
+</ul>
+<h3 id="5-3-64位Linux虚拟内存空间整体布局（高地址-低地址）"><a href="#5-3-64位Linux虚拟内存空间整体布局（高地址-低地址）" class="headerlink" title="5.3 64位Linux虚拟内存空间整体布局（高地址-&gt;低地址）"></a>5.3 64位Linux虚拟内存空间整体布局（高地址-&gt;低地址）</h3><ul>
+<li>内核虚拟内存空间<ul>
+<li>代码段</li>
+<li>虚拟内存映射区</li>
+<li>vmalloc映射区</li>
+<li>直接映射区</li>
+</ul>
+</li>
+<li>进程虚拟内存空间<ul>
+<li>栈</li>
+<li>文件映射与匿名映射区</li>
+<li>堆</li>
+<li>BSS段</li>
+<li>数据段</li>
+<li>代码段</li>
+<li>保留区</li>
+</ul>
+</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="category-chain-item">操作系统</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" class="category-chain-item">内存管理</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>内存管理-虚拟内存管理</div>
+      <div>http://example.com/2025/05/15/OperatingSystem/内存管理-虚拟内存管理/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>ZhangHangming</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年5月15日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/05/15/OperatingSystem/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86-LRU/" title="内存管理-LRU">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">内存管理-LRU</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/05/15/OperatingSystem/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E9%9D%A2%E8%AF%95%E5%85%AB%E8%82%A1/" title="内存管理-面试八股">
+                        <span class="hidden-mobile">内存管理-面试八股</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+</html>

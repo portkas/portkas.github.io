@@ -1,0 +1,826 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="ZhangHangming">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="什么是物理内存？内存硬件结构长什么样？物理内存模型和物理内存架构分别指的是什么？有什么区别和联系？ 1 硬件结构 主存： 若干个存储器模块 每个存储器模块包含8个DRAM芯片（64位） 每个DRAM芯片上存储一个字节，8个DRAM组成一个64位的数据；   存储控制器 地址线（2个地址引脚：行地址+列地址） 数据线（8个data引脚：每个单元存储一个字节）     访问流程： 存储控制器将行地址通">
+<meta property="og:type" content="article">
+<meta property="og:title" content="内存管理-物理内存管理">
+<meta property="og:url" content="http://example.com/2025/05/17/OperatingSystem/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86-%E7%89%A9%E7%90%86%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/index.html">
+<meta property="og:site_name" content="向所有小狗say hi">
+<meta property="og:description" content="什么是物理内存？内存硬件结构长什么样？物理内存模型和物理内存架构分别指的是什么？有什么区别和联系？ 1 硬件结构 主存： 若干个存储器模块 每个存储器模块包含8个DRAM芯片（64位） 每个DRAM芯片上存储一个字节，8个DRAM组成一个64位的数据；   存储控制器 地址线（2个地址引脚：行地址+列地址） 数据线（8个data引脚：每个单元存储一个字节）     访问流程： 存储控制器将行地址通">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-05-17T02:00:00.000Z">
+<meta property="article:modified_time" content="2025-05-19T12:14:19.179Z">
+<meta property="article:author" content="ZhangHangming">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>内存管理-物理内存管理 - 向所有小狗say hi</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="内存管理-物理内存管理"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-05-17 10:00" pubdate>
+          2025年5月17日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          27 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">内存管理-物理内存管理</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>什么是物理内存？内存硬件结构长什么样？物理内存模型和物理内存架构分别指的是什么？有什么区别和联系？</p>
+<h2 id="1-硬件结构"><a href="#1-硬件结构" class="headerlink" title="1 硬件结构"></a>1 硬件结构</h2><ul>
+<li>主存：<ul>
+<li>若干个存储器模块<ul>
+<li>每个存储器模块包含8个DRAM芯片（64位）</li>
+<li>每个DRAM芯片上存储一个字节，8个DRAM组成一个64位的数据；</li>
+</ul>
+</li>
+<li>存储控制器<ul>
+<li>地址线（2个地址引脚：行地址+列地址）</li>
+<li>数据线（8个data引脚：每个单元存储一个字节）</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>访问流程：<ul>
+<li>存储控制器将行地址通过地址引脚发送给DRAM芯片</li>
+<li>DRAM芯片根据行地址将二维矩阵中的该行的全部内存全部拷贝到内部缓冲区中；</li>
+<li>存储控制器通过地址引脚发送列地址到DRAM芯片；</li>
+<li>DRAM芯片从内部缓冲区根据列地址拷贝出对应存储单元数据并通过数据引脚发送给存储控制器；</li>
+</ul>
+</li>
+</ul>
+<h2 id="2-CPU从内存读取数据过程"><a href="#2-CPU从内存读取数据过程" class="headerlink" title="2 CPU从内存读取数据过程"></a>2 CPU从内存读取数据过程</h2><pre class="mermaid">flowchart LR
+    总线接口 --> |系统总线|B[IO Bridge] --> |存储总线|C[主存]</pre>
+
+<h3 id="2-1-大致流程"><a href="#2-1-大致流程" class="headerlink" title="2.1 大致流程"></a>2.1 大致流程</h3><ul>
+<li>CPU将物理内存地址作为地址信号放到系统总线上传输，IO Bridge将系统总线上的地址信号转换为存储总线上的地址信号；</li>
+<li>贮存感受到存储总线上的地址信号，通过存储控制器将存储总线上的物理内存地址读出来；</li>
+<li>存储控制器通过物理内存地址定位到具体的存储器模块，从DRAM芯片中去除物理内存地址对应的数据；</li>
+<li>存储控制器将读取到的数据放到存储总线上，IO Bridge将存储总线上的数据信号转换为系统总线上的数据信号，然后通过系统总线传递；</li>
+<li>CPU芯片感受到总线上的数据信号，将数据从系统总线上读取出来并拷贝的寄存器中；</li>
+</ul>
+<h3 id="2-2-详细流程"><a href="#2-2-详细流程" class="headerlink" title="2.2 详细流程"></a>2.2 详细流程</h3><h2 id="3-物理内存模型"><a href="#3-物理内存模型" class="headerlink" title="3 物理内存模型"></a>3 物理内存模型</h2><p>存在三种物理内存模型，FLATMEM平坦内存模型，DISCONTMEM非连续内存模型，SPARSEMEM稀疏内存模型；现代操作系统多使用第三种（稀疏内存模型）；不同的内存模型对应着不同的物理页表项和物理页之间的转换关系；</p>
+<ul>
+<li>物理内存被划分为若干个以4KB大小为单元的页，每个页使用一个struct_page结构体进行管理；</li>
+<li>struct_page结构体中封装了没页内存块的状态信息，使用情况以及映射关系；</li>
+<li>为了快速定位到具体的页，内核为每个物理页struct_page结构体定义了一个索引编号：PFN</li>
+<li>PFN和struct_page是一一对应的关系，二者可以互相转换（不同的物理内存模型，对应的函数计算方式不同）；<ul>
+<li>page_to_fpn</li>
+<li>fpn_to_page</li>
+</ul>
+</li>
+<li>内核组织和管理物理内存页struct_page的方式被称为物理内存模型；</li>
+</ul>
+<h3 id="3-1-FLATMEM-平坦内存模型"><a href="#3-1-FLATMEM-平坦内存模型" class="headerlink" title="3.1 FLATMEM 平坦内存模型"></a>3.1 FLATMEM 平坦内存模型</h3><ul>
+<li>将物理内存视为连续的线性物理空间，使用全局数组mem_map来管理所有内存页，数组下标就是相应物理页对应的PFN；</li>
+<li>FLATMEM平坦内存模型只适用于管理一整块连续的物理内存模型；</li>
+<li>对于多块非连续的物理内存来说，使用该内存模型会造成很大的内存空间浪费；</li>
+</ul>
+<p>物理内存不应该都是连续可用的吗？为什么说不是连续的？为什么会存在空洞？</p>
+<ul>
+<li>为什么存在空洞：<ul>
+<li>某些物理内存地址可能会被硬件保留（比如BIOS，设备寄存器映射），导致操作系统无法使用这些区域；</li>
+<li>NUMA架构中，不同CPU节点的本地内存可能因为访问延迟差异形成逻辑上的“空洞”；</li>
+<li>操作系统为安全隔离内核和用户空间，会预留部分内存，形成不可用的空间；</li>
+</ul>
+</li>
+<li>为什么不连续：<ul>
+<li>程序频繁申请和释放不同大小的内存块，导致外部碎片，例如伙伴系统中，释放的8KB内存可能被拆分成两个4KB块，无法合并原连续块；</li>
+<li>现代操作系统通过分页管理内存，程序看到的连续虚拟地址可能映射到不连续的物理页；</li>
+<li>页置换算法（LRU）可能将活跃页面分散到不同物理位置，加剧不连续性；</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-2-DISCONTIGMEM-非连续内存模型"><a href="#3-2-DISCONTIGMEM-非连续内存模型" class="headerlink" title="3.2 DISCONTIGMEM 非连续内存模型"></a>3.2 DISCONTIGMEM 非连续内存模型</h3><ul>
+<li>内核将物理内存从宏观上划分成了一个一个的节点node，微观上还是一页一页的物理页，每个node节点管理一块连续的物理内存，节点内使用FLATMEM管理连续内存，从而避免空洞浪费。</li>
+<li>DISCONTIGMEM非连续内存模型是FLATMEM平坦内存模型的一种扩展，在进行大块不连续的物理内存管理时，通过将每段连续的物理内存区间划归到node节点中进行管理，避免为内存地址空洞分配struct page结构，从而节省内存资源开销；</li>
+<li>相比FLATMEM平坦内存模型，多了两个函数：<ul>
+<li>arch_pfn_to_nid：根据物理页的PFN定位到物理页所在的node；</li>
+<li>page_to_nid：根据物理页的struct page定位page所在的node；</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-3-SPARSEMEM-稀疏内存模型"><a href="#3-3-SPARSEMEM-稀疏内存模型" class="headerlink" title="3.3 SPARSEMEM 稀疏内存模型"></a>3.3 SPARSEMEM 稀疏内存模型</h3><ul>
+<li>核心思想：对粒度更小的连续内存块进行精细的管理；</li>
+<li>section被用来管理小粒度的连续内存块，这些小的连续物理内存在section中通过数组的方式被组织和管理；</li>
+<li>mem_section：指向section数组0元素，每个mem_section包含一个section_mem_map；</li>
+<li>section_mem_map：指向连续物理内存页表项第一个，每个页表项对应一个struct page；</li>
+<li>每个struct page对应一个page frame；</li>
+<li>page_to_pfn：<ul>
+<li>先通过page_to_section根据struct page结构定位到mem_section数组中具体的section结构；</li>
+<li>再通过section_mem_map定位到具体夫人PFN；</li>
+</ul>
+</li>
+<li>pfn_to_page：<ul>
+<li>先通过__pfn_to_section根据PFN定位到mem_section数组中具体的section结构；</li>
+<li>再通过PFN在section_mem_map数组中定位到具体的物理页；</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-4-三种内存模型对比"><a href="#3-4-三种内存模型对比" class="headerlink" title="3.4 三种内存模型对比"></a>3.4 三种内存模型对比</h3><h3 id="3-5-物理内存热拔插时发生了什么？"><a href="#3-5-物理内存热拔插时发生了什么？" class="headerlink" title="3.5 物理内存热拔插时发生了什么？"></a>3.5 物理内存热拔插时发生了什么？</h3><p>物理内存拔出时，被拔出的物理内存中可能已经为进程分配了物理页，如何迁移这些已经被分配的物理页？如何保证迁移后的物理页映射的虚拟内存地址不改变？哪些物理页是不能迁移的？</p>
+<p>当物理内存拔出时，内核会执行以下步骤：</p>
+<ul>
+<li>隔离内存区域：通过mem_section的offline状态标记内存为不可用；</li>
+<li>迁移已分配页：将待拔出内存中的已分配页迁移到其他在线内存区域；</li>
+<li>虚拟地址一致性：修改页表映射，确保迁移后进程的虚拟地址不变；</li>
+</ul>
+<p>哪些物理页不能迁移：</p>
+<ul>
+<li>内核虚拟地址中有一段直接映射区，这一段虚拟内存和物理地址线性相关，这类页迁移后会导致虚拟地址变化，因此不能迁移。</li>
+</ul>
+<h2 id="4-物理内存架构"><a href="#4-物理内存架构" class="headerlink" title="4 物理内存架构"></a>4 物理内存架构</h2><p>物理内存架构分为UMA一致性内存访问架构和NUMA非一致性内存访问架构；UMA与NUMA均描述的是多个CPU与内存之间的架构关系；</p>
+<h3 id="4-1-UMA架构"><a href="#4-1-UMA架构" class="headerlink" title="4.1 UMA架构"></a>4.1 UMA架构</h3><p>CPU（多个）和内存条（多个）分别位于总线的两侧；所有CPU访问内存都需要经过总线，并且距离相同（所有CPU访问内存的速度是一样的）；</p>
+<ul>
+<li>随着CPU个数的增加，总线的带宽压力会越来越大，导致每个CPU可用带宽会减少；</li>
+<li>随着CPU个数的总价，总线的长度也会因此而增加，进而增加访问延迟；</li>
+</ul>
+<h3 id="4-2-NUMA架构"><a href="#4-2-NUMA架构" class="headerlink" title="4.2 NUMA架构"></a>4.2 NUMA架构</h3><p>在NUMA架构下，内存被划分成一个个的内存节点，每个CPU都有属于自己的本地内存节点；</p>
+<ul>
+<li>CPU访问自己的本地内存不需要经过总线，访问速度最快；</li>
+<li>当CPU本地内存不足时，需要跨节点访问其他内存节点，此时访问速度会慢很多；</li>
+<li>这里的CPU指的不是CPU核心，单个CPU可能包含若干个CPU核心，这里每个节点包含一个CPU（若干CPU核心）；</li>
+</ul>
+<h3 id="4-3-NUMA相关命令"><a href="#4-3-NUMA相关命令" class="headerlink" title="4.3 NUMA相关命令"></a>4.3 NUMA相关命令</h3><ul>
+<li><code>numactl -H</code>：查看服务器的NUMA配置，服务器有几个节点，每个节点有几个CPU核心，节点与节点之间的距离；</li>
+<li><code>numactl -s</code>：查看NUMA的内存分配策略；</li>
+<li><code>numastat</code>：查看各个NUMA节点的内存访问命中率；</li>
+</ul>
+<h2 id="5-NUMA节点如何管理"><a href="#5-NUMA节点如何管理" class="headerlink" title="5 NUMA节点如何管理"></a>5 NUMA节点如何管理</h2><ul>
+<li>内核2.4之前的版本：<ul>
+<li>使用pgdat_list单链表将NUMA节点串联起来；</li>
+</ul>
+</li>
+<li>内核2.4之后的版本：<ul>
+<li>使用一个大小为NAX_NUMNODES类型为struct pglist_data的全局数组node_data来管理所有的NUMA节点；</li>
+</ul>
+</li>
+<li>struct pglist_data包含：<ul>
+<li>当前节点内所有物理页的首页地址；</li>
+<li>指向NUMA节点内第一个物理页的PFN；</li>
+<li>用于统计该节点内所有真正可用的物理页面数量（不包含空洞）；</li>
+<li>用于统计该节点内所有的内存页（包含空洞）；</li>
+</ul>
+</li>
+<li>NUMA节点中内存规整与回收<ul>
+<li>内核会为每个NUMA节点分配一个kswapd进程用于回收不经常使用的页面；</li>
+<li>内核也会为每个NUMA节点分配一个kcompactd进程用于内存的规整避免内存碎片；</li>
+</ul>
+</li>
+<li>struct zone<ul>
+<li>用于描述和管理NUMA节点中的物理内存区域；</li>
+<li>pglist_data通过struct zone类型的数组node_zones将NUMA节点中划分的物理内存区域连接起来；</li>
+<li>这些物理内存区域也会通过struct zone中的zone_pgdat指向自己所属的NUMA节点；</li>
+</ul>
+</li>
+</ul>
+<h3 id="物理内存中为什么要预留内存？"><a href="#物理内存中为什么要预留内存？" class="headerlink" title="物理内存中为什么要预留内存？"></a>物理内存中为什么要预留内存？</h3><p>内核中关于内存分配的场景有两种：</p>
+<ul>
+<li>允许阻塞：当进程请求内核分配内存时，如果内存充裕，那么会立即给进程分配内存；如果内存比较紧张，内核会将一部分不经常使用的内存进行回收，以满足内存分配的需求，这个回收过程是阻塞的，所以进程需要阻塞等待；</li>
+<li>不允许阻塞：当进程请求内核分配内存时，需要立马进行内存分配，不能阻塞等待；比如执行中断处理程序的时候，进程不允许进入睡眠，因为中断程序不能被重新调度，这个时候就需要内核提前为这种情况预留一部分内存，即便是内存紧张时，当申请内存时，也能立即分配；</li>
+</ul>
+<h3 id="水位线作用"><a href="#水位线作用" class="headerlink" title="水位线作用"></a>水位线作用</h3><ul>
+<li>水位线的作用：用于衡量内存紧张程度，从而有触发不同的内存管理机制；<ul>
+<li>kswapd异步内存回收</li>
+<li>直接内存回收</li>
+</ul>
+</li>
+<li>内核为每个NUMA节点中的每个物理内存区域设置了三条用于指示内存容量的水位线：<ul>
+<li>WMARK_MIN（页最小阈值）</li>
+<li>WMARK_LOW（页低阈值）</li>
+<li>WMARK_HIGH（页高阈值）</li>
+</ul>
+</li>
+</ul>
+<h3 id="水位线计算逻辑"><a href="#水位线计算逻辑" class="headerlink" title="水位线计算逻辑"></a>水位线计算逻辑</h3><h3 id="冷热页作用"><a href="#冷热页作用" class="headerlink" title="冷热页作用"></a>冷热页作用</h3><h3 id="冷热页如何管理"><a href="#冷热页如何管理" class="headerlink" title="冷热页如何管理"></a>冷热页如何管理</h3><h2 id="内核如何描述物理内存页"><a href="#内核如何描述物理内存页" class="headerlink" title="内核如何描述物理内存页"></a>内核如何描述物理内存页</h2><p>在NUMA框架下，内存被分成了一个个内存节点，每个NUMA节点中，内核根据物理内存的功能和用途，将NUMA节点内的物理内存划分为四个物理内存区域：ZONE_DMA，ZONE_DMA32，ZONE_NORMAL，ZONE_HIGHMEM。</p>
+<p>物理内存区域中管理的是物理内存页，物理内存页是Linux内存管理的最小单位；内核会为每一个物理内存区域分配一个伙伴系统，用于管理该物理内存区域下所有物理内存页面的分配和释放；</p>
+<h3 id="为什么选4K作为标准物理内存页的大小？"><a href="#为什么选4K作为标准物理内存页的大小？" class="headerlink" title="为什么选4K作为标准物理内存页的大小？"></a>为什么选4K作为标准物理内存页的大小？</h3><h3 id="匿名页反向映射是什么？"><a href="#匿名页反向映射是什么？" class="headerlink" title="匿名页反向映射是什么？"></a>匿名页反向映射是什么？</h3><ul>
+<li>正向映射：从虚拟内存到物理内存的映射；</li>
+<li>反向映射：从物理内存到虚拟内存的映射；</li>
+</ul>
+<p>当某个物理内存页需要进行回收或迁移的时候，需要去找到这个物理页被映射到哪些进程的虚拟地址空间中，并断开他们之间的映射；</p>
+<h3 id="匿名页反向映射流程"><a href="#匿名页反向映射流程" class="headerlink" title="匿名页反向映射流程"></a>匿名页反向映射流程</h3><ul>
+<li>在do_anonymous_page中，调用anon_vma_prepare方法为匿名页创建anon_vma实例和anon_vma_chain实例，并建立二者关联关系；</li>
+<li>在anon_vma_prepare中，调用anon_vma_chain_link方法建立anon_vma，anon_vma_chain，vm_area_struct三者之间的关系；</li>
+<li>调用alloc_zeroed_user_highpage_movable方法从伙伴系统中申请一个匿名页，获取page实例；</li>
+<li>通过page_add_new_anon_rmap建立page到mv_area_struct的反向映射链路；</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="category-chain-item">操作系统</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" class="category-chain-item">内存管理</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>内存管理-物理内存管理</div>
+      <div>http://example.com/2025/05/17/OperatingSystem/内存管理-物理内存管理/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>ZhangHangming</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年5月17日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/05/19/OperatingSystem/%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86-%E8%BF%9B%E7%A8%8B%E5%87%BD%E6%95%B0/" title="进程管理-进程API">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">进程管理-进程API</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/05/15/OperatingSystem/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86-LRU/" title="内存管理-LRU">
+                        <span class="hidden-mobile">内存管理-LRU</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+</html>
