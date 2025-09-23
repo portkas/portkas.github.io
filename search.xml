@@ -504,6 +504,153 @@ rd2 value and address: -13.85, 0x7fff68ec89e0
       </categories>
   </entry>
   <entry>
+    <title>cpp-4-回调函数</title>
+    <url>/2025/02/22/Cpp/cpp-4/</url>
+    <content><![CDATA[<ol>
+<li>什么是回调函数</li>
+<li>回调函数用法</li>
+</ol>
+<span id="more"></span>
+
+<h1 id="回调函数"><a href="#回调函数" class="headerlink" title="回调函数"></a>回调函数</h1><p>回调函数，是计算机编程中对某一段可执行代码的引用，它被作为参数传递给另一段代码；</p>
+<p>回调函数不是由该函数的实现方直接调用，而是在特定的事件或条件发生时由另外的一方调用的，用于对该事件或条件进行响应；</p>
+<ol>
+<li>普通函数的回调</li>
+<li>类成员函数的回调</li>
+<li>基于std::function和std::bind的回调</li>
+<li>Lambda表达式的回调</li>
+</ol>
+<h1 id="普通函数的回调"><a href="#普通函数的回调" class="headerlink" title="普通函数的回调"></a>普通函数的回调</h1><figure class="highlight cpp"><table><tr><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdlib.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string&gt;</span></span><br><span class="hljs-function"><span class="hljs-keyword">typedef</span>  <span class="hljs-title">int</span> <span class="hljs-params">(*callBackFunc)</span><span class="hljs-params">(<span class="hljs-type">char</span>* name)</span></span>;<br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">playBegin</span><span class="hljs-params">(<span class="hljs-type">char</span>* name)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;视频开始解码，即将出现画面....\n&quot;</span>);<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>&#125;<br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">playEnd</span><span class="hljs-params">(<span class="hljs-type">char</span>* name)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;视频播放结束....\n&quot;</span>);<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>&#125;<br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">play</span><span class="hljs-params">(callBackFunc fn, <span class="hljs-type">char</span>* name)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">return</span> (*fn)(name);<br>&#125;<br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>   <span class="hljs-type">char</span> pName[<span class="hljs-number">1024</span>] = <span class="hljs-string">&quot;色即是空&quot;</span>;<br>   <span class="hljs-comment">//视频播放开始....</span><br>   <span class="hljs-built_in">play</span>(playBegin,pName);<span class="hljs-comment">//playBegin函数指针作为参数传递</span><br>   <span class="hljs-comment">//视频播放中....</span><br>   <span class="hljs-comment">//视频播放结束....</span><br>   <span class="hljs-built_in">play</span>(playEnd,pName);<span class="hljs-comment">//playEnd函数指针作为参数传递</span><br>   <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<ol>
+<li>playBegin(),playEnd()是普通函数，定义了回调函数的逻辑；</li>
+<li>play()函数是一个高阶函数，接收函数指针作为参数，并在内部调用回调函数；</li>
+<li>在main()中，将函数playBegin(),playEnd()的地址传递给play()实现回调；</li>
+</ol>
+<p>需要注意的是：</p>
+<p>在 <code>play</code> 函数中，<code>fn</code> 是一个 <code>callBackFunc</code> 类型的参数，即它是一个指向函数的指针。因此，<code>(*fn)(name)</code> 和 <code>fn(name)</code> 都是合法的函数调用方式，它们都表示通过函数指针 <code>fn</code> 调用指向的函数，并传递 <code>name</code> 作为参数。</p>
+<ul>
+<li><code>(*fn)(name)</code> 是显式地通过解引用函数指针来调用函数。<code>*fn</code> 获取函数指针指向的函数，然后调用该函数。</li>
+<li><code>fn(name)</code> 是更简洁的写法，直接通过函数指针调用函数。在 C 语言中，当函数指针用于调用函数时，可以省略解引用操作符 <code>*</code>，因为上下文已经明确了这是一个函数调用操作.</li>
+</ul>
+<h1 id="类成员函数的回调"><a href="#类成员函数的回调" class="headerlink" title="类成员函数的回调"></a>类成员函数的回调</h1><h3 id="示例1"><a href="#示例1" class="headerlink" title="示例1"></a>示例1</h3><p>由于普通成员函数必须依赖具体对象才能调用，因此在回调时需要传递对象指针和成员函数指针。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">CallbackHandler</span>&#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-comment">// 成员函数作为回调函数</span><br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">memberCallback</span><span class="hljs-params">(<span class="hljs-type">int</span> value)</span></span>&#123;<br>        cout &lt;&lt; <span class="hljs-string">&quot;成员函数回调，被调用时传入的值是:&quot;</span> &lt;&lt; value &lt;&lt; endl;<br>    &#125;<br>&#125;;<br><br><span class="hljs-comment">// 一个执行回调的函数</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">executableMemberCallback</span><span class="hljs-params">(CallbackHandler* obj, <span class="hljs-type">void</span> (CallbackHandler::*callback)(<span class="hljs-type">int</span>), <span class="hljs-type">int</span> value)</span></span>&#123;<br>    <span class="hljs-comment">// 通过对象指针和成员函数指针调用成员函数</span><br>    (obj-&gt;*callback)(value);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>&#123;<br>    <span class="hljs-comment">// 传递对象和成员函数指针进行回调</span><br>    CallbackHandler handler;<br>    <span class="hljs-built_in">executableMemberCallback</span>(&amp;handler, &amp;CallbackHandler::memberCallback, <span class="hljs-number">42</span>);<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<ol>
+<li>CallbackHandler类中定义了一个成员函数memberCallback;</li>
+<li>executeMemberCallback接收对象指针CallbackHandler* obj和成员函数指针void (CallbackHandler::*callback)(int)</li>
+<li>通过(obj-&gt;*callback)(value)调用成员函数；</li>
+<li>在main函数中，通过对象handler和成员函数指针&amp;CallbackHandler::memberCallback实现回调；</li>
+</ol>
+<h3 id="示例2"><a href="#示例2" class="headerlink" title="示例2"></a>示例2</h3><p>在c++面向对象里面，回调函数是成员函数的情况更常见，这样的好处是，一个类A的一个函数生成一个结果之后，可以调用另一个类B的成员函数。而不必类A拥有B的实例。</p>
+<p>尤其是在B中有了A的实例的情况下，A中如果再包含B的实例会出现循环引用的问题 ，这也是可以解决的，但是这种耦合还是容易让逻辑变得混乱。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">typedef</span> std::function&lt;<span class="hljs-type">void</span> (string)&gt; CaptureCallback;  <br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">CaptureController</span>&#123;<br><span class="hljs-keyword">public</span>:<br>    CaptureCallback callback;<br>    <span class="hljs-built_in">CaptureController</span>(CaptureCallback callback):<span class="hljs-built_in">callback</span>(callback)&#123;&#125;;<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">capturePic</span><span class="hljs-params">(CaptureCallback callback)</span></span>&#123;<br>        string t = <span class="hljs-string">&quot;a pic&quot;</span>;<br>        <span class="hljs-built_in">callback</span>(t);<br>    &#125;<br>&#125;<br><br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">UI</span>&#123;<br>    <span class="hljs-comment">//开始捕捉图像</span><br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">startCapture</span><span class="hljs-params">()</span></span>&#123;<br>        <span class="hljs-function">CaptureController <span class="hljs-title">c</span><span class="hljs-params">(std::bind(&amp;UI::renderPic,<span class="hljs-keyword">this</span>,_1))</span></span>; <br>        c.<span class="hljs-built_in">capturePic</span>();<br>    &#125;<br>  <br>    <span class="hljs-comment">//渲染图片作为回调函数</span><br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">renderPic</span><span class="hljs-params">(string t)</span></span>&#123;<br>        <span class="hljs-built_in">print</span>(t);<br>    &#125;<br>&#125;<br><br><span class="hljs-comment">//main.cpp</span><br>UI ui;<br>ui.<span class="hljs-built_in">startCapture</span>();<br></code></pre></td></tr></table></figure>
+
+
+<h1 id="std-function-std-bind"><a href="#std-function-std-bind" class="headerlink" title="std::function&#x2F;std::bind"></a>std::function&#x2F;std::bind</h1><ol>
+<li>std::function可以存储任意可调用对象（普通函数，成员函数，Lambda表达式)</li>
+<li>std::bind可以绑定成员函数和对象</li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;functional&gt;</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><br><span class="hljs-keyword">typedef</span> function&lt;<span class="hljs-type">void</span>(<span class="hljs-type">int</span>)&gt; CallBackFunc;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">executeCallback</span><span class="hljs-params">(CallBackFunc callback, <span class="hljs-type">int</span> value)</span></span>&#123;<br>    <span class="hljs-built_in">callback</span>(value);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">freeFunction</span><span class="hljs-params">(<span class="hljs-type">int</span> value)</span></span>&#123;<br>    cout &lt;&lt; <span class="hljs-string">&quot;普通函数回调，传入的参数为：&quot;</span> &lt;&lt; value &lt;&lt; endl;<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">CallbackHandler</span>&#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">memberCallback</span><span class="hljs-params">(<span class="hljs-type">int</span> value)</span></span>&#123;<br>        cout &lt;&lt; <span class="hljs-string">&quot;成员函数回调，传入的参数为：&quot;</span> &lt;&lt; value &lt;&lt; endl;<br>    &#125;<br>&#125;;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>&#123;<br>    CallbackHandler handler;<br>    <span class="hljs-comment">// 1. 传递普通函数作为回调</span><br>    <span class="hljs-built_in">executeCallback</span>(freeFunction, <span class="hljs-number">42</span>);<br><br>    <span class="hljs-comment">// 2. 传递Lambda表达式作为回调</span><br>    <span class="hljs-built_in">executeCallback</span>([](<span class="hljs-type">int</span> value)&#123;<br>        cout &lt;&lt; <span class="hljs-string">&quot;Lambda 回调，传入的参数为：&quot;</span> &lt;&lt; value &lt;&lt; endl;<br>    &#125;, <span class="hljs-number">43</span>);<br><br>    <span class="hljs-comment">// 3. 传递成员函数作为回调</span><br>    <span class="hljs-built_in">executeCallback</span>(std::<span class="hljs-built_in">bind</span>(&amp;CallbackHandler::memberCallback, &amp;handler, std::placeholders::_1), <span class="hljs-number">44</span>);<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<ol>
+<li><code>function&lt;void(int)&gt;</code>可以存储普通函数，Lambda表达式或绑定后的成员函数；</li>
+<li>使用std::bind将成员函数和对象绑定，并通过std::placeholder::_1占位符传递参数；</li>
+</ol>
+]]></content>
+      <categories>
+        <category>cpp</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>cpp-6-智能指针</title>
+    <url>/2025/02/22/Cpp/cpp-6/</url>
+    <content><![CDATA[<ol>
+<li>智能指针模板类</li>
+</ol>
+<h1 id="智能指针"><a href="#智能指针" class="headerlink" title="智能指针"></a>智能指针</h1><ol>
+<li>auto_ptr</li>
+<li>unique_ptr</li>
+<li>shared_ptr</li>
+</ol>
+<p>以上三个智能指针模板都定义了类似指针的对象，可以将new获得的地址赋给这些对象。当智能指针过期的时候，其析构函数将使用delete来释放内存。</p>
+<p>使用时可以将每一个智能指针都放在一个代码块内，这样当离开代码的时候，指针将过期，申请的内存也会被自动释放。</p>
+<p>所有的智能指针都有一个explicit构造函数，该构造函数将指针作为参数，因此不需要自动将指针转换为智能指针对象。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><code class="hljs cpp">shared_ptr&lt;<span class="hljs-type">double</span>&gt; pd;<br><span class="hljs-type">double</span> *p_reg = <span class="hljs-keyword">new</span> <span class="hljs-type">double</span>;<br>pd = p_reg;	<span class="hljs-comment">// 错误</span><br>pd = <span class="hljs-built_in">shared_ptr</span>&lt;<span class="hljs-type">double</span>&gt;(p_reg);	<span class="hljs-comment">// 正确</span><br>shared_ptr&lt;<span class="hljs-type">double</span>&gt; pshared = p_reg;	<span class="hljs-comment">// 错误</span><br><span class="hljs-function">shared_ptr&lt;<span class="hljs-type">double</span>&gt; <span class="hljs-title">pshared</span><span class="hljs-params">(p_reg)</span></span>;	<span class="hljs-comment">// 正确</span><br></code></pre></td></tr></table></figure>
+
+<p>智能指针对象的很多方面都类似于常规指针：</p>
+<ul>
+<li>可以对其执行解除引用操作(*p)</li>
+<li>可以用它来访问结构成员(p-&gt;name)</li>
+<li>将它赋值给指向相同类型的常规指针</li>
+<li>可以将智能指针对象赋值给另一个同类型的智能指针对象</li>
+</ul>
+<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><code class="hljs cpp"><span class="hljs-function">auto_ptr&lt;string&gt; <span class="hljs-title">ps</span><span class="hljs-params">(<span class="hljs-keyword">new</span> string(<span class="hljs-string">&quot;I reigned by lonely as a cloud.&quot;</span>))</span></span>;<br>auto_ptr&lt;string&gt; vocation;<br>vocation = ps;<br></code></pre></td></tr></table></figure>
+
+<p>如果ps和vocation是常规指针，则两个指针将指向同一个string对象。如果是使用智能指针将会出现严重的问题，即一块内存被释放了两次，一次是ps过期的时候，另一次是vocation过期的时候。</p>
+<p>解决办法：</p>
+<ul>
+<li>定义赋值运算符，使之执行深复制。这样两个指针将指向不同的对象，其中一个对象是另一个对象的副本；</li>
+<li>建立所有权。对于特定的对象，只能有一个智能指针可以拥有它，这样拥有对象的智能指针的构造函数会删除该对象。然后让赋值操作转让所有权。unique_ptr策略；</li>
+<li>创建智能更高的指针，跟踪引用特定对象的智能指针数。称为引用计数，仅当最后一个指针过期时，才调用delete，shared_ptr策略；</li>
+</ul>
+<h2 id="unique-ptr与auto-ptr比较"><a href="#unique-ptr与auto-ptr比较" class="headerlink" title="unique_ptr与auto_ptr比较"></a>unique_ptr与auto_ptr比较</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><code class="hljs cpp"><span class="hljs-function">auto_ptr&lt;string&gt; <span class="hljs-title">p1</span><span class="hljs-params">(<span class="hljs-keyword">new</span> string(<span class="hljs-string">&quot;auto&quot;</span>))</span></span>;<span class="hljs-comment">// #1</span><br>auto_ptr&lt;string&gt; p2;			<span class="hljs-comment">// #2</span><br>p2 = p1;				<span class="hljs-comment">// #3</span><br></code></pre></td></tr></table></figure>
+
+<p>在语句#3中，p2接管string对象的所有权后，p1的所有权将被剥夺，按理说这应该是一件好事，可以防止p1和p2的析构函数试图删除同一个对象；但是如果程序随后试图使用p1，这将是一个坏事，因为p1不再指向有效的数据；</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><code class="hljs cpp"><span class="hljs-function">unique_ptr&lt;string&gt; <span class="hljs-title">p3</span><span class="hljs-params">(<span class="hljs-keyword">new</span> string(<span class="hljs-string">&quot;auto&quot;</span>))</span></span>;<span class="hljs-comment">// #4</span><br>unique_ptr&lt;string&gt; p4;			<span class="hljs-comment">// #5</span><br>p4 = p3;				<span class="hljs-comment">// #6</span><br></code></pre></td></tr></table></figure>
+
+<p>在使用unique_ptr的时候，这将是不允许的，编译器认为#6语法错误，避免了p3不再指向有效数据的问题。</p>
+<p>因此，unique_ptr比auto_ptr更安全。</p>
+]]></content>
+      <categories>
+        <category>cpp</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>is-a</title>
+    <url>/2025/02/22/Cpp/is-a/</url>
+    <content><![CDATA[<ol>
+<li>is-a</li>
+<li>has-a</li>
+<li>uses-a</li>
+<li>is-implemented-as-a</li>
+</ol>
+<span id="more"></span>
+<h2 id="什么是is-a"><a href="#什么是is-a" class="headerlink" title="什么是is-a"></a>什么是is-a</h2><p>is-a表面意思就是“是”，例如“B is an A”表示“B是一个A”，在C++中它描述的是不同类之间的关系。它描述的是一种继承关系，B is-a A有两层含义：</p>
+<ul>
+<li>B是A的一种</li>
+<li>反过来，A并不是B</li>
+</ul>
+<p>举一个例子就是，香蕉is-a水果，香蕉是水果，但是不能说水果是香蕉。他们之间的关系是一种继承关系，香蕉继承了水果的所有性质，但是香蕉又有它自己独特的性质。</p>
+<p>has-a表面意思是“有”，例如“B has an A”表示“B中有A”，他表示的是一种组合关系，他们自己之间是一种组合关系，B中有A表示的是一种包含和被包含的关系，所以B掌控着A的生死，在has-a这种关系中，A其实是依托于B才得以存在的，这么说可能会有点抽象，因为A本身也是一个独立的存在，为什么说A依托B才得以存在？举个例子，午饭中有水果。</p>
+<ul>
+<li>要先有午饭，才会有午饭中有水果</li>
+</ul>
+<p>uses-a表面意思是“用”，“用”不需要拥有，比如文档需要借助打印机来打印，并不是说这个文档就拥有打印机，打印机并不是文档的一部分，我们提交一份文档也并不是连着打印机一起提交。下面是uses-a的示例代码（为了突出uses-a，把其中一个类的对象定义为了全局变量）：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs C++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string&gt;</span></span><br><br><span class="hljs-comment">// 打印机类</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Printer</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">print</span><span class="hljs-params">(<span class="hljs-type">const</span> std::string&amp; content)</span> </span>&#123;<br>        std::cout &lt;&lt; <span class="hljs-string">&quot;Printing: &quot;</span> &lt;&lt; content &lt;&lt; std::endl;<br>    &#125;<br>&#125;;<br><br><span class="hljs-comment">// 全局打印机对象，Document uses-a Printer</span><br>Printer printer;<br><br><span class="hljs-comment">// 文档类</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Document</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">printDocument</span><span class="hljs-params">(<span class="hljs-type">const</span> std::string&amp; content)</span> </span>&#123;<br>        <span class="hljs-comment">// 使用全局打印机对象printer打印内容</span><br>        printer.<span class="hljs-built_in">print</span>(content);<br>    &#125;<br>&#125;;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>    Document doc;<br>    doc.<span class="hljs-built_in">printDocument</span>(<span class="hljs-string">&quot;Hello, World!&quot;</span>);<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="以下是ChatGPT的回答"><a href="#以下是ChatGPT的回答" class="headerlink" title="以下是ChatGPT的回答"></a>以下是ChatGPT的回答</h2><h3 id="1-is-a-关系（继承关系）"><a href="#1-is-a-关系（继承关系）" class="headerlink" title="1. is-a 关系（继承关系）"></a>1. <code>is-a</code> 关系（继承关系）</h3><p><code>is-a</code>关系表示一种继承关系，即一个类是另一个类的特化。在面向对象编程中，这种关系通常通过类继承来实现。如果类A是类B的特化，那么A的每个实例都可以被视为B的实例，即A具有B的所有属性和行为。</p>
+<p><strong>示例代码</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Animal</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">eat</span><span class="hljs-params">()</span> </span>&#123; <span class="hljs-comment">/* ... */</span> &#125;<br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Dog</span> : <span class="hljs-keyword">public</span> Animal &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">bark</span><span class="hljs-params">()</span> </span>&#123; <span class="hljs-comment">/* ... */</span> &#125;<br>&#125;;<br><br><span class="hljs-comment">// Dog是Animal的特化，所以Dog具有Animal的行为</span><br></code></pre></td></tr></table></figure>
+<p><strong>注意</strong>：<code>is-a</code>关系是多态性的基础，允许代码通过基类指针或引用来操作派生类对象，实现动态绑定。</p>
+<h3 id="2-has-a-关系（组合关系）"><a href="#2-has-a-关系（组合关系）" class="headerlink" title="2. has-a 关系（组合关系）"></a>2. <code>has-a</code> 关系（组合关系）</h3><p><code>has-a</code>关系表示一个类包含另一个类的实例作为其成员，即一个类的对象拥有另一个类的对象。这种关系通过对象的组合来实现，不涉及继承。</p>
+<p><strong>示例代码</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Engine</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">start</span><span class="hljs-params">()</span> </span>&#123; <span class="hljs-comment">/* ... */</span> &#125;<br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Car</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    Engine engine;<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">drive</span><span class="hljs-params">()</span> </span>&#123; <span class="hljs-comment">/* 使用engine对象 ... */</span> &#125;<br>&#125;;<br><br><span class="hljs-comment">// Car有一个Engine对象，所以Car has-a Engine</span><br></code></pre></td></tr></table></figure>
+<p><strong>注意</strong>：<code>has-a</code>关系强调的是对象之间的组合关系，而不是继承关系。</p>
+<h3 id="3-uses-a-关系（依赖关系）"><a href="#3-uses-a-关系（依赖关系）" class="headerlink" title="3. uses-a 关系（依赖关系）"></a>3. <code>uses-a</code> 关系（依赖关系）</h3><p><code>uses-a</code>关系表示一个类在其方法中使用另一个类的对象，但并不包含另一个类的对象作为其成员。这种关系是一种弱耦合关系，通常通过方法参数或局部变量来实现。</p>
+<p><strong>示例代码</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Logger</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">log</span><span class="hljs-params">(<span class="hljs-type">const</span> std::string&amp; message)</span> </span>&#123; <span class="hljs-comment">/* ... */</span> &#125;<br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Application</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">run</span><span class="hljs-params">()</span> </span>&#123;<br>        Logger logger;<br>        logger.<span class="hljs-built_in">log</span>(<span class="hljs-string">&quot;Application is running&quot;</span>);<br>    &#125;<br>&#125;;<br><br><span class="hljs-comment">// Application在其方法中使用Logger，所以Application uses-a Logger</span><br></code></pre></td></tr></table></figure>
+<p><strong>注意</strong>：<code>uses-a</code>关系强调的是类之间的依赖关系，一个类的方法可能依赖于另一个类的功能。</p>
+<h3 id="4-is-implemented-as-a-关系（实现关系）"><a href="#4-is-implemented-as-a-关系（实现关系）" class="headerlink" title="4. is-implemented-as-a 关系（实现关系）"></a>4. <code>is-implemented-as-a</code> 关系（实现关系）</h3><p><code>is-implemented-as-a</code>关系表示一个类或接口是通过另一个类或接口来实现的。这种关系通常用于接口实现，其中一个类实现了一个或多个接口。</p>
+<p><strong>示例代码</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">IDrawable</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">draw</span><span class="hljs-params">()</span> </span>= <span class="hljs-number">0</span>;<br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Circle</span> : <span class="hljs-keyword">public</span> IDrawable &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">draw</span><span class="hljs-params">()</span> <span class="hljs-keyword">override</span> </span>&#123; <span class="hljs-comment">/* ... */</span> &#125;<br>&#125;;<br><br><span class="hljs-comment">// Circle实现了IDrawable接口，所以Circle is-implemented-as-a IDrawable</span><br></code></pre></td></tr></table></figure>
+<p><strong>注意</strong>：<code>is-implemented-as-a</code>关系强调的是实现细节，一个类实现了接口或抽象类的具体功能。</p>
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+  </entry>
+  <entry>
     <title>cpp-3-内存模型</title>
     <url>/2025/02/22/Cpp/cpp-3/</url>
     <content><![CDATA[<ul>
@@ -716,109 +863,6 @@ rd2 value and address: -13.85, 0x7fff68ec89e0
       </categories>
   </entry>
   <entry>
-    <title>cpp-4-回调函数</title>
-    <url>/2025/02/22/Cpp/cpp-4/</url>
-    <content><![CDATA[<ol>
-<li>什么是回调函数</li>
-<li>回调函数用法</li>
-</ol>
-<span id="more"></span>
-
-<h1 id="回调函数"><a href="#回调函数" class="headerlink" title="回调函数"></a>回调函数</h1><p>回调函数，是计算机编程中对某一段可执行代码的引用，它被作为参数传递给另一段代码；</p>
-<p>回调函数不是由该函数的实现方直接调用，而是在特定的事件或条件发生时由另外的一方调用的，用于对该事件或条件进行响应；</p>
-<ol>
-<li>普通函数的回调</li>
-<li>类成员函数的回调</li>
-<li>基于std::function和std::bind的回调</li>
-<li>Lambda表达式的回调</li>
-</ol>
-<h1 id="普通函数的回调"><a href="#普通函数的回调" class="headerlink" title="普通函数的回调"></a>普通函数的回调</h1><figure class="highlight cpp"><table><tr><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdlib.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string&gt;</span></span><br><span class="hljs-function"><span class="hljs-keyword">typedef</span>  <span class="hljs-title">int</span> <span class="hljs-params">(*callBackFunc)</span><span class="hljs-params">(<span class="hljs-type">char</span>* name)</span></span>;<br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">playBegin</span><span class="hljs-params">(<span class="hljs-type">char</span>* name)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;视频开始解码，即将出现画面....\n&quot;</span>);<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>&#125;<br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">playEnd</span><span class="hljs-params">(<span class="hljs-type">char</span>* name)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;视频播放结束....\n&quot;</span>);<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>&#125;<br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">play</span><span class="hljs-params">(callBackFunc fn, <span class="hljs-type">char</span>* name)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">return</span> (*fn)(name);<br>&#125;<br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>   <span class="hljs-type">char</span> pName[<span class="hljs-number">1024</span>] = <span class="hljs-string">&quot;色即是空&quot;</span>;<br>   <span class="hljs-comment">//视频播放开始....</span><br>   <span class="hljs-built_in">play</span>(playBegin,pName);<span class="hljs-comment">//playBegin函数指针作为参数传递</span><br>   <span class="hljs-comment">//视频播放中....</span><br>   <span class="hljs-comment">//视频播放结束....</span><br>   <span class="hljs-built_in">play</span>(playEnd,pName);<span class="hljs-comment">//playEnd函数指针作为参数传递</span><br>   <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
-
-<ol>
-<li>playBegin(),playEnd()是普通函数，定义了回调函数的逻辑；</li>
-<li>play()函数是一个高阶函数，接收函数指针作为参数，并在内部调用回调函数；</li>
-<li>在main()中，将函数playBegin(),playEnd()的地址传递给play()实现回调；</li>
-</ol>
-<p>需要注意的是：</p>
-<p>在 <code>play</code> 函数中，<code>fn</code> 是一个 <code>callBackFunc</code> 类型的参数，即它是一个指向函数的指针。因此，<code>(*fn)(name)</code> 和 <code>fn(name)</code> 都是合法的函数调用方式，它们都表示通过函数指针 <code>fn</code> 调用指向的函数，并传递 <code>name</code> 作为参数。</p>
-<ul>
-<li><code>(*fn)(name)</code> 是显式地通过解引用函数指针来调用函数。<code>*fn</code> 获取函数指针指向的函数，然后调用该函数。</li>
-<li><code>fn(name)</code> 是更简洁的写法，直接通过函数指针调用函数。在 C 语言中，当函数指针用于调用函数时，可以省略解引用操作符 <code>*</code>，因为上下文已经明确了这是一个函数调用操作.</li>
-</ul>
-<h1 id="类成员函数的回调"><a href="#类成员函数的回调" class="headerlink" title="类成员函数的回调"></a>类成员函数的回调</h1><h3 id="示例1"><a href="#示例1" class="headerlink" title="示例1"></a>示例1</h3><p>由于普通成员函数必须依赖具体对象才能调用，因此在回调时需要传递对象指针和成员函数指针。</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">CallbackHandler</span>&#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-comment">// 成员函数作为回调函数</span><br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">memberCallback</span><span class="hljs-params">(<span class="hljs-type">int</span> value)</span></span>&#123;<br>        cout &lt;&lt; <span class="hljs-string">&quot;成员函数回调，被调用时传入的值是:&quot;</span> &lt;&lt; value &lt;&lt; endl;<br>    &#125;<br>&#125;;<br><br><span class="hljs-comment">// 一个执行回调的函数</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">executableMemberCallback</span><span class="hljs-params">(CallbackHandler* obj, <span class="hljs-type">void</span> (CallbackHandler::*callback)(<span class="hljs-type">int</span>), <span class="hljs-type">int</span> value)</span></span>&#123;<br>    <span class="hljs-comment">// 通过对象指针和成员函数指针调用成员函数</span><br>    (obj-&gt;*callback)(value);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>&#123;<br>    <span class="hljs-comment">// 传递对象和成员函数指针进行回调</span><br>    CallbackHandler handler;<br>    <span class="hljs-built_in">executableMemberCallback</span>(&amp;handler, &amp;CallbackHandler::memberCallback, <span class="hljs-number">42</span>);<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
-
-<ol>
-<li>CallbackHandler类中定义了一个成员函数memberCallback;</li>
-<li>executeMemberCallback接收对象指针CallbackHandler* obj和成员函数指针void (CallbackHandler::*callback)(int)</li>
-<li>通过(obj-&gt;*callback)(value)调用成员函数；</li>
-<li>在main函数中，通过对象handler和成员函数指针&amp;CallbackHandler::memberCallback实现回调；</li>
-</ol>
-<h3 id="示例2"><a href="#示例2" class="headerlink" title="示例2"></a>示例2</h3><p>在c++面向对象里面，回调函数是成员函数的情况更常见，这样的好处是，一个类A的一个函数生成一个结果之后，可以调用另一个类B的成员函数。而不必类A拥有B的实例。</p>
-<p>尤其是在B中有了A的实例的情况下，A中如果再包含B的实例会出现循环引用的问题 ，这也是可以解决的，但是这种耦合还是容易让逻辑变得混乱。</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">typedef</span> std::function&lt;<span class="hljs-type">void</span> (string)&gt; CaptureCallback;  <br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">CaptureController</span>&#123;<br><span class="hljs-keyword">public</span>:<br>    CaptureCallback callback;<br>    <span class="hljs-built_in">CaptureController</span>(CaptureCallback callback):<span class="hljs-built_in">callback</span>(callback)&#123;&#125;;<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">capturePic</span><span class="hljs-params">(CaptureCallback callback)</span></span>&#123;<br>        string t = <span class="hljs-string">&quot;a pic&quot;</span>;<br>        <span class="hljs-built_in">callback</span>(t);<br>    &#125;<br>&#125;<br><br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">UI</span>&#123;<br>    <span class="hljs-comment">//开始捕捉图像</span><br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">startCapture</span><span class="hljs-params">()</span></span>&#123;<br>        <span class="hljs-function">CaptureController <span class="hljs-title">c</span><span class="hljs-params">(std::bind(&amp;UI::renderPic,<span class="hljs-keyword">this</span>,_1))</span></span>; <br>        c.<span class="hljs-built_in">capturePic</span>();<br>    &#125;<br>  <br>    <span class="hljs-comment">//渲染图片作为回调函数</span><br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">renderPic</span><span class="hljs-params">(string t)</span></span>&#123;<br>        <span class="hljs-built_in">print</span>(t);<br>    &#125;<br>&#125;<br><br><span class="hljs-comment">//main.cpp</span><br>UI ui;<br>ui.<span class="hljs-built_in">startCapture</span>();<br></code></pre></td></tr></table></figure>
-
-
-<h1 id="std-function-std-bind"><a href="#std-function-std-bind" class="headerlink" title="std::function&#x2F;std::bind"></a>std::function&#x2F;std::bind</h1><ol>
-<li>std::function可以存储任意可调用对象（普通函数，成员函数，Lambda表达式)</li>
-<li>std::bind可以绑定成员函数和对象</li>
-</ol>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;functional&gt;</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><br><span class="hljs-keyword">typedef</span> function&lt;<span class="hljs-type">void</span>(<span class="hljs-type">int</span>)&gt; CallBackFunc;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">executeCallback</span><span class="hljs-params">(CallBackFunc callback, <span class="hljs-type">int</span> value)</span></span>&#123;<br>    <span class="hljs-built_in">callback</span>(value);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">freeFunction</span><span class="hljs-params">(<span class="hljs-type">int</span> value)</span></span>&#123;<br>    cout &lt;&lt; <span class="hljs-string">&quot;普通函数回调，传入的参数为：&quot;</span> &lt;&lt; value &lt;&lt; endl;<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">CallbackHandler</span>&#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">memberCallback</span><span class="hljs-params">(<span class="hljs-type">int</span> value)</span></span>&#123;<br>        cout &lt;&lt; <span class="hljs-string">&quot;成员函数回调，传入的参数为：&quot;</span> &lt;&lt; value &lt;&lt; endl;<br>    &#125;<br>&#125;;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>&#123;<br>    CallbackHandler handler;<br>    <span class="hljs-comment">// 1. 传递普通函数作为回调</span><br>    <span class="hljs-built_in">executeCallback</span>(freeFunction, <span class="hljs-number">42</span>);<br><br>    <span class="hljs-comment">// 2. 传递Lambda表达式作为回调</span><br>    <span class="hljs-built_in">executeCallback</span>([](<span class="hljs-type">int</span> value)&#123;<br>        cout &lt;&lt; <span class="hljs-string">&quot;Lambda 回调，传入的参数为：&quot;</span> &lt;&lt; value &lt;&lt; endl;<br>    &#125;, <span class="hljs-number">43</span>);<br><br>    <span class="hljs-comment">// 3. 传递成员函数作为回调</span><br>    <span class="hljs-built_in">executeCallback</span>(std::<span class="hljs-built_in">bind</span>(&amp;CallbackHandler::memberCallback, &amp;handler, std::placeholders::_1), <span class="hljs-number">44</span>);<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
-
-<ol>
-<li><code>function&lt;void(int)&gt;</code>可以存储普通函数，Lambda表达式或绑定后的成员函数；</li>
-<li>使用std::bind将成员函数和对象绑定，并通过std::placeholder::_1占位符传递参数；</li>
-</ol>
-]]></content>
-      <categories>
-        <category>cpp</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>cpp-6-智能指针</title>
-    <url>/2025/02/22/Cpp/cpp-6/</url>
-    <content><![CDATA[<ol>
-<li>智能指针模板类</li>
-</ol>
-<h1 id="智能指针"><a href="#智能指针" class="headerlink" title="智能指针"></a>智能指针</h1><ol>
-<li>auto_ptr</li>
-<li>unique_ptr</li>
-<li>shared_ptr</li>
-</ol>
-<p>以上三个智能指针模板都定义了类似指针的对象，可以将new获得的地址赋给这些对象。当智能指针过期的时候，其析构函数将使用delete来释放内存。</p>
-<p>使用时可以将每一个智能指针都放在一个代码块内，这样当离开代码的时候，指针将过期，申请的内存也会被自动释放。</p>
-<p>所有的智能指针都有一个explicit构造函数，该构造函数将指针作为参数，因此不需要自动将指针转换为智能指针对象。</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><code class="hljs cpp">shared_ptr&lt;<span class="hljs-type">double</span>&gt; pd;<br><span class="hljs-type">double</span> *p_reg = <span class="hljs-keyword">new</span> <span class="hljs-type">double</span>;<br>pd = p_reg;	<span class="hljs-comment">// 错误</span><br>pd = <span class="hljs-built_in">shared_ptr</span>&lt;<span class="hljs-type">double</span>&gt;(p_reg);	<span class="hljs-comment">// 正确</span><br>shared_ptr&lt;<span class="hljs-type">double</span>&gt; pshared = p_reg;	<span class="hljs-comment">// 错误</span><br><span class="hljs-function">shared_ptr&lt;<span class="hljs-type">double</span>&gt; <span class="hljs-title">pshared</span><span class="hljs-params">(p_reg)</span></span>;	<span class="hljs-comment">// 正确</span><br></code></pre></td></tr></table></figure>
-
-<p>智能指针对象的很多方面都类似于常规指针：</p>
-<ul>
-<li>可以对其执行解除引用操作(*p)</li>
-<li>可以用它来访问结构成员(p-&gt;name)</li>
-<li>将它赋值给指向相同类型的常规指针</li>
-<li>可以将智能指针对象赋值给另一个同类型的智能指针对象</li>
-</ul>
-<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><code class="hljs cpp"><span class="hljs-function">auto_ptr&lt;string&gt; <span class="hljs-title">ps</span><span class="hljs-params">(<span class="hljs-keyword">new</span> string(<span class="hljs-string">&quot;I reigned by lonely as a cloud.&quot;</span>))</span></span>;<br>auto_ptr&lt;string&gt; vocation;<br>vocation = ps;<br></code></pre></td></tr></table></figure>
-
-<p>如果ps和vocation是常规指针，则两个指针将指向同一个string对象。如果是使用智能指针将会出现严重的问题，即一块内存被释放了两次，一次是ps过期的时候，另一次是vocation过期的时候。</p>
-<p>解决办法：</p>
-<ul>
-<li>定义赋值运算符，使之执行深复制。这样两个指针将指向不同的对象，其中一个对象是另一个对象的副本；</li>
-<li>建立所有权。对于特定的对象，只能有一个智能指针可以拥有它，这样拥有对象的智能指针的构造函数会删除该对象。然后让赋值操作转让所有权。unique_ptr策略；</li>
-<li>创建智能更高的指针，跟踪引用特定对象的智能指针数。称为引用计数，仅当最后一个指针过期时，才调用delete，shared_ptr策略；</li>
-</ul>
-<h2 id="unique-ptr与auto-ptr比较"><a href="#unique-ptr与auto-ptr比较" class="headerlink" title="unique_ptr与auto_ptr比较"></a>unique_ptr与auto_ptr比较</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><code class="hljs cpp"><span class="hljs-function">auto_ptr&lt;string&gt; <span class="hljs-title">p1</span><span class="hljs-params">(<span class="hljs-keyword">new</span> string(<span class="hljs-string">&quot;auto&quot;</span>))</span></span>;<span class="hljs-comment">// #1</span><br>auto_ptr&lt;string&gt; p2;			<span class="hljs-comment">// #2</span><br>p2 = p1;				<span class="hljs-comment">// #3</span><br></code></pre></td></tr></table></figure>
-
-<p>在语句#3中，p2接管string对象的所有权后，p1的所有权将被剥夺，按理说这应该是一件好事，可以防止p1和p2的析构函数试图删除同一个对象；但是如果程序随后试图使用p1，这将是一个坏事，因为p1不再指向有效的数据；</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><code class="hljs cpp"><span class="hljs-function">unique_ptr&lt;string&gt; <span class="hljs-title">p3</span><span class="hljs-params">(<span class="hljs-keyword">new</span> string(<span class="hljs-string">&quot;auto&quot;</span>))</span></span>;<span class="hljs-comment">// #4</span><br>unique_ptr&lt;string&gt; p4;			<span class="hljs-comment">// #5</span><br>p4 = p3;				<span class="hljs-comment">// #6</span><br></code></pre></td></tr></table></figure>
-
-<p>在使用unique_ptr的时候，这将是不允许的，编译器认为#6语法错误，避免了p3不再指向有效数据的问题。</p>
-<p>因此，unique_ptr比auto_ptr更安全。</p>
-]]></content>
-      <categories>
-        <category>cpp</category>
-      </categories>
-  </entry>
-  <entry>
     <title>std::ios_base格式化标志和精度设置</title>
     <url>/2025/02/22/Cpp/ios_base/</url>
     <content><![CDATA[<ol>
@@ -857,50 +901,6 @@ rd2 value and address: -13.85, 0x7fff68ec89e0
 ]]></content>
       <categories>
         <category>cpp</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>is-a</title>
-    <url>/2025/02/22/Cpp/is-a/</url>
-    <content><![CDATA[<ol>
-<li>is-a</li>
-<li>has-a</li>
-<li>uses-a</li>
-<li>is-implemented-as-a</li>
-</ol>
-<span id="more"></span>
-<h2 id="什么是is-a"><a href="#什么是is-a" class="headerlink" title="什么是is-a"></a>什么是is-a</h2><p>is-a表面意思就是“是”，例如“B is an A”表示“B是一个A”，在C++中它描述的是不同类之间的关系。它描述的是一种继承关系，B is-a A有两层含义：</p>
-<ul>
-<li>B是A的一种</li>
-<li>反过来，A并不是B</li>
-</ul>
-<p>举一个例子就是，香蕉is-a水果，香蕉是水果，但是不能说水果是香蕉。他们之间的关系是一种继承关系，香蕉继承了水果的所有性质，但是香蕉又有它自己独特的性质。</p>
-<p>has-a表面意思是“有”，例如“B has an A”表示“B中有A”，他表示的是一种组合关系，他们自己之间是一种组合关系，B中有A表示的是一种包含和被包含的关系，所以B掌控着A的生死，在has-a这种关系中，A其实是依托于B才得以存在的，这么说可能会有点抽象，因为A本身也是一个独立的存在，为什么说A依托B才得以存在？举个例子，午饭中有水果。</p>
-<ul>
-<li>要先有午饭，才会有午饭中有水果</li>
-</ul>
-<p>uses-a表面意思是“用”，“用”不需要拥有，比如文档需要借助打印机来打印，并不是说这个文档就拥有打印机，打印机并不是文档的一部分，我们提交一份文档也并不是连着打印机一起提交。下面是uses-a的示例代码（为了突出uses-a，把其中一个类的对象定义为了全局变量）：</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs C++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string&gt;</span></span><br><br><span class="hljs-comment">// 打印机类</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Printer</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">print</span><span class="hljs-params">(<span class="hljs-type">const</span> std::string&amp; content)</span> </span>&#123;<br>        std::cout &lt;&lt; <span class="hljs-string">&quot;Printing: &quot;</span> &lt;&lt; content &lt;&lt; std::endl;<br>    &#125;<br>&#125;;<br><br><span class="hljs-comment">// 全局打印机对象，Document uses-a Printer</span><br>Printer printer;<br><br><span class="hljs-comment">// 文档类</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Document</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">printDocument</span><span class="hljs-params">(<span class="hljs-type">const</span> std::string&amp; content)</span> </span>&#123;<br>        <span class="hljs-comment">// 使用全局打印机对象printer打印内容</span><br>        printer.<span class="hljs-built_in">print</span>(content);<br>    &#125;<br>&#125;;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>    Document doc;<br>    doc.<span class="hljs-built_in">printDocument</span>(<span class="hljs-string">&quot;Hello, World!&quot;</span>);<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
-
-<h2 id="以下是ChatGPT的回答"><a href="#以下是ChatGPT的回答" class="headerlink" title="以下是ChatGPT的回答"></a>以下是ChatGPT的回答</h2><h3 id="1-is-a-关系（继承关系）"><a href="#1-is-a-关系（继承关系）" class="headerlink" title="1. is-a 关系（继承关系）"></a>1. <code>is-a</code> 关系（继承关系）</h3><p><code>is-a</code>关系表示一种继承关系，即一个类是另一个类的特化。在面向对象编程中，这种关系通常通过类继承来实现。如果类A是类B的特化，那么A的每个实例都可以被视为B的实例，即A具有B的所有属性和行为。</p>
-<p><strong>示例代码</strong>：</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Animal</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">eat</span><span class="hljs-params">()</span> </span>&#123; <span class="hljs-comment">/* ... */</span> &#125;<br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Dog</span> : <span class="hljs-keyword">public</span> Animal &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">bark</span><span class="hljs-params">()</span> </span>&#123; <span class="hljs-comment">/* ... */</span> &#125;<br>&#125;;<br><br><span class="hljs-comment">// Dog是Animal的特化，所以Dog具有Animal的行为</span><br></code></pre></td></tr></table></figure>
-<p><strong>注意</strong>：<code>is-a</code>关系是多态性的基础，允许代码通过基类指针或引用来操作派生类对象，实现动态绑定。</p>
-<h3 id="2-has-a-关系（组合关系）"><a href="#2-has-a-关系（组合关系）" class="headerlink" title="2. has-a 关系（组合关系）"></a>2. <code>has-a</code> 关系（组合关系）</h3><p><code>has-a</code>关系表示一个类包含另一个类的实例作为其成员，即一个类的对象拥有另一个类的对象。这种关系通过对象的组合来实现，不涉及继承。</p>
-<p><strong>示例代码</strong>：</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Engine</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">start</span><span class="hljs-params">()</span> </span>&#123; <span class="hljs-comment">/* ... */</span> &#125;<br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Car</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    Engine engine;<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">drive</span><span class="hljs-params">()</span> </span>&#123; <span class="hljs-comment">/* 使用engine对象 ... */</span> &#125;<br>&#125;;<br><br><span class="hljs-comment">// Car有一个Engine对象，所以Car has-a Engine</span><br></code></pre></td></tr></table></figure>
-<p><strong>注意</strong>：<code>has-a</code>关系强调的是对象之间的组合关系，而不是继承关系。</p>
-<h3 id="3-uses-a-关系（依赖关系）"><a href="#3-uses-a-关系（依赖关系）" class="headerlink" title="3. uses-a 关系（依赖关系）"></a>3. <code>uses-a</code> 关系（依赖关系）</h3><p><code>uses-a</code>关系表示一个类在其方法中使用另一个类的对象，但并不包含另一个类的对象作为其成员。这种关系是一种弱耦合关系，通常通过方法参数或局部变量来实现。</p>
-<p><strong>示例代码</strong>：</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Logger</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">log</span><span class="hljs-params">(<span class="hljs-type">const</span> std::string&amp; message)</span> </span>&#123; <span class="hljs-comment">/* ... */</span> &#125;<br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Application</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">run</span><span class="hljs-params">()</span> </span>&#123;<br>        Logger logger;<br>        logger.<span class="hljs-built_in">log</span>(<span class="hljs-string">&quot;Application is running&quot;</span>);<br>    &#125;<br>&#125;;<br><br><span class="hljs-comment">// Application在其方法中使用Logger，所以Application uses-a Logger</span><br></code></pre></td></tr></table></figure>
-<p><strong>注意</strong>：<code>uses-a</code>关系强调的是类之间的依赖关系，一个类的方法可能依赖于另一个类的功能。</p>
-<h3 id="4-is-implemented-as-a-关系（实现关系）"><a href="#4-is-implemented-as-a-关系（实现关系）" class="headerlink" title="4. is-implemented-as-a 关系（实现关系）"></a>4. <code>is-implemented-as-a</code> 关系（实现关系）</h3><p><code>is-implemented-as-a</code>关系表示一个类或接口是通过另一个类或接口来实现的。这种关系通常用于接口实现，其中一个类实现了一个或多个接口。</p>
-<p><strong>示例代码</strong>：</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">IDrawable</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">draw</span><span class="hljs-params">()</span> </span>= <span class="hljs-number">0</span>;<br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Circle</span> : <span class="hljs-keyword">public</span> IDrawable &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">draw</span><span class="hljs-params">()</span> <span class="hljs-keyword">override</span> </span>&#123; <span class="hljs-comment">/* ... */</span> &#125;<br>&#125;;<br><br><span class="hljs-comment">// Circle实现了IDrawable接口，所以Circle is-implemented-as-a IDrawable</span><br></code></pre></td></tr></table></figure>
-<p><strong>注意</strong>：<code>is-implemented-as-a</code>关系强调的是实现细节，一个类实现了接口或抽象类的具体功能。</p>
-]]></content>
-      <categories>
-        <category>C++</category>
       </categories>
   </entry>
   <entry>
@@ -1153,6 +1153,22 @@ rd2 value and address: -13.85, 0x7fff68ec89e0
       </categories>
   </entry>
   <entry>
+    <title>.deb文件</title>
+    <url>/2025/02/22/Linux/deb%E6%96%87%E4%BB%B6/</url>
+    <content><![CDATA[<p>dep文件是debian，Ubuntu等Linux发行版的软件安装包</p>
+<span id="more"></span>
+<h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><p>deb包安装方法有两种：<br>1.直接“双击”安装<br>2.指令安装<br>2.1.终端命令行安装</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">sudo</span> dpkg -i &lt;package.deb&gt;<br></code></pre></td></tr></table></figure>
+
+<p>2.2.终端命令行卸载</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">sudo</span> dpkg -r &lt;package&gt;<br></code></pre></td></tr></table></figure>
+<h1 id="dpkg指令的其他用法"><a href="#dpkg指令的其他用法" class="headerlink" title="dpkg指令的其他用法"></a><code>dpkg</code>指令的其他用法</h1><figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">$ dpkg -i &lt;package.deb&gt;     <span class="hljs-comment">#安装一个 Debian 软件包，如手动下载的文件。</span><br>$ dpkg -c &lt;package.deb&gt;     <span class="hljs-comment">#列出 package.deb 的内容。</span><br>$ dpkg -I &lt;package.deb&gt;     <span class="hljs-comment">#从 package.deb 中提取包信息。</span><br>$ dpkg -r &lt;package&gt;         <span class="hljs-comment">#移除一个已安装的包。</span><br>$ dpkg -P &lt;package&gt;：       <span class="hljs-comment">#完全清除一个已安装的包。和 remove 不同的是，remove 只是删掉数据和可执行文件，purge 另外还删除所有的配制文件。</span><br>$ dpkg -L &lt;package&gt;     <span class="hljs-comment">#列出 package 安装的所有文件清单。</span><br>$ dpkg -s &lt;package&gt;     <span class="hljs-comment">#显示已安装包的信息。</span><br>$ dpkg -S &lt;package&gt;     <span class="hljs-comment">#查看软件在哪个包里；</span><br></code></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+  </entry>
+  <entry>
     <title>.bashrc</title>
     <url>/2025/02/22/Linux/bashrc/</url>
     <content><![CDATA[<p>.bashrc是一个用于配置Bash Shell的脚本文件。位于<code>~/.bashrc</code>，当打开一个新的Bash终端会话时，Bash会自动执行这个文件中的命令，这个文件通常用于：设置环境变量，定义别名，配置Shell选项。</p>
@@ -1171,22 +1187,6 @@ rd2 value and address: -13.85, 0x7fff68ec89e0
 <p><code>if [ -x /usr/bin/dircolors ]; </code>:检查 &#x2F;usr&#x2F;bin&#x2F;dircolors 文件是否存在并且具有可执行权限，从而决定是否要执行后续命令。</p>
 <p><code>test -r ~/.dircolors &amp;&amp; eval &quot;$(dircolors -b ~/.dircolors)&quot; || eval &quot;$(dircolors -b)&quot;</code>:检查 ~&#x2F;.dircolors 文件是否存在并且可读。如果文件存在且可读，使用 dircolors 命令和该文件的设置来配置颜色。如果文件不存在或不可读，使用 dircolors 命令的默认设置来配置颜色。目的是确保 LS_COLORS 环境变量被设置，以便 ls 命令能够根据这些设置显示颜色。</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 其他别名</span><br><span class="hljs-built_in">alias</span> ll=<span class="hljs-string">&#x27;ls -alF&#x27;</span><br><span class="hljs-built_in">alias</span> la=<span class="hljs-string">&#x27;ls -A&#x27;</span><br><span class="hljs-built_in">alias</span> l=<span class="hljs-string">&#x27;ls -CF&#x27;</span><br></code></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>.deb文件</title>
-    <url>/2025/02/22/Linux/deb%E6%96%87%E4%BB%B6/</url>
-    <content><![CDATA[<p>dep文件是debian，Ubuntu等Linux发行版的软件安装包</p>
-<span id="more"></span>
-<h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><p>deb包安装方法有两种：<br>1.直接“双击”安装<br>2.指令安装<br>2.1.终端命令行安装</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">sudo</span> dpkg -i &lt;package.deb&gt;<br></code></pre></td></tr></table></figure>
-
-<p>2.2.终端命令行卸载</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">sudo</span> dpkg -r &lt;package&gt;<br></code></pre></td></tr></table></figure>
-<h1 id="dpkg指令的其他用法"><a href="#dpkg指令的其他用法" class="headerlink" title="dpkg指令的其他用法"></a><code>dpkg</code>指令的其他用法</h1><figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">$ dpkg -i &lt;package.deb&gt;     <span class="hljs-comment">#安装一个 Debian 软件包，如手动下载的文件。</span><br>$ dpkg -c &lt;package.deb&gt;     <span class="hljs-comment">#列出 package.deb 的内容。</span><br>$ dpkg -I &lt;package.deb&gt;     <span class="hljs-comment">#从 package.deb 中提取包信息。</span><br>$ dpkg -r &lt;package&gt;         <span class="hljs-comment">#移除一个已安装的包。</span><br>$ dpkg -P &lt;package&gt;：       <span class="hljs-comment">#完全清除一个已安装的包。和 remove 不同的是，remove 只是删掉数据和可执行文件，purge 另外还删除所有的配制文件。</span><br>$ dpkg -L &lt;package&gt;     <span class="hljs-comment">#列出 package 安装的所有文件清单。</span><br>$ dpkg -s &lt;package&gt;     <span class="hljs-comment">#显示已安装包的信息。</span><br>$ dpkg -S &lt;package&gt;     <span class="hljs-comment">#查看软件在哪个包里；</span><br></code></pre></td></tr></table></figure>
-]]></content>
       <categories>
         <category>Linux</category>
       </categories>
@@ -1371,6 +1371,24 @@ rd2 value and address: -13.85, 0x7fff68ec89e0
 ]]></content>
       <categories>
         <category>CMake</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Github的SSH配置</title>
+    <url>/2025/02/22/MissingSemester/Github%E7%9A%84SSH%E9%85%8D%E7%BD%AE/</url>
+    <content><![CDATA[<h1 id="1-创建公私密钥"><a href="#1-创建公私密钥" class="headerlink" title="1.创建公私密钥"></a>1.创建公私密钥</h1><figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">$ ssh-keygen -t rsa -C <span class="hljs-string">&quot;Github注册的邮箱地址&quot;</span><br>$ <span class="hljs-built_in">cat</span> ～/.ssh/id_rsa.pub<br><span class="hljs-comment"># ps.在windows系统中.ssh文件在C:\Users\你的用户名\.ssh目录下</span><br></code></pre></td></tr></table></figure>
+
+<span id="more"></span>
+<h1 id="2-配置公钥"><a href="#2-配置公钥" class="headerlink" title="2.配置公钥"></a>2.配置公钥</h1><p>1.github -&gt; 个人头像 -&gt; setting -&gt; SSH and GPG keys -&gt; New SSH key<br>2.复制id_rsa.pub的内容到Key中<br>3.Title的内容自定义</p>
+<h1 id="3-验证是否设置成功"><a href="#3-验证是否设置成功" class="headerlink" title="3.验证是否设置成功"></a>3.验证是否设置成功</h1><figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">$ ssh -T git@github.com<br>Hi portkas! You<span class="hljs-string">&#x27;ve successfully authenticated, but GitHub does not provide shell access.</span><br></code></pre></td></tr></table></figure>
+
+<h1 id="4-Q-A"><a href="#4-Q-A" class="headerlink" title="4.Q&amp;A"></a>4.Q&amp;A</h1><p>SSH登录安全性由非对称加密保证，产生密钥时，一次产生两个密钥，一个公钥，一个私钥，在git中一般命名为id_rsa.pub, id_rsa。</p>
+<h2 id="如何使用生成的一个私钥一个公钥进行验证呢？"><a href="#如何使用生成的一个私钥一个公钥进行验证呢？" class="headerlink" title="如何使用生成的一个私钥一个公钥进行验证呢？"></a>如何使用生成的一个私钥一个公钥进行验证呢？</h2><p>本地生成一个密钥对，其中公钥放到远程主机，私钥保存在本地，当本地主机需要登录远程主机时，本地主机向远程主机发送一个登录请求，远程收到消息后，随机生成一个字符串并用公钥加密，发回给本地。本地拿到该字符串，用存放在本地的私钥进行解密，再次发送到远程，远程比对该解密后的字符串与源字符串是否等同，如果等同则认证成功。</p>
+<h2 id="每使用一台主机都要配？"><a href="#每使用一台主机都要配？" class="headerlink" title="每使用一台主机都要配？"></a>每使用一台主机都要配？</h2><p>每使用一台新主机进行git远程操作，想要实现无密，都需要配置。并不是说每个账号配一次就够了，而是每一台主机都需要配。</p>
+<h2 id="配了为什么就不用密码了？"><a href="#配了为什么就不用密码了？" class="headerlink" title="配了为什么就不用密码了？"></a>配了为什么就不用密码了？</h2><p>因为配置的时候是把当前主机的公钥放到了你的github账号下，相当于当前主机和你的账号做了一个关联，你在这台主机上已经登录了你的账号，此时此刻github认为是该账号主人在操作这台主机，在配置ssh后就信任该主机了。所以下次在使用git的时候即使没有登录github，也能直接从本地push代码到远程了。</p>
+]]></content>
+      <categories>
+        <category>Git</category>
       </categories>
   </entry>
   <entry>
@@ -1671,24 +1689,6 @@ rd2 value and address: -13.85, 0x7fff68ec89e0
 <h4 id="拉取"><a href="#拉取" class="headerlink" title="拉取"></a>拉取</h4><p><code>git fetch</code>命令从服务器上抓取本地没有的数据时，它并不会修改工作目录中的内容，它只会获取数据然后让你自己合并。<br><code>git pull</code>命令在大多数情况下含义是一个<code>git fetch</code>紧接着一个<code>git merge</code>命令。该指令会查找当前分支所跟踪的服务器与分支，从服务器上抓取数据然后尝试合并入那个远程分支。<br>由于<code>git pull</code>经常令人困惑，通常单独显式地使用<code>git fetch</code>与<code>git merge</code></p>
 <h4 id="删除远程分支"><a href="#删除远程分支" class="headerlink" title="删除远程分支"></a>删除远程分支</h4><p>当已经通过远程分支做完所有的工作后，可以运行<code>git push --delete &lt;branch&gt;</code>命令删除一个远程分支，例如要从服务器上删除serverfix分支：</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">$ git push origin --delete serverfix<br>To https://github.com/schacon/simplegit<br> - [deleted]         serverfix<br></code></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>Git</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Github的SSH配置</title>
-    <url>/2025/02/22/MissingSemester/Github%E7%9A%84SSH%E9%85%8D%E7%BD%AE/</url>
-    <content><![CDATA[<h1 id="1-创建公私密钥"><a href="#1-创建公私密钥" class="headerlink" title="1.创建公私密钥"></a>1.创建公私密钥</h1><figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">$ ssh-keygen -t rsa -C <span class="hljs-string">&quot;Github注册的邮箱地址&quot;</span><br>$ <span class="hljs-built_in">cat</span> ～/.ssh/id_rsa.pub<br><span class="hljs-comment"># ps.在windows系统中.ssh文件在C:\Users\你的用户名\.ssh目录下</span><br></code></pre></td></tr></table></figure>
-
-<span id="more"></span>
-<h1 id="2-配置公钥"><a href="#2-配置公钥" class="headerlink" title="2.配置公钥"></a>2.配置公钥</h1><p>1.github -&gt; 个人头像 -&gt; setting -&gt; SSH and GPG keys -&gt; New SSH key<br>2.复制id_rsa.pub的内容到Key中<br>3.Title的内容自定义</p>
-<h1 id="3-验证是否设置成功"><a href="#3-验证是否设置成功" class="headerlink" title="3.验证是否设置成功"></a>3.验证是否设置成功</h1><figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">$ ssh -T git@github.com<br>Hi portkas! You<span class="hljs-string">&#x27;ve successfully authenticated, but GitHub does not provide shell access.</span><br></code></pre></td></tr></table></figure>
-
-<h1 id="4-Q-A"><a href="#4-Q-A" class="headerlink" title="4.Q&amp;A"></a>4.Q&amp;A</h1><p>SSH登录安全性由非对称加密保证，产生密钥时，一次产生两个密钥，一个公钥，一个私钥，在git中一般命名为id_rsa.pub, id_rsa。</p>
-<h2 id="如何使用生成的一个私钥一个公钥进行验证呢？"><a href="#如何使用生成的一个私钥一个公钥进行验证呢？" class="headerlink" title="如何使用生成的一个私钥一个公钥进行验证呢？"></a>如何使用生成的一个私钥一个公钥进行验证呢？</h2><p>本地生成一个密钥对，其中公钥放到远程主机，私钥保存在本地，当本地主机需要登录远程主机时，本地主机向远程主机发送一个登录请求，远程收到消息后，随机生成一个字符串并用公钥加密，发回给本地。本地拿到该字符串，用存放在本地的私钥进行解密，再次发送到远程，远程比对该解密后的字符串与源字符串是否等同，如果等同则认证成功。</p>
-<h2 id="每使用一台主机都要配？"><a href="#每使用一台主机都要配？" class="headerlink" title="每使用一台主机都要配？"></a>每使用一台主机都要配？</h2><p>每使用一台新主机进行git远程操作，想要实现无密，都需要配置。并不是说每个账号配一次就够了，而是每一台主机都需要配。</p>
-<h2 id="配了为什么就不用密码了？"><a href="#配了为什么就不用密码了？" class="headerlink" title="配了为什么就不用密码了？"></a>配了为什么就不用密码了？</h2><p>因为配置的时候是把当前主机的公钥放到了你的github账号下，相当于当前主机和你的账号做了一个关联，你在这台主机上已经登录了你的账号，此时此刻github认为是该账号主人在操作这台主机，在配置ssh后就信任该主机了。所以下次在使用git的时候即使没有登录github，也能直接从本地push代码到远程了。</p>
 ]]></content>
       <categories>
         <category>Git</category>
@@ -2292,33 +2292,6 @@ rd2 value and address: -13.85, 0x7fff68ec89e0
       </categories>
   </entry>
   <entry>
-    <title>gcc</title>
-    <url>/2025/02/22/MissingSemester/gcc/</url>
-    <content><![CDATA[<h1 id="gcc编译流程"><a href="#gcc编译流程" class="headerlink" title="gcc编译流程"></a>gcc编译流程</h1><figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 1.预处理</span><br>$ gcc -E main.c -o main.i<br><br><span class="hljs-comment"># 2.编译</span><br>$ gcc -S main.i -o main.s<br><br><span class="hljs-comment"># 3.汇编</span><br>$ gcc -c main.s -o main.o<br><br><span class="hljs-comment"># 4.链接</span><br>$ gcc main.o -o main<br></code></pre></td></tr></table></figure>
-<span id="more"></span>
-<h1 id="gcc常用参数"><a href="#gcc常用参数" class="headerlink" title="gcc常用参数"></a>gcc常用参数</h1><ul>
-<li>-E：预处理，不进行编译</li>
-<li>-S：编译，但不汇编</li>
-<li>-c：编译并汇编，但不链接</li>
-<li>-o：指定生成的文件名</li>
-<li>-I：指定include包含文件的目录</li>
-<li>-g：生成调试信息</li>
-<li>-D：编译的时候指定一个宏</li>
-<li>-W：不生成任何警告</li>
-<li>-Wall：生成所有警告</li>
-<li>-On：代码优化</li>
-<li>-l：编译的时候，指定使用的库</li>
-<li>-L：指定编译的时候搜索库的路径</li>
-<li>-fpic：生成与位置无关代码</li>
-<li>-shared：生成共享目标文件</li>
-<li>-std：指定标准</li>
-</ul>
-]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-  </entry>
-  <entry>
     <title>coredump</title>
     <url>/2025/02/22/MissingSemester/coredump/</url>
     <content><![CDATA[<h1 id="什么是coredump"><a href="#什么是coredump" class="headerlink" title="什么是coredump"></a>什么是coredump</h1><p>coredump又叫核心转储，是程序崩溃时候的一个内存快照，存储了进程的内存，寄存器状态，运行堆栈等信息。</p>
@@ -2479,6 +2452,33 @@ rd2 value and address: -13.85, 0x7fff68ec89e0
 
 <p>如上即可跳转到指定的线程中，并查看所在线程正在运行的堆栈信息和寄存器信息。</p>
 <h1 id="学习资源"><a href="#学习资源" class="headerlink" title="学习资源"></a>学习资源</h1><p><a href="https://cloud.tencent.com/developer/article/1860631">coredump文件是如何生成的</a><br><a href="https://www.cnblogs.com/flyinggod/p/13415862.html">Linux生成coredump的方法及设置</a><br><a href="https://www.cnblogs.com/lidabo/p/14311900.html">gdb调试coredump</a><br><a href="https://blog.csdn.net/sunxiaopengsun/article/details/72974548">gdb调试示例-强烈推荐</a><br><a href="https://developers.redhat.com/articles/2022/01/10/gdb-developers-gnu-debugger-tutorial-part-2-all-about-debuginfo#">debuginfo</a>【这篇文章有很多不明白的名词，涉及到编译器和DWARF调试信息】<br><a href="https://imageslr.com/2023/gdb.html#coredump">GDB 入门笔记</a>【这是一篇非常全面的GDB入门笔记】<br><a href="https://sourceware.org/gdb/documentation/">GDB Documentation</a>【GDB官方文档】</p>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>gcc</title>
+    <url>/2025/02/22/MissingSemester/gcc/</url>
+    <content><![CDATA[<h1 id="gcc编译流程"><a href="#gcc编译流程" class="headerlink" title="gcc编译流程"></a>gcc编译流程</h1><figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 1.预处理</span><br>$ gcc -E main.c -o main.i<br><br><span class="hljs-comment"># 2.编译</span><br>$ gcc -S main.i -o main.s<br><br><span class="hljs-comment"># 3.汇编</span><br>$ gcc -c main.s -o main.o<br><br><span class="hljs-comment"># 4.链接</span><br>$ gcc main.o -o main<br></code></pre></td></tr></table></figure>
+<span id="more"></span>
+<h1 id="gcc常用参数"><a href="#gcc常用参数" class="headerlink" title="gcc常用参数"></a>gcc常用参数</h1><ul>
+<li>-E：预处理，不进行编译</li>
+<li>-S：编译，但不汇编</li>
+<li>-c：编译并汇编，但不链接</li>
+<li>-o：指定生成的文件名</li>
+<li>-I：指定include包含文件的目录</li>
+<li>-g：生成调试信息</li>
+<li>-D：编译的时候指定一个宏</li>
+<li>-W：不生成任何警告</li>
+<li>-Wall：生成所有警告</li>
+<li>-On：代码优化</li>
+<li>-l：编译的时候，指定使用的库</li>
+<li>-L：指定编译的时候搜索库的路径</li>
+<li>-fpic：生成与位置无关代码</li>
+<li>-shared：生成共享目标文件</li>
+<li>-std：指定标准</li>
+</ul>
 ]]></content>
       <categories>
         <category>Linux</category>
@@ -2904,6 +2904,90 @@ rd2 value and address: -13.85, 0x7fff68ec89e0
       </categories>
   </entry>
   <entry>
+    <title>网络编程代码</title>
+    <url>/2025/02/22/NetworkCommunications/code/</url>
+    <content><![CDATA[<h1 id="任务"><a href="#任务" class="headerlink" title="任务"></a>任务</h1><ol>
+<li>单线程以及多线程C&#x2F;S</li>
+<li>使用select实现单线程以及多线程C&#x2F;S</li>
+<li>使用poll实现单线程以及多线程C&#x2F;S</li>
+<li>使用epoll实现单线程以及多线程C&#x2F;S</li>
+</ol>
+<span id="more"></span>
+
+<h1 id="单线程C-S"><a href="#单线程C-S" class="headerlink" title="单线程C&#x2F;S"></a>单线程C&#x2F;S</h1><h3 id="服务器端"><a href="#服务器端" class="headerlink" title="服务器端"></a>服务器端</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;sys/socket.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;arpa/inet.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;unistd.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string.h&gt;</span></span><br><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> PORT 25500</span><br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>&#123;<br>    <span class="hljs-comment">// 创建监听套接字socket</span><br>    <span class="hljs-type">int</span> sockfd = <span class="hljs-built_in">socket</span>(AF_INET, SOCK_STREAM, <span class="hljs-number">0</span>);<br>    <span class="hljs-keyword">if</span>(sockfd == <span class="hljs-number">-1</span>)&#123;<br>        <span class="hljs-built_in">perror</span>(<span class="hljs-string">&quot;socket&quot;</span>);<br>        <span class="hljs-built_in">exit</span>(<span class="hljs-number">0</span>);<br>    &#125;<br><br>    <span class="hljs-comment">// 绑定本地IP和端口bind</span><br>    sockaddr_in addr;<br>    addr.sin_family = AF_INET;<br>    addr.sin_port = <span class="hljs-built_in">htons</span>(PORT);<br>    addr.sin_addr.s_addr = INADDR_ANY;<br>    <span class="hljs-type">int</span> ret = <span class="hljs-built_in">bind</span>(sockfd, (sockaddr*)&amp;addr, <span class="hljs-built_in">sizeof</span>(addr));<br>    <span class="hljs-keyword">if</span>(ret == <span class="hljs-number">-1</span>)&#123;<br>        <span class="hljs-built_in">perror</span>(<span class="hljs-string">&quot;bind&quot;</span>);<br>        <span class="hljs-built_in">exit</span>(<span class="hljs-number">0</span>);<br>    &#125;<br><br>    <span class="hljs-comment">// 设置监听listen</span><br>    ret = <span class="hljs-built_in">listen</span>(sockfd, <span class="hljs-number">128</span>);<br>    <span class="hljs-keyword">if</span>(ret == <span class="hljs-number">-1</span>)&#123;<br>        <span class="hljs-built_in">perror</span>(<span class="hljs-string">&quot;listen&quot;</span>);<br>        <span class="hljs-built_in">exit</span>(<span class="hljs-number">0</span>);<br>    &#125;<br><br>    <span class="hljs-comment">// 建立连接</span><br>    <span class="hljs-type">socklen_t</span> addrlen = <span class="hljs-built_in">sizeof</span>(addr);<br>    <span class="hljs-type">int</span> cfd = <span class="hljs-built_in">accept</span>(sockfd, (sockaddr*)&amp;addr, &amp;addrlen);<br>    <span class="hljs-keyword">if</span>(cfd == <span class="hljs-number">-1</span>)&#123;<br>        <span class="hljs-built_in">perror</span>(<span class="hljs-string">&quot;accept&quot;</span>);<br>        <span class="hljs-built_in">exit</span>(<span class="hljs-number">0</span>);<br>    &#125;<span class="hljs-keyword">else</span>&#123;<br>        <span class="hljs-type">char</span> buffer[<span class="hljs-number">1024</span>];<br>        <span class="hljs-keyword">while</span>(<span class="hljs-number">1</span>)&#123;<br>            <span class="hljs-built_in">memset</span>(buffer, <span class="hljs-number">0</span>, <span class="hljs-built_in">sizeof</span>(buffer));<br>            <span class="hljs-type">ssize_t</span> len = <span class="hljs-built_in">read</span>(cfd, buffer, <span class="hljs-built_in">sizeof</span>(buffer));<br>            <span class="hljs-keyword">if</span>(len &lt; <span class="hljs-number">0</span>)&#123;<br>                <span class="hljs-built_in">perror</span>(<span class="hljs-string">&quot;read&quot;</span>);<br>                <span class="hljs-built_in">exit</span>(<span class="hljs-number">0</span>);<br>            &#125;<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(len == <span class="hljs-number">0</span>)&#123;<br>                std::cout&lt;&lt;<span class="hljs-string">&quot;客户端断开连接....&quot;</span>&lt;&lt;std::endl;<br>                <span class="hljs-keyword">break</span>;<br>            &#125;<span class="hljs-keyword">else</span>&#123;<br>                <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">0</span>; i&lt;len; ++i)&#123;<br>                    <span class="hljs-keyword">if</span>(buffer[i] &gt;= <span class="hljs-string">&#x27;a&#x27;</span> &amp;&amp; buffer[i] &lt;= <span class="hljs-string">&#x27;z&#x27;</span>) &#123;<br>                        buffer[i] -= <span class="hljs-string">&#x27;a&#x27;</span> - <span class="hljs-string">&#x27;A&#x27;</span>;<br>                    &#125;<br>                &#125;<br>                <span class="hljs-built_in">write</span>(cfd, buffer, len);<br>            &#125;<br>        &#125;<br>    &#125;<br>    ret = <span class="hljs-built_in">close</span>(sockfd);<br>    ret = <span class="hljs-built_in">close</span>(cfd);<br>    <span class="hljs-keyword">if</span>(ret == <span class="hljs-number">-1</span>)&#123;<br>        <span class="hljs-built_in">perror</span>(<span class="hljs-string">&quot;close&quot;</span>);<br>        <span class="hljs-built_in">exit</span>(<span class="hljs-number">0</span>);<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<ol>
+<li><code>#include&lt;arpa/inet.h&gt;</code>包含了一些字节序转换函数；</li>
+<li><code>#include&lt;sys/socket.h&gt;</code>包含了套接字通信函数；</li>
+<li><code>#include&lt;unistd.h&gt;</code>包含了read，write，close等函数；</li>
+<li><code>#include&lt;string.h&gt;</code>包含了memset等函数；</li>
+<li>文件描述符会按照从小到达的顺序创建，比如这个程序sockfd将为3，cfd将为4；</li>
+<li>文件描述符0为stdin：标准输入；</li>
+<li>文件描述符1为stdout：标准输出；</li>
+<li>文件描述符2为stderr：标准错误输出；</li>
+<li>函数具体参数没必要特意去记，熟练使用man文档查阅</li>
+</ol>
+<h3 id="客户端"><a href="#客户端" class="headerlink" title="客户端"></a>客户端</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;arpa/inet.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;unistd.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string.h&gt;</span></span><br><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> PORT 25500</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> serverIP <span class="hljs-string">&quot;49.123.87.90&quot;</span></span><br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>&#123;<br>    <span class="hljs-type">int</span> cfd = <span class="hljs-built_in">socket</span>(AF_INET, SOCK_STREAM, <span class="hljs-number">0</span>);<br>    <span class="hljs-keyword">if</span>(cfd == <span class="hljs-number">-1</span>)&#123;<br>        <span class="hljs-built_in">perror</span>(<span class="hljs-string">&quot;socket&quot;</span>);<br>        <span class="hljs-built_in">exit</span>(<span class="hljs-number">0</span>);<br>    &#125;<br><br>    <span class="hljs-type">int</span> ret;<br>    sockaddr_in addr;<br>    addr.sin_family = AF_INET;<br>    addr.sin_port = <span class="hljs-built_in">htons</span>(PORT);<br>    <span class="hljs-comment">// addr.sin_addr.s_addr = inet_addr(&quot;127.0.0.1&quot;);</span><br>    ret = <span class="hljs-built_in">inet_pton</span>(AF_INET, serverIP, &amp;addr.sin_addr.s_addr);<br>    ret = <span class="hljs-built_in">connect</span>(cfd, (sockaddr*)&amp;addr, <span class="hljs-built_in">sizeof</span>(addr));<br>    <span class="hljs-keyword">if</span> (ret == <span class="hljs-number">-1</span>) &#123;<br>        <span class="hljs-built_in">perror</span>(<span class="hljs-string">&quot;connect&quot;</span>);<br>        <span class="hljs-built_in">exit</span>(<span class="hljs-number">0</span>);<br>    &#125;<br><br>    <span class="hljs-type">int</span> i=<span class="hljs-number">0</span>;<br>    <span class="hljs-keyword">while</span>(<span class="hljs-number">1</span>)<br>    &#123;<br>        <span class="hljs-type">char</span> sendbuffer[<span class="hljs-number">1024</span>];<br>        <span class="hljs-type">char</span> recvbuffer[<span class="hljs-number">1024</span>];<br>        <span class="hljs-built_in">sprintf</span>(sendbuffer, <span class="hljs-string">&quot;data: %d\n&quot;</span>, i++);<br>        <span class="hljs-built_in">write</span>(cfd, sendbuffer, <span class="hljs-built_in">strlen</span>(sendbuffer)<span class="hljs-number">+1</span>);<br>        <span class="hljs-built_in">read</span>(cfd, recvbuffer, <span class="hljs-built_in">sizeof</span>(recvbuffer));<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;send buf: %s&quot;</span>, sendbuffer);<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;recv buf: %s\n&quot;</span>, recvbuffer);<br>        <span class="hljs-built_in">sleep</span>(<span class="hljs-number">1</span>);<br>    &#125;<br><br>    ret = <span class="hljs-built_in">close</span>(cfd);<br>    <span class="hljs-keyword">if</span>(ret == <span class="hljs-number">-1</span>)&#123;<br>        <span class="hljs-built_in">perror</span>(<span class="hljs-string">&quot;close&quot;</span>);<br>        <span class="hljs-built_in">exit</span>(<span class="hljs-number">0</span>);<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<ol>
+<li>ip从主机字节序转换到网络字节序<figure class="highlight cpp"><table><tr><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">// way-1</span><br>addr.sin_addr.s_addr = <span class="hljs-built_in">inet_addr</span>(<span class="hljs-string">&quot;127.0.0.1&quot;</span>);<br><br><span class="hljs-comment">// way-2</span><br><span class="hljs-type">int</span> ret = <span class="hljs-built_in">inet_pton</span>(AF_INET, serverIP, &amp;addr.sin_addr.s_addr);<br></code></pre></td></tr></table></figure></li>
+</ol>
+<h1 id="多线程C-S"><a href="#多线程C-S" class="headerlink" title="多线程C&#x2F;S"></a>多线程C&#x2F;S</h1>]]></content>
+      <categories>
+        <category>NetworkCommunications</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>基础-Linux收发网络包</title>
+    <url>/2025/05/24/NetworkCommunications/%E5%9F%BA%E7%A1%80-Linux%E6%94%B6%E5%8F%91%E7%BD%91%E7%BB%9C%E5%8C%85/</url>
+    <content><![CDATA[<p>Linux系统是怎么收发网络包的？</p>
+<h2 id="1-网络模型"><a href="#1-网络模型" class="headerlink" title="1. 网络模型"></a>1. 网络模型</h2><h3 id="1-1-四层网络模型"><a href="#1-1-四层网络模型" class="headerlink" title="1.1 四层网络模型"></a>1.1 四层网络模型</h3><ul>
+<li>应用层：负责向用户提供一组应用程序，比如HTTP，DNS，FTP；</li>
+<li>传输层：负责端到端的通信，比如TCP，UDP；</li>
+<li>网络层：负责网络包的封装，分片，路由，转发，比如IP，ICMP；</li>
+<li>网络接口层：负责网络包在物理网络中的传输，比如网络包的封帧，MAC寻址，差错检测，通过网卡传输网络帧；</li>
+</ul>
+<h3 id="1-2-七层网络模型"><a href="#1-2-七层网络模型" class="headerlink" title="1.2 七层网络模型"></a>1.2 七层网络模型</h3><h2 id="2-Linux接收网络包流程"><a href="#2-Linux接收网络包流程" class="headerlink" title="2. Linux接收网络包流程"></a>2. Linux接收网络包流程</h2><p>通过网卡接收数据，网卡时计算机中的一个硬件，专门负责接收和发送网络包；</p>
+<ol>
+<li>当网卡接收到一个网络包后，通过DMA技术将网络包写入到指定的内存地址即Ring Buffer，随后告知操作系统网络包以到达；告知方式有两种：<ul>
+<li>触发中断：网卡收到网络包触发中断，CPU去处理网络包，处理完之后再回去继续执行之前的任务，缺点是需要频繁触发中断，导致系统效率变低；</li>
+<li>NAPI机制：混合中断和轮询，采用中断唤醒数据接收服务程序，然后使用poll的方法轮询数据；<ul>
+<li>暂时屏蔽中断，表示已经知道当前内存中有数据，并告知网卡下次接收到数据直接写入内存即可，不用再触发中断，避免频繁触发中断；</li>
+<li>接着发起软中断，执行软中断处理程序，并恢复刚才屏蔽的中断；</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>内核中的ksoftirqd线程专门用于处理软中断，当其收到软中断后，开始轮询处理数据，从Ring Buffer中获取一个数据帧，用sk_buff表示，从而可以作为一个网络包，交给网络协议栈进行逐层处理；</li>
+<li>数据到达网络接口层，在这一层检查报文的合法性，如果不合法则丢弃，如果合法则找到该网络包的上层协议类型，比如是IPv4还是IPv6，并去掉帧头和帧尾，然后交给网络层；</li>
+<li>数据到达网络层后，取出IP头，判断网络包下一步走向，是交给上层处理还是转发出去；当确认这个网络包是发给自己的时候，会从IP头中查看上层协议是TCP还是UDP，并去掉IP头，然后交给传输层；</li>
+<li>数据到达传输层后，取出TCP头或UDP头，根据四元组（源IP，目的IP，源端口，目的端口）作为标识，找出对应的socket，并把数据发到socket的接收缓冲区中；</li>
+<li>最后，应用层程序调用socket接口，将内核的socket接收缓冲区的数据拷贝到应用层的缓冲区，然后唤醒应用进程；</li>
+</ol>
+<h2 id="3-Linux发送网络包流程"><a href="#3-Linux发送网络包流程" class="headerlink" title="3. Linux发送网络包流程"></a>3. Linux发送网络包流程</h2><ol>
+<li>应用程序调用socket发送数据包的接口（系统调用），从用户态陷入内核态中的socket层，内核申请一个sk_buff内存，将用户待发送的数据拷贝的sk_buff中，并将其加入到发送缓冲区；</li>
+<li>网络协议栈从socket发送缓冲区中取出sk_buff，并按照TCP&#x2F;IP协议栈从上到下逐层处理；</li>
+<li>如果使用的是TCP，需要先拷贝一个新的sk_buff副本（TCP支持丢失重传，当收到对方的ACK之后，会将这个副本删除）；</li>
+<li>对sk_buff填充TCP头，并将数据交给网络层；</li>
+<li>网络层在收到数据包之后，选取路由，填充IP头，netfilter过滤，对超过MTU大小的数据包进行切片，处理完之后将数据包交给网络接口层；</li>
+<li>网络接口层通过ARP协议获得下一跳的MAC地址，并对sk_buff填充帧头和帧尾，接着将sk_buff放到网卡的发送队列中；</li>
+<li>之后，触发软中断告诉网卡驱动程序，驱动程序会从发送队列中读取sk_buff，将sk_buff挂到Ring Buffer中，接着将sk_buffer数据映射到网卡可访问的内存DMA区域，最后触发真实的发送；</li>
+<li>完成发送后，网卡设备会触发一个硬中断来释放内存，即sk_buff副本内存以及清理Ring Buffer内存；</li>
+<li>最后当收到TCP报文的ACk应答时，传输层再释放原始sk_buff；</li>
+</ol>
+<h2 id="4-发送数据包涉及几次内存拷贝"><a href="#4-发送数据包涉及几次内存拷贝" class="headerlink" title="4. 发送数据包涉及几次内存拷贝"></a>4. 发送数据包涉及几次内存拷贝</h2><p>3次：</p>
+<ul>
+<li>第一次：调用发送数据的系统调用时，内核申请内核态的sk_buff内存，将用户待发送的数据拷贝的sk_buff内存，并将其加入到发送缓冲区；</li>
+<li>第二次：在使用TCP传输协议的时候，需要拷贝一个sk_buff用来支持丢失重传；</li>
+<li>第三次：当IP层发现sk_buff大于MTU时，会再申请额外的sk_buff并将原来的sk_buff拷贝分为多个小的sk_buff；</li>
+</ul>
+]]></content>
+      <categories>
+        <category>计算机网络</category>
+        <category>基础</category>
+      </categories>
+  </entry>
+  <entry>
     <title>IO多路复用</title>
     <url>/2025/02/22/NetworkCommunications/IOMultiplexing/</url>
     <content><![CDATA[<h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><ol>
@@ -3004,90 +3088,6 @@ rd2 value and address: -13.85, 0x7fff68ec89e0
 <h1 id="poll"><a href="#poll" class="headerlink" title="poll"></a>poll</h1>]]></content>
       <categories>
         <category>NetworkCommunications</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>网络编程代码</title>
-    <url>/2025/02/22/NetworkCommunications/code/</url>
-    <content><![CDATA[<h1 id="任务"><a href="#任务" class="headerlink" title="任务"></a>任务</h1><ol>
-<li>单线程以及多线程C&#x2F;S</li>
-<li>使用select实现单线程以及多线程C&#x2F;S</li>
-<li>使用poll实现单线程以及多线程C&#x2F;S</li>
-<li>使用epoll实现单线程以及多线程C&#x2F;S</li>
-</ol>
-<span id="more"></span>
-
-<h1 id="单线程C-S"><a href="#单线程C-S" class="headerlink" title="单线程C&#x2F;S"></a>单线程C&#x2F;S</h1><h3 id="服务器端"><a href="#服务器端" class="headerlink" title="服务器端"></a>服务器端</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;sys/socket.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;arpa/inet.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;unistd.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string.h&gt;</span></span><br><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> PORT 25500</span><br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>&#123;<br>    <span class="hljs-comment">// 创建监听套接字socket</span><br>    <span class="hljs-type">int</span> sockfd = <span class="hljs-built_in">socket</span>(AF_INET, SOCK_STREAM, <span class="hljs-number">0</span>);<br>    <span class="hljs-keyword">if</span>(sockfd == <span class="hljs-number">-1</span>)&#123;<br>        <span class="hljs-built_in">perror</span>(<span class="hljs-string">&quot;socket&quot;</span>);<br>        <span class="hljs-built_in">exit</span>(<span class="hljs-number">0</span>);<br>    &#125;<br><br>    <span class="hljs-comment">// 绑定本地IP和端口bind</span><br>    sockaddr_in addr;<br>    addr.sin_family = AF_INET;<br>    addr.sin_port = <span class="hljs-built_in">htons</span>(PORT);<br>    addr.sin_addr.s_addr = INADDR_ANY;<br>    <span class="hljs-type">int</span> ret = <span class="hljs-built_in">bind</span>(sockfd, (sockaddr*)&amp;addr, <span class="hljs-built_in">sizeof</span>(addr));<br>    <span class="hljs-keyword">if</span>(ret == <span class="hljs-number">-1</span>)&#123;<br>        <span class="hljs-built_in">perror</span>(<span class="hljs-string">&quot;bind&quot;</span>);<br>        <span class="hljs-built_in">exit</span>(<span class="hljs-number">0</span>);<br>    &#125;<br><br>    <span class="hljs-comment">// 设置监听listen</span><br>    ret = <span class="hljs-built_in">listen</span>(sockfd, <span class="hljs-number">128</span>);<br>    <span class="hljs-keyword">if</span>(ret == <span class="hljs-number">-1</span>)&#123;<br>        <span class="hljs-built_in">perror</span>(<span class="hljs-string">&quot;listen&quot;</span>);<br>        <span class="hljs-built_in">exit</span>(<span class="hljs-number">0</span>);<br>    &#125;<br><br>    <span class="hljs-comment">// 建立连接</span><br>    <span class="hljs-type">socklen_t</span> addrlen = <span class="hljs-built_in">sizeof</span>(addr);<br>    <span class="hljs-type">int</span> cfd = <span class="hljs-built_in">accept</span>(sockfd, (sockaddr*)&amp;addr, &amp;addrlen);<br>    <span class="hljs-keyword">if</span>(cfd == <span class="hljs-number">-1</span>)&#123;<br>        <span class="hljs-built_in">perror</span>(<span class="hljs-string">&quot;accept&quot;</span>);<br>        <span class="hljs-built_in">exit</span>(<span class="hljs-number">0</span>);<br>    &#125;<span class="hljs-keyword">else</span>&#123;<br>        <span class="hljs-type">char</span> buffer[<span class="hljs-number">1024</span>];<br>        <span class="hljs-keyword">while</span>(<span class="hljs-number">1</span>)&#123;<br>            <span class="hljs-built_in">memset</span>(buffer, <span class="hljs-number">0</span>, <span class="hljs-built_in">sizeof</span>(buffer));<br>            <span class="hljs-type">ssize_t</span> len = <span class="hljs-built_in">read</span>(cfd, buffer, <span class="hljs-built_in">sizeof</span>(buffer));<br>            <span class="hljs-keyword">if</span>(len &lt; <span class="hljs-number">0</span>)&#123;<br>                <span class="hljs-built_in">perror</span>(<span class="hljs-string">&quot;read&quot;</span>);<br>                <span class="hljs-built_in">exit</span>(<span class="hljs-number">0</span>);<br>            &#125;<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(len == <span class="hljs-number">0</span>)&#123;<br>                std::cout&lt;&lt;<span class="hljs-string">&quot;客户端断开连接....&quot;</span>&lt;&lt;std::endl;<br>                <span class="hljs-keyword">break</span>;<br>            &#125;<span class="hljs-keyword">else</span>&#123;<br>                <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">0</span>; i&lt;len; ++i)&#123;<br>                    <span class="hljs-keyword">if</span>(buffer[i] &gt;= <span class="hljs-string">&#x27;a&#x27;</span> &amp;&amp; buffer[i] &lt;= <span class="hljs-string">&#x27;z&#x27;</span>) &#123;<br>                        buffer[i] -= <span class="hljs-string">&#x27;a&#x27;</span> - <span class="hljs-string">&#x27;A&#x27;</span>;<br>                    &#125;<br>                &#125;<br>                <span class="hljs-built_in">write</span>(cfd, buffer, len);<br>            &#125;<br>        &#125;<br>    &#125;<br>    ret = <span class="hljs-built_in">close</span>(sockfd);<br>    ret = <span class="hljs-built_in">close</span>(cfd);<br>    <span class="hljs-keyword">if</span>(ret == <span class="hljs-number">-1</span>)&#123;<br>        <span class="hljs-built_in">perror</span>(<span class="hljs-string">&quot;close&quot;</span>);<br>        <span class="hljs-built_in">exit</span>(<span class="hljs-number">0</span>);<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
-
-<ol>
-<li><code>#include&lt;arpa/inet.h&gt;</code>包含了一些字节序转换函数；</li>
-<li><code>#include&lt;sys/socket.h&gt;</code>包含了套接字通信函数；</li>
-<li><code>#include&lt;unistd.h&gt;</code>包含了read，write，close等函数；</li>
-<li><code>#include&lt;string.h&gt;</code>包含了memset等函数；</li>
-<li>文件描述符会按照从小到达的顺序创建，比如这个程序sockfd将为3，cfd将为4；</li>
-<li>文件描述符0为stdin：标准输入；</li>
-<li>文件描述符1为stdout：标准输出；</li>
-<li>文件描述符2为stderr：标准错误输出；</li>
-<li>函数具体参数没必要特意去记，熟练使用man文档查阅</li>
-</ol>
-<h3 id="客户端"><a href="#客户端" class="headerlink" title="客户端"></a>客户端</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;arpa/inet.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;unistd.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string.h&gt;</span></span><br><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> PORT 25500</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> serverIP <span class="hljs-string">&quot;49.123.87.90&quot;</span></span><br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>&#123;<br>    <span class="hljs-type">int</span> cfd = <span class="hljs-built_in">socket</span>(AF_INET, SOCK_STREAM, <span class="hljs-number">0</span>);<br>    <span class="hljs-keyword">if</span>(cfd == <span class="hljs-number">-1</span>)&#123;<br>        <span class="hljs-built_in">perror</span>(<span class="hljs-string">&quot;socket&quot;</span>);<br>        <span class="hljs-built_in">exit</span>(<span class="hljs-number">0</span>);<br>    &#125;<br><br>    <span class="hljs-type">int</span> ret;<br>    sockaddr_in addr;<br>    addr.sin_family = AF_INET;<br>    addr.sin_port = <span class="hljs-built_in">htons</span>(PORT);<br>    <span class="hljs-comment">// addr.sin_addr.s_addr = inet_addr(&quot;127.0.0.1&quot;);</span><br>    ret = <span class="hljs-built_in">inet_pton</span>(AF_INET, serverIP, &amp;addr.sin_addr.s_addr);<br>    ret = <span class="hljs-built_in">connect</span>(cfd, (sockaddr*)&amp;addr, <span class="hljs-built_in">sizeof</span>(addr));<br>    <span class="hljs-keyword">if</span> (ret == <span class="hljs-number">-1</span>) &#123;<br>        <span class="hljs-built_in">perror</span>(<span class="hljs-string">&quot;connect&quot;</span>);<br>        <span class="hljs-built_in">exit</span>(<span class="hljs-number">0</span>);<br>    &#125;<br><br>    <span class="hljs-type">int</span> i=<span class="hljs-number">0</span>;<br>    <span class="hljs-keyword">while</span>(<span class="hljs-number">1</span>)<br>    &#123;<br>        <span class="hljs-type">char</span> sendbuffer[<span class="hljs-number">1024</span>];<br>        <span class="hljs-type">char</span> recvbuffer[<span class="hljs-number">1024</span>];<br>        <span class="hljs-built_in">sprintf</span>(sendbuffer, <span class="hljs-string">&quot;data: %d\n&quot;</span>, i++);<br>        <span class="hljs-built_in">write</span>(cfd, sendbuffer, <span class="hljs-built_in">strlen</span>(sendbuffer)<span class="hljs-number">+1</span>);<br>        <span class="hljs-built_in">read</span>(cfd, recvbuffer, <span class="hljs-built_in">sizeof</span>(recvbuffer));<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;send buf: %s&quot;</span>, sendbuffer);<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;recv buf: %s\n&quot;</span>, recvbuffer);<br>        <span class="hljs-built_in">sleep</span>(<span class="hljs-number">1</span>);<br>    &#125;<br><br>    ret = <span class="hljs-built_in">close</span>(cfd);<br>    <span class="hljs-keyword">if</span>(ret == <span class="hljs-number">-1</span>)&#123;<br>        <span class="hljs-built_in">perror</span>(<span class="hljs-string">&quot;close&quot;</span>);<br>        <span class="hljs-built_in">exit</span>(<span class="hljs-number">0</span>);<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
-
-<ol>
-<li>ip从主机字节序转换到网络字节序<figure class="highlight cpp"><table><tr><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">// way-1</span><br>addr.sin_addr.s_addr = <span class="hljs-built_in">inet_addr</span>(<span class="hljs-string">&quot;127.0.0.1&quot;</span>);<br><br><span class="hljs-comment">// way-2</span><br><span class="hljs-type">int</span> ret = <span class="hljs-built_in">inet_pton</span>(AF_INET, serverIP, &amp;addr.sin_addr.s_addr);<br></code></pre></td></tr></table></figure></li>
-</ol>
-<h1 id="多线程C-S"><a href="#多线程C-S" class="headerlink" title="多线程C&#x2F;S"></a>多线程C&#x2F;S</h1>]]></content>
-      <categories>
-        <category>NetworkCommunications</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>基础-Linux收发网络包</title>
-    <url>/2025/05/24/NetworkCommunications/%E5%9F%BA%E7%A1%80-Linux%E6%94%B6%E5%8F%91%E7%BD%91%E7%BB%9C%E5%8C%85/</url>
-    <content><![CDATA[<p>Linux系统是怎么收发网络包的？</p>
-<h2 id="1-网络模型"><a href="#1-网络模型" class="headerlink" title="1. 网络模型"></a>1. 网络模型</h2><h3 id="1-1-四层网络模型"><a href="#1-1-四层网络模型" class="headerlink" title="1.1 四层网络模型"></a>1.1 四层网络模型</h3><ul>
-<li>应用层：负责向用户提供一组应用程序，比如HTTP，DNS，FTP；</li>
-<li>传输层：负责端到端的通信，比如TCP，UDP；</li>
-<li>网络层：负责网络包的封装，分片，路由，转发，比如IP，ICMP；</li>
-<li>网络接口层：负责网络包在物理网络中的传输，比如网络包的封帧，MAC寻址，差错检测，通过网卡传输网络帧；</li>
-</ul>
-<h3 id="1-2-七层网络模型"><a href="#1-2-七层网络模型" class="headerlink" title="1.2 七层网络模型"></a>1.2 七层网络模型</h3><h2 id="2-Linux接收网络包流程"><a href="#2-Linux接收网络包流程" class="headerlink" title="2. Linux接收网络包流程"></a>2. Linux接收网络包流程</h2><p>通过网卡接收数据，网卡时计算机中的一个硬件，专门负责接收和发送网络包；</p>
-<ol>
-<li>当网卡接收到一个网络包后，通过DMA技术将网络包写入到指定的内存地址即Ring Buffer，随后告知操作系统网络包以到达；告知方式有两种：<ul>
-<li>触发中断：网卡收到网络包触发中断，CPU去处理网络包，处理完之后再回去继续执行之前的任务，缺点是需要频繁触发中断，导致系统效率变低；</li>
-<li>NAPI机制：混合中断和轮询，采用中断唤醒数据接收服务程序，然后使用poll的方法轮询数据；<ul>
-<li>暂时屏蔽中断，表示已经知道当前内存中有数据，并告知网卡下次接收到数据直接写入内存即可，不用再触发中断，避免频繁触发中断；</li>
-<li>接着发起软中断，执行软中断处理程序，并恢复刚才屏蔽的中断；</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>内核中的ksoftirqd线程专门用于处理软中断，当其收到软中断后，开始轮询处理数据，从Ring Buffer中获取一个数据帧，用sk_buff表示，从而可以作为一个网络包，交给网络协议栈进行逐层处理；</li>
-<li>数据到达网络接口层，在这一层检查报文的合法性，如果不合法则丢弃，如果合法则找到该网络包的上层协议类型，比如是IPv4还是IPv6，并去掉帧头和帧尾，然后交给网络层；</li>
-<li>数据到达网络层后，取出IP头，判断网络包下一步走向，是交给上层处理还是转发出去；当确认这个网络包是发给自己的时候，会从IP头中查看上层协议是TCP还是UDP，并去掉IP头，然后交给传输层；</li>
-<li>数据到达传输层后，取出TCP头或UDP头，根据四元组（源IP，目的IP，源端口，目的端口）作为标识，找出对应的socket，并把数据发到socket的接收缓冲区中；</li>
-<li>最后，应用层程序调用socket接口，将内核的socket接收缓冲区的数据拷贝到应用层的缓冲区，然后唤醒应用进程；</li>
-</ol>
-<h2 id="3-Linux发送网络包流程"><a href="#3-Linux发送网络包流程" class="headerlink" title="3. Linux发送网络包流程"></a>3. Linux发送网络包流程</h2><ol>
-<li>应用程序调用socket发送数据包的接口（系统调用），从用户态陷入内核态中的socket层，内核申请一个sk_buff内存，将用户待发送的数据拷贝的sk_buff中，并将其加入到发送缓冲区；</li>
-<li>网络协议栈从socket发送缓冲区中取出sk_buff，并按照TCP&#x2F;IP协议栈从上到下逐层处理；</li>
-<li>如果使用的是TCP，需要先拷贝一个新的sk_buff副本（TCP支持丢失重传，当收到对方的ACK之后，会将这个副本删除）；</li>
-<li>对sk_buff填充TCP头，并将数据交给网络层；</li>
-<li>网络层在收到数据包之后，选取路由，填充IP头，netfilter过滤，对超过MTU大小的数据包进行切片，处理完之后将数据包交给网络接口层；</li>
-<li>网络接口层通过ARP协议获得下一跳的MAC地址，并对sk_buff填充帧头和帧尾，接着将sk_buff放到网卡的发送队列中；</li>
-<li>之后，触发软中断告诉网卡驱动程序，驱动程序会从发送队列中读取sk_buff，将sk_buff挂到Ring Buffer中，接着将sk_buffer数据映射到网卡可访问的内存DMA区域，最后触发真实的发送；</li>
-<li>完成发送后，网卡设备会触发一个硬中断来释放内存，即sk_buff副本内存以及清理Ring Buffer内存；</li>
-<li>最后当收到TCP报文的ACk应答时，传输层再释放原始sk_buff；</li>
-</ol>
-<h2 id="4-发送数据包涉及几次内存拷贝"><a href="#4-发送数据包涉及几次内存拷贝" class="headerlink" title="4. 发送数据包涉及几次内存拷贝"></a>4. 发送数据包涉及几次内存拷贝</h2><p>3次：</p>
-<ul>
-<li>第一次：调用发送数据的系统调用时，内核申请内核态的sk_buff内存，将用户待发送的数据拷贝的sk_buff内存，并将其加入到发送缓冲区；</li>
-<li>第二次：在使用TCP传输协议的时候，需要拷贝一个sk_buff用来支持丢失重传；</li>
-<li>第三次：当IP层发现sk_buff大于MTU时，会再申请额外的sk_buff并将原来的sk_buff拷贝分为多个小的sk_buff；</li>
-</ul>
-]]></content>
-      <categories>
-        <category>计算机网络</category>
-        <category>基础</category>
       </categories>
   </entry>
   <entry>
@@ -4483,6 +4483,36 @@ rd2 value and address: -13.85, 0x7fff68ec89e0
       </categories>
   </entry>
   <entry>
+    <title>底层刨析-内核</title>
+    <url>/2025/05/13/OperatingSystem/%E5%BA%95%E5%B1%82%E5%88%A8%E6%9E%90-%E5%86%85%E6%A0%B8/</url>
+    <content><![CDATA[<p>内核功能是什么？Linux内核设计理念是什么？什么是多任务？什么是对称多任务？什么是可执行文件链接格式？什么是宏内核？ELF文件格式？ELF文件怎么生成的？ELF文件怎么被执行的？</p>
+]]></content>
+      <categories>
+        <category>操作系统</category>
+        <category>底层刨析</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>内存管理-面试八股</title>
+    <url>/2025/05/15/OperatingSystem/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E9%9D%A2%E8%AF%95%E5%85%AB%E8%82%A1/</url>
+    <content><![CDATA[<h2 id="内核如何管理虚拟内存区域？"><a href="#内核如何管理虚拟内存区域？" class="headerlink" title="内核如何管理虚拟内存区域？"></a>内核如何管理虚拟内存区域？</h2><ol>
+<li>每个进程有一个task_struct，用于描述进程；</li>
+<li>task_struct包含一个mm_struct，用于描述虚拟内存空间；</li>
+<li>虚拟内存空间的每个段（代码段，数据段…）都用一个vm_area_struct结构描述；</li>
+<li>vm_area_struct记录了这个段的其实地址和结束地址，以及访问权限和行为规范；</li>
+</ol>
+<h2 id="内存资源紧张时，系统应对方法有哪些？"><a href="#内存资源紧张时，系统应对方法有哪些？" class="headerlink" title="内存资源紧张时，系统应对方法有哪些？"></a>内存资源紧张时，系统应对方法有哪些？</h2><ol>
+<li>产生OOM，内核直接将系统中占用大量内存的进程即OOM优先级最高的进程杀死，释放出这个进程占用的内存以供其他进程使用；</li>
+<li>内存回收，将不经常使用的内存回收，以供更需要的进程使用（kswapd异步回收和直接回收）；</li>
+<li>内存规整，将可迁移的物理页进行迁移规整，消除内存碎片从而获得一个更大的连续物理内存空间；</li>
+</ol>
+]]></content>
+      <categories>
+        <category>操作系统</category>
+        <category>面试题</category>
+      </categories>
+  </entry>
+  <entry>
     <title>多线程编程-线程同步</title>
     <url>/2024/10/12/OperatingSystem/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%BC%96%E7%A8%8B-%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5/</url>
     <content><![CDATA[<h1 id="基础概念"><a href="#基础概念" class="headerlink" title="基础概念"></a>基础概念</h1><p>避免多个线程同时访问并修改同一块内存，造成数据冲突。线程同步的结果是，如果多个线程都要访问并修改同一块内存时，依次只让一个进程进行访问，其余进程阻塞，直到所有进程执行完毕。<br>阻塞：意味着失去CPU时间片</p>
@@ -4733,36 +4763,6 @@ rd2 value and address: -13.85, 0x7fff68ec89e0
       <categories>
         <category>操作系统</category>
         <category>多线程编程</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>底层刨析-内核</title>
-    <url>/2025/05/13/OperatingSystem/%E5%BA%95%E5%B1%82%E5%88%A8%E6%9E%90-%E5%86%85%E6%A0%B8/</url>
-    <content><![CDATA[<p>内核功能是什么？Linux内核设计理念是什么？什么是多任务？什么是对称多任务？什么是可执行文件链接格式？什么是宏内核？ELF文件格式？ELF文件怎么生成的？ELF文件怎么被执行的？</p>
-]]></content>
-      <categories>
-        <category>操作系统</category>
-        <category>底层刨析</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>内存管理-面试八股</title>
-    <url>/2025/05/15/OperatingSystem/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E9%9D%A2%E8%AF%95%E5%85%AB%E8%82%A1/</url>
-    <content><![CDATA[<h2 id="内核如何管理虚拟内存区域？"><a href="#内核如何管理虚拟内存区域？" class="headerlink" title="内核如何管理虚拟内存区域？"></a>内核如何管理虚拟内存区域？</h2><ol>
-<li>每个进程有一个task_struct，用于描述进程；</li>
-<li>task_struct包含一个mm_struct，用于描述虚拟内存空间；</li>
-<li>虚拟内存空间的每个段（代码段，数据段…）都用一个vm_area_struct结构描述；</li>
-<li>vm_area_struct记录了这个段的其实地址和结束地址，以及访问权限和行为规范；</li>
-</ol>
-<h2 id="内存资源紧张时，系统应对方法有哪些？"><a href="#内存资源紧张时，系统应对方法有哪些？" class="headerlink" title="内存资源紧张时，系统应对方法有哪些？"></a>内存资源紧张时，系统应对方法有哪些？</h2><ol>
-<li>产生OOM，内核直接将系统中占用大量内存的进程即OOM优先级最高的进程杀死，释放出这个进程占用的内存以供其他进程使用；</li>
-<li>内存回收，将不经常使用的内存回收，以供更需要的进程使用（kswapd异步回收和直接回收）；</li>
-<li>内存规整，将可迁移的物理页进行迁移规整，消除内存碎片从而获得一个更大的连续物理内存空间；</li>
-</ol>
-]]></content>
-      <categories>
-        <category>操作系统</category>
-        <category>面试题</category>
       </categories>
   </entry>
   <entry>
@@ -6187,6 +6187,63 @@ rd2 value and address: -13.85, 0x7fff68ec89e0
       </categories>
   </entry>
   <entry>
+    <title>Hexo搭建个人博客</title>
+    <url>/2025/02/22/blog/Hexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
+    <content><![CDATA[<h1 id="1-前置条件"><a href="#1-前置条件" class="headerlink" title="1.前置条件"></a>1.前置条件</h1><ul>
+<li><a href="https://nodejs.org/en/download/package-manager/current">Node.js</a></li>
+<li><a href="https://git-scm.com/">git</a></li>
+<li>Github Pages</li>
+</ul>
+<span id="more"></span>
+<h1 id="2-安装Node-js"><a href="#2-安装Node-js" class="headerlink" title="2.安装Node.js"></a>2.安装Node.js</h1><figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># installs nvm (Node Version Manager)</span><br>$ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash<br><br><span class="hljs-comment"># download and install Node.js (you may need to restart the terminal)</span><br>$ nvm install 22<br><br><span class="hljs-comment"># verifies the right Node.js version is in the environment</span><br>$ node -v <span class="hljs-comment"># should print `v22.6.0`</span><br><br><span class="hljs-comment"># verifies the right npm version is in the environment</span><br>$ npm -v <span class="hljs-comment"># should print `10.8.2`</span><br></code></pre></td></tr></table></figure>
+
+<h1 id="3-本地运行Hexo"><a href="#3-本地运行Hexo" class="headerlink" title="3.本地运行Hexo"></a>3.本地运行Hexo</h1><h2 id="安装Hexo"><a href="#安装Hexo" class="headerlink" title="安装Hexo"></a>安装Hexo</h2><figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">mkdir</span> blog<br>$ <span class="hljs-built_in">cd</span> blog<br>$ npm install -g hexo-cli   <span class="hljs-comment"># 安装hexo</span><br>$ hexo init                 <span class="hljs-comment"># 初始化hexo</span><br>$ hexo install              <span class="hljs-comment"># 安装需要的包</span><br></code></pre></td></tr></table></figure>
+<p>初始化完成后项目文件夹如下所示：<br>.<br>├── _config.yml<br>├── package.json<br>├── scaffolds<br>├── source<br>|   ├── _drafts<br>|   └── _posts<br>└── themes          </p>
+<h2 id="Hexo的用法"><a href="#Hexo的用法" class="headerlink" title="Hexo的用法"></a>Hexo的用法</h2><ul>
+<li>启动内置预览服务（默认端口4000）  <figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">$ hexo s    <span class="hljs-comment"># hexo serve</span><br></code></pre></td></tr></table></figure></li>
+<li>生成网站  <figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">$ hexo g    <span class="hljs-comment"># hexo generate</span><br></code></pre></td></tr></table></figure></li>
+<li>部署到Github Pages上（部署之前需要配置）  <figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">$ hexo d    <span class="hljs-comment"># hexo deploy</span><br><br><span class="hljs-comment"># 生成并部署，省去hexo g</span><br>$ hexo d -g<br></code></pre></td></tr></table></figure></li>
+<li>#清除缓存文件db.json和已生成的静态文件 public  <figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">$ hexo c    <span class="hljs-comment"># hexo clean</span><br></code></pre></td></tr></table></figure></li>
+<li>创建博客  <figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 创建完成后博客的.md文件存储在`./source/_post/`中</span><br>$ hexo new <span class="hljs-string">&quot;blog name&quot;</span><br></code></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="3-配置"><a href="#3-配置" class="headerlink" title="3.配置"></a>3.配置</h1><p>_config.yml</p>
+<ul>
+<li>title : 网站标题</li>
+<li>subtitle : 副标题</li>
+<li>description : 网站描述</li>
+<li>keywords : 网站关键词</li>
+<li>author : 作者</li>
+<li>language : 语言</li>
+<li>timezone : 时区</li>
+</ul>
+<p>以上设置会出现在meta里。</p>
+<ul>
+<li>url : 网址</li>
+<li>root : 网站根目录</li>
+<li>permalink : 永久链接格式，比如year&#x2F;:month&#x2F;:day&#x2F;:title&#x2F;</li>
+<li>source_dir : 源文件夹，默认source</li>
+<li>public_dir : 生成的网站文件夹</li>
+<li>theme : 主题</li>
+</ul>
+<p>官网关于配置的描述：<a href="https://hexo.io/zh-cn/docs/configuration">https://hexo.io/zh-cn/docs/configuration</a></p>
+<h1 id="4-部署到Github-Pages"><a href="#4-部署到Github-Pages" class="headerlink" title="4.部署到Github Pages"></a>4.部署到Github Pages</h1><p>0.配置github的SSH<br>1.创建repo:git@github:yourname&#x2F;yourname.github.io.git<br>2.修改配置文件<code>_config.yml</code></p>
+<figure class="highlight nix"><table><tr><td class="code"><pre><code class="hljs nix"><span class="hljs-params">deploy:</span><br>  <span class="hljs-params">type:</span> git<br>  <span class="hljs-params">repo:</span> git@github.com:yourname<span class="hljs-symbol">/yourname.github.io.git</span><br>  <span class="hljs-params">branch:</span> main<br></code></pre></td></tr></table></figure>
+<p>4.安装<code>deploy-git</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">$ npm  install hexo-deployer-git --save<br></code></pre></td></tr></table></figure>
+
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ul>
+<li><a href="https://hexo.io/docs/">Hexo官网</a></li>
+<li><a href="https://www.luogu.com.cn/article/vglpq15p">从零搭建 Hexo + Github 博客</a></li>
+<li><a href="https://note.tonycrane.cc/cs/tools/hexo/">Hexo 使用记录</a></li>
+<li><a href="https://hexo.io/zh-cn/docs/writing">Hexo写作</a></li>
+<li><a href="https://github.com/ppoffice/hexo-theme-icarus">主题</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>个人博客</category>
+      </categories>
+  </entry>
+  <entry>
     <title>图像融合</title>
     <url>/2025/05/23/StructLight/HDR/XingjianLiu2023/</url>
     <content><![CDATA[<h2 id="高反光研究点"><a href="#高反光研究点" class="headerlink" title="高反光研究点"></a>高反光研究点</h2><ol>
@@ -6290,60 +6347,147 @@ rd2 value and address: -13.85, 0x7fff68ec89e0
       </categories>
   </entry>
   <entry>
-    <title>Hexo搭建个人博客</title>
-    <url>/2025/02/22/blog/Hexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
-    <content><![CDATA[<h1 id="1-前置条件"><a href="#1-前置条件" class="headerlink" title="1.前置条件"></a>1.前置条件</h1><ul>
-<li><a href="https://nodejs.org/en/download/package-manager/current">Node.js</a></li>
-<li><a href="https://git-scm.com/">git</a></li>
-<li>Github Pages</li>
-</ul>
+    <title>光机接口</title>
+    <url>/2025/02/22/StructLight/projector/interface/</url>
+    <content><![CDATA[<h1 id="onceProject"><a href="#onceProject" class="headerlink" title="onceProject"></a>onceProject</h1><figure class="highlight cpp"><table><tr><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">ProjectorDlpc34xx::project</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">bool</span> isContinue)</span> </span>&#123;<br>    <span class="hljs-keyword">if</span>(!isInitial_) &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br><br>    <span class="hljs-keyword">if</span> (isContinue) &#123;<br>        <span class="hljs-built_in">DLPC34XX_WriteOperatingModeSelect</span>(DLPC34XX_OM_SENS_INTERNAL_PATTERN);<br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">DLPC34XX_WriteInternalPatternControl</span>(DLPC34XX_PC_START, <span class="hljs-number">0xFF</span>) ==<br>               SUCCESS;<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-built_in">DLPC34XX_WriteOperatingModeSelect</span>(DLPC34XX_OM_SENS_INTERNAL_PATTERN);<br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">DLPC34XX_WriteInternalPatternControl</span>(DLPC34XX_PC_START, <span class="hljs-number">0x0</span>) ==<br>               SUCCESS;<br>    &#125;<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
 <span id="more"></span>
-<h1 id="2-安装Node-js"><a href="#2-安装Node-js" class="headerlink" title="2.安装Node.js"></a>2.安装Node.js</h1><figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># installs nvm (Node Version Manager)</span><br>$ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash<br><br><span class="hljs-comment"># download and install Node.js (you may need to restart the terminal)</span><br>$ nvm install 22<br><br><span class="hljs-comment"># verifies the right Node.js version is in the environment</span><br>$ node -v <span class="hljs-comment"># should print `v22.6.0`</span><br><br><span class="hljs-comment"># verifies the right npm version is in the environment</span><br>$ npm -v <span class="hljs-comment"># should print `10.8.2`</span><br></code></pre></td></tr></table></figure>
 
-<h1 id="3-本地运行Hexo"><a href="#3-本地运行Hexo" class="headerlink" title="3.本地运行Hexo"></a>3.本地运行Hexo</h1><h2 id="安装Hexo"><a href="#安装Hexo" class="headerlink" title="安装Hexo"></a>安装Hexo</h2><figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">mkdir</span> blog<br>$ <span class="hljs-built_in">cd</span> blog<br>$ npm install -g hexo-cli   <span class="hljs-comment"># 安装hexo</span><br>$ hexo init                 <span class="hljs-comment"># 初始化hexo</span><br>$ hexo install              <span class="hljs-comment"># 安装需要的包</span><br></code></pre></td></tr></table></figure>
-<p>初始化完成后项目文件夹如下所示：<br>.<br>├── _config.yml<br>├── package.json<br>├── scaffolds<br>├── source<br>|   ├── _drafts<br>|   └── _posts<br>└── themes          </p>
-<h2 id="Hexo的用法"><a href="#Hexo的用法" class="headerlink" title="Hexo的用法"></a>Hexo的用法</h2><ul>
-<li>启动内置预览服务（默认端口4000）  <figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">$ hexo s    <span class="hljs-comment"># hexo serve</span><br></code></pre></td></tr></table></figure></li>
-<li>生成网站  <figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">$ hexo g    <span class="hljs-comment"># hexo generate</span><br></code></pre></td></tr></table></figure></li>
-<li>部署到Github Pages上（部署之前需要配置）  <figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">$ hexo d    <span class="hljs-comment"># hexo deploy</span><br><br><span class="hljs-comment"># 生成并部署，省去hexo g</span><br>$ hexo d -g<br></code></pre></td></tr></table></figure></li>
-<li>#清除缓存文件db.json和已生成的静态文件 public  <figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">$ hexo c    <span class="hljs-comment"># hexo clean</span><br></code></pre></td></tr></table></figure></li>
-<li>创建博客  <figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 创建完成后博客的.md文件存储在`./source/_post/`中</span><br>$ hexo new <span class="hljs-string">&quot;blog name&quot;</span><br></code></pre></td></tr></table></figure></li>
-</ul>
-<h1 id="3-配置"><a href="#3-配置" class="headerlink" title="3.配置"></a>3.配置</h1><p>_config.yml</p>
-<ul>
-<li>title : 网站标题</li>
-<li>subtitle : 副标题</li>
-<li>description : 网站描述</li>
-<li>keywords : 网站关键词</li>
-<li>author : 作者</li>
-<li>language : 语言</li>
-<li>timezone : 时区</li>
-</ul>
-<p>以上设置会出现在meta里。</p>
-<ul>
-<li>url : 网址</li>
-<li>root : 网站根目录</li>
-<li>permalink : 永久链接格式，比如year&#x2F;:month&#x2F;:day&#x2F;:title&#x2F;</li>
-<li>source_dir : 源文件夹，默认source</li>
-<li>public_dir : 生成的网站文件夹</li>
-<li>theme : 主题</li>
-</ul>
-<p>官网关于配置的描述：<a href="https://hexo.io/zh-cn/docs/configuration">https://hexo.io/zh-cn/docs/configuration</a></p>
-<h1 id="4-部署到Github-Pages"><a href="#4-部署到Github-Pages" class="headerlink" title="4.部署到Github Pages"></a>4.部署到Github Pages</h1><p>0.配置github的SSH<br>1.创建repo:git@github:yourname&#x2F;yourname.github.io.git<br>2.修改配置文件<code>_config.yml</code></p>
-<figure class="highlight nix"><table><tr><td class="code"><pre><code class="hljs nix"><span class="hljs-params">deploy:</span><br>  <span class="hljs-params">type:</span> git<br>  <span class="hljs-params">repo:</span> git@github.com:yourname<span class="hljs-symbol">/yourname.github.io.git</span><br>  <span class="hljs-params">branch:</span> main<br></code></pre></td></tr></table></figure>
-<p>4.安装<code>deploy-git</code></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">$ npm  install hexo-deployer-git --save<br></code></pre></td></tr></table></figure>
+<ol>
+<li><p><code>DLPC34XX_WriteOperatingModeSelect(DLPC34XX_OM_SENS_INTERNAL_PATTERN);</code>选择工作模式</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">uint32_t</span> <span class="hljs-title">DLPC34XX_WriteOperatingModeSelect</span><span class="hljs-params">(DLPC34XX_OperatingMode_e OperatingMode)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-type">uint32_t</span> Status = <span class="hljs-number">0</span>;<br><br>    <span class="hljs-built_in">DLPC_COMMON_ClearWriteBuffer</span>();<br><br>    <span class="hljs-built_in">DLPC_COMMON_PackOpcode</span>(<span class="hljs-number">1</span>, <span class="hljs-number">0x5</span>);<br>    <span class="hljs-built_in">DLPC_COMMON_PackBytes</span>((<span class="hljs-type">uint8_t</span>*)&amp;OperatingMode, <span class="hljs-number">1</span>);<br><br>    <span class="hljs-built_in">DLPC_COMMON_SetCommandDestination</span>(<span class="hljs-number">0</span>);<br>    Status = <span class="hljs-built_in">DLPC_COMMON_SendWrite</span>();<br>    <span class="hljs-keyword">return</span> Status;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+</ol>
+<p><img src="/../../../image/modeSelect.bmp" alt="img"></p>
+<ol start="2">
+<li><p>判断是连续投影还是单次投影(由isContinue决定)</p>
+<ol>
+<li>isContinue为true为连续投影</li>
+<li>isContinue为false为单次投影</li>
+</ol>
+<p><img src="/../../../image/project.bmp" alt="img"></p>
+</li>
+<li><p><code>DLPC34XX_WriteInternalPatternControl(DLPC34XX_PC_START,0xFF)</code>：发送控制码</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">uint32_t</span> <span class="hljs-title">DLPC34XX_WriteInternalPatternControl</span><span class="hljs-params">(DLPC34XX_PatternControl_e PatternControl, <span class="hljs-type">uint8_t</span> RepeatCount)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-type">uint32_t</span> Status = <span class="hljs-number">0</span>;<br><br>    <span class="hljs-built_in">DLPC_COMMON_ClearWriteBuffer</span>();<br><br>    <span class="hljs-built_in">DLPC_COMMON_PackOpcode</span>(<span class="hljs-number">1</span>, <span class="hljs-number">0x9E</span>);<br>    <span class="hljs-built_in">DLPC_COMMON_PackBytes</span>((<span class="hljs-type">uint8_t</span>*)&amp;PatternControl, <span class="hljs-number">1</span>);<br>    <span class="hljs-built_in">DLPC_COMMON_PackBytes</span>((<span class="hljs-type">uint8_t</span>*)&amp;RepeatCount, <span class="hljs-number">1</span>);<br><br>    <span class="hljs-built_in">DLPC_COMMON_SetCommandDestination</span>(<span class="hljs-number">0</span>);<br>    Status = <span class="hljs-built_in">DLPC_COMMON_SendWrite</span>();<br>    <span class="hljs-keyword">return</span> Status;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+</ol>
+<p><code>DLPC34XX_WriteInternalPatternControl()</code>函数即内部图形控制函数，通过这个函数控制内部投影模式。所以在函数内部，会先发送一个 <code>0x9E</code>表示为写入内部控制。</p>
+<h1 id="pause"><a href="#pause" class="headerlink" title="pause"></a>pause</h1><p><img src="/../../../image/project.bmp" alt="img"></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">ProjectorDlpc34xx::pause</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-keyword">if</span>(!isInitial_) &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-built_in">DLPC34XX_WriteInternalPatternControl</span>(DLPC34XX_PC_PAUSE, <span class="hljs-number">0xff</span>) ==<br>           SUCCESS;<br>&#125;<br></code></pre></td></tr></table></figure>
 
-<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ul>
-<li><a href="https://hexo.io/docs/">Hexo官网</a></li>
-<li><a href="https://www.luogu.com.cn/article/vglpq15p">从零搭建 Hexo + Github 博客</a></li>
-<li><a href="https://note.tonycrane.cc/cs/tools/hexo/">Hexo 使用记录</a></li>
-<li><a href="https://hexo.io/zh-cn/docs/writing">Hexo写作</a></li>
-<li><a href="https://github.com/ppoffice/hexo-theme-icarus">主题</a></li>
+<ol>
+<li><p><strong>启动（Start）</strong>：</p>
+<ul>
+<li>功能：开始显示图形顺序表中的第一个条目。</li>
+<li>参数：字节2用于指示在首次执行后重复执行图形顺序表的次数。</li>
+<li>用途：用于初始化显示流程，可以设置循环次数，适用于需要循环显示的场景。</li>
 </ul>
+</li>
+<li><p><strong>停止（Stop）</strong>：</p>
+<ul>
+<li>功能：停止执行图形顺序表并关闭照明器。</li>
+<li>用途：用于终止显示流程，适用于需要立即停止显示的情况。</li>
+</ul>
+</li>
+<li><p><strong>暂停（Pause）</strong>：</p>
+<ul>
+<li>功能：暂停执行当前的图形顺序表条目，继续显示最后显示的图形。</li>
+<li>用途：用于在需要时临时中断显示流程，但保留当前显示状态，适用于需要临时中断或审查当前显示内容的场景。</li>
+</ul>
+</li>
+<li><p><strong>步进（Step）</strong>：</p>
+<ul>
+<li>功能：前往当前所显示图形顺序表中的下一个图形，此操作假定用户已暂停系统。</li>
+<li>用途：用于手动控制显示流程，逐个查看图形顺序表中的条目，适用于需要逐个审查或调整显示内容的场景。</li>
+</ul>
+</li>
+<li><p><strong>恢复（Resume）</strong>：</p>
+<ul>
+<li>功能：继续执行当前的图形顺序表条目，此操作假定用户已暂停系统。</li>
+<li>用途：用于在暂停后继续显示流程，适用于需要在中断后恢复显示的场景。</li>
+</ul>
+</li>
+<li><p><strong>复位（Reset）</strong>：</p>
+<ul>
+<li>功能：开始显示当前图形顺序表中引用的第一个图形。</li>
+<li>用途：用于重置显示流程到初始状态，适用于需要从头开始显示或重新初始化显示内容的场景。</li>
+</ul>
+</li>
+</ol>
 ]]></content>
       <categories>
-        <category>个人博客</category>
+        <category>StructLight</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>光机接口测试</title>
+    <url>/2025/02/22/StructLight/projector/%E5%85%89%E6%9C%BA-%E6%8E%A5%E5%8F%A3%E6%B5%8B%E8%AF%95/</url>
+    <content><![CDATA[<p>DLPC-API-1.10给的API比较杂，有很多也用不上，需要自己另外定义接口，官方给的有一个示例程序，程序里封装了一部分接口，先测试这些接口能不能用，然后在这个基础上增加需要的接口，实例程序中的包括：</p>
+<span id="more"></span>
+<ul>
+<li>I2C 写入</li>
+<li>I2C 读取</li>
+<li>初始化命令层</li>
+<li>以秒为单位等待指定的时间</li>
+<li>生成一个1位（二维）图案</li>
+<li>生成一个8位（灰度）图案</li>
+<li>填充数组<code>s_PatternSets 中的 DLPC34XX_INT_PAT_PatternSet_s</code>结构</li>
+<li>填充数组<code>s_PatternOrderTable 中的 DLPC34XX_INT_PAT_PatternOrderTableEntry_s</code>结构</li>
+<li>将数据复制到 Flash 编程缓冲区以便后续写入</li>
+<li>将缓冲区数据编程到 Flash 中</li>
+<li>将数据写入文件</li>
+<li>生成图案数据并写入到文件</li>
+<li>缓存图案数据并编程到 Flash 中</li>
+<li>生成和编程图案数据到 Flash 中</li>
+<li>从 Flash 中加载图案顺序表条目</li>
+<li>加载特定的图案顺序表条目</li>
+<li>写入测试图案网格线</li>
+<li>写入测试图案色条</li>
+<li>写入选定视图外观（Look）</li>
+<li>加载预构建的模式数据</li>
+<li>写入 LABB 和 CAIC 设置</li>
+<li>加载固件</li>
+</ul>
+<h1 id="过程记录"><a href="#过程记录" class="headerlink" title="过程记录"></a>过程记录</h1><figure class="highlight cpp"><table><tr><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> <span class="hljs-title">WriteI2C</span><span class="hljs-params">(<span class="hljs-type">uint16_t</span> WriteDataLength, <span class="hljs-type">uint8_t</span> *WriteData, DLPC_COMMON_CommandProtocolData_s *ProtocolData)</span> </span>&#123;<br>    <span class="hljs-comment">// 实现写入 I2C 设备的逻辑</span><br>    <span class="hljs-comment">// ...</span><br>    <span class="hljs-keyword">return</span> SUCCESS; <span class="hljs-comment">// 或者在出错时返回错误代码</span><br>&#125;<br><br><span class="hljs-comment">// 假设您有一个函数接受一个回调函数指针</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">ExecuteWriteOperation</span><span class="hljs-params">(DLPC_COMMON_WriteCommandCallback callback)</span> </span>&#123;<br>    <span class="hljs-comment">// ...</span><br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> result = <span class="hljs-built_in">callback</span>(WriteDataLength, WriteData, &amp;ProtocolData);<br>    <span class="hljs-comment">// ...</span><br>&#125;<br><br><span class="hljs-comment">// 在调用 ExecuteWriteOperation 时，您可以传递 WriteI2C 函数</span><br><span class="hljs-built_in">ExecuteWriteOperation</span>(WriteI2C);<br></code></pre></td></tr></table></figure>
+<p>在这个例子中，ExecuteWriteOperation 函数接受一个类型为 DLPC_COMMON_WriteCommandCallback 的回调函数，并在内部调用它。这样，您可以将不同的写入操作作为回调传递给 ExecuteWriteOperation，而不需要修改其内部实现。</p>
+<figure class="highlight delphi"><table><tr><td class="code"><pre><code class="hljs delphi">(gdb) ptype DLPC_COMMON_WriteCommandCallback<br><span class="hljs-keyword">type</span> = unsigned int <span class="hljs-comment">(*)(uint16_t, uint8_t *, DLPC_COMMON_CommandProtocolData_s *)</span><br></code></pre></td></tr></table></figure>
+<ul>
+<li>函数指针：定义回调函数，可以在不同的上下文中被调用。抽象特定的行为，使得代码更加模块化和可重用。</li>
+<li>返回类型：unsigned int</li>
+<li>参数列表：<ul>
+<li>uint16_t：无符号的16位整数</li>
+<li>uint8_t *：指向无符号8位的整数的指针参数，数据缓冲区</li>
+<li>DLPC_COMMON_CommandProtocolData_s *：指向结构体的指针，协议相关</li>
+</ul>
+</li>
+</ul>
+<p>当光机接入或者没有接入USB的时候均出现：Status &#x3D; CY_ERROR_REQUEST_FAILED, NumDevices &#x3D; 0 ‘\000’</p>
+<ul>
+<li>CY_ERROR_REQUEST_FAILED：发送到 USB Serial 设备的请求失败</li>
+<li>表明函数 CyGetListofDevices 没有成功地找到任何连接的设备</li>
+</ul>
+<figure class="highlight apache"><table><tr><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">zhm</span>@Ubuntu:~/Jetson/StructLight/CyUSBSerial_SDK_Linux/linux/library$ lsusb<br><span class="hljs-attribute">Bus</span> <span class="hljs-number">001</span> Device <span class="hljs-number">001</span>: ID <span class="hljs-number">1</span>d6b:<span class="hljs-number">0002</span> Linux Foundation <span class="hljs-number">2</span>.<span class="hljs-number">0</span> root hub<br><span class="hljs-attribute">Bus</span> <span class="hljs-number">001</span> Device <span class="hljs-number">002</span>: ID <span class="hljs-number">0</span>bda:<span class="hljs-number">8771</span> Realtek Semiconductor Corp. Bluetooth Radio<br><span class="hljs-attribute">Bus</span> <span class="hljs-number">001</span> Device <span class="hljs-number">003</span>: ID <span class="hljs-number">0000</span>:<span class="hljs-number">3825</span>   USB OPTICAL MOUSE<br><span class="hljs-attribute">Bus</span> <span class="hljs-number">001</span> Device <span class="hljs-number">004</span>: ID <span class="hljs-number">1</span>c4f:<span class="hljs-number">0026</span> SiGma Micro Keyboard<br><span class="hljs-attribute">Bus</span> <span class="hljs-number">001</span> Device <span class="hljs-number">005</span>: ID <span class="hljs-number">05</span>e3:<span class="hljs-number">0608</span> Genesys Logic, Inc. Hub<br><span class="hljs-attribute">Bus</span> <span class="hljs-number">001</span> Device <span class="hljs-number">018</span>: ID <span class="hljs-number">04</span>b4:<span class="hljs-number">000</span>a Cypress Semiconductor Corp. USB-Serial (Dual Channel)<br><span class="hljs-attribute">Bus</span> <span class="hljs-number">002</span> Device <span class="hljs-number">001</span>: ID <span class="hljs-number">1</span>d6b:<span class="hljs-number">0003</span> Linux Foundation <span class="hljs-number">3</span>.<span class="hljs-number">0</span> root hub<br></code></pre></td></tr></table></figure>
+<p>说明Cypress USB-Serial设备已经被系统识别，并且分配了设备ID 04b4:000a</p>
+<p>驱动程序：libusb-1.0库（需要测试它能不能用）<br>经过测试，是可以用的。</p>
+<p>使用sudo apt-get install <package>的时候，出现无法命中等问题，换源之后问题依然没有解决，可以尝试使用下面的方法。</p>
+<figure class="highlight apache"><table><tr><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">1</span>. sudo vim /etc/resolv.conf # 添加如下内容<br><span class="hljs-attribute">nameserver</span> <span class="hljs-number">8.8.8.8</span><br><span class="hljs-attribute">nameserver</span> <span class="hljs-number">8.8.4.4</span><br><span class="hljs-attribute">nameserver</span> <span class="hljs-number">127.0.0.1</span><br><br><span class="hljs-attribute">2</span>. 输入Esc，:wq，保存并退出<br></code></pre></td></tr></table></figure>
+
+<h1 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h1><p><code>InitConnectionAndCommandLayer();</code>出现错误，函数内部为：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs C"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 初始化命令层，设置读/写缓冲区和回调函数。</span><br><span class="hljs-comment"> */</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">InitConnectionAndCommandLayer</span><span class="hljs-params">()</span><br>&#123;<br>    <span class="hljs-comment">// 初始化命令库，设置读/写缓冲区和对应的 I2C 读写函数</span><br>    DLPC_COMMON_InitCommandLibrary(s_WriteBuffer,<br>                                   <span class="hljs-keyword">sizeof</span>(s_WriteBuffer),<br>                                   s_ReadBuffer,<br>                                   <span class="hljs-keyword">sizeof</span>(s_ReadBuffer),<br>                                   WriteI2C,<br>                                   ReadI2C);<br><br>    <span class="hljs-comment">// 连接到 Cypress I2C</span><br>    CYPRESS_I2C_ConnectToCyI2C();<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><code>CYPRESS_I2C_ConnectToCyI2C();</code>函数内部为，添加<code>printf</code>定位问题出现位置：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs C"><span class="hljs-type">bool</span> <span class="hljs-title function_">CYPRESS_I2C_ConnectToCyI2C</span><span class="hljs-params">()</span><br>&#123;<br>    CY_RETURN_STATUS Status;	<br>    CY_I2C_CONFIG I2CConfig;<br>    <span class="hljs-keyword">if</span> (GetCyI2CHandle(&amp;s_Handle) == <span class="hljs-literal">false</span>)<br>    &#123;<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Get CyI2C Handle Failed!!! \n&quot;</span>);<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br><br>    I2CConfig.frequency      = I2C_CLOCK_FREQUENCY_HZ;<br>    I2CConfig.slaveAddress   = <span class="hljs-number">0x30</span>;<br>    I2CConfig.isMaster       = <span class="hljs-literal">true</span>;<br>    I2CConfig.isClockStretch = <span class="hljs-literal">false</span>;<br>    <br>    Status = CySetI2cConfig(s_Handle, &amp;I2CConfig);<br>    <span class="hljs-keyword">if</span> (Status != CY_SUCCESS)<br>    &#123;<br>		<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Connect to I2C Error %d!!! \n&quot;</span>, Status);<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br><br>    s_DataConfig.isNakBit     = <span class="hljs-literal">true</span>;<br>    s_DataConfig.isStopBit    = <span class="hljs-literal">true</span>;<br>    s_DataConfig.slaveAddress = DLP_I2C_SLAVE_ADDRESS;<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><code>GetCyI2CHandle(&amp;s_Handle)</code>这里出现错误，添加<code>printf</code>定位问题，函数内部为：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs C"><span class="hljs-comment">/* Gets the handle of the connected Cypress USB-Serial bridge controller */</span><br><span class="hljs-type">bool</span> <span class="hljs-title function_">GetCyI2CHandle</span><span class="hljs-params">(CY_HANDLE* Handle)</span><br>&#123;<br>    CY_RETURN_STATUS Status;<br>    CY_DEVICE_INFO   DeviceInfo;<br>    <span class="hljs-type">uint8_t</span>          NumDevices = <span class="hljs-number">0</span>;<br>    <span class="hljs-type">uint8_t</span>          DeviceIdx;<br>    <span class="hljs-type">uint8_t</span>          InterfaceIdx;<br><br>    Status = CyGetListofDevices(&amp;NumDevices);<br>    <span class="hljs-keyword">if</span> ((Status != CY_SUCCESS) || (NumDevices == <span class="hljs-number">0</span>))<br>    &#123;<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Status: %d\n&quot;</span>, Status);<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;NumDevices: %d\n&quot;</span>, NumDevices);<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;无设备连接成功,没有设备连接!!!\n&quot;</span>);<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br><br>    <span class="hljs-keyword">for</span> (DeviceIdx = <span class="hljs-number">0</span>; DeviceIdx &lt; NumDevices; DeviceIdx++)<br>    &#123;<br>        Status = CyGetDeviceInfo(DeviceIdx, &amp;DeviceInfo);<br>        <span class="hljs-keyword">if</span> (Status != CY_SUCCESS)<br>        &#123;<br>            <span class="hljs-keyword">continue</span>;<br>        &#125;<br><br>        <span class="hljs-keyword">for</span> (InterfaceIdx = <span class="hljs-number">0</span>; InterfaceIdx &lt; DeviceInfo.numInterfaces; InterfaceIdx++)<br>        &#123;<br>            <span class="hljs-keyword">if</span> (DeviceInfo.deviceType[InterfaceIdx] == CY_TYPE_I2C)<br>            &#123;<br>                Status = CyOpen(DeviceIdx, InterfaceIdx, Handle);<br>                <span class="hljs-keyword">if</span> (Status == CY_SUCCESS)<br>                &#123;<br>                    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>                &#125;<br>            &#125;<br>        &#125;<br>    &#125;<br><br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Get I2C Handle Error %d!!! \n&quot;</span>, Status);<br>	<span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>使用gdb定位到<code>Status = CyGetListofDevices(&amp;NumDevices);</code>，Status输出为<code>CY_ERROR_REQUEST_FAILED</code>，定位到<code>CyGetListofDevices(&amp;NumDevices);</code>：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs C"><span class="hljs-comment">/*</span><br><span class="hljs-comment">   Summary</span><br><span class="hljs-comment">   This API retrieves number of USB devices connected to the host.</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">   Description</span><br><span class="hljs-comment">   This API retrieves the number of devices connected to the host.</span><br><span class="hljs-comment">   In Windows family of operating systems the API retrieves only the number of devices that are attached</span><br><span class="hljs-comment">   to CyUSB3.SYS driver. For other operating systems, it retrieves the total number of USB devices present</span><br><span class="hljs-comment">   on the bus. It includes both USB Serial device as well as other devices.</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">   Note: In case of Linux and Mac apart from providing number of devices connected, it builds the</span><br><span class="hljs-comment">   device list which is used for opening the device and obtaining device handle. Thus the API should be</span><br><span class="hljs-comment">   called during device discovery in the application.</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">   Return Value</span><br><span class="hljs-comment">   * CY_SUCCESS on success </span><br><span class="hljs-comment">   * CY_ERROR_DEVICE_NOT_FOUND if there are no devices attached.</span><br><span class="hljs-comment">   * CY_ERROR_REQUEST_FAILED if library was not initialized.</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">   See Also</span><br><span class="hljs-comment">   * CyGetDeviceInfo</span><br><span class="hljs-comment">   * CyGetDeviceInfoVidPid</span><br><span class="hljs-comment">   * CyOpen</span><br><span class="hljs-comment">   * CyClose</span><br><span class="hljs-comment">*/</span><br>CYWINEXPORT CY_RETURN_STATUS <span class="hljs-title function_">CyGetListofDevices</span> <span class="hljs-params">(</span><br><span class="hljs-params">    UINT8* numDevices                            <span class="hljs-comment">/*Number of Devices connected*/</span></span><br><span class="hljs-params">    )</span>;<br></code></pre></td></tr></table></figure>
+<p>定位到这里<code>CY_ERROR_REQUEST_FAILED if library was not initialized.</code>出现的原因是，因为library没有初始化。修改<code>GetCyI2CHandle(CY_HANDLE* Handle)</code>代码，添加初始化函数：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs C"><span class="hljs-type">bool</span> <span class="hljs-title function_">GetCyI2CHandle</span><span class="hljs-params">(CY_HANDLE* Handle)</span><br>&#123;<br>    CY_RETURN_STATUS Status;<br>    CY_DEVICE_INFO   DeviceInfo;<br>    <span class="hljs-type">uint8_t</span>          NumDevices = <span class="hljs-number">0</span>;<br>    <span class="hljs-type">uint8_t</span>          DeviceIdx;<br>    <span class="hljs-type">uint8_t</span>          InterfaceIdx;<br><br>    Status = CyLibraryInit();<br>    <span class="hljs-keyword">if</span> (Status != CY_SUCCESS) &#123;<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d 设备初始化失败!!!\n&quot;</span>, Status);<br>    &#125;<br>    Status = CyGetListofDevices(&amp;NumDevices);<br>    <span class="hljs-keyword">if</span> ((Status != CY_SUCCESS) || (NumDevices == <span class="hljs-number">0</span>))<br>    &#123;<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Status: %d\n&quot;</span>, Status);<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;NumDevices: %d\n&quot;</span>, NumDevices);<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;无设备连接成功,没有设备连接!!!\n&quot;</span>);<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br><br>    <span class="hljs-keyword">for</span> (DeviceIdx = <span class="hljs-number">0</span>; DeviceIdx &lt; NumDevices; DeviceIdx++)<br>    &#123;<br>        Status = CyGetDeviceInfo(DeviceIdx, &amp;DeviceInfo);<br>        <span class="hljs-keyword">if</span> (Status != CY_SUCCESS)<br>        &#123;<br>            <span class="hljs-keyword">continue</span>;<br>        &#125;<br><br>        <span class="hljs-keyword">for</span> (InterfaceIdx = <span class="hljs-number">0</span>; InterfaceIdx &lt; DeviceInfo.numInterfaces; InterfaceIdx++)<br>        &#123;<br>            <span class="hljs-keyword">if</span> (DeviceInfo.deviceType[InterfaceIdx] == CY_TYPE_I2C)<br>            &#123;<br>                Status = CyOpen(DeviceIdx, InterfaceIdx, Handle);<br>                <span class="hljs-keyword">if</span> (Status == CY_SUCCESS)<br>                &#123;<br>                    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>                &#125;<br>            &#125;<br>        &#125;<br>    &#125;<br><br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Get I2C Handle Error %d!!! \n&quot;</span>, Status);<br>	<span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>问题解决。</p>
+<p>总结：<br>1、首先是单独测试USB驱动程序能不能用，写了一个单独测试USB的程序，可以正常运行。<br>2、检查PC机有没有连接到光机设备，可以使用<code>lsusb</code>指令。光机是连接到PC机上的。<br>3、检查程序有没有问题。<code>printf</code>和<code>gdb</code>定位问题。</p>
+]]></content>
+      <categories>
+        <category>嵌入式结构光三维重建项目</category>
       </categories>
   </entry>
   <entry>
@@ -6544,150 +6688,6 @@ rd2 value and address: -13.85, 0x7fff68ec89e0
 ]]></content>
       <categories>
         <category>StructLight</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>光机接口</title>
-    <url>/2025/02/22/StructLight/projector/interface/</url>
-    <content><![CDATA[<h1 id="onceProject"><a href="#onceProject" class="headerlink" title="onceProject"></a>onceProject</h1><figure class="highlight cpp"><table><tr><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">ProjectorDlpc34xx::project</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">bool</span> isContinue)</span> </span>&#123;<br>    <span class="hljs-keyword">if</span>(!isInitial_) &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br><br>    <span class="hljs-keyword">if</span> (isContinue) &#123;<br>        <span class="hljs-built_in">DLPC34XX_WriteOperatingModeSelect</span>(DLPC34XX_OM_SENS_INTERNAL_PATTERN);<br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">DLPC34XX_WriteInternalPatternControl</span>(DLPC34XX_PC_START, <span class="hljs-number">0xFF</span>) ==<br>               SUCCESS;<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-built_in">DLPC34XX_WriteOperatingModeSelect</span>(DLPC34XX_OM_SENS_INTERNAL_PATTERN);<br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">DLPC34XX_WriteInternalPatternControl</span>(DLPC34XX_PC_START, <span class="hljs-number">0x0</span>) ==<br>               SUCCESS;<br>    &#125;<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
-
-<span id="more"></span>
-
-<ol>
-<li><p><code>DLPC34XX_WriteOperatingModeSelect(DLPC34XX_OM_SENS_INTERNAL_PATTERN);</code>选择工作模式</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">uint32_t</span> <span class="hljs-title">DLPC34XX_WriteOperatingModeSelect</span><span class="hljs-params">(DLPC34XX_OperatingMode_e OperatingMode)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-type">uint32_t</span> Status = <span class="hljs-number">0</span>;<br><br>    <span class="hljs-built_in">DLPC_COMMON_ClearWriteBuffer</span>();<br><br>    <span class="hljs-built_in">DLPC_COMMON_PackOpcode</span>(<span class="hljs-number">1</span>, <span class="hljs-number">0x5</span>);<br>    <span class="hljs-built_in">DLPC_COMMON_PackBytes</span>((<span class="hljs-type">uint8_t</span>*)&amp;OperatingMode, <span class="hljs-number">1</span>);<br><br>    <span class="hljs-built_in">DLPC_COMMON_SetCommandDestination</span>(<span class="hljs-number">0</span>);<br>    Status = <span class="hljs-built_in">DLPC_COMMON_SendWrite</span>();<br>    <span class="hljs-keyword">return</span> Status;<br>&#125;<br></code></pre></td></tr></table></figure></li>
-</ol>
-<p><img src="/../../../image/modeSelect.bmp" alt="img"></p>
-<ol start="2">
-<li><p>判断是连续投影还是单次投影(由isContinue决定)</p>
-<ol>
-<li>isContinue为true为连续投影</li>
-<li>isContinue为false为单次投影</li>
-</ol>
-<p><img src="/../../../image/project.bmp" alt="img"></p>
-</li>
-<li><p><code>DLPC34XX_WriteInternalPatternControl(DLPC34XX_PC_START,0xFF)</code>：发送控制码</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">uint32_t</span> <span class="hljs-title">DLPC34XX_WriteInternalPatternControl</span><span class="hljs-params">(DLPC34XX_PatternControl_e PatternControl, <span class="hljs-type">uint8_t</span> RepeatCount)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-type">uint32_t</span> Status = <span class="hljs-number">0</span>;<br><br>    <span class="hljs-built_in">DLPC_COMMON_ClearWriteBuffer</span>();<br><br>    <span class="hljs-built_in">DLPC_COMMON_PackOpcode</span>(<span class="hljs-number">1</span>, <span class="hljs-number">0x9E</span>);<br>    <span class="hljs-built_in">DLPC_COMMON_PackBytes</span>((<span class="hljs-type">uint8_t</span>*)&amp;PatternControl, <span class="hljs-number">1</span>);<br>    <span class="hljs-built_in">DLPC_COMMON_PackBytes</span>((<span class="hljs-type">uint8_t</span>*)&amp;RepeatCount, <span class="hljs-number">1</span>);<br><br>    <span class="hljs-built_in">DLPC_COMMON_SetCommandDestination</span>(<span class="hljs-number">0</span>);<br>    Status = <span class="hljs-built_in">DLPC_COMMON_SendWrite</span>();<br>    <span class="hljs-keyword">return</span> Status;<br>&#125;<br></code></pre></td></tr></table></figure></li>
-</ol>
-<p><code>DLPC34XX_WriteInternalPatternControl()</code>函数即内部图形控制函数，通过这个函数控制内部投影模式。所以在函数内部，会先发送一个 <code>0x9E</code>表示为写入内部控制。</p>
-<h1 id="pause"><a href="#pause" class="headerlink" title="pause"></a>pause</h1><p><img src="/../../../image/project.bmp" alt="img"></p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">ProjectorDlpc34xx::pause</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-keyword">if</span>(!isInitial_) &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-built_in">DLPC34XX_WriteInternalPatternControl</span>(DLPC34XX_PC_PAUSE, <span class="hljs-number">0xff</span>) ==<br>           SUCCESS;<br>&#125;<br></code></pre></td></tr></table></figure>
-
-<ol>
-<li><p><strong>启动（Start）</strong>：</p>
-<ul>
-<li>功能：开始显示图形顺序表中的第一个条目。</li>
-<li>参数：字节2用于指示在首次执行后重复执行图形顺序表的次数。</li>
-<li>用途：用于初始化显示流程，可以设置循环次数，适用于需要循环显示的场景。</li>
-</ul>
-</li>
-<li><p><strong>停止（Stop）</strong>：</p>
-<ul>
-<li>功能：停止执行图形顺序表并关闭照明器。</li>
-<li>用途：用于终止显示流程，适用于需要立即停止显示的情况。</li>
-</ul>
-</li>
-<li><p><strong>暂停（Pause）</strong>：</p>
-<ul>
-<li>功能：暂停执行当前的图形顺序表条目，继续显示最后显示的图形。</li>
-<li>用途：用于在需要时临时中断显示流程，但保留当前显示状态，适用于需要临时中断或审查当前显示内容的场景。</li>
-</ul>
-</li>
-<li><p><strong>步进（Step）</strong>：</p>
-<ul>
-<li>功能：前往当前所显示图形顺序表中的下一个图形，此操作假定用户已暂停系统。</li>
-<li>用途：用于手动控制显示流程，逐个查看图形顺序表中的条目，适用于需要逐个审查或调整显示内容的场景。</li>
-</ul>
-</li>
-<li><p><strong>恢复（Resume）</strong>：</p>
-<ul>
-<li>功能：继续执行当前的图形顺序表条目，此操作假定用户已暂停系统。</li>
-<li>用途：用于在暂停后继续显示流程，适用于需要在中断后恢复显示的场景。</li>
-</ul>
-</li>
-<li><p><strong>复位（Reset）</strong>：</p>
-<ul>
-<li>功能：开始显示当前图形顺序表中引用的第一个图形。</li>
-<li>用途：用于重置显示流程到初始状态，适用于需要从头开始显示或重新初始化显示内容的场景。</li>
-</ul>
-</li>
-</ol>
-]]></content>
-      <categories>
-        <category>StructLight</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>光机接口测试</title>
-    <url>/2025/02/22/StructLight/projector/%E5%85%89%E6%9C%BA-%E6%8E%A5%E5%8F%A3%E6%B5%8B%E8%AF%95/</url>
-    <content><![CDATA[<p>DLPC-API-1.10给的API比较杂，有很多也用不上，需要自己另外定义接口，官方给的有一个示例程序，程序里封装了一部分接口，先测试这些接口能不能用，然后在这个基础上增加需要的接口，实例程序中的包括：</p>
-<span id="more"></span>
-<ul>
-<li>I2C 写入</li>
-<li>I2C 读取</li>
-<li>初始化命令层</li>
-<li>以秒为单位等待指定的时间</li>
-<li>生成一个1位（二维）图案</li>
-<li>生成一个8位（灰度）图案</li>
-<li>填充数组<code>s_PatternSets 中的 DLPC34XX_INT_PAT_PatternSet_s</code>结构</li>
-<li>填充数组<code>s_PatternOrderTable 中的 DLPC34XX_INT_PAT_PatternOrderTableEntry_s</code>结构</li>
-<li>将数据复制到 Flash 编程缓冲区以便后续写入</li>
-<li>将缓冲区数据编程到 Flash 中</li>
-<li>将数据写入文件</li>
-<li>生成图案数据并写入到文件</li>
-<li>缓存图案数据并编程到 Flash 中</li>
-<li>生成和编程图案数据到 Flash 中</li>
-<li>从 Flash 中加载图案顺序表条目</li>
-<li>加载特定的图案顺序表条目</li>
-<li>写入测试图案网格线</li>
-<li>写入测试图案色条</li>
-<li>写入选定视图外观（Look）</li>
-<li>加载预构建的模式数据</li>
-<li>写入 LABB 和 CAIC 设置</li>
-<li>加载固件</li>
-</ul>
-<h1 id="过程记录"><a href="#过程记录" class="headerlink" title="过程记录"></a>过程记录</h1><figure class="highlight cpp"><table><tr><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> <span class="hljs-title">WriteI2C</span><span class="hljs-params">(<span class="hljs-type">uint16_t</span> WriteDataLength, <span class="hljs-type">uint8_t</span> *WriteData, DLPC_COMMON_CommandProtocolData_s *ProtocolData)</span> </span>&#123;<br>    <span class="hljs-comment">// 实现写入 I2C 设备的逻辑</span><br>    <span class="hljs-comment">// ...</span><br>    <span class="hljs-keyword">return</span> SUCCESS; <span class="hljs-comment">// 或者在出错时返回错误代码</span><br>&#125;<br><br><span class="hljs-comment">// 假设您有一个函数接受一个回调函数指针</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">ExecuteWriteOperation</span><span class="hljs-params">(DLPC_COMMON_WriteCommandCallback callback)</span> </span>&#123;<br>    <span class="hljs-comment">// ...</span><br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> result = <span class="hljs-built_in">callback</span>(WriteDataLength, WriteData, &amp;ProtocolData);<br>    <span class="hljs-comment">// ...</span><br>&#125;<br><br><span class="hljs-comment">// 在调用 ExecuteWriteOperation 时，您可以传递 WriteI2C 函数</span><br><span class="hljs-built_in">ExecuteWriteOperation</span>(WriteI2C);<br></code></pre></td></tr></table></figure>
-<p>在这个例子中，ExecuteWriteOperation 函数接受一个类型为 DLPC_COMMON_WriteCommandCallback 的回调函数，并在内部调用它。这样，您可以将不同的写入操作作为回调传递给 ExecuteWriteOperation，而不需要修改其内部实现。</p>
-<figure class="highlight delphi"><table><tr><td class="code"><pre><code class="hljs delphi">(gdb) ptype DLPC_COMMON_WriteCommandCallback<br><span class="hljs-keyword">type</span> = unsigned int <span class="hljs-comment">(*)(uint16_t, uint8_t *, DLPC_COMMON_CommandProtocolData_s *)</span><br></code></pre></td></tr></table></figure>
-<ul>
-<li>函数指针：定义回调函数，可以在不同的上下文中被调用。抽象特定的行为，使得代码更加模块化和可重用。</li>
-<li>返回类型：unsigned int</li>
-<li>参数列表：<ul>
-<li>uint16_t：无符号的16位整数</li>
-<li>uint8_t *：指向无符号8位的整数的指针参数，数据缓冲区</li>
-<li>DLPC_COMMON_CommandProtocolData_s *：指向结构体的指针，协议相关</li>
-</ul>
-</li>
-</ul>
-<p>当光机接入或者没有接入USB的时候均出现：Status &#x3D; CY_ERROR_REQUEST_FAILED, NumDevices &#x3D; 0 ‘\000’</p>
-<ul>
-<li>CY_ERROR_REQUEST_FAILED：发送到 USB Serial 设备的请求失败</li>
-<li>表明函数 CyGetListofDevices 没有成功地找到任何连接的设备</li>
-</ul>
-<figure class="highlight apache"><table><tr><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">zhm</span>@Ubuntu:~/Jetson/StructLight/CyUSBSerial_SDK_Linux/linux/library$ lsusb<br><span class="hljs-attribute">Bus</span> <span class="hljs-number">001</span> Device <span class="hljs-number">001</span>: ID <span class="hljs-number">1</span>d6b:<span class="hljs-number">0002</span> Linux Foundation <span class="hljs-number">2</span>.<span class="hljs-number">0</span> root hub<br><span class="hljs-attribute">Bus</span> <span class="hljs-number">001</span> Device <span class="hljs-number">002</span>: ID <span class="hljs-number">0</span>bda:<span class="hljs-number">8771</span> Realtek Semiconductor Corp. Bluetooth Radio<br><span class="hljs-attribute">Bus</span> <span class="hljs-number">001</span> Device <span class="hljs-number">003</span>: ID <span class="hljs-number">0000</span>:<span class="hljs-number">3825</span>   USB OPTICAL MOUSE<br><span class="hljs-attribute">Bus</span> <span class="hljs-number">001</span> Device <span class="hljs-number">004</span>: ID <span class="hljs-number">1</span>c4f:<span class="hljs-number">0026</span> SiGma Micro Keyboard<br><span class="hljs-attribute">Bus</span> <span class="hljs-number">001</span> Device <span class="hljs-number">005</span>: ID <span class="hljs-number">05</span>e3:<span class="hljs-number">0608</span> Genesys Logic, Inc. Hub<br><span class="hljs-attribute">Bus</span> <span class="hljs-number">001</span> Device <span class="hljs-number">018</span>: ID <span class="hljs-number">04</span>b4:<span class="hljs-number">000</span>a Cypress Semiconductor Corp. USB-Serial (Dual Channel)<br><span class="hljs-attribute">Bus</span> <span class="hljs-number">002</span> Device <span class="hljs-number">001</span>: ID <span class="hljs-number">1</span>d6b:<span class="hljs-number">0003</span> Linux Foundation <span class="hljs-number">3</span>.<span class="hljs-number">0</span> root hub<br></code></pre></td></tr></table></figure>
-<p>说明Cypress USB-Serial设备已经被系统识别，并且分配了设备ID 04b4:000a</p>
-<p>驱动程序：libusb-1.0库（需要测试它能不能用）<br>经过测试，是可以用的。</p>
-<p>使用sudo apt-get install <package>的时候，出现无法命中等问题，换源之后问题依然没有解决，可以尝试使用下面的方法。</p>
-<figure class="highlight apache"><table><tr><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">1</span>. sudo vim /etc/resolv.conf # 添加如下内容<br><span class="hljs-attribute">nameserver</span> <span class="hljs-number">8.8.8.8</span><br><span class="hljs-attribute">nameserver</span> <span class="hljs-number">8.8.4.4</span><br><span class="hljs-attribute">nameserver</span> <span class="hljs-number">127.0.0.1</span><br><br><span class="hljs-attribute">2</span>. 输入Esc，:wq，保存并退出<br></code></pre></td></tr></table></figure>
-
-<h1 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h1><p><code>InitConnectionAndCommandLayer();</code>出现错误，函数内部为：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs C"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 初始化命令层，设置读/写缓冲区和回调函数。</span><br><span class="hljs-comment"> */</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">InitConnectionAndCommandLayer</span><span class="hljs-params">()</span><br>&#123;<br>    <span class="hljs-comment">// 初始化命令库，设置读/写缓冲区和对应的 I2C 读写函数</span><br>    DLPC_COMMON_InitCommandLibrary(s_WriteBuffer,<br>                                   <span class="hljs-keyword">sizeof</span>(s_WriteBuffer),<br>                                   s_ReadBuffer,<br>                                   <span class="hljs-keyword">sizeof</span>(s_ReadBuffer),<br>                                   WriteI2C,<br>                                   ReadI2C);<br><br>    <span class="hljs-comment">// 连接到 Cypress I2C</span><br>    CYPRESS_I2C_ConnectToCyI2C();<br>&#125;<br></code></pre></td></tr></table></figure>
-
-<p><code>CYPRESS_I2C_ConnectToCyI2C();</code>函数内部为，添加<code>printf</code>定位问题出现位置：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs C"><span class="hljs-type">bool</span> <span class="hljs-title function_">CYPRESS_I2C_ConnectToCyI2C</span><span class="hljs-params">()</span><br>&#123;<br>    CY_RETURN_STATUS Status;	<br>    CY_I2C_CONFIG I2CConfig;<br>    <span class="hljs-keyword">if</span> (GetCyI2CHandle(&amp;s_Handle) == <span class="hljs-literal">false</span>)<br>    &#123;<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Get CyI2C Handle Failed!!! \n&quot;</span>);<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br><br>    I2CConfig.frequency      = I2C_CLOCK_FREQUENCY_HZ;<br>    I2CConfig.slaveAddress   = <span class="hljs-number">0x30</span>;<br>    I2CConfig.isMaster       = <span class="hljs-literal">true</span>;<br>    I2CConfig.isClockStretch = <span class="hljs-literal">false</span>;<br>    <br>    Status = CySetI2cConfig(s_Handle, &amp;I2CConfig);<br>    <span class="hljs-keyword">if</span> (Status != CY_SUCCESS)<br>    &#123;<br>		<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Connect to I2C Error %d!!! \n&quot;</span>, Status);<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br><br>    s_DataConfig.isNakBit     = <span class="hljs-literal">true</span>;<br>    s_DataConfig.isStopBit    = <span class="hljs-literal">true</span>;<br>    s_DataConfig.slaveAddress = DLP_I2C_SLAVE_ADDRESS;<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
-
-<p><code>GetCyI2CHandle(&amp;s_Handle)</code>这里出现错误，添加<code>printf</code>定位问题，函数内部为：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs C"><span class="hljs-comment">/* Gets the handle of the connected Cypress USB-Serial bridge controller */</span><br><span class="hljs-type">bool</span> <span class="hljs-title function_">GetCyI2CHandle</span><span class="hljs-params">(CY_HANDLE* Handle)</span><br>&#123;<br>    CY_RETURN_STATUS Status;<br>    CY_DEVICE_INFO   DeviceInfo;<br>    <span class="hljs-type">uint8_t</span>          NumDevices = <span class="hljs-number">0</span>;<br>    <span class="hljs-type">uint8_t</span>          DeviceIdx;<br>    <span class="hljs-type">uint8_t</span>          InterfaceIdx;<br><br>    Status = CyGetListofDevices(&amp;NumDevices);<br>    <span class="hljs-keyword">if</span> ((Status != CY_SUCCESS) || (NumDevices == <span class="hljs-number">0</span>))<br>    &#123;<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Status: %d\n&quot;</span>, Status);<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;NumDevices: %d\n&quot;</span>, NumDevices);<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;无设备连接成功,没有设备连接!!!\n&quot;</span>);<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br><br>    <span class="hljs-keyword">for</span> (DeviceIdx = <span class="hljs-number">0</span>; DeviceIdx &lt; NumDevices; DeviceIdx++)<br>    &#123;<br>        Status = CyGetDeviceInfo(DeviceIdx, &amp;DeviceInfo);<br>        <span class="hljs-keyword">if</span> (Status != CY_SUCCESS)<br>        &#123;<br>            <span class="hljs-keyword">continue</span>;<br>        &#125;<br><br>        <span class="hljs-keyword">for</span> (InterfaceIdx = <span class="hljs-number">0</span>; InterfaceIdx &lt; DeviceInfo.numInterfaces; InterfaceIdx++)<br>        &#123;<br>            <span class="hljs-keyword">if</span> (DeviceInfo.deviceType[InterfaceIdx] == CY_TYPE_I2C)<br>            &#123;<br>                Status = CyOpen(DeviceIdx, InterfaceIdx, Handle);<br>                <span class="hljs-keyword">if</span> (Status == CY_SUCCESS)<br>                &#123;<br>                    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>                &#125;<br>            &#125;<br>        &#125;<br>    &#125;<br><br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Get I2C Handle Error %d!!! \n&quot;</span>, Status);<br>	<span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
-
-<p>使用gdb定位到<code>Status = CyGetListofDevices(&amp;NumDevices);</code>，Status输出为<code>CY_ERROR_REQUEST_FAILED</code>，定位到<code>CyGetListofDevices(&amp;NumDevices);</code>：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs C"><span class="hljs-comment">/*</span><br><span class="hljs-comment">   Summary</span><br><span class="hljs-comment">   This API retrieves number of USB devices connected to the host.</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">   Description</span><br><span class="hljs-comment">   This API retrieves the number of devices connected to the host.</span><br><span class="hljs-comment">   In Windows family of operating systems the API retrieves only the number of devices that are attached</span><br><span class="hljs-comment">   to CyUSB3.SYS driver. For other operating systems, it retrieves the total number of USB devices present</span><br><span class="hljs-comment">   on the bus. It includes both USB Serial device as well as other devices.</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">   Note: In case of Linux and Mac apart from providing number of devices connected, it builds the</span><br><span class="hljs-comment">   device list which is used for opening the device and obtaining device handle. Thus the API should be</span><br><span class="hljs-comment">   called during device discovery in the application.</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">   Return Value</span><br><span class="hljs-comment">   * CY_SUCCESS on success </span><br><span class="hljs-comment">   * CY_ERROR_DEVICE_NOT_FOUND if there are no devices attached.</span><br><span class="hljs-comment">   * CY_ERROR_REQUEST_FAILED if library was not initialized.</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">   See Also</span><br><span class="hljs-comment">   * CyGetDeviceInfo</span><br><span class="hljs-comment">   * CyGetDeviceInfoVidPid</span><br><span class="hljs-comment">   * CyOpen</span><br><span class="hljs-comment">   * CyClose</span><br><span class="hljs-comment">*/</span><br>CYWINEXPORT CY_RETURN_STATUS <span class="hljs-title function_">CyGetListofDevices</span> <span class="hljs-params">(</span><br><span class="hljs-params">    UINT8* numDevices                            <span class="hljs-comment">/*Number of Devices connected*/</span></span><br><span class="hljs-params">    )</span>;<br></code></pre></td></tr></table></figure>
-<p>定位到这里<code>CY_ERROR_REQUEST_FAILED if library was not initialized.</code>出现的原因是，因为library没有初始化。修改<code>GetCyI2CHandle(CY_HANDLE* Handle)</code>代码，添加初始化函数：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs C"><span class="hljs-type">bool</span> <span class="hljs-title function_">GetCyI2CHandle</span><span class="hljs-params">(CY_HANDLE* Handle)</span><br>&#123;<br>    CY_RETURN_STATUS Status;<br>    CY_DEVICE_INFO   DeviceInfo;<br>    <span class="hljs-type">uint8_t</span>          NumDevices = <span class="hljs-number">0</span>;<br>    <span class="hljs-type">uint8_t</span>          DeviceIdx;<br>    <span class="hljs-type">uint8_t</span>          InterfaceIdx;<br><br>    Status = CyLibraryInit();<br>    <span class="hljs-keyword">if</span> (Status != CY_SUCCESS) &#123;<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d 设备初始化失败!!!\n&quot;</span>, Status);<br>    &#125;<br>    Status = CyGetListofDevices(&amp;NumDevices);<br>    <span class="hljs-keyword">if</span> ((Status != CY_SUCCESS) || (NumDevices == <span class="hljs-number">0</span>))<br>    &#123;<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Status: %d\n&quot;</span>, Status);<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;NumDevices: %d\n&quot;</span>, NumDevices);<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;无设备连接成功,没有设备连接!!!\n&quot;</span>);<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br><br>    <span class="hljs-keyword">for</span> (DeviceIdx = <span class="hljs-number">0</span>; DeviceIdx &lt; NumDevices; DeviceIdx++)<br>    &#123;<br>        Status = CyGetDeviceInfo(DeviceIdx, &amp;DeviceInfo);<br>        <span class="hljs-keyword">if</span> (Status != CY_SUCCESS)<br>        &#123;<br>            <span class="hljs-keyword">continue</span>;<br>        &#125;<br><br>        <span class="hljs-keyword">for</span> (InterfaceIdx = <span class="hljs-number">0</span>; InterfaceIdx &lt; DeviceInfo.numInterfaces; InterfaceIdx++)<br>        &#123;<br>            <span class="hljs-keyword">if</span> (DeviceInfo.deviceType[InterfaceIdx] == CY_TYPE_I2C)<br>            &#123;<br>                Status = CyOpen(DeviceIdx, InterfaceIdx, Handle);<br>                <span class="hljs-keyword">if</span> (Status == CY_SUCCESS)<br>                &#123;<br>                    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>                &#125;<br>            &#125;<br>        &#125;<br>    &#125;<br><br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Get I2C Handle Error %d!!! \n&quot;</span>, Status);<br>	<span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
-<p>问题解决。</p>
-<p>总结：<br>1、首先是单独测试USB驱动程序能不能用，写了一个单独测试USB的程序，可以正常运行。<br>2、检查PC机有没有连接到光机设备，可以使用<code>lsusb</code>指令。光机是连接到PC机上的。<br>3、检查程序有没有问题。<code>printf</code>和<code>gdb</code>定位问题。</p>
-]]></content>
-      <categories>
-        <category>嵌入式结构光三维重建项目</category>
       </categories>
   </entry>
 </search>

@@ -339,15 +339,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2025/02/22/MissingSemester/Git/" target="_self">
-          Git
+        <a href="/2025/02/22/MissingSemester/Github%E7%9A%84SSH%E9%85%8D%E7%BD%AE/" target="_self">
+          Github的SSH配置
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2025/02/22/MissingSemester/Git/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/02/22/MissingSemester/Github%E7%9A%84SSH%E9%85%8D%E7%BD%AE/" target="_self">
         <div>
-          Git1.Git特点：1.直接记录快照，而非差异比较2.近乎所有操作都是本地执行3.Git保证完整性  Git中所有的数据在存储前都计算校验和，然后以校验和来引用。用以计算校验和的机制叫SHA-1哈希表，Git数据库中保存的信息都是以文件内容的哈希值来索引而不是文件名。  4.Git一般只添加数据执行的Git操作，几乎只往Git数据库中添加数据，很难使用Git从数据库中删除数据，
+          1.创建公私密钥123$ ssh-keygen -t rsa -C &quot;Github注册的邮箱地址&quot;$ cat ～/.ssh/id_rsa.pub# ps.在windows系统中.ssh文件在C:\Users\你的用户名\.ssh目录下
         </div>
       </a>
 
@@ -393,15 +393,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2025/02/22/MissingSemester/Github%E7%9A%84SSH%E9%85%8D%E7%BD%AE/" target="_self">
-          Github的SSH配置
+        <a href="/2025/02/22/MissingSemester/Git/" target="_self">
+          Git
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2025/02/22/MissingSemester/Github%E7%9A%84SSH%E9%85%8D%E7%BD%AE/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/02/22/MissingSemester/Git/" target="_self">
         <div>
-          1.创建公私密钥123$ ssh-keygen -t rsa -C &quot;Github注册的邮箱地址&quot;$ cat ～/.ssh/id_rsa.pub# ps.在windows系统中.ssh文件在C:\Users\你的用户名\.ssh目录下
+          Git1.Git特点：1.直接记录快照，而非差异比较2.近乎所有操作都是本地执行3.Git保证完整性  Git中所有的数据在存储前都计算校验和，然后以校验和来引用。用以计算校验和的机制叫SHA-1哈希表，Git数据库中保存的信息都是以文件内容的哈希值来索引而不是文件名。  4.Git一般只添加数据执行的Git操作，几乎只往Git数据库中添加数据，很难使用Git从数据库中删除数据，
         </div>
       </a>
 
@@ -609,15 +609,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2025/02/22/MissingSemester/gcc/" target="_self">
-          gcc
+        <a href="/2025/02/22/MissingSemester/coredump/" target="_self">
+          coredump
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2025/02/22/MissingSemester/gcc/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/02/22/MissingSemester/coredump/" target="_self">
         <div>
-          gcc编译流程1234567891011# 1.预处理$ gcc -E main.c -o main.i# 2.编译$ gcc -S main.i -o main.s# 3.汇编$ gcc -c main.s -o main.o# 4.链接$ gcc main.o -o main
+          什么是coredumpcoredump又叫核心转储，是程序崩溃时候的一个内存快照，存储了进程的内存，寄存器状态，运行堆栈等信息。 是一个二进制文件，可以使用以下工具打开分析： Linux中可以使用：gdb，elfdump，objdump Windows中可以使用：windebug，solaris下的mdb
         </div>
       </a>
 
@@ -663,15 +663,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2025/02/22/MissingSemester/coredump/" target="_self">
-          coredump
+        <a href="/2025/02/22/MissingSemester/gcc/" target="_self">
+          gcc
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2025/02/22/MissingSemester/coredump/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/02/22/MissingSemester/gcc/" target="_self">
         <div>
-          什么是coredumpcoredump又叫核心转储，是程序崩溃时候的一个内存快照，存储了进程的内存，寄存器状态，运行堆栈等信息。 是一个二进制文件，可以使用以下工具打开分析： Linux中可以使用：gdb，elfdump，objdump Windows中可以使用：windebug，solaris下的mdb
+          gcc编译流程1234567891011# 1.预处理$ gcc -E main.c -o main.i# 2.编译$ gcc -S main.i -o main.s# 3.汇编$ gcc -c main.s -o main.o# 4.链接$ gcc main.o -o main
         </div>
       </a>
 
