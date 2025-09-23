@@ -1,7 +1,9 @@
 ---
-title: socket
+title: 网络编程-Linux
+date: 2024-5-24 10:00:00
 categories:
-	- 网络通信
+- 计算机网络
+- 网络编程
 ---
 # 多客户端通讯问题
 

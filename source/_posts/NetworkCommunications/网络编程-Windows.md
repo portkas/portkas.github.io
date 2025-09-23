@@ -1,7 +1,9 @@
 ---
-title: socket-Windows
-ccategories:
-	- 网络通信
+title: 网络编程-Windows
+date: 2024-5-24 10:00:00
+categories:
+- 计算机网络
+- 网络编程
 ---
 # 通信流程
 
@@ -359,7 +361,6 @@ int main(){
    WSACleanup();
    return 0;
    ```
-
 
 # 参考文档
 
